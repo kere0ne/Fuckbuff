@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fuckbuff</title>
+<meta name="description" content="Fuckbuff: a Halloween-spirited AI coding assistant. Fully self-contained, no third-party sites.">
+<style>
+  :root {
+    --bg: #0b0709;
+    --panel: #14090f;
+    --panel2: #1b0d13;
+    --orange: #ff7a1a;
+    --orange-soft: #ffb066;
+    --purple: #8b2fc9;
+    --text: #f3e8de;
+    --dim: #a08e83;
+    --line: #2a1520;
+    --code: #0d0a12;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(139,47,201,0.14), transparent 60%),
+      radial-gradient(900px 420px at 10% 110%, rgba(255,122,26,0.10), transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font-family: ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+    overflow-x: hidden;
+  }
+  a { color: var(--orange-soft); }
+  .fog {
+    position: fixed; inset: auto 0 0 0; height: 180px; pointer-events: none; z-index: 0;
+    background: linear-gradient(180deg, transparent, rgba(139,47,201,0.10));
+    filter: blur(2px);
+    animation: fogdrift 14s ease-in-out infinite alternate;
+  }
+  @keyframes fogdrift { from { transform: translateX(-24px); } to { transform: translateX(24px); } }
+  .bats { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  .bat {
+    position: absolute; font-size: 15px; opacity: 0.5; color: var(--purple);
+    animation: fly linear infinite;
+  }
+  @keyframes fly {
+    from { transform: translate(-40px, 0) rotate(8deg); }
+    50%  { transform: translate(46vw, 12vh) rotate(-8deg); }
+    to   { transform: translate(110vw, 4vh) rotate(6deg); }
+  }
+  header {
+    position: relative; z-index: 2; display: flex; align-items: center; gap: 14px;
+    padding: 18px 22px; border-bottom: 1px solid var(--line);
+    background: rgba(11,7,9,0.72); backdrop-filter: blur(6px);
+  }
+  .logo { width: 34px; height: 34px; flex: none; }
+  .brand { font-size: 20px; letter-spacing: 1px; }
+  .brand b { color: var(--orange); }
+  .tag { margin-left: auto; font-size: 11px; color: var(--dim); text-align: right; }
+  .pumpkin { color: var(--orange); animation: glow 2.6s ease-in-out infinite; }
+  @keyframes glow {
+    0%, 100% { text-shadow: 0 0 8px rgba(255,122,26,0.55); }
+    50%      { text-shadow: 0 0 22px rgba(255,122,26,0.95); }
+  }
+  main {
+    position: relative; z-index: 2; max-width: 940px; margin: 0 auto;
+    padding: 34px 18px 60px;
+  }
+  .hero { text-align: center; margin-bottom: 26px; }
+  .hero .jack { font-size: 64px; line-height: 1; display: inline-block; animation: glow 3s ease-in-out infinite; }
+  .hero h1 { font-size: clamp(34px, 7vw, 58px); letter-spacing: 2px; margin: 10px 0 6px; }
+  .hero h1 span { color: var(--orange); }
+  .hero p { color: var(--dim); font-size: 14px; }
+  .ribbon {
+    display: inline-block; margin-top: 12px; padding: 6px 14px; font-size: 12px;
+    border: 1px dashed var(--purple); color: var(--orange-soft); border-radius: 999px;
+    background: rgba(139,47,201,0.08);
+  }
+  .chat {
+    background: linear-gradient(180deg, var(--panel), var(--panel2));
+    border: 1px solid var(--line); border-radius: 14px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.5), inset 0 0 60px rgba(255,122,26,0.03);
+    display: flex; flex-direction: column; height: min(62vh, 560px); min-height: 380px;
+  }
+  .chat-head {
+    display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+    border-bottom: 1px solid var(--line); font-size: 12px; color: var(--dim);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 10px var(--orange); }
+  .msgs { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .msg { max-width: 88%; padding: 10px 13px; border-radius: 12px; font-size: 13.5px; line-height: 1.55; white-space: pre-wrap; word-break: break-word; }
+  .msg.user { align-self: flex-end; background: rgba(139,47,201,0.16); border: 1px solid rgba(139,47,201,0.45); }
+  .msg.bot { align-self: flex-start; background: rgba(255,122,26,0.06); border: 1px solid rgba(255,122,26,0.28); }
+  .msg .brain { display: block; margin-top: 6px; font-size: 10px; color: var(--dim); }
+  .msg pre {
+    background: var(--code); border: 1px solid #241a2e; border-radius: 8px;
+    padding: 10px 12px; overflow-x: auto; margin: 8px 0 2px; white-space: pre; color: #ffd9b0;
+  }
+  .copy {
+    display: inline-block; margin-top: 4px; font-size: 10px; color: var(--dim);
+    border: 1px solid var(--line); border-radius: 6px; padding: 2px 8px; cursor: pointer; background: transparent;
+  }
+  .copy:hover { color: var(--orange-soft); border-color: var(--orange); }
+  .typing { color: var(--orange-soft); font-size: 13px; }
+  .composer { display: flex; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+  .composer textarea {
+    flex: 1; resize: none; height: 46px; background: #0d070c; color: var(--text);
+    border: 1px solid var(--line); border-radius: 10px; padding: 12px; font: inherit; font-size: 13.5px; outline: none;
+  }
+  .composer textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 2px rgba(255,122,26,0.15); }
+  .send {
+    flex: none; width: 108px; border: 0; border-radius: 10px; cursor: pointer;
+    background: linear-gradient(180deg, var(--orange), #c2530a); color: #14090f;
+    font-weight: 700; font-size: 13px; letter-spacing: 1px;
+  }
+  .send:disabled { opacity: 0.5; cursor: default; }
+  .starter { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
+  .starter button {
+    background: transparent; color: var(--orange-soft); border: 1px solid var(--line);
+    border-radius: 999px; padding: 7px 13px; font: inherit; font-size: 12px; cursor: pointer;
+  }
+  .starter button:hover { border-color: var(--orange); }
+  footer { position: relative; z-index: 2; text-align: center; color: var(--dim); font-size: 11.5px; padding: 22px 12px 40px; }
+  footer .jack { color: var(--orange); }
+</style>
+</head>
+<body>
+<div class="fog"></div>
+<canvas class="bats" id="bats"></canvas>
+<header>
+  <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+    <circle cx="20" cy="22" r="15" fill="#ff7a1a"/>
+    <rect x="18" y="4" width="4" height="6" rx="2" fill="#2f7d32"/>
+    <polygon points="12,17 16,15 14,20" fill="#0b0709"/>
+    <polygon points="28,17 24,15 26,20" fill="#0b0709"/>
+    <polygon points="20,21 17,26 23,26" fill="#0b0709"/>
+    <rect x="10" y="28" width="20" height="2.5" fill="#0b0709"/>
+  </svg>
+  <div class="brand">Fuck<b>buff</b> <span class="pumpkin">&#127875;</span></div>
+  <div class="tag">halloween build &middot; self-contained &middot; no third-party sites</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="jack">&#127875;</div>
+    <h1>Fuck<span>buff</span></h1>
+    <p>the AI coding assistant that came back from the dead. real code, no tricks.</p>
+    <div class="ribbon">everything stays on this page. nothing transfers out to other websites.</div>
+  </section>
+
+  <section class="chat">
+    <div class="chat-head"><span class="dot"></span> summon the code</div>
+    <div class="msgs" id="msgs"></div>
+    <div class="composer">
+      <textarea id="input" placeholder="describe what to build, or paste code to fix... (enter to send)" autofocus></textarea>
+      <button class="send" id="send">SUMMON</button>
+    </div>
+  </section>
+  <div class="starter">
+    <button data-q="Write a Discord bot in Python that replies .ping with latency">discord bot in python</button>
+    <button data-q="Build a single-file HTML page with a spooky animated landing hero">spooky landing page</button>
+    <button data-q="Fix this Lua script so it prints every player's name: for _, p in pairs(game.Players:GetPlayers()) do print(p.Name)">fix my lua</button>
+  </div>
+</main>
+
+<footer><span class="jack">&#127875;</span> Fuckbuff &middot; runs on its own Cloudflare Worker &middot; chat never leaves this site</footer>
+
+<script>
+(function () {
+  var msgs = document.getElementById("msgs");
+  var input = document.getElementById("input");
+  var send = document.getElementById("send");
+  var history = [];
+  var SPOOKY = ["carving the pumpkin...", "raising the dead code...", "stirring the cauldron...", "waking the bats...", "trick or treating the stack trace..."];
+
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  function render(text) {
+    var html = esc(text);
+    html = html.replace(/```(\w*)\n([\s\S]*?)```/g, function (_, lang, code) {
+      return '<pre><code>' + code.replace(/\n$/, '') + '</code></pre>';
+    });
+    html = html.replace(/`([^`\n]+)`/g, "<code style='background:#1b0d13;padding:1px 5px;border-radius:4px;color:#ffb066'>$1</code>");
+    return html.replace(/<pre><code>/g, '<pre>').replace(/<\/code><\/pre>/g, '</pre>');
+  }
+
+  function copyable() {
+    msgs.querySelectorAll("pre").forEach(function (pre) {
+      if (pre.dataset.copied) return;
+      pre.dataset.copied = "1";
+      var b = document.createElement("button");
+      b.className = "copy"; b.textContent = "copy";
+      b.onclick = function () {
+        navigator.clipboard.writeText(pre.textContent.replace(/^copy\n/, ""));
+        b.textContent = "copied"; setTimeout(function () { b.textContent = "copy"; }, 1200);
+      };
+      pre.appendChild(b);
+    });
+  }
+
+  function add(role, text, brain) {
+    var d = document.createElement("div");
+    d.className = "msg " + (role === "user" ? "user" : "bot");
+    d.innerHTML = text ? render(text) : "";
+    if (brain) {
+      var t = document.createElement("span");
+      t.className = "brain"; t.textContent = brain;
+      d.appendChild(t);
+    }
+    msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; copyable();
+    return d;
+  }
+
+  async function ask(q) {
+    add("user", q);
+    history.push({ role: "user", content: q });
+    var t = add("assistant", SPOOKY[Math.floor(Math.random() * SPOOKY.length)]);
+    t.classList.add("typing");
+    send.disabled = true;
+    try {
+      var r = await fetch("/api/chat", {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ messages: history })
+      });
+      var j = await r.json();
+      t.remove();
+      if (j.reply) {
+        add("assistant", j.reply, "brain: " + (j.brain || "").replace("@cf/", ""));
+        history.push({ role: "assistant", content: j.reply });
+      } else {
+        add("assistant", (j.error || "the cauldron bubbled over, try again"));
+      }
+    } catch (e) {
+      t.remove();
+      add("assistant", "the jack-o-lantern blew out. try again.");
+    }
+    send.disabled = false; input.focus();
+  }
+
+  send.onclick = function () {
+    var q = input.value.trim();
+    if (!q) return;
+    input.value = ""; ask(q);
+  };
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send.onclick(); }
+  });
+  document.querySelectorAll(".starter button").forEach(function (b) {
+    b.onclick = function () { ask(b.dataset.q); };
+  });
+
+  add("assistant", "the porch light is on. what are we building tonight?");
+
+  var cv = document.getElementById("bats"), ctx = cv.getContext("2d");
+  function size() { cv.width = innerWidth; cv.height = innerHeight; }
+  size(); addEventListener("resize", size);
+  var bats = [];
+  for (var i = 0; i < 7; i++) bats.push({ x: Math.random() * innerWidth, y: 60 + Math.random() * 260, s: 0.6 + Math.random(), v: 0.4 + Math.random() * 0.8, w: Math.random() * 6 });
+  (function loop() {
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    bats.forEach(function (b) {
+      b.x += b.v; b.w += 0.15; if (b.x > cv.width + 40) { b.x = -40; b.y = 60 + Math.random() * 260; }
+      var f = Math.sin(b.w) * 6;
+      ctx.fillStyle = "rgba(139,47,201,0.55)";
+      ctx.beginPath();
+      ctx.moveTo(b.x, b.y);
+      ctx.quadraticCurveTo(b.x - 10 * b.s, b.y - 6 * b.s - f, b.x - 18 * b.s, b.y - f);
+      ctx.quadraticCurveTo(b.x - 8 * b.s, b.y + 2, b.x, b.y + 3 * b.s);
+      ctx.quadraticCurveTo(b.x + 8 * b.s, b.y + 2, b.x + 18 * b.s, b.y - f);
+      ctx.quadraticCurveTo(b.x + 10 * b.s, b.y - 6 * b.s - f, b.x, b.y);
+      ctx.fill();
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+</body>
+</html>

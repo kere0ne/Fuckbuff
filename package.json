@@ -29,8 +29,10 @@
     "ci": "bun run build:sdk && bun run build:fuckbuff"
   },
   "dependencies": {
+    "@opentelemetry/api": "^1.9.1",
     "canvas": "^3.2.0",
     "gif-encoder-2": "^1.0.5",
+    "picocolors": "^1.1.1",
     "zod": "^4.2.1"
   },
   "overrides": {
