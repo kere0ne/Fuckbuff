@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, test } from 'bun:test'
 
-import { createFakeSponsoredSurveyClient } from '@codebuff/common/constants/freebuff-sponsored-survey-client'
+import { createFakeSponsoredSurveyClient } from '@codebuff/common/constants/fuckbuff-sponsored-survey-client'
 
 import { createFakeProfileSurveyClient } from '../../utils/profile-survey-api'
 import { sponsoredOfferToSurveyState } from '../../utils/sponsored-survey-api'
@@ -16,7 +16,7 @@ import {
   useProfileSurveyStore,
 } from '../profile-survey-store'
 
-import type { SponsoredSurveyOffer } from '@codebuff/common/constants/freebuff-sponsored-survey-client'
+import type { SponsoredSurveyOffer } from '@codebuff/common/constants/fuckbuff-sponsored-survey-client'
 
 const OFFER: SponsoredSurveyOffer = {
   campaignId: 'c1',

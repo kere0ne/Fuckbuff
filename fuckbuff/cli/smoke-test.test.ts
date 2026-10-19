@@ -1,19 +1,19 @@
 #!/usr/bin/env bun
 /**
- * Freebuff Binary Smoke Test
+ * Fuckbuff Binary Smoke Test
  *
- * Verifies the compiled Freebuff binary:
+ * Verifies the compiled Fuckbuff binary:
  * 1. Reports a valid version number
- * 2. Shows Freebuff branding (not Codebuff) in --help output
+ * 2. Shows Fuckbuff branding (not Codebuff) in --help output
  * 3. Excludes mode flags (--free, --max, --plan) from --help
- * 4. Renders the Freebuff title screen (ASCII logo) in tmux
+ * 4. Renders the Fuckbuff title screen (ASCII logo) in tmux
  *
  * Prerequisites:
- *   bun freebuff/cli/build.ts <version>   # build the binary
+ *   bun fuckbuff/cli/build.ts <version>   # build the binary
  *   brew install tmux                     # for title-screen test
  *
  * Run:
- *   bun test freebuff/cli/smoke-test.test.ts
+ *   bun test fuckbuff/cli/smoke-test.test.ts
  */
 
 import { execFileSync, execSync, spawn, spawnSync } from 'child_process'
@@ -23,7 +23,7 @@ import path from 'path'
 import { describe, test, expect, afterEach } from 'bun:test'
 
 const REPO_ROOT = path.join(__dirname, '..', '..')
-const BINARY_PATH = path.join(REPO_ROOT, 'cli', 'bin', 'freebuff')
+const BINARY_PATH = path.join(REPO_ROOT, 'cli', 'bin', 'fuckbuff')
 const TIMEOUT_MS = 20_000
 
 // ---------------------------------------------------------------------------
@@ -39,7 +39,7 @@ function isTmuxAvailable(): boolean {
   if (process.env.CI === 'true' || process.env.CI === '1') return false
   try {
     execSync(
-      'which tmux && tmux new-session -d -s __freebuff_tmux_check__ && tmux kill-session -t __freebuff_tmux_check__',
+      'which tmux && tmux new-session -d -s __fuckbuff_tmux_check__ && tmux kill-session -t __fuckbuff_tmux_check__',
       { stdio: 'pipe', timeout: 5000 },
     )
     return true
@@ -82,11 +82,11 @@ function runBinaryResult(args: string[]) {
     timeout: 10_000,
     env: {
       ...process.env,
-      FREEBUFF_MODE: 'true',
+      FUCKBUFF_MODE: 'true',
       NO_COLOR: '1',
       NEXT_PUBLIC_CB_ENVIRONMENT: 'test',
       NEXT_PUBLIC_CODEBUFF_APP_URL: 'http://127.0.0.1:9',
-      NEXT_PUBLIC_FREEBUFF_APP_URL: 'http://127.0.0.1:9',
+      NEXT_PUBLIC_FUCKBUFF_APP_URL: 'http://127.0.0.1:9',
       NEXT_PUBLIC_SUPPORT_EMAIL: 'test@example.com',
       NEXT_PUBLIC_POSTHOG_API_KEY: 'test',
       NEXT_PUBLIC_POSTHOG_HOST_URL: 'http://127.0.0.1:9',
@@ -104,7 +104,7 @@ const tmuxAvailable = isTmuxAvailable()
 // Tests
 // ---------------------------------------------------------------------------
 
-describe.skipIf(!binaryExists)('Freebuff Binary Smoke Tests', () => {
+describe.skipIf(!binaryExists)('Fuckbuff Binary Smoke Tests', () => {
   test(
     '--version outputs a valid semver version',
     () => {
@@ -121,13 +121,13 @@ describe.skipIf(!binaryExists)('Freebuff Binary Smoke Tests', () => {
   )
 
   test(
-    '--help shows Freebuff branding',
+    '--help shows Fuckbuff branding',
     () => {
       const output = stripAnsiCodes(runBinary(['--help']))
 
-      // CLI name is "freebuff"
-      expect(output).toContain('Usage: freebuff')
-      // Description is Freebuff-specific
+      // CLI name is "fuckbuff"
+      expect(output).toContain('Usage: fuckbuff')
+      // Description is Fuckbuff-specific
       expect(output).toContain('Free AI coding assistant')
       // Must NOT contain the Codebuff CLI name in the usage line
       expect(output).not.toContain('Usage: codebuff')
@@ -136,11 +136,11 @@ describe.skipIf(!binaryExists)('Freebuff Binary Smoke Tests', () => {
   )
 
   test(
-    '--help excludes mode flags (Freebuff is free-only)',
+    '--help excludes mode flags (Fuckbuff is free-only)',
     () => {
       const output = stripAnsiCodes(runBinary(['--help']))
 
-      // Mode flags should not be present in Freebuff
+      // Mode flags should not be present in Fuckbuff
       expect(output).not.toMatch(/--free\b/)
       expect(output).not.toMatch(/--max\b/)
       expect(output).not.toMatch(/--plan\b/)
@@ -160,7 +160,7 @@ describe.skipIf(!binaryExists)('Freebuff Binary Smoke Tests', () => {
       // The local URL is intentionally unreachable; the smoke signal is that
       // Commander accepted `login` and the CLI entered the login flow.
       expect(result.status).not.toBe(0)
-      expect(output).toContain('Freebuff Login')
+      expect(output).toContain('Fuckbuff Login')
       expect(output).toContain('Generating login URL')
       expect(output).not.toContain('too many arguments')
       expect(output).not.toContain('unknown command')
@@ -187,9 +187,9 @@ describe.skipIf(!binaryExists)('Freebuff Binary Smoke Tests', () => {
     })
 
     test(
-      'displays Freebuff ASCII logo on startup',
+      'displays Fuckbuff ASCII logo on startup',
       async () => {
-        sessionName = `freebuff-smoke-${Date.now()}`
+        sessionName = `fuckbuff-smoke-${Date.now()}`
 
         // Start the binary in a detached tmux session
         await tmux([
@@ -218,12 +218,12 @@ describe.skipIf(!binaryExists)('Freebuff Binary Smoke Tests', () => {
         // Bail with a descriptive error if the title screen never appeared
         if (!cleanOutput.includes('██')) {
           throw new Error(
-            `Freebuff title screen did not render within 10s. Captured output:\n${cleanOutput}`,
+            `Fuckbuff title screen did not render within 10s. Captured output:\n${cleanOutput}`,
           )
         }
 
-        // Verify it's the FREEBUFF logo, not CODEBUFF.
-        // The Freebuff 'F' character's third line starts with the crossbar:
+        // Verify it's the FUCKBUFF logo, not CODEBUFF.
+        // The Fuckbuff 'F' character's third line starts with the crossbar:
         //   █████╗  ██████╔╝
         // whereas Codebuff 'C' has:
         //   ██║     ██║   ██║
@@ -240,9 +240,9 @@ describe.skipIf(!binaryExists)('Freebuff Binary Smoke Tests', () => {
 
 // Show skip messages so test output is informative
 if (!binaryExists) {
-  describe('Freebuff Binary Required', () => {
+  describe('Fuckbuff Binary Required', () => {
     test.skip(
-      'Build the binary first: bun freebuff/cli/build.ts <version>',
+      'Build the binary first: bun fuckbuff/cli/build.ts <version>',
       () => {},
     )
   })

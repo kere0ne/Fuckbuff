@@ -1,15 +1,15 @@
 import { describe, expect, test } from 'bun:test'
 
 import {
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-} from '../freebuff-model-ids'
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+} from '../fuckbuff-model-ids'
 import {
-  getFreebuffModelAvailabilityWindowLabel,
-  isFreebuffPausedFreeModelId,
-} from '../freebuff-models'
-import { FREEBUFF_GPT_5_6_LUNA_MODEL_ID } from '../freebuff-models'
-import { getFreebuffPlanPauseWindowLabel } from '../freebuff-subscriptions'
+  getFuckbuffModelAvailabilityWindowLabel,
+  isFuckbuffPausedFreeModelId,
+} from '../fuckbuff-models'
+import { FUCKBUFF_GPT_5_6_LUNA_MODEL_ID } from '../fuckbuff-models'
+import { getFuckbuffPlanPauseWindowLabel } from '../fuckbuff-subscriptions'
 
 /**
  * Time-gating comes in two kinds and a picker that conflates them tells users
@@ -47,8 +47,8 @@ describe('model availability windows', () => {
     // label on an always-open model is a restriction the user will plan around
     // and that does not exist.
     expect(
-      getFreebuffModelAvailabilityWindowLabel(
-        FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+      getFuckbuffModelAvailabilityWindowLabel(
+        FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
         now,
         { timeZone: TZ },
       ),
@@ -60,8 +60,8 @@ describe('model availability windows', () => {
     // silent because the row was already shut at peak, and is now silent
     // because nothing pauses it at all.
     expect(
-      getFreebuffPlanPauseWindowLabel(
-        FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+      getFuckbuffPlanPauseWindowLabel(
+        FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
         now,
         TZ,
       ),
@@ -70,22 +70,22 @@ describe('model availability windows', () => {
 
   test('a WITHDRAWN row advertises no hours of either kind', () => {
     // V4 Pro read 'Plan paused 5:00 PM – 3:00 AM' until 2026-08-26. Withdrawing
-    // it removed it from FREEBUFF_SUBSCRIPTION_PEAK_PAUSED_MODEL_IDS, and both
+    // it removed it from FUCKBUFF_SUBSCRIPTION_PEAK_PAUSED_MODEL_IDS, and both
     // labels must now be silent: the row cannot be admitted at any hour, so any
     // window it named would be a promise nothing can keep.
-    expect(isFreebuffPausedFreeModelId(FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID)).toBe(
+    expect(isFuckbuffPausedFreeModelId(FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID)).toBe(
       true,
     )
     expect(
-      getFreebuffModelAvailabilityWindowLabel(
-        FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+      getFuckbuffModelAvailabilityWindowLabel(
+        FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
         now,
         { timeZone: TZ },
       ),
     ).toBeUndefined()
     expect(
-      getFreebuffPlanPauseWindowLabel(
-        FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+      getFuckbuffPlanPauseWindowLabel(
+        FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
         now,
         TZ,
       ),
@@ -94,14 +94,14 @@ describe('model availability windows', () => {
 
   test('a model with no time restriction says nothing at all', () => {
     expect(
-      getFreebuffModelAvailabilityWindowLabel(
-        FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
+      getFuckbuffModelAvailabilityWindowLabel(
+        FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
         now,
         { timeZone: TZ },
       ),
     ).toBeUndefined()
     expect(
-      getFreebuffPlanPauseWindowLabel(FREEBUFF_GPT_5_6_LUNA_MODEL_ID, now, TZ),
+      getFuckbuffPlanPauseWindowLabel(FUCKBUFF_GPT_5_6_LUNA_MODEL_ID, now, TZ),
     ).toBeUndefined()
   })
 })

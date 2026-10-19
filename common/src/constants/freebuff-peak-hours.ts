@@ -178,7 +178,7 @@ export function resolveWindowTimeZone(timeZone?: string): string {
 /**
  * The zone abbreviation to print beside a time, e.g. "UTC", "PDT", "GMT+2".
  *
- * Every wall-clock time Freebuff prints about this window carries one. A bare
+ * Every wall-clock time Fuckbuff prints about this window carries one. A bare
  * "10:00 AM" is not a time — it is a time in a zone the reader has to guess,
  * and they guess their own: a user in Germany read "again at 10:00 AM" (10:00
  * UTC, so noon for them) at 10:34 on their own clock and saw a moment that had
@@ -214,7 +214,7 @@ function windowTimeFormatter(timeZone: string): Intl.DateTimeFormat {
  * One instant as a named wall-clock time, e.g. "12:00 AM GMT+7".
  *
  * For prose the SERVER renders and the client can only print verbatim. A
- * client-rendered refusal goes through formatFreebuffModelUnavailableWindow,
+ * client-rendered refusal goes through formatFuckbuffModelUnavailableWindow,
  * which uses the reader's own zone; prose that embeds the time mid-sentence
  * cannot, so it has to name the zone it chose. An unsupported or missing zone
  * falls back to UTC, and says so.
@@ -248,7 +248,7 @@ export function formatDeepSeekExpensiveWindowLocal(
  * Phrased as WHEN IT COMES BACK rather than as a range, because that is the
  * question being asked. A range makes the reader do arithmetic against a clock
  * they cannot see -- and the range this replaced was not even the right window:
- * `model_unavailable` hardcoded FREEBUFF_DEPLOYMENT_HOURS_LABEL ("9am ET-5pm PT
+ * `model_unavailable` hardcoded FUCKBUFF_DEPLOYMENT_HOURS_LABEL ("9am ET-5pm PT
  * every day"), which describes OUR STAFFING hours for limited-offer models and
  * has nothing to do with DeepSeek's peak pricing. A model closed 5pm-3am
  * Pacific was telling people it was open 9am-5pm.

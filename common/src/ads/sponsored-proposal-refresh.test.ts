@@ -5,7 +5,7 @@
  * NOT in `sponsored-proposal-view.test.ts`, even though the function under test
  * sits beside the view model. That suite is pinned one-to-one against the
  * web/Desktop conformance matrix by
- * `freebuff/web/.../sponsoredProposalConformance.test.ts`, which counts its
+ * `fuckbuff/web/.../sponsoredProposalConformance.test.ts`, which counts its
  * `test(` cases — so adding cases there breaks a render-parity invariant for a
  * reason that has nothing to do with render parity. Nothing below is about what
  * the two surfaces draw.

@@ -1,23 +1,23 @@
 import { describe, expect, test } from 'bun:test'
 
-import { freebuffAdmissionNotice } from '../use-freebuff-chat-admission'
+import { fuckbuffAdmissionNotice } from '../use-fuckbuff-chat-admission'
 
-import type { FreebuffSessionResponse } from '../../types/freebuff-session'
+import type { FuckbuffSessionResponse } from '../../types/fuckbuff-session'
 
-describe('freebuffAdmissionNotice', () => {
+describe('fuckbuffAdmissionNotice', () => {
   test('a suspended account is pointed at the appeal page', () => {
-    const notice = freebuffAdmissionNotice({
+    const notice = fuckbuffAdmissionNotice({
       status: 'banned',
-    } as FreebuffSessionResponse)
+    } as FuckbuffSessionResponse)
     expect(notice).toContain('https://freebuff.com/account?tab=standing')
     expect(notice).toContain('support@freebuff.com')
   })
 
   test('a Freebucks shortfall is told in hours', () => {
-    const notice = freebuffAdmissionNotice({
+    const notice = fuckbuffAdmissionNotice({
       status: 'rate_limited',
       freebucksShortfall: { price: 15, balance: 7 },
-    } as FreebuffSessionResponse)
+    } as FuckbuffSessionResponse)
     expect(notice).toStartWith('Not enough hours: 1 hour available.')
     expect(notice).not.toContain('Freebucks')
   })

@@ -3,7 +3,7 @@ import {
   PLACEMENT_DAILY_CAP_MIN_CENTS,
   PLACEMENT_DAILY_CAP_MIN_ERROR,
   PLACEMENT_DAILY_CAP_MAX_CENTS,
-} from '../constants/freebuff-placements'
+} from '../constants/fuckbuff-placements'
 
 /**
  * Repositories one tester's lab holds. bench-v1 is 25 and the bench-v2 pool

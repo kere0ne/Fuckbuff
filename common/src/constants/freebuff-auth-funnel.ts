@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const FREEBUFF_AUTH_EVENT = 'freebuff.auth_step'
+export const FUCKBUFF_AUTH_EVENT = 'fuckbuff.auth_step'
 export const authOriginSchema = z.enum(['web', 'desktop', 'cli', 'unknown'])
 export const authProviderSchema = z.enum([
   'email',
@@ -86,5 +86,5 @@ export function authInsertId(event: AuthEvent): string {
 
 /** Session-local analytics identity, deliberately unrelated to an account. */
 export function authDistinctId(flow: string): string {
-  return `freebuff-auth:${flow}`
+  return `fuckbuff-auth:${flow}`
 }

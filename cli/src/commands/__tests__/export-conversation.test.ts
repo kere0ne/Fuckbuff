@@ -1,14 +1,14 @@
 import { describe, expect, mock, test } from 'bun:test'
 
 import { exportConversation } from '../export-conversation'
-import { IS_FREEBUFF } from '../../utils/constants'
+import { IS_FUCKBUFF } from '../../utils/constants'
 
 import type { ExportDeps } from '../export-conversation'
 import type { ChatMessage, ContentBlock } from '../../types/chat'
 
 // The default filename prefix follows the product branding, like the
 // transcript header in serializeConversation.
-const PRODUCT = IS_FREEBUFF ? 'freebuff' : 'codebuff'
+const PRODUCT = IS_FUCKBUFF ? 'fuckbuff' : 'codebuff'
 
 const msg = (
   variant: ChatMessage['variant'],

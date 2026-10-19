@@ -1,4 +1,4 @@
-import { FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { publisher } from '../constants'
 import type { SecretAgentDefinition } from '../types/secret-agent-definition'
@@ -9,7 +9,7 @@ import { createReviewer } from './code-reviewer'
 const definition: SecretAgentDefinition = {
   id: 'code-reviewer-deepseek-flash-fast',
   publisher,
-  ...createReviewer(FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID),
+  ...createReviewer(FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID),
 }
 
 export default definition

@@ -20,10 +20,10 @@
  * chain, never block a key, and a failure is only logged at debug.
  */
 
-import { profileSurveySnoozeDays } from '@codebuff/common/constants/freebuff-profile-survey'
+import { profileSurveySnoozeDays } from '@codebuff/common/constants/fuckbuff-profile-survey'
 import { create } from 'zustand'
 
-import { FREEBUFF_WEB_URL } from '../login/constants'
+import { FUCKBUFF_WEB_URL } from '../login/constants'
 import { logger } from '../utils/logger'
 import { createHttpProfileSurveyClient } from '../utils/profile-survey-api'
 import {
@@ -42,7 +42,7 @@ import {
 } from '../utils/profile-survey-machine'
 
 import type { ProfileSurveyClient } from '../utils/profile-survey-api'
-import type { SponsoredSurveyClient } from '@codebuff/common/constants/freebuff-sponsored-survey-client'
+import type { SponsoredSurveyClient } from '@codebuff/common/constants/fuckbuff-sponsored-survey-client'
 import type {
   ProfileSurveyEffect,
   ProfileSurveyInput,
@@ -312,7 +312,7 @@ function runEffect(effect: ProfileSurveyEffect): void {
         profileSurveyCompletionLines(
           response.rewardedFreebucks,
           current.questions.length,
-          `${FREEBUFF_WEB_URL.replace(/\/+$/, '')}/account`,
+          `${FUCKBUFF_WEB_URL.replace(/\/+$/, '')}/account`,
         ),
       )
     }

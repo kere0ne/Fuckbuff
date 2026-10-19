@@ -24,7 +24,7 @@ export const SPONSORED_SURVEY_CARD_FOOTER =
 
 /** Expanded "How this works" text behind the footer's info link. */
 export const SPONSORED_SURVEY_CARD_DISCLOSURE = [
-  '{sponsor} pays Freebuff for each completed response.',
+  '{sponsor} pays Fuckbuff for each completed response.',
   'They get your answers and the date you answered, under a random ID that is different for every survey, plus your country group, whether you are on a free or paid plan, and broad ranges of your profile answers (dev tool spend, team size, who pays) when at least 30 people share them.',
   'We do not attach your name, email, account or exact country. Written answers are shared as you enter them.',
   'Answering is optional. Skipping never affects your account.',

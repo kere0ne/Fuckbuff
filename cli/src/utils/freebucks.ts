@@ -3,10 +3,10 @@
  *
  * ## Why this file exists at all
  *
- * Web and Desktop import `@codebuff/common/constants/freebuff-freebucks` for
+ * Web and Desktop import `@codebuff/common/constants/fuckbuff-freebucks` for
  * the label, the formatter and the price map. **The CLI cannot.** That module
  * is deleted from the public export (`scripts/public-export-manifest.txt`
- * carries `!common/src/constants/freebuff-freebucks.ts`) because it documents
+ * carries `!common/src/constants/fuckbuff-freebucks.ts`) because it documents
  * measured per-session provider costs, while `cli/` IS exported — so an import
  * of it here builds fine in this repo and fails to resolve in the public one,
  * with nothing in CI to catch it.
@@ -19,35 +19,35 @@
  *
  * The wire still carries Freebucks; users see hours (2026-10-14: one hour is 5
  * Freebucks). Every figure the CLI draws converts through
- * `@codebuff/common/util/freebuff-hours`, which IS exported, and a model's
+ * `@codebuff/common/util/fuckbuff-hours`, which IS exported, and a model's
  * price reads as its multiplier ("2x").
  */
 
 import {
   formatHours,
   formatHoursWithUnit,
-  freebuffModelMultiplierLabel,
-} from '@codebuff/common/util/freebuff-hours'
-import { compareByFreebucksPrice } from '@codebuff/common/util/freebuff-price-order'
-import { getFreebucksInfo } from '@codebuff/common/types/freebuff-session'
+  fuckbuffModelMultiplierLabel,
+} from '@codebuff/common/util/fuckbuff-hours'
+import { compareByFreebucksPrice } from '@codebuff/common/util/fuckbuff-price-order'
+import { getFreebucksInfo } from '@codebuff/common/types/fuckbuff-session'
 import {
   FREEBUCKS_REFILL_PENDING_LABEL,
   freebucksRefillPending,
 } from '@codebuff/common/util/freebucks-reset'
 
 import type {
-  FreebuffFreebucksInfo,
-  FreebuffSessionServerResponse,
-} from '@codebuff/common/types/freebuff-session'
+  FuckbuffFreebucksInfo,
+  FuckbuffSessionServerResponse,
+} from '@codebuff/common/types/fuckbuff-session'
 
 /** The caller's meter: null when unavailable, undefined when absent. Presence
  *  of the block IS the gate on every surface — there is deliberately no
  *  client-side role check that could drift from what is actually charged. */
 export function freebucksOf(
   session: { status: string } | null | undefined,
-): FreebuffFreebucksInfo | null | undefined {
+): FuckbuffFreebucksInfo | null | undefined {
   return getFreebucksInfo(
-    session as FreebuffSessionServerResponse | null | undefined,
+    session as FuckbuffSessionServerResponse | null | undefined,
   )
 }
 
@@ -60,14 +60,14 @@ export function freebucksOf(
  * is the allowlist, so asking it is the only correct way to know.
  */
 export function freebucksPriceFor(
-  freebucks: FreebuffFreebucksInfo | null | undefined,
+  freebucks: FuckbuffFreebucksInfo | null | undefined,
   modelId: string,
 ): number | undefined {
   return freebucks?.prices[modelId]
 }
 
-export { freebucksRowIntent } from '@codebuff/common/util/freebuff-model-selection'
-export type { FreebucksRowIntent } from '@codebuff/common/util/freebuff-model-selection'
+export { freebucksRowIntent } from '@codebuff/common/util/fuckbuff-model-selection'
+export type { FreebucksRowIntent } from '@codebuff/common/util/fuckbuff-model-selection'
 
 /**
  * The picker's rows, CHEAPEST FIRST — the same order Web and Desktop use.
@@ -86,7 +86,7 @@ export function sortModelsByPrice<
   T extends { id: string; displayName: string },
 >(
   models: readonly T[],
-  freebucks: FreebuffFreebucksInfo | null | undefined,
+  freebucks: FuckbuffFreebucksInfo | null | undefined,
 ): readonly T[] {
   if (!freebucks) return models
   // Ties (two rows a catalog discount brought to one price) break on the
@@ -107,7 +107,7 @@ export function sortModelsByPrice<
  * width can be reasoned about, and truncated by the caller if it must be.
  */
 export function freebucksHeaderLine(
-  freebucks: FreebuffFreebucksInfo,
+  freebucks: FuckbuffFreebucksInfo,
   /** When given, the daily figure carries "resets in 4h 12m". */
   nowMs?: number,
 ): string {
@@ -149,10 +149,10 @@ export function formatAllowanceUsd(usd: number): string {
 /**
  * A price that must say SOMETHING, such as the off-peak price a row returns
  * to: its multiplier, or "Free" / "1x" where a row's own label stays blank
- * (`freebuffModelMultiplierLabel`, never "0x").
+ * (`fuckbuffModelMultiplierLabel`, never "0x").
  */
 export function freebucksPriceText(price: number): string {
-  return freebuffModelMultiplierLabel(price) ?? (price <= 0 ? 'Free' : '1x')
+  return fuckbuffModelMultiplierLabel(price) ?? (price <= 0 ? 'Free' : '1x')
 }
 
 /**

@@ -1,10 +1,10 @@
 /**
  * The one reasoning-effort vocabulary, shared by every surface.
  *
- * This list started in `freebuff-desktop/src/shared/types.ts`, where it drives
- * the Claude Code and Codex effort pickers. It lives here now so the Freebuff
+ * This list started in `fuckbuff-desktop/src/shared/types.ts`, where it drives
+ * the Claude Code and Codex effort pickers. It lives here now so the Fuckbuff
  * model catalog and Desktop speak the same words: Desktop re-exports these,
- * so a value persisted on a Desktop thread and a value on a Freebuff catalog
+ * so a value persisted on a Desktop thread and a value on a Fuckbuff catalog
  * row are the same strings, comparable without a translation table.
  *
  * ORDERED, ascending, and that order is load-bearing — `clampReasoningEffort`
@@ -101,7 +101,7 @@ export function isByokReasoningEffort(
 /**
  * The rungs a ChatGPT plan's models take (provider `chatgpt`). Their requests go to the same
  * Responses backend Codex uses, whose `reasoning.effort` accepts every rung up to `ultra`, so the
- * Freebuff agent offers what Codex offers rather than the three-rung BYOK ladder.
+ * Fuckbuff agent offers what Codex offers rather than the three-rung BYOK ladder.
  */
 export const CHATGPT_REASONING_EFFORTS = [
   'low',

@@ -4,12 +4,12 @@ import {
   clearReferralCache,
   getCachedReferral,
   rememberReferral,
-} from '../freebuff-referral-cache'
+} from '../fuckbuff-referral-cache'
 
-import type { FreebuffReferralInfo } from '@codebuff/common/types/freebuff-session'
-import type { FreebuffSessionResponse } from '../../types/freebuff-session'
+import type { FuckbuffReferralInfo } from '@codebuff/common/types/fuckbuff-session'
+import type { FuckbuffSessionResponse } from '../../types/fuckbuff-session'
 
-const referral: FreebuffReferralInfo = {
+const referral: FuckbuffReferralInfo = {
   code: 'ABC123',
   referrerName: null,
   qualifiedCount: 2,
@@ -22,7 +22,7 @@ const landingWithReferral = {
   status: 'none',
   accessTier: 'full',
   referral,
-} satisfies FreebuffSessionResponse
+} satisfies FuckbuffSessionResponse
 
 const activeWithoutReferral = {
   status: 'active',
@@ -32,9 +32,9 @@ const activeWithoutReferral = {
   admittedAt: '2026-07-01T00:00:00.000Z',
   expiresAt: '2026-07-01T01:00:00.000Z',
   remainingMs: 3_600_000,
-} satisfies FreebuffSessionResponse
+} satisfies FuckbuffSessionResponse
 
-describe('freebuff referral cache', () => {
+describe('fuckbuff referral cache', () => {
   beforeEach(() => {
     clearReferralCache()
   })
@@ -83,7 +83,7 @@ describe('freebuff referral cache', () => {
   })
 
   test('retains independent referral metadata for both tiers', () => {
-    const limitedReferral: FreebuffReferralInfo = {
+    const limitedReferral: FuckbuffReferralInfo = {
       code: referral.code,
       referrerName: referral.referrerName,
       qualifiedCount: 3,

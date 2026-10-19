@@ -1,4 +1,4 @@
-import { FREEBUFF_GPT_5_6_LUNA_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GPT_5_6_LUNA_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase3CliRoot } from './base3'
 
@@ -6,10 +6,10 @@ import { createBase3CliRoot } from './base3'
  * Deliberately NO `reasoningOptions`, unlike the base2-free-luna it replaces.
  *
  * An agent-declared reasoning reaches the wire as `body.reasoning`, which makes
- * the agent the authority on effort and leaves applyFreebuffReasoningDefaults
+ * the agent the authority on effort and leaves applyFuckbuffReasoningDefaults
  * unable to tell a model default apart from a user's pick — so the effort
  * control silently does nothing on exactly the models people most want to tune.
- * The catalog is the single source (FreebuffModelOption.reasoningEffort /
+ * The catalog is the single source (FuckbuffModelOption.reasoningEffort /
  * .efforts) and the server fills Luna's effort in either way, so dropping it
  * changes no request except the ones where the user chose.
  *
@@ -18,8 +18,8 @@ import { createBase3CliRoot } from './base3'
  */
 const definition = {
   ...createBase3CliRoot({
-    model: FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
-    isFreebuff: true,
+    model: FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
+    isFuckbuff: true,
   }),
   id: 'base3-free-luna',
   displayName: 'Buffy on GPT-5.6 Luna',

@@ -10,7 +10,7 @@ describe('createExitCliCleanly', () => {
   test('runs local cleanup before bounded remote cleanup and exits once', async () => {
     const events: string[] = []
     const exitCleanly = createExitCliCleanly({
-      isFreebuff: false,
+      isFuckbuff: false,
       cleanupLocal: () => events.push('local-cleanup'),
       stopEngagementTracking: () => events.push('stop-engagement'),
       flushAnalytics: async () => {
@@ -22,7 +22,7 @@ describe('createExitCliCleanly', () => {
       flushAdEngagement: async () => {
         events.push('flush-ad-engagement')
       },
-      endFreebuffSession: async () => {
+      endFuckbuffSession: async () => {
         events.push('end-session')
       },
       settleSponsoredRun: async () => null,
@@ -50,10 +50,10 @@ describe('createExitCliCleanly', () => {
     ])
   })
 
-  test('also stops engagement and releases the Freebuff session', async () => {
+  test('also stops engagement and releases the Fuckbuff session', async () => {
     const events: string[] = []
     const exitCleanly = createExitCliCleanly({
-      isFreebuff: true,
+      isFuckbuff: true,
       cleanupLocal: () => events.push('local-cleanup'),
       stopEngagementTracking: () => events.push('stop-engagement'),
       flushAnalytics: async () => {
@@ -65,7 +65,7 @@ describe('createExitCliCleanly', () => {
       flushAdEngagement: async () => {
         events.push('flush-ad-engagement')
       },
-      endFreebuffSession: async () => {
+      endFuckbuffSession: async () => {
         events.push('end-session')
       },
       settleSponsoredRun: async () => null,
@@ -92,7 +92,7 @@ describe('createExitCliCleanly', () => {
     const events: string[] = []
     let releaseTransport: (() => void) | undefined
     const exitCleanly = createExitCliCleanly({
-      isFreebuff: false,
+      isFuckbuff: false,
       cleanupLocal: () => events.push('local-cleanup'),
       stopEngagementTracking: () => {},
       flushAnalytics: async () => {},
@@ -107,7 +107,7 @@ describe('createExitCliCleanly', () => {
           }
         })
       },
-      endFreebuffSession: async () => {},
+      endFuckbuffSession: async () => {},
       settleSponsoredRun: async () => null,
       writeNotice: () => {},
       waitForRemoteCleanup: async (tasks) => {
@@ -130,7 +130,7 @@ describe('createExitCliCleanly', () => {
   test('a throwing ad flush never blocks the exit', async () => {
     const exitCodes: number[] = []
     const exitCleanly = createExitCliCleanly({
-      isFreebuff: false,
+      isFuckbuff: false,
       cleanupLocal: () => {},
       stopEngagementTracking: () => {},
       flushAnalytics: async () => {},
@@ -138,7 +138,7 @@ describe('createExitCliCleanly', () => {
       flushAdEngagement: () => {
         throw new Error('boom')
       },
-      endFreebuffSession: async () => {},
+      endFuckbuffSession: async () => {},
       settleSponsoredRun: async () => null,
       writeNotice: () => {},
       waitForRemoteCleanup: async (tasks) => {
@@ -156,13 +156,13 @@ describe('createExitCliCleanly', () => {
     let cleanupCalls = 0
     const exitCodes: number[] = []
     const exitCleanly = createExitCliCleanly({
-      isFreebuff: false,
+      isFuckbuff: false,
       cleanupLocal: () => cleanupCalls++,
       stopEngagementTracking: () => {},
       flushAnalytics: async () => {},
       drainClientLogs: async () => {},
       flushAdEngagement: async () => {},
-      endFreebuffSession: async () => {},
+      endFuckbuffSession: async () => {},
       settleSponsoredRun: async () => null,
       writeNotice: () => {},
       waitForRemoteCleanup: () =>

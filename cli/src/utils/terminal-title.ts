@@ -9,12 +9,12 @@
  * similar to how clipboard.ts handles OSC52 sequences.
  */
 
-import { IS_FREEBUFF } from './constants'
+import { IS_FUCKBUFF } from './constants'
 import { getCliEnv } from './env'
 import { writeTerminalControlSync } from './terminal-io'
 
 const MAX_TITLE_LENGTH = 60
-const TITLE_PREFIX = IS_FREEBUFF ? 'Freebuff: ' : 'Codebuff: '
+const TITLE_PREFIX = IS_FUCKBUFF ? 'Fuckbuff: ' : 'Codebuff: '
 const OSC_TERMINATOR = '\x07' // BEL
 
 function isInTmux(env: ReturnType<typeof getCliEnv>): boolean {

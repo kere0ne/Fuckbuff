@@ -3,7 +3,7 @@
  * (`packages/internal/src/sponsored-survey/`), the advertiser and admin APIs,
  * and every client that renders the survey card (Desktop, Web, CLI).
  *
- * An advertiser runs a short survey on Freebuff users and pays per
+ * An advertiser runs a short survey on Fuckbuff users and pays per
  * CLEAN complete from the placements prepaid balance, at a fixed rate card (no
  * auction). Clean = no answer flagged `fast` and the response not flagged
  * `straight_lined`. Expedited campaigns pay 1.5x and the user gets a fixed
@@ -14,20 +14,20 @@
  * settlement. Money is integer cents throughout; multipliers are basis points
  * so no float ever reaches a price.
  *
- * See docs/freebuff-sponsored-surveys.md.
+ * See docs/fuckbuff-sponsored-surveys.md.
  */
 import { z } from 'zod/v4'
-import { addDaysToDateKey } from '../util/freebuff-streak'
+import { addDaysToDateKey } from '../util/fuckbuff-streak'
 import { getZonedYmd } from '../util/zoned-time'
-import { AD_RESET_TIMEZONE } from './freebuff-ads'
+import { AD_RESET_TIMEZONE } from './fuckbuff-ads'
 
 import {
   PROFILE_SURVEY_FAST_ANSWER_MS,
   PROFILE_SURVEY_SURFACES,
   profileSurveyQuestion,
-} from './freebuff-profile-survey'
+} from './fuckbuff-profile-survey'
 
-import type { ProfileSurveySurface } from './freebuff-profile-survey'
+import type { ProfileSurveySurface } from './fuckbuff-profile-survey'
 
 export const SPONSORED_SURVEY_ID = 'sponsored'
 
@@ -74,7 +74,7 @@ export const SPONSORED_SURVEY_COUNTRY_TIERS = [
 
 /**
  * The respondent's country tier. Mirrors `SponsoredSurveyCountryTier` in
- * `freebuff-freebucks.ts`, which is export-excluded and so cannot be imported
+ * `fuckbuff-freebucks.ts`, which is export-excluded and so cannot be imported
  * here; `packages/internal/src/sponsored-survey/types.ts` asserts the two match.
  */
 export type SponsoredSurveyCountryTier =
@@ -345,7 +345,7 @@ export type SponsoredSurveyTierMix = Partial<
 
 /**
  * The audience mix to quote with when no live measurement is available.
- * Source: weekly active Freebuff users by `freebuff_activity_day.country_tier`
+ * Source: weekly active Fuckbuff users by `fuckbuff_activity_day.country_tier`
  * over the 7 complete Pacific days to 2026-10-09 (the same read
  * `getSponsoredSurveyTierMix` makes). Refresh it when the mix moves.
  */
@@ -404,7 +404,7 @@ export type SponsoredSurveyQuote = {
 }
 
 /**
- * What an advertiser can expect to pay, now that Freebuff (not the
+ * What an advertiser can expect to pay, now that Fuckbuff (not the
  * advertiser) controls the audience's country mix. The per-complete range runs
  * from the cheapest tier's price to tier 1's, for this bucket and speed
  * (`sponsoredSurveyPriceCents`, so Expedited x1.5 applies); "likely" weights

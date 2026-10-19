@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, test } from 'bun:test'
 
-import { FreebuffSession, requireFreebuffBinary } from '../utils'
+import { FuckbuffSession, requireFuckbuffBinary } from '../utils'
 
 const TEST_TIMEOUT = 60_000
 
-describe('Freebuff: Agent startup smoke', () => {
-  let session: FreebuffSession | null = null
+describe('Fuckbuff: Agent startup smoke', () => {
+  let session: FuckbuffSession | null = null
 
   afterEach(async () => {
     if (session) {
@@ -17,8 +17,8 @@ describe('Freebuff: Agent startup smoke', () => {
   test(
     'starts the CLI and renders visible output',
     async () => {
-      const binary = requireFreebuffBinary()
-      session = await FreebuffSession.start(binary)
+      const binary = requireFuckbuffBinary()
+      session = await FuckbuffSession.start(binary)
 
       const output = await session.waitForBootSignal()
 
@@ -34,14 +34,14 @@ describe('Freebuff: Agent startup smoke', () => {
   test(
     'can open help from the running CLI when chat input is available',
     async () => {
-      const binary = requireFreebuffBinary()
-      session = await FreebuffSession.start(binary)
+      const binary = requireFuckbuffBinary()
+      session = await FuckbuffSession.start(binary)
       await session.waitForReady()
 
       const initialOutput = await session.capture()
       if (!initialOutput.includes('Enter a coding task')) {
         console.log(
-          'Skipping /help assertion: Freebuff is not on the chat input screen.',
+          'Skipping /help assertion: Fuckbuff is not on the chat input screen.',
         )
         return
       }

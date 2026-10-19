@@ -1,22 +1,22 @@
 import { describe, test, expect } from 'bun:test'
 
 import {
-  getFreebuffStreakBonusNote,
-  getFreebuffStreakBonusNoteForLayout,
-  getFreebuffStreakLine,
-} from '../freebuff-streak-line'
+  getFuckbuffStreakBonusNote,
+  getFuckbuffStreakBonusNoteForLayout,
+  getFuckbuffStreakLine,
+} from '../fuckbuff-streak-line'
 
 // The CLI draws the shared ●/○ pair: filled-vs-hollow is what makes a partial
 // week distinguishable from a full one at a glance, which • and · (same shape,
 // different size) never managed.
-describe('getFreebuffStreakLine', () => {
+describe('getFuckbuffStreakLine', () => {
   test('hides the row for new / lapsed users (streak <= 0)', () => {
-    expect(getFreebuffStreakLine(0)).toBeNull()
-    expect(getFreebuffStreakLine(-1)).toBeNull()
+    expect(getFuckbuffStreakLine(0)).toBeNull()
+    expect(getFuckbuffStreakLine(-1)).toBeNull()
   })
 
   test('labels and fills dots for an active streak', () => {
-    expect(getFreebuffStreakLine(2)).toEqual({
+    expect(getFuckbuffStreakLine(2)).toEqual({
       label: '2 day streak',
       dots: '●●○○○○○',
       progress: { filled: 2, total: 7, beyond: false },
@@ -24,12 +24,12 @@ describe('getFreebuffStreakLine', () => {
   })
 
   test('"day" stays singular as a compound modifier', () => {
-    expect(getFreebuffStreakLine(1)?.label).toBe('1 day streak')
-    expect(getFreebuffStreakLine(5)?.label).toBe('5 day streak')
+    expect(getFuckbuffStreakLine(1)?.label).toBe('1 day streak')
+    expect(getFuckbuffStreakLine(5)?.label).toBe('5 day streak')
   })
 
   test('fills the whole week on a 7-day milestone', () => {
-    expect(getFreebuffStreakLine(7)).toEqual({
+    expect(getFuckbuffStreakLine(7)).toEqual({
       label: '7 day streak',
       dots: '●●●●●●●',
       // filled === total is how a surface without the constant knows the
@@ -39,12 +39,12 @@ describe('getFreebuffStreakLine', () => {
   })
 
   test('stays full and gains a "+" once the streak passes the week', () => {
-    expect(getFreebuffStreakLine(9)).toEqual({
+    expect(getFuckbuffStreakLine(9)).toEqual({
       label: '9 day streak',
       dots: '●●●●●●●+',
       progress: { filled: 7, total: 7, beyond: true },
     })
-    expect(getFreebuffStreakLine(19)).toEqual({
+    expect(getFuckbuffStreakLine(19)).toEqual({
       label: '19 day streak',
       dots: '●●●●●●●+',
       progress: { filled: 7, total: 7, beyond: true },
@@ -52,49 +52,49 @@ describe('getFreebuffStreakLine', () => {
   })
 })
 
-describe('getFreebuffStreakBonusNote', () => {
+describe('getFuckbuffStreakBonusNote', () => {
   test('hidden with no streak at all', () => {
     expect(
-      getFreebuffStreakBonusNote({ streak: 0, accessTier: 'full' }),
+      getFuckbuffStreakBonusNote({ streak: 0, accessTier: 'full' }),
     ).toBeNull()
     expect(
-      getFreebuffStreakBonusNote({ streak: -1, accessTier: 'limited' }),
+      getFuckbuffStreakBonusNote({ streak: -1, accessTier: 'limited' }),
     ).toBeNull()
   })
 
   test('teases the unlock countdown below the 7-day milestone', () => {
-    expect(getFreebuffStreakBonusNote({ streak: 3, accessTier: 'full' })).toBe(
+    expect(getFuckbuffStreakBonusNote({ streak: 3, accessTier: 'full' })).toBe(
       '🎁 4 more days to unlock +1 bonus session every day + 1 reward session each day',
     )
     expect(
-      getFreebuffStreakBonusNote({ streak: 3, accessTier: 'limited' }),
+      getFuckbuffStreakBonusNote({ streak: 3, accessTier: 'limited' }),
     ).toBe('🎁 4 more days to unlock +1 bonus session every day')
   })
 
   test('"day" goes singular on the eve of the milestone', () => {
     expect(
-      getFreebuffStreakBonusNote({ streak: 6, accessTier: 'limited' }),
+      getFuckbuffStreakBonusNote({ streak: 6, accessTier: 'limited' }),
     ).toBe('🎁 1 more day to unlock +1 bonus session every day')
   })
 
   test('full access advertises the daily session + daily GLM perk at 7+', () => {
-    const note = getFreebuffStreakBonusNote({ streak: 7, accessTier: 'full' })
+    const note = getFuckbuffStreakBonusNote({ streak: 7, accessTier: 'full' })
     expect(note).toBe(
       '🎁 Streak perk: +1 bonus session every day + 1 reward session each day',
     )
   })
 
   test('the GLM streak count grows per completed 7 days, capped at 4', () => {
-    expect(getFreebuffStreakBonusNote({ streak: 14, accessTier: 'full' })).toBe(
+    expect(getFuckbuffStreakBonusNote({ streak: 14, accessTier: 'full' })).toBe(
       '🎁 Streak perk: +1 bonus session every day + 2 reward sessions each day',
     )
-    expect(getFreebuffStreakBonusNote({ streak: 35, accessTier: 'full' })).toBe(
+    expect(getFuckbuffStreakBonusNote({ streak: 35, accessTier: 'full' })).toBe(
       '🎁 Streak perk: +1 bonus session every day + 4 reward sessions each day',
     )
   })
 
   test('limited access advertises only the daily session perk', () => {
-    const note = getFreebuffStreakBonusNote({
+    const note = getFuckbuffStreakBonusNote({
       streak: 14,
       accessTier: 'limited',
     })
@@ -106,21 +106,21 @@ describe('getFreebuffStreakBonusNote', () => {
   // countdown. It never promises the wallet.
   test('on the meter the perk is the daily allowance bonus', () => {
     expect(
-      getFreebuffStreakBonusNote({
+      getFuckbuffStreakBonusNote({
         streak: 14,
         accessTier: 'full',
         freebucksDailyBonus: 15,
       }),
     ).toBe('🎁 Streak perk: +3 hours every day')
     expect(
-      getFreebuffStreakBonusNote({
+      getFuckbuffStreakBonusNote({
         streak: 14,
         accessTier: 'limited',
         freebucksDailyBonus: 15,
       }),
     ).toBe('🎁 Streak perk: +3 hours every day')
     expect(
-      getFreebuffStreakBonusNote({
+      getFuckbuffStreakBonusNote({
         streak: 3,
         accessTier: 'full',
         freebucksDailyBonus: 15,
@@ -128,7 +128,7 @@ describe('getFreebuffStreakBonusNote', () => {
     ).toBe('🎁 4 more days to unlock +3 hours every day')
     // An older server sends no field; null keeps the session copy.
     expect(
-      getFreebuffStreakBonusNote({
+      getFuckbuffStreakBonusNote({
         streak: 14,
         accessTier: 'limited',
         freebucksDailyBonus: null,
@@ -137,16 +137,16 @@ describe('getFreebuffStreakBonusNote', () => {
   })
 })
 
-describe('getFreebuffStreakBonusNoteForLayout', () => {
+describe('getFuckbuffStreakBonusNoteForLayout', () => {
   const params = {
     streak: 7,
     accessTier: 'full' as const,
   }
-  const note = getFreebuffStreakBonusNote(params)!
+  const note = getFuckbuffStreakBonusNote(params)!
 
   test('hides the unlock countdown before the bonus is earned', () => {
     expect(
-      getFreebuffStreakBonusNoteForLayout({
+      getFuckbuffStreakBonusNoteForLayout({
         ...params,
         streak: 6,
         terminalHeight: 30,
@@ -157,7 +157,7 @@ describe('getFreebuffStreakBonusNoteForLayout', () => {
 
   test('hides the earned note below 30 rows', () => {
     expect(
-      getFreebuffStreakBonusNoteForLayout({
+      getFuckbuffStreakBonusNoteForLayout({
         ...params,
         terminalHeight: 29,
         availableWidth: note.length,
@@ -167,7 +167,7 @@ describe('getFreebuffStreakBonusNoteForLayout', () => {
 
   test('shows the earned note at 30 rows when it fits on one line', () => {
     expect(
-      getFreebuffStreakBonusNoteForLayout({
+      getFuckbuffStreakBonusNoteForLayout({
         ...params,
         terminalHeight: 30,
         availableWidth: note.length,
@@ -177,7 +177,7 @@ describe('getFreebuffStreakBonusNoteForLayout', () => {
 
   test('hides the earned note when it would wrap', () => {
     expect(
-      getFreebuffStreakBonusNoteForLayout({
+      getFuckbuffStreakBonusNoteForLayout({
         ...params,
         terminalHeight: 30,
         availableWidth: note.length - 1,

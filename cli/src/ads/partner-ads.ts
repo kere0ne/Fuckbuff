@@ -175,7 +175,7 @@ export function partnerAuctionParams(
   return {
     surface: 'cli_chat',
     placementId,
-    // A partner id is not in the operator placement table Freebuff Web's
+    // A partner id is not in the operator placement table Fuckbuff Web's
     // route resolves against, and a partner slot has no sponsored proposal to
     // offer regardless.
     allowSponsoredRoute: false,
@@ -365,7 +365,7 @@ export async function getComposerIntentAd(
  *
  * Always the first-party transport, because a partner fill is always our own
  * inventory -- {@link getPartnerAd} refuses anything else -- and that is the
- * path with the retry and the render-delay header every other Freebuff ad
+ * path with the retry and the render-delay header every other Fuckbuff ad
  * measures itself with.
  */
 export function recordPartnerImpression(ad: AdResponse): void {

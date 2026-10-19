@@ -4,8 +4,8 @@
  * Stamp the sha256 of every release archive into a launcher package.json, and
  * verify the result.
  *
- *   node write-binary-checksums.js write  --binary-name freebuff --binaries-dir binaries --package-dir freebuff/cli/release
- *   node write-binary-checksums.js verify --package-dir freebuff/cli/release
+ *   node write-binary-checksums.js write  --binary-name fuckbuff --binaries-dir binaries --package-dir fuckbuff/cli/release
+ *   node write-binary-checksums.js verify --package-dir fuckbuff/cli/release
  *
  * `write` hashes `<binaries-dir>/<name>-<target>/<name>-<target>.tar.gz` for
  * every target in TARGET_KEYS — the artifact layout actions/download-artifact

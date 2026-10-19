@@ -2,7 +2,7 @@
  * Files the project-understanding agent never reads: not text, not code. Shared by the
  * SDK's opt-in read guard (`RunOptions.refuseNonTextFileReads`), the Cloud
  * project-understanding agent's read_files wrapper and Desktop's line counting, so all three
- * refuse the same files (docs/freebuff-project-understanding.md).
+ * refuse the same files (docs/fuckbuff-project-understanding.md).
  *
  * Project-understanding-only on purpose: it lives under project-understanding/ so no other read
  * path picks it up. No node:path here: this module also runs where Node's

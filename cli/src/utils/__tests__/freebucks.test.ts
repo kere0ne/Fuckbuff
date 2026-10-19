@@ -10,12 +10,12 @@ import {
   sortModelsByPrice,
 } from '../freebucks'
 
-import type { FreebuffFreebucksInfo } from '@codebuff/common/types/freebuff-session'
+import type { FuckbuffFreebucksInfo } from '@codebuff/common/types/fuckbuff-session'
 
 /** 30 left in today's pool, 20 banked, GLM 5 / MiMo 10 / Flash 15. */
 const metered = (
-  over: Partial<FreebuffFreebucksInfo> = {},
-): FreebuffFreebucksInfo => ({
+  over: Partial<FuckbuffFreebucksInfo> = {},
+): FuckbuffFreebucksInfo => ({
   balance: 50,
   daily: {
     limit: 75,
@@ -206,7 +206,7 @@ describe('the header line', () => {
   test('omits the allowance a server did not send, rather than showing $0', () => {
     // "$0 left" to somebody with a full allowance is worse than saying nothing.
     const { monthly: _drop, ...rest } = metered()
-    expect(freebucksHeaderLine(rest as FreebuffFreebucksInfo)).toBe(
+    expect(freebucksHeaderLine(rest as FuckbuffFreebucksInfo)).toBe(
       '6/15 hours daily · 4 hours in wallet',
     )
   })

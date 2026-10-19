@@ -71,10 +71,10 @@ export type OnboardingQuestion = {
  *  so "other" stays countable while the text stays readable. */
 export const OTHER_OPTION_ID = 'other'
 
-export const FREEBUFF_ONBOARDING_QUESTIONS: readonly OnboardingQuestion[] = [
+export const FUCKBUFF_ONBOARDING_QUESTIONS: readonly OnboardingQuestion[] = [
   {
     id: 'referral_source',
-    prompt: 'Where did you hear about Freebuff?',
+    prompt: 'Where did you hear about Fuckbuff?',
     // Attribution is the one answer we cannot reconstruct later: referrer
     // headers are stripped, and self-report is the only signal for word of
     // mouth, which is where most of it actually comes from.
@@ -136,7 +136,7 @@ export const FREEBUFF_ONBOARDING_QUESTIONS: readonly OnboardingQuestion[] = [
   },
   {
     id: 'intended_use',
-    prompt: 'What will you build with Freebuff?',
+    prompt: 'What will you build with Fuckbuff?',
     options: [
       { id: 'website', label: 'Websites and apps' },
       { id: 'work', label: 'Work projects' },
@@ -286,7 +286,7 @@ const ONBOARDING_SOURCE_PROPERTIES: Record<string, OnboardingSourceProperties> =
   }
 
 /**
- * The "Where did you hear about Freebuff?" answer as PostHog person
+ * The "Where did you hear about Fuckbuff?" answer as PostHog person
  * properties, or null when it was not answered. Retired ids and write-ins are
  * counted the way the admin tally counts them.
  */
@@ -316,7 +316,7 @@ export function onboardingSourceProperties(
  * the live ones, so platform-level comparisons are only clean from this day on.
  */
 export function latestOnboardingRetirementDay(
-  questions: readonly OnboardingQuestion[] = FREEBUFF_ONBOARDING_QUESTIONS,
+  questions: readonly OnboardingQuestion[] = FUCKBUFF_ONBOARDING_QUESTIONS,
 ): string | null {
   let latest: string | null = null
   for (const question of questions) {
@@ -351,7 +351,7 @@ export const ONBOARDING_TALLY_VERSION = 5
  *  renders its full bar list rather than vanishing. Retired options without a
  *  successor are included: their past answers still count. */
 export function emptyOnboardingTally(
-  questions: readonly OnboardingQuestion[] = FREEBUFF_ONBOARDING_QUESTIONS,
+  questions: readonly OnboardingQuestion[] = FUCKBUFF_ONBOARDING_QUESTIONS,
 ): OnboardingTally {
   return Object.fromEntries(
     questions.map((q) => [
@@ -378,7 +378,7 @@ export function applyOnboardingAnswersToTally(
   tally: OnboardingTally,
   answers: readonly StoredOnboardingAnswer[] | null | undefined,
   sign: 1 | -1 = 1,
-  questions: readonly OnboardingQuestion[] = FREEBUFF_ONBOARDING_QUESTIONS,
+  questions: readonly OnboardingQuestion[] = FUCKBUFF_ONBOARDING_QUESTIONS,
 ): Record<string, string[]> {
   const otherTexts: Record<string, string[]> = {}
   const known = new Set(questions.map((q) => q.id))
@@ -420,7 +420,7 @@ export function onboardingTallyFromOptionCounts(
     otherText?: string | null
     count: number
   }>,
-  questions: readonly OnboardingQuestion[] = FREEBUFF_ONBOARDING_QUESTIONS,
+  questions: readonly OnboardingQuestion[] = FUCKBUFF_ONBOARDING_QUESTIONS,
 ): OnboardingTally {
   const tally = emptyOnboardingTally(questions)
   for (const group of counts) {
@@ -505,7 +505,7 @@ export type OnboardingValidationError = {
  */
 export function validateOnboardingSubmission(
   submission: OnboardingSubmission,
-  questions: readonly OnboardingQuestion[] = FREEBUFF_ONBOARDING_QUESTIONS,
+  questions: readonly OnboardingQuestion[] = FUCKBUFF_ONBOARDING_QUESTIONS,
 ): { ok: true; answers: OnboardingAnswer[] } | { ok: false; errors: OnboardingValidationError[] } {
   const errors: OnboardingValidationError[] = []
   const cleaned: OnboardingAnswer[] = []
@@ -572,7 +572,7 @@ export function validateOnboardingSubmission(
  *  form still sees it — nothing is withheld either way. */
 export function isOnboardingComplete(
   answers: readonly OnboardingAnswer[] | null | undefined,
-  questions: readonly OnboardingQuestion[] = FREEBUFF_ONBOARDING_QUESTIONS,
+  questions: readonly OnboardingQuestion[] = FUCKBUFF_ONBOARDING_QUESTIONS,
 ): boolean {
   if (!answers || answers.length === 0) return false
   const answered = new Set(
@@ -592,7 +592,7 @@ export function isOnboardingComplete(
  */
 export function resumableOnboardingAnswers(
   answers: readonly OnboardingAnswer[] | null | undefined,
-  questions: readonly OnboardingQuestion[] = FREEBUFF_ONBOARDING_QUESTIONS,
+  questions: readonly OnboardingQuestion[] = FUCKBUFF_ONBOARDING_QUESTIONS,
 ): OnboardingAnswer[] {
   const out: OnboardingAnswer[] = []
   for (const answer of answers ?? []) {

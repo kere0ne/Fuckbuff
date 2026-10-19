@@ -1,10 +1,10 @@
-import type { FreebuffFreebucksInfo } from '../types/freebuff-session'
+import type { FuckbuffFreebucksInfo } from '../types/fuckbuff-session'
 
 /** A currency snapshot with no paid plan or spend, for client boundary tests. */
 export function freebucksFixture(
   balance: number,
   prices: Record<string, number> = { 'z-ai/glm-5.3-flash': 5 },
-): FreebuffFreebucksInfo {
+): FuckbuffFreebucksInfo {
   const resetAt = '2026-09-06T07:00:00.000Z'
   return {
     balance,

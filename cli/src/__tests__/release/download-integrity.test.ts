@@ -152,7 +152,7 @@ describe('redirect policy', () => {
     expect(hop3.ok).toBe(true)
   })
 
-  test('allows the freebuff and www hosts and the original host', () => {
+  test('allows the fuckbuff and www hosts and the original host', () => {
     for (const host of [
       'freebuff.com',
       'www.freebuff.com',
@@ -372,15 +372,15 @@ describe('write-binary-checksums.js (release side)', () => {
   test('covers exactly the targets the launcher can download', () => {
     expect(TARGET_KEYS).toEqual(launcherModule.PLATFORM_TARGET_KEYS)
     const launcher = launcherModule.createLauncher({
-      packageName: 'freebuff',
-      displayName: 'Freebuff',
+      packageName: 'fuckbuff',
+      displayName: 'Fuckbuff',
     })
     expect(Object.keys(launcher.__testing.PLATFORM_TARGETS)).toEqual(
       TARGET_KEYS,
     )
     // And the file it hashes is the file the launcher asks the origin for.
     for (const target of TARGET_KEYS) {
-      expect(checksumScript.archiveFileName('freebuff', target)).toBe(
+      expect(checksumScript.archiveFileName('fuckbuff', target)).toBe(
         launcher.__testing.PLATFORM_TARGETS[target],
       )
     }
@@ -400,9 +400,9 @@ describe('write-binary-checksums.js (release side)', () => {
   }
 
   test('hashes every archive from the artifact layout the workflows download', () => {
-    const { root, digests } = fixtureBinaries('freebuff', TARGET_KEYS)
+    const { root, digests } = fixtureBinaries('fuckbuff', TARGET_KEYS)
     try {
-      expect(computeChecksums(root, 'freebuff')).toEqual({
+      expect(computeChecksums(root, 'fuckbuff')).toEqual({
         checksums: digests,
         missing: [],
       })
@@ -413,27 +413,27 @@ describe('write-binary-checksums.js (release side)', () => {
 
   test('write refuses when an archive is missing or empty', () => {
     const { root } = fixtureBinaries(
-      'freebuff',
+      'fuckbuff',
       TARGET_KEYS.filter((t: string) => t !== 'darwin-arm64'),
     )
-    const emptyDir = join(root, 'freebuff-linux-arm64')
-    writeFileSync(join(emptyDir, 'freebuff-linux-arm64.tar.gz'), '')
+    const emptyDir = join(root, 'fuckbuff-linux-arm64')
+    writeFileSync(join(emptyDir, 'fuckbuff-linux-arm64.tar.gz'), '')
     const packageDir = join(root, 'pkg')
     mkdirSync(packageDir)
     writeFileSync(
       join(packageDir, 'package.json'),
-      JSON.stringify({ name: 'freebuff', version: '9.9.9' }),
+      JSON.stringify({ name: 'fuckbuff', version: '9.9.9' }),
     )
     try {
-      const { missing } = computeChecksums(root, 'freebuff')
+      const { missing } = computeChecksums(root, 'fuckbuff')
       expect(missing.map((p: string) => p.split('/').pop())).toEqual([
-        'freebuff-linux-arm64.tar.gz',
-        'freebuff-darwin-arm64.tar.gz',
+        'fuckbuff-linux-arm64.tar.gz',
+        'fuckbuff-darwin-arm64.tar.gz',
       ])
       expect(() =>
         checksumScript.writeChecksums({
           binariesDir: root,
-          binaryName: 'freebuff',
+          binaryName: 'fuckbuff',
           packageDir,
         }),
       ).toThrow('Missing or empty release archives')
@@ -479,7 +479,7 @@ describe('write-binary-checksums.js (release side)', () => {
   })
 
   test("write refuses to stamp one product into another product's manifest", () => {
-    const { root } = fixtureBinaries('freebuff', TARGET_KEYS)
+    const { root } = fixtureBinaries('fuckbuff', TARGET_KEYS)
     const packageDir = join(root, 'pkg')
     mkdirSync(packageDir)
     writeFileSync(
@@ -490,7 +490,7 @@ describe('write-binary-checksums.js (release side)', () => {
       expect(() =>
         checksumScript.writeChecksums({
           binariesDir: root,
-          binaryName: 'freebuff',
+          binaryName: 'fuckbuff',
           packageDir,
         }),
       ).toThrow('Refusing to stamp')

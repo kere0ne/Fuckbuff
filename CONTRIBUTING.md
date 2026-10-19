@@ -1,6 +1,6 @@
 # Contributing
 
-This repository is a public mirror of the Freebuff/Codebuff source tree. The private repository is the source of truth, so accepted public contributions are ported into the private repo and then exported back here.
+This repository is the Fuckbuff source tree. Push your changes here; keep the original Apache 2.0 license and NOTICE intact.
 
 ## Public Contributions
 
@@ -13,7 +13,7 @@ Good public PRs are usually scoped to:
 - `packages/agent-runtime/`
 - `packages/code-map/`
 - `packages/llm-providers/`
-- `freebuff/`, excluding the private web app
+- `fuckbuff/`, excluding the private web app
 - `scripts/tmux/`
 - public docs
 
@@ -33,10 +33,10 @@ Build the SDK:
 bun run build:sdk
 ```
 
-Build the Freebuff binary:
+Build the Fuckbuff binary:
 
 ```bash
-bun run build:freebuff
+bun run build:fuckbuff
 ```
 
 ## Pull Request Flow
@@ -66,7 +66,7 @@ the PR:
 2. **Description** — must say what the change does and why. Accepted changes are
    ported by hand into a private source tree, so a PR that does not explain
    itself is expensive to accept.
-3. **Scope** — must not touch `web/`, `freebuff/web/`, `packages/internal/`,
+3. **Scope** — must not touch `web/`, `fuckbuff/web/`, `packages/internal/`,
    `packages/billing/` or `packages/bigquery/`. Those are not part of this
    repository and a change to them cannot be merged here however good it is.
 

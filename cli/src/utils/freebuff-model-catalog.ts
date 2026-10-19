@@ -1,9 +1,9 @@
 /**
- * Fetching and keeping the server model catalog (docs/freebuff-model-catalog.md).
+ * Fetching and keeping the server model catalog (docs/fuckbuff-model-catalog.md).
  *
  * The CLI asks `GET /api/v1/freebuff/models` for its rows on start, again at
  * the catalog's `refreshAt`, whenever the session reports a different access
- * tier or plan, and once after the server answers `freebuff_catalog_stale`.
+ * tier or plan, and once after the server answers `fuckbuff_catalog_stale`.
  * A valid answer puts the process in catalog mode; anything else keeps (or
  * returns) it in fallback mode, the compiled catalog.
  *
@@ -19,53 +19,53 @@
  *
  * Nothing here is persisted: the catalog carries per-account handles.
  */
-import { FREEBUFF_CLIENT_HEADER } from '@codebuff/common/constants/freebuff-desktop-sessions'
+import { FUCKBUFF_CLIENT_HEADER } from '@codebuff/common/constants/fuckbuff-desktop-sessions'
 import {
-  DEFAULT_FREEBUFF_MODEL_ID,
-  resolveAvailableFreebuffModel,
-} from '@codebuff/common/constants/freebuff-models'
+  DEFAULT_FUCKBUFF_MODEL_ID,
+  resolveAvailableFuckbuffModel,
+} from '@codebuff/common/constants/fuckbuff-models'
 import {
-  FREEBUFF_CATALOG_PROTOCOL_HEADER,
-  FREEBUFF_CATALOG_PROTOCOL_VERSION,
-  FREEBUFF_CATALOG_STALE_ERROR,
-  FREEBUFF_MODEL_CATALOG_PATH,
-  listableFreebuffCatalogRows,
-  parseFreebuffModelCatalog,
-} from '@codebuff/common/types/freebuff-model-catalog'
+  FUCKBUFF_CATALOG_PROTOCOL_HEADER,
+  FUCKBUFF_CATALOG_PROTOCOL_VERSION,
+  FUCKBUFF_CATALOG_STALE_ERROR,
+  FUCKBUFF_MODEL_CATALOG_PATH,
+  listableFuckbuffCatalogRows,
+  parseFuckbuffModelCatalog,
+} from '@codebuff/common/types/fuckbuff-model-catalog'
 import {
-  getFreebuffServerAccessTier,
+  getFuckbuffServerAccessTier,
   getSubscriptionInfo,
-} from '@codebuff/common/types/freebuff-session'
+} from '@codebuff/common/types/fuckbuff-session'
 import { sanitizeTerminalStrings } from '@codebuff/common/util/terminal-safe-text'
 
 import {
-  getFreebuffCatalog,
-  getFreebuffModelDirectory,
-  setFreebuffCatalog,
-  useFreebuffCatalogStore,
-} from '../state/freebuff-catalog-store'
-import { useFreebuffChatStore } from '../state/freebuff-chat-store'
-import { useFreebuffModelStore } from '../state/freebuff-model-store'
+  getFuckbuffCatalog,
+  getFuckbuffModelDirectory,
+  setFuckbuffCatalog,
+  useFuckbuffCatalogStore,
+} from '../state/fuckbuff-catalog-store'
+import { useFuckbuffChatStore } from '../state/fuckbuff-chat-store'
+import { useFuckbuffModelStore } from '../state/fuckbuff-model-store'
 import {
-  freebuffDeviceHeaders,
-  noteFreebuffDeviceKeyError,
-} from './freebuff-device-key'
-import { freebuffApiBaseUrl } from './freebuff-session-api'
+  fuckbuffDeviceHeaders,
+  noteFuckbuffDeviceKeyError,
+} from './fuckbuff-device-key'
+import { fuckbuffApiBaseUrl } from './fuckbuff-session-api'
 import { logger } from './logger'
 import {
-  loadFreebuffModelKeyPreference,
-  loadFreebuffModelPreference,
+  loadFuckbuffModelKeyPreference,
+  loadFuckbuffModelPreference,
 } from './settings'
 
-import type { FreebuffModelCatalog } from '@codebuff/common/types/freebuff-model-catalog'
+import type { FuckbuffModelCatalog } from '@codebuff/common/types/fuckbuff-model-catalog'
 
-/** Sent as `x-freebuff-client` so the server lists the CLI's rows. */
-export const FREEBUFF_CATALOG_CLIENT_CLI = 'cli'
+/** Sent as `x-fuckbuff-client` so the server lists the CLI's rows. */
+export const FUCKBUFF_CATALOG_CLIENT_CLI = 'cli'
 
 const CATALOG_FETCH_TIMEOUT_MS = 10_000
 /** How long the first session request waits for the first catalog. Past it,
  *  the session starts in fallback mode and a late catalog switches over. */
-export const FREEBUFF_CATALOG_INITIAL_WAIT_MS = 4_000
+export const FUCKBUFF_CATALOG_INITIAL_WAIT_MS = 4_000
 /** Floor and ceiling on the `refreshAt` schedule: a catalog asking to be
  *  refetched in 2s (clock skew) must not become a tight loop, and one asking
  *  for next week must not outlive a timer. */
@@ -77,35 +77,35 @@ const RETRY_MAX_DELAY_MS = 30 * 60_000
  *  stale too; refetching again would only loop. */
 const STALE_REFRESH_COOLDOWN_MS = 5_000
 
-export type FreebuffCatalogFetchResult =
-  | { kind: 'ok'; catalog: FreebuffModelCatalog }
+export type FuckbuffCatalogFetchResult =
+  | { kind: 'ok'; catalog: FuckbuffModelCatalog }
   | { kind: 'unsupported'; status?: number }
   | { kind: 'error'; status?: number; message?: string }
 
-export async function fetchFreebuffModelCatalog(
+export async function fetchFuckbuffModelCatalog(
   token: string,
   opts: {
     fetchImpl?: typeof fetch
     baseUrl?: string
     signal?: AbortSignal
     timeoutMs?: number
-    /** The device headers for this GET (freebuff-device-key.ts). */
-    deviceHeaders?: typeof freebuffDeviceHeaders
+    /** The device headers for this GET (fuckbuff-device-key.ts). */
+    deviceHeaders?: typeof fuckbuffDeviceHeaders
   } = {},
-): Promise<FreebuffCatalogFetchResult> {
+): Promise<FuckbuffCatalogFetchResult> {
   const {
     fetchImpl = fetch,
-    baseUrl = freebuffApiBaseUrl(),
+    baseUrl = fuckbuffApiBaseUrl(),
     timeoutMs = CATALOG_FETCH_TIMEOUT_MS,
-    deviceHeaders = freebuffDeviceHeaders,
+    deviceHeaders = fuckbuffDeviceHeaders,
   } = opts
-  const url = `${baseUrl}${FREEBUFF_MODEL_CATALOG_PATH}`
+  const url = `${baseUrl}${FUCKBUFF_MODEL_CATALOG_PATH}`
   // Registration waits until this process holds a catalog; a key registered
   // earlier signs this GET in either mode.
   const signature = await deviceHeaders(
     token,
     { method: 'GET', url },
-    { register: getFreebuffCatalog() !== null },
+    { register: getFuckbuffCatalog() !== null },
   )
   const timeout = AbortSignal.timeout(timeoutMs)
   let response: Response
@@ -114,8 +114,8 @@ export async function fetchFreebuffModelCatalog(
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
-        [FREEBUFF_CATALOG_PROTOCOL_HEADER]: FREEBUFF_CATALOG_PROTOCOL_VERSION,
-        [FREEBUFF_CLIENT_HEADER]: FREEBUFF_CATALOG_CLIENT_CLI,
+        [FUCKBUFF_CATALOG_PROTOCOL_HEADER]: FUCKBUFF_CATALOG_PROTOCOL_VERSION,
+        [FUCKBUFF_CLIENT_HEADER]: FUCKBUFF_CATALOG_CLIENT_CLI,
         ...signature,
       },
       signal: opts.signal ? AbortSignal.any([opts.signal, timeout]) : timeout,
@@ -138,17 +138,17 @@ export async function fetchFreebuffModelCatalog(
       error?: unknown
     } | null
     if (typeof failure?.error === 'string')
-      noteFreebuffDeviceKeyError(token, url, failure.error)
+      noteFuckbuffDeviceKeyError(token, url, failure.error)
     return { kind: 'unsupported', status: response.status }
   }
   const body = await response.json().catch(() => undefined)
   // Every string in a row is drawn in the terminal, so escape sequences are
   // stripped before anything reads it — the same rule as session responses.
-  const catalog = parseFreebuffModelCatalog(sanitizeTerminalStrings(body))
+  const catalog = parseFuckbuffModelCatalog(sanitizeTerminalStrings(body))
   // A catalog with no rows it may list leaves the picker nothing to draw;
   // the compiled one is the better answer, and the server refuses what it
   // must anyway. (Rows that have not opened are dropped when it is held.)
-  return catalog && listableFreebuffCatalogRows(catalog).length > 0
+  return catalog && listableFuckbuffCatalogRows(catalog).length > 0
     ? { kind: 'ok', catalog }
     : { kind: 'unsupported', status: response.status }
 }
@@ -159,11 +159,11 @@ export async function fetchFreebuffModelCatalog(
  * The code can sit on several fields depending on which layer surfaced it, so
  * every string field that might carry it is checked.
  */
-export function isFreebuffCatalogStaleError(error: unknown): boolean {
+export function isFuckbuffCatalogStaleError(error: unknown): boolean {
   const seen = new Set<unknown>()
   const visit = (value: unknown, depth: number): boolean => {
     if (typeof value === 'string')
-      return value.includes(FREEBUFF_CATALOG_STALE_ERROR)
+      return value.includes(FUCKBUFF_CATALOG_STALE_ERROR)
     if (!value || typeof value !== 'object' || depth > 3 || seen.has(value))
       return false
     seen.add(value)
@@ -198,18 +198,18 @@ export function isFreebuffCatalogStaleError(error: unknown): boolean {
  * Nothing is persisted here. A migration from a legacy id is recomputed on
  * every catalog, and the session response re-keys itself on the next poll.
  */
-export function applyFreebuffCatalog(next: FreebuffModelCatalog | null): void {
-  const previous = getFreebuffCatalog()
+export function applyFuckbuffCatalog(next: FuckbuffModelCatalog | null): void {
+  const previous = getFuckbuffCatalog()
   if (previous === next) return
-  setFreebuffCatalog(next)
-  const directory = getFreebuffModelDirectory()
-  const modelStore = useFreebuffModelStore.getState()
-  const chatStore = useFreebuffChatStore.getState()
+  setFuckbuffCatalog(next)
+  const directory = getFuckbuffModelDirectory()
+  const modelStore = useFuckbuffModelStore.getState()
+  const chatStore = useFuckbuffChatStore.getState()
 
   if (next) {
     const selected = modelStore.selectedModel
     if (directory.row(selected)?.key !== selected) {
-      const savedKey = loadFreebuffModelKeyPreference()
+      const savedKey = loadFuckbuffModelKeyPreference()
       // A saved key is the newest pick (a compiled pick clears it), so when it
       // names no row this client may list — retired, or a row that has not
       // opened — the older compiled selection does not get a say either: the
@@ -226,68 +226,68 @@ export function applyFreebuffCatalog(next: FreebuffModelCatalog | null): void {
     if (chatStore.nextModel !== null) {
       const nextKey = directory.row(chatStore.nextModel)?.key ?? null
       if (nextKey !== chatStore.nextModel)
-        useFreebuffChatStore.setState({ nextModel: nextKey })
+        useFuckbuffChatStore.setState({ nextModel: nextKey })
     }
     return
   }
 
   if (previous) {
     modelStore.setSelectedModel(
-      resolveAvailableFreebuffModel(
-        loadFreebuffModelPreference() ?? DEFAULT_FREEBUFF_MODEL_ID,
+      resolveAvailableFuckbuffModel(
+        loadFuckbuffModelPreference() ?? DEFAULT_FUCKBUFF_MODEL_ID,
       ),
     )
     // An unsent pick of a catalog row has no compiled meaning.
     if (chatStore.nextModel !== null)
-      useFreebuffChatStore.setState({ nextModel: null })
+      useFuckbuffChatStore.setState({ nextModel: null })
   }
 }
 
 // --- The refresh controller --------------------------------------------------
 
-export interface FreebuffCatalogControllerDeps {
+export interface FuckbuffCatalogControllerDeps {
   fetchCatalog: (
     token: string,
     signal: AbortSignal,
-  ) => Promise<FreebuffCatalogFetchResult>
-  applyCatalog: (catalog: FreebuffModelCatalog | null) => void
-  getCatalog: () => FreebuffModelCatalog | null
+  ) => Promise<FuckbuffCatalogFetchResult>
+  applyCatalog: (catalog: FuckbuffModelCatalog | null) => void
+  getCatalog: () => FuckbuffModelCatalog | null
   now: () => number
   setTimer: (callback: () => void, ms: number) => unknown
   clearTimer: (timer: unknown) => void
 }
 
-export interface FreebuffCatalogController {
+export interface FuckbuffCatalogController {
   /** The first fetch. Idempotent: every call returns the same promise. */
   load(): Promise<void>
   /** Fetch now (joining one already in flight) and apply the answer. */
-  refresh(): Promise<FreebuffCatalogFetchResult['kind']>
-  /** After a `freebuff_catalog_stale`: true when a fresh catalog is held. */
+  refresh(): Promise<FuckbuffCatalogFetchResult['kind']>
+  /** After a `fuckbuff_catalog_stale`: true when a fresh catalog is held. */
   refreshAfterStale(): Promise<boolean>
   /** Refetch when the viewer the catalog was built for has changed. */
-  noteViewer(viewer: FreebuffCatalogViewer): void
+  noteViewer(viewer: FuckbuffCatalogViewer): void
   dispose(): void
 }
 
 /** What the server builds a catalog from that a session response reveals. */
-export interface FreebuffCatalogViewer {
+export interface FuckbuffCatalogViewer {
   accessTier?: string
   /** The plan tier; null is "no plan". Undefined means "not in this response". */
   subscriptionTierId?: string | null
 }
 
-export function createFreebuffCatalogController(
+export function createFuckbuffCatalogController(
   token: string,
-  deps: FreebuffCatalogControllerDeps,
-): FreebuffCatalogController {
+  deps: FuckbuffCatalogControllerDeps,
+): FuckbuffCatalogController {
   let disposed = false
   const abort = new AbortController()
   let timer: unknown = null
-  let inFlight: Promise<FreebuffCatalogFetchResult['kind']> | null = null
+  let inFlight: Promise<FuckbuffCatalogFetchResult['kind']> | null = null
   let initial: Promise<void> | null = null
   let consecutiveErrors = 0
   let lastStaleRefreshAt = Number.NEGATIVE_INFINITY
-  const viewer: FreebuffCatalogViewer = {}
+  const viewer: FuckbuffCatalogViewer = {}
 
   const clear = () => {
     if (timer !== null) deps.clearTimer(timer)
@@ -302,14 +302,14 @@ export function createFreebuffCatalogController(
     }, ms)
   }
 
-  const refresh = (): Promise<FreebuffCatalogFetchResult['kind']> => {
+  const refresh = (): Promise<FuckbuffCatalogFetchResult['kind']> => {
     if (disposed) return Promise.resolve('error')
     if (inFlight) return inFlight
     clear()
     inFlight = deps
       .fetchCatalog(token, abort.signal)
       .catch(
-        (error): FreebuffCatalogFetchResult => ({
+        (error): FuckbuffCatalogFetchResult => ({
           kind: 'error',
           message: error instanceof Error ? error.message : String(error),
         }),
@@ -338,7 +338,7 @@ export function createFreebuffCatalogController(
           consecutiveErrors++
           logger.debug(
             { status: result.status, error: result.message },
-            '[freebuff-catalog] fetch failed; keeping the current mode',
+            '[fuckbuff-catalog] fetch failed; keeping the current mode',
           )
           schedule(
             Math.min(
@@ -393,7 +393,7 @@ export function createFreebuffCatalogController(
 
 let active: {
   token: string
-  controller: FreebuffCatalogController
+  controller: FuckbuffCatalogController
   settled: boolean
   initial: Promise<void>
 } | null = null
@@ -402,16 +402,16 @@ let active: {
  * Start fetching the catalog for this token. Returns the stop function; a
  * second start with the same token reuses the running controller.
  */
-export function startFreebuffModelCatalog(
+export function startFuckbuffModelCatalog(
   token: string,
-  deps: Partial<FreebuffCatalogControllerDeps> = {},
+  deps: Partial<FuckbuffCatalogControllerDeps> = {},
 ): () => void {
-  if (active?.token === token) return stopFreebuffModelCatalog
-  stopFreebuffModelCatalog()
-  const controller = createFreebuffCatalogController(token, {
-    fetchCatalog: (t, signal) => fetchFreebuffModelCatalog(t, { signal }),
-    applyCatalog: applyFreebuffCatalog,
-    getCatalog: getFreebuffCatalog,
+  if (active?.token === token) return stopFuckbuffModelCatalog
+  stopFuckbuffModelCatalog()
+  const controller = createFuckbuffCatalogController(token, {
+    fetchCatalog: (t, signal) => fetchFuckbuffModelCatalog(t, { signal }),
+    applyCatalog: applyFuckbuffCatalog,
+    getCatalog: getFuckbuffCatalog,
     now: Date.now,
     setTimer: (callback, ms) => {
       const handle = setTimeout(callback, ms)
@@ -431,31 +431,31 @@ export function startFreebuffModelCatalog(
     entry.settled = true
   })
   active = entry
-  useFreebuffCatalogStore.setState({
+  useFuckbuffCatalogStore.setState({
     refreshAfterStale: controller.refreshAfterStale,
   })
-  return stopFreebuffModelCatalog
+  return stopFuckbuffModelCatalog
 }
 
 /** Stop the controller and return to fallback mode. */
-export function stopFreebuffModelCatalog(): void {
+export function stopFuckbuffModelCatalog(): void {
   if (!active) return
   active.controller.dispose()
   active = null
-  useFreebuffCatalogStore.setState({ refreshAfterStale: null })
-  applyFreebuffCatalog(null)
+  useFuckbuffCatalogStore.setState({ refreshAfterStale: null })
+  applyFuckbuffCatalog(null)
 }
 
 /**
- * The first catalog fetch, bounded by FREEBUFF_CATALOG_INITIAL_WAIT_MS, or
+ * The first catalog fetch, bounded by FUCKBUFF_CATALOG_INITIAL_WAIT_MS, or
  * null when there is nothing to wait for (no controller, or it already
  * answered) so callers can stay synchronous in the common case.
  */
-export function freebuffModelCatalogInitialLoad(): Promise<void> | null {
+export function fuckbuffModelCatalogInitialLoad(): Promise<void> | null {
   if (!active || active.settled) return null
   const initial = active.initial
   return new Promise<void>((resolve) => {
-    const timer = setTimeout(resolve, FREEBUFF_CATALOG_INITIAL_WAIT_MS)
+    const timer = setTimeout(resolve, FUCKBUFF_CATALOG_INITIAL_WAIT_MS)
     timer.unref?.()
     void initial.finally(() => {
       clearTimeout(timer)
@@ -465,20 +465,20 @@ export function freebuffModelCatalogInitialLoad(): Promise<void> | null {
 }
 
 /** Feed a session response in, so a tier or plan change refetches rows. */
-export function noteFreebuffCatalogViewer(
+export function noteFuckbuffCatalogViewer(
   session: { status: string } | null,
 ): void {
   if (!active || !session) return
   const subscription = getSubscriptionInfo(session)
   active.controller.noteViewer({
-    accessTier: getFreebuffServerAccessTier(session),
+    accessTier: getFuckbuffServerAccessTier(session),
     subscriptionTierId: subscription ? subscription.tierId : undefined,
   })
 }
 
 /**
  * Run a turn, and run it ONCE more if the server refused its model handle as
- * stale (`freebuff_catalog_stale`): refetch the catalog, then `run` again,
+ * stale (`fuckbuff_catalog_stale`): refetch the catalog, then `run` again,
  * which rebuilds the root from the fresh catalog, so the same row goes out
  * under its new handle. A second refusal is returned (or thrown) as is.
  *
@@ -487,19 +487,19 @@ export function noteFreebuffCatalogViewer(
  * The refusal can arrive thrown or as the run's error output, so both are
  * checked. Outside catalog mode this is exactly `run()`.
  */
-export async function runWithFreebuffCatalogStaleRetry<T>(opts: {
+export async function runWithFuckbuffCatalogStaleRetry<T>(opts: {
   /** 0 for the turn, 1 for its one retry, which must rebuild its agent. */
   run: (attempt: number) => Promise<T>
   canRetry: () => boolean
   refreshAfterStale?: (() => Promise<boolean>) | null
 }): Promise<T> {
-  if (!getFreebuffCatalog()) return opts.run(0)
+  if (!getFuckbuffCatalog()) return opts.run(0)
   const refresh =
     opts.refreshAfterStale === undefined
-      ? useFreebuffCatalogStore.getState().refreshAfterStale
+      ? useFuckbuffCatalogStore.getState().refreshAfterStale
       : opts.refreshAfterStale
   const retryable = async (refusal: unknown) =>
-    isFreebuffCatalogStaleError(refusal) &&
+    isFuckbuffCatalogStaleError(refusal) &&
     opts.canRetry() &&
     refresh !== null &&
     (await refresh())
@@ -509,12 +509,12 @@ export async function runWithFreebuffCatalogStaleRetry<T>(opts: {
     result = await opts.run(0)
   } catch (error) {
     if (!(await retryable(error))) throw error
-    logger.info({}, '[freebuff-catalog] stale handle; retrying the turn once')
+    logger.info({}, '[fuckbuff-catalog] stale handle; retrying the turn once')
     return opts.run(1)
   }
   const output = (result as { output?: { type?: string } } | null)?.output
   if (output?.type === 'error' && (await retryable(output))) {
-    logger.info({}, '[freebuff-catalog] stale handle; retrying the turn once')
+    logger.info({}, '[fuckbuff-catalog] stale handle; retrying the turn once')
     return opts.run(1)
   }
   return result

@@ -20,7 +20,7 @@
  *    to record so a suppressed episode does not reset the window.
  *
  * In `common` because both stores decide it: the Convex pause mutations
- * (re-exported by freebuff/web/convex/deployment_pause_notice.ts) and their
+ * (re-exported by fuckbuff/web/convex/deployment_pause_notice.ts) and their
  * Postgres twins (packages/internal/src/project-spine/pause-writes.ts).
  */
 

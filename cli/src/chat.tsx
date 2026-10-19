@@ -1,9 +1,9 @@
 import { HelpBanner } from './components/help-banner'
-import { FreebuffChatFooter } from './components/freebuff-chat-footer'
-import { FreebuffChatHeader } from './components/freebuff-chat-header'
-import { FreebuffChatControls } from './components/freebuff-chat-controls'
-import { useFreebuffChatStore } from './state/freebuff-chat-store'
-import { freebuffAdmissionNotice } from './hooks/use-freebuff-chat-admission'
+import { FuckbuffChatFooter } from './components/fuckbuff-chat-footer'
+import { FuckbuffChatHeader } from './components/fuckbuff-chat-header'
+import { FuckbuffChatControls } from './components/fuckbuff-chat-controls'
+import { useFuckbuffChatStore } from './state/fuckbuff-chat-store'
+import { fuckbuffAdmissionNotice } from './hooks/use-fuckbuff-chat-admission'
 import { AnalyticsEvent } from '@codebuff/common/constants/analytics-events'
 import type { FeedbackCategory } from '@codebuff/common/constants/feedback'
 import { setFreeModeCapacityDeferralListener } from '@codebuff/sdk'
@@ -47,7 +47,7 @@ import {
 } from '@codebuff/common/ads/inline-ad-layout'
 import { ChatInputBar } from './components/chat-input-bar'
 import { ChatHeader } from './components/chat-header'
-import { FreebuffActiveSessionSummary } from './components/freebuff-active-session-summary'
+import { FuckbuffActiveSessionSummary } from './components/fuckbuff-active-session-summary'
 import { LoadPreviousButton } from './components/load-previous-button'
 import { QueuePanel } from './components/queue-panel'
 import { ReviewScreen } from './components/review-screen'
@@ -102,8 +102,8 @@ import { stopActiveRun } from './utils/active-run'
 import { trackEvent } from './utils/analytics'
 import { showClipboardMessage } from './utils/clipboard'
 import { readClipboardImage } from './utils/clipboard-image'
-import { returnToFreebuffLanding } from './hooks/use-freebuff-session'
-import { END_SESSION_MESSAGE, IS_FREEBUFF } from './utils/constants'
+import { returnToFuckbuffLanding } from './hooks/use-fuckbuff-session'
+import { END_SESSION_MESSAGE, IS_FUCKBUFF } from './utils/constants'
 import { getSystemMessage } from './utils/message-history'
 import { ProfileSurveyBox } from './components/profile-survey-box'
 import {
@@ -145,7 +145,7 @@ import { computeInputLayoutMetrics } from './utils/text-layout'
 import type { CommandResult } from './commands/command-registry'
 import type { MultilineInputHandle } from './components/multiline-input'
 import type { MatchedSlashCommand } from './hooks/use-suggestion-engine'
-import type { FreebuffSessionResponse } from './types/freebuff-session'
+import type { FuckbuffSessionResponse } from './types/fuckbuff-session'
 import type { User } from './utils/auth'
 import type { AgentMode } from './utils/constants'
 import type { FileTreeNode } from '@codebuff/common/util/file'
@@ -165,9 +165,9 @@ export const Chat = ({
   initialMode,
   gitRoot,
   onSwitchToGitRoot,
-  freebuffSession,
-  freebuffLastRefund = null,
-  freebuffRefundPending = false,
+  fuckbuffSession,
+  fuckbuffLastRefund = null,
+  fuckbuffRefundPending = false,
 }: {
   consumeInitialPrompt: () => string | null
   fileTree: FileTreeNode[]
@@ -179,10 +179,10 @@ export const Chat = ({
   initialMode?: AgentMode
   gitRoot?: string | null
   onSwitchToGitRoot?: () => void
-  freebuffSession: FreebuffSessionResponse | null
-  /** The ended hour's Freebucks receipt, shown in the Freebuff panel. */
-  freebuffLastRefund?: number | null
-  freebuffRefundPending?: boolean
+  fuckbuffSession: FuckbuffSessionResponse | null
+  /** The ended hour's Freebucks receipt, shown in the Fuckbuff panel. */
+  fuckbuffLastRefund?: number | null
+  fuckbuffRefundPending?: boolean
 }) => {
   const [forceFileOnlyMentions, setForceFileOnlyMentions] = useState(false)
   const headerRef = useRef<BoxRenderable | null>(null)
@@ -192,9 +192,9 @@ export const Chat = ({
   useEffect(() => setTodoPanelOpen(false), [chatSessionId])
 
   // First-time onboarding: show clickable starter prompts until the user
-  // submits their first prompt ever (persisted in settings). Freebuff only.
+  // submits their first prompt ever (persisted in settings). Fuckbuff only.
   const [showSuggestedPrompts, setShowSuggestedPrompts] = useState(
-    () => IS_FREEBUFF && !hasSubmittedFirstPrompt(),
+    () => IS_FUCKBUFF && !hasSubmittedFirstPrompt(),
   )
 
   // Subscribe to ask_user bridge to trigger form display
@@ -239,10 +239,10 @@ export const Chat = ({
     removeQueuedMessage,
     moveQueuedMessage,
   } = useChatRuntime()
-  const freebuffPickerOpen = useFreebuffChatStore((s) => s.pickerOpen)
-  const freebuffAdmission = useFreebuffChatStore((s) => s.admission)
-  const freebuffControlsOpen =
-    IS_FREEBUFF && (freebuffPickerOpen || freebuffAdmission !== null)
+  const fuckbuffPickerOpen = useFuckbuffChatStore((s) => s.pickerOpen)
+  const fuckbuffAdmission = useFuckbuffChatStore((s) => s.admission)
+  const fuckbuffControlsOpen =
+    IS_FUCKBUFF && (fuckbuffPickerOpen || fuckbuffAdmission !== null)
   const hasSubscription = subscriptionData?.hasSubscription ?? false
   const hasSelectedByokConnection = useByokSelectionStore(
     (state) => state.selected !== undefined,
@@ -277,11 +277,11 @@ export const Chat = ({
     recordClick,
     recordImpression,
   } = useGravityAd({
-    enabled: !hasSelectedByokConnection && (IS_FREEBUFF || !hasSubscription),
+    enabled: !hasSelectedByokConnection && (IS_FUCKBUFF || !hasSubscription),
     provider: 'gravity',
     inline: true,
     surface: 'cli_chat',
-    forceStart: IS_FREEBUFF,
+    forceStart: IS_FUCKBUFF,
     // Lazily fill a four-ad pool, then repeat it for later transcript slots.
     inlinePlacementId: 'CLI-Chat-Inline',
     // Keep the rotating above-input slot separate for reporting continuity.
@@ -291,7 +291,7 @@ export const Chat = ({
     slotPaused: dockProposal !== null,
   })
   const showInlineAds =
-    !hasSelectedByokConnection && (IS_FREEBUFF || getAdsEnabled())
+    !hasSelectedByokConnection && (IS_FUCKBUFF || getAdsEnabled())
 
   // Stable identities so the message-block callbacks (set once) always call
   // the latest recorder from the hook.
@@ -1272,7 +1272,7 @@ export const Chat = ({
     }
   }, [queuePanelOpen, reviewMode, askUserState, closeQueuePanel])
 
-  // The panel store outlives this component and a Freebuff session can end on
+  // The panel store outlives this component and a Fuckbuff session can end on
   // its own, unmounting chat mid-edit. Without this, the next session would
   // open onto a panel for a queue that no longer exists.
   useEffect(() => () => useQueuePanelStore.getState().closeQueuePanel(), [])
@@ -1284,7 +1284,7 @@ export const Chat = ({
       reviewMode ||
       askUserState !== null ||
       queuePanelOpen ||
-      freebuffControlsOpen ||
+      fuckbuffControlsOpen ||
       sponsoredProposalMenuOpen
     ) {
       setTodoPanelOpen(false)
@@ -1293,7 +1293,7 @@ export const Chat = ({
     reviewMode,
     askUserState,
     queuePanelOpen,
-    freebuffControlsOpen,
+    fuckbuffControlsOpen,
     sponsoredProposalMenuOpen,
   ])
 
@@ -1921,7 +1921,7 @@ export const Chat = ({
       queuePanelOpen ||
       todoPanelOpen ||
       sponsoredProposalMenuOpen ||
-      freebuffControlsOpen,
+      fuckbuffControlsOpen,
   })
 
   // Sync message block context to zustand store for child components
@@ -2117,14 +2117,14 @@ export const Chat = ({
     }
   }, [subscriptionRateLimit?.limited, fallbackToALaCarte])
 
-  const hasActiveFreebuffSession =
+  const hasActiveFuckbuffSession =
     !hasSelectedByokConnection &&
-    IS_FREEBUFF &&
-    freebuffSession?.status === 'active'
-  const isFreebuffSessionOver =
+    IS_FUCKBUFF &&
+    fuckbuffSession?.status === 'active'
+  const isFuckbuffSessionOver =
     !hasSelectedByokConnection &&
-    IS_FREEBUFF &&
-    freebuffSession?.status === 'ended'
+    IS_FUCKBUFF &&
+    fuckbuffSession?.status === 'ended'
 
   // A takeover screen owns both the keyboard and the rows above the composer.
   // Rather than teach the panel to arbitrate with four other Escape handlers,
@@ -2137,20 +2137,20 @@ export const Chat = ({
     queuePanelOpen ||
     todoPanelOpen ||
     sponsoredProposalMenuOpen ||
-    isFreebuffSessionOver ||
-    freebuffControlsOpen
+    isFuckbuffSessionOver ||
+    fuckbuffControlsOpen
   useEffect(() => {
     if (dockTakeoverActive) dockPanel.collapse('outside')
   }, [dockTakeoverActive, dockPanel])
 
-  // THE PROFILE SURVEY BOX (COD-779): Freebuff only, only while a turn is
+  // THE PROFILE SURVEY BOX (COD-779): Fuckbuff only, only while a turn is
   // running, only over an empty default-mode draft with no takeover screen
   // up. The first busy turn of the process fetches it once. Typing a prompt
   // while it is up closes it silently (answers stay server-side). Its keys
   // are routed in `keyboard-actions.ts`; it reports nothing to the ad rail.
   const isTurnBusy = isStreaming || isWaitingForResponse
   const profileSurveyEligible =
-    IS_FREEBUFF &&
+    IS_FUCKBUFF &&
     isTurnBusy &&
     inputMode === 'default' &&
     inputValue.length === 0 &&
@@ -2159,7 +2159,7 @@ export const Chat = ({
     !dockTakeoverActive
   const hasDraft = inputValue.length > 0
   useEffect(() => {
-    if (IS_FREEBUFF && isTurnBusy) void startProfileSurveyOnce()
+    if (IS_FUCKBUFF && isTurnBusy) void startProfileSurveyOnce()
   }, [isTurnBusy])
   useEffect(() => {
     if (hasDraft && isProfileSurveyOnScreen()) closeProfileSurveyForTyping()
@@ -2176,7 +2176,7 @@ export const Chat = ({
     (hasStatusIndicatorContent ||
       shouldShowQueuePreview ||
       !isAtBottom ||
-      hasActiveFreebuffSession)
+      hasActiveFuckbuffSession)
 
   // Track mouse movement for ad activity (throttled)
   const lastMouseActivityRef = useRef<number>(0)
@@ -2230,7 +2230,7 @@ export const Chat = ({
             flexDirection: 'column',
             gap: 0,
             shouldFill: true,
-            justifyContent: IS_FREEBUFF ? 'flex-start' : 'flex-end',
+            justifyContent: IS_FUCKBUFF ? 'flex-start' : 'flex-end',
             backgroundColor: 'transparent',
             paddingLeft: 1,
             paddingRight: 2,
@@ -2243,12 +2243,12 @@ export const Chat = ({
           ref={headerRef as React.Ref<BoxRenderable>}
           style={{ flexDirection: 'column' }}
         >
-          {IS_FREEBUFF && !hasSelectedByokConnection ? (
-            <FreebuffChatHeader
+          {IS_FUCKBUFF && !hasSelectedByokConnection ? (
+            <FuckbuffChatHeader
               projectRoot={getProjectRoot()}
-              session={freebuffSession}
-              lastRefund={freebuffLastRefund}
-              refundPending={freebuffRefundPending}
+              session={fuckbuffSession}
+              lastRefund={fuckbuffLastRefund}
+              refundPending={fuckbuffRefundPending}
             />
           ) : (
             <ChatHeader
@@ -2257,8 +2257,8 @@ export const Chat = ({
             />
           )}
         </box>
-        {IS_FREEBUFF && (
-          <FreebuffActiveSessionSummary session={freebuffSession} />
+        {IS_FUCKBUFF && (
+          <FuckbuffActiveSessionSummary session={fuckbuffSession} />
         )}
         {hiddenMessageCount > 0 && (
           <LoadPreviousButton
@@ -2289,7 +2289,7 @@ export const Chat = ({
           backgroundColor: 'transparent',
         }}
       >
-        {showOnboardingPrompts && !reviewMode && !freebuffControlsOpen && (
+        {showOnboardingPrompts && !reviewMode && !fuckbuffControlsOpen && (
           <SuggestedPrompts
             onSelect={handleSelectSuggestedPrompt}
             maxItems={isCompactHeight ? 2 : undefined}
@@ -2348,16 +2348,16 @@ export const Chat = ({
         )}
 
         {/* Beside the ad surfaces above, never in place of one. */}
-        {IS_FREEBUFF && <ProfileSurveyBox width={separatorWidth} />}
+        {IS_FUCKBUFF && <ProfileSurveyBox width={separatorWidth} />}
 
-        {IS_FREEBUFF &&
-          !freebuffControlsOpen &&
-          freebuffAdmissionNotice(freebuffSession) && (
+        {IS_FUCKBUFF &&
+          !fuckbuffControlsOpen &&
+          fuckbuffAdmissionNotice(fuckbuffSession) && (
             <text style={{ fg: theme.secondary, wrapMode: 'word' }}>
-              {freebuffAdmissionNotice(freebuffSession)}
+              {fuckbuffAdmissionNotice(fuckbuffSession)}
             </text>
           )}
-        {inputMode === 'help' && !freebuffControlsOpen && <HelpBanner />}
+        {inputMode === 'help' && !fuckbuffControlsOpen && <HelpBanner />}
 
         {shouldShowStatusLine && (
           <StatusBar
@@ -2371,14 +2371,14 @@ export const Chat = ({
                 ...prev,
                 getSystemMessage(END_SESSION_MESSAGE),
               ])
-              returnToFreebuffLanding().catch(() => {})
+              returnToFuckbuffLanding().catch(() => {})
             }}
-            freebuffSession={freebuffSession}
+            fuckbuffSession={fuckbuffSession}
           />
         )}
 
-        {freebuffControlsOpen && !askUserState ? (
-          <FreebuffChatControls />
+        {fuckbuffControlsOpen && !askUserState ? (
+          <FuckbuffChatControls />
         ) : reviewMode ? (
           // Review and ask_user take precedence over the session-ended banner:
           // during the grace window the agent may still be asking to run tools
@@ -2471,7 +2471,7 @@ export const Chat = ({
             />
           </>
         )}
-        {IS_FREEBUFF && !hasSelectedByokConnection && <FreebuffChatFooter projectRoot={getProjectRoot()} />}
+        {IS_FUCKBUFF && !hasSelectedByokConnection && <FuckbuffChatFooter projectRoot={getProjectRoot()} />}
       </box>
     </box>
   )

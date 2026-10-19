@@ -214,7 +214,7 @@ function fakes(options: {
           proposalId,
           runId: binding!.runId,
           procedureSha256,
-          modelId: 'freebuff/deepseek-v4-flash',
+          modelId: 'fuckbuff/deepseek-v4-flash',
           expiresAtMs: now + 3_600_000,
           allowanceUsdMicros: 500_000,
         },
@@ -407,9 +407,9 @@ describe('which runs the CLI drives', () => {
 describe('a run spec on the Accept', () => {
   const TEMPLATE = [
     'SERVER-BUILT PROMPT for the accepted procedure.',
-    'Background from this conversation (read-only):\n{{FREEBUFF_TASK_CONTEXT}}',
+    'Background from this conversation (read-only):\n{{FUCKBUFF_TASK_CONTEXT}}',
     'Rules from the server.',
-    '{{FREEBUFF_CREDENTIALS}}',
+    '{{FUCKBUFF_CREDENTIALS}}',
     'Report last.',
   ].join('\n\n')
 
@@ -447,7 +447,7 @@ describe('a run spec on the Accept', () => {
     expect(plan.prompt).toContain('User message 1:\nHow do I deploy this?')
     // The heading is the template's; the client adds only the messages.
     expect(plan.prompt.split('Background from this conversation')).toHaveLength(2)
-    expect(plan.prompt).not.toContain('{{FREEBUFF_')
+    expect(plan.prompt).not.toContain('{{FUCKBUFF_')
     // Not this build's own prompt.
     expect(plan.prompt).not.toContain('The approved procedure:')
   })

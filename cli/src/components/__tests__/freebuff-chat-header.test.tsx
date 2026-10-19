@@ -2,13 +2,13 @@ import { afterEach, beforeAll, expect, test, spyOn } from 'bun:test'
 import { createTestRenderer } from '@opentui/core/testing'
 import { createRoot, flushSync } from '@opentui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { freebucksFixture } from '@codebuff/common/testing/freebuff'
-import { FreebuffChatHeader } from '../freebuff-chat-header'
+import { freebucksFixture } from '@codebuff/common/testing/fuckbuff'
+import { FuckbuffChatHeader } from '../fuckbuff-chat-header'
 import { initializeThemeStore } from '../../hooks/use-theme'
 import {
   clearReferralCache,
   rememberReferral,
-} from '../../utils/freebuff-referral-cache'
+} from '../../utils/fuckbuff-referral-cache'
 import * as auth from '../../utils/auth'
 
 let cleanup: (() => void) | undefined
@@ -37,7 +37,7 @@ test.each([130, 42])(
     flushSync(() =>
       root.render(
         <QueryClientProvider client={queries}>
-          <FreebuffChatHeader
+          <FuckbuffChatHeader
             projectRoot="/tmp/project"
             session={{
               status: 'none',
@@ -63,9 +63,9 @@ test.each([130, 42])(
     expect(frame).not.toContain('/history')
     expect(frame).not.toContain('/dashboard')
     expect(frame.split('\n')[0]!.trim()).toStartWith(
-      width === 130 ? '███████' : 'Freebuff',
+      width === 130 ? '███████' : 'Fuckbuff',
     )
-    expect(frame).not.toContain('─ Freebuff ')
+    expect(frame).not.toContain('─ Fuckbuff ')
     rememberReferral({
       status: 'none',
       accessTier: 'full',
@@ -80,7 +80,7 @@ test.each([130, 42])(
     flushSync(() =>
       root.render(
         <QueryClientProvider client={queries}>
-          <FreebuffChatHeader
+          <FuckbuffChatHeader
             projectRoot="/tmp/project"
             session={{
               status: 'active',
@@ -103,7 +103,7 @@ test.each([130, 42])(
     flushSync(() =>
       root.render(
         <QueryClientProvider client={queries}>
-          <FreebuffChatHeader projectRoot="/tmp/project" session={null} />
+          <FuckbuffChatHeader projectRoot="/tmp/project" session={null} />
         </QueryClientProvider>,
       ),
     )
@@ -120,7 +120,7 @@ test.each([130, 42])(
 )
 
 test("the panel reports the ended hour's refund, zero included", async () => {
-  // `useFreebuffSession` has published this receipt since #3635 removed the
+  // `useFuckbuffSession` has published this receipt since #3635 removed the
   // landing screen's refund lines; no surface rendered it, so a user who
   // ended early saw their balance change with nothing to explain it.
   const token = spyOn(auth, 'getAuthToken').mockReturnValue(undefined)
@@ -146,7 +146,7 @@ test("the panel reports the ended hour's refund, zero included", async () => {
     flushSync(() =>
       root.render(
         <QueryClientProvider client={queries}>
-          <FreebuffChatHeader
+          <FuckbuffChatHeader
             projectRoot="/tmp/project"
             session={landing}
             {...receipt}

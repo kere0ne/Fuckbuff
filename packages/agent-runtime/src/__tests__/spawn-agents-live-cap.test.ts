@@ -1,6 +1,6 @@
 import {
-  FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS,
-  FREEBUFF_PROJECTS_SUBAGENT_ID,
+  FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS,
+  FUCKBUFF_PROJECTS_SUBAGENT_ID,
 } from '@codebuff/common/constants/free-agents'
 import { MAX_LIVE_SUBAGENTS_PER_ROOT } from '@codebuff/common/tools/params/tool/spawn-agents'
 import { TEST_USER_ID } from '@codebuff/common/old-constants'
@@ -108,7 +108,7 @@ const waiters = () => {
 describe('the live subagent caps', () => {
   afterEach(() => mock.restore())
 
-  it(`runs at most ${FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS} at once under one root, across concurrent batches`, async () => {
+  it(`runs at most ${FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS} at once under one root, across concurrent batches`, async () => {
     const gate = Promise.withResolvers<void>()
     let started = 0
     spyOn(runAgentStep, 'loopAgentSteps').mockImplementation(
@@ -121,8 +121,8 @@ describe('the live subagent caps', () => {
         }
       },
     )
-    const root = template('root', [FREEBUFF_PROJECTS_SUBAGENT_ID])
-    const subagent = template(FREEBUFF_PROJECTS_SUBAGENT_ID)
+    const root = template('root', [FUCKBUFF_PROJECTS_SUBAGENT_ID])
+    const subagent = template(FUCKBUFF_PROJECTS_SUBAGENT_ID)
     const spawn = (runId: string, count: number) => {
       const state = getInitialSessionState(mockFileContext).mainAgentState
       state.runId = runId
@@ -143,13 +143,13 @@ describe('the live subagent caps', () => {
         writeToClient: () => {},
         agentState: state,
         agentTemplate: root,
-        localAgentTemplates: { [FREEBUFF_PROJECTS_SUBAGENT_ID]: subagent },
+        localAgentTemplates: { [FUCKBUFF_PROJECTS_SUBAGENT_ID]: subagent },
         toolCall: {
           toolName: 'spawn_agents',
           toolCallId: `call-${runId}-${count}`,
           input: {
             agents: Array.from({ length: count }, () => ({
-              agent_type: FREEBUFF_PROJECTS_SUBAGENT_ID,
+              agent_type: FUCKBUFF_PROJECTS_SUBAGENT_ID,
               prompt: 'work',
             })),
           },
@@ -158,21 +158,21 @@ describe('the live subagent caps', () => {
     }
 
     // Parallel calls of six until past the cap: more asked than may run.
-    const calls = Math.ceil(FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS / 6) + 1
+    const calls = Math.ceil(FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS / 6) + 1
     const asked = calls * 6
     const batches = Array.from({ length: calls }, () => spawn('root-a', 6))
     // Another session is not held to root-a's count.
     const other = spawn('root-b', 6)
     await new Promise((resolve) => setTimeout(resolve, 20))
-    expect(started).toBe(FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS + 6)
+    expect(started).toBe(FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS + 6)
     gate.resolve()
     const outputs = (await Promise.all(batches)).map((b) =>
       JSON.stringify(b.output),
     )
     const refused =
-      outputs.join('').split(`at most ${FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS}`)
+      outputs.join('').split(`at most ${FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS}`)
         .length - 1
-    expect(refused).toBe(asked - FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS)
+    expect(refused).toBe(asked - FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS)
     expect(JSON.stringify((await other).output)).not.toContain('at most')
     // Every slot is released once its agent reports.
     expect(liveCappedAgentCountForTests()).toBe(0)
@@ -248,22 +248,22 @@ describe('the live subagent caps', () => {
     let leaves = 0
     const helperOutputs: string[] = []
     const templates: Record<string, AgentTemplate> = {
-      [FREEBUFF_PROJECTS_SUBAGENT_ID]: template(FREEBUFF_PROJECTS_SUBAGENT_ID, [
+      [FUCKBUFF_PROJECTS_SUBAGENT_ID]: template(FUCKBUFF_PROJECTS_SUBAGENT_ID, [
         'picker',
       ]),
       picker: template('picker', ['lister']),
       lister: template('lister'),
       leaf: template('leaf'),
     }
-    const root = template('root', [FREEBUFF_PROJECTS_SUBAGENT_ID, 'leaf'])
+    const root = template('root', [FUCKBUFF_PROJECTS_SUBAGENT_ID, 'leaf'])
     spyOn(runAgentStep, 'loopAgentSteps').mockImplementation(
       async (options) => {
         const type = options.agentType
-        if (type === FREEBUFF_PROJECTS_SUBAGENT_ID || type === 'picker') {
+        if (type === FUCKBUFF_PROJECTS_SUBAGENT_ID || type === 'picker') {
           if (type === 'picker') helpers++
           notify()
           // A Projects subagent spawns six pickers; each picker one lister.
-          const projects = type === FREEBUFF_PROJECTS_SUBAGENT_ID
+          const projects = type === FUCKBUFF_PROJECTS_SUBAGENT_ID
           const nested = await spawnFrom(
             options.agentState,
             templates[type]!,
@@ -291,7 +291,7 @@ describe('the live subagent caps', () => {
       state,
       root,
       templates,
-      FREEBUFF_PROJECTS_SUBAGENT_ID,
+      FUCKBUFF_PROJECTS_SUBAGENT_ID,
       1,
       'projects-1',
     )
@@ -307,7 +307,7 @@ describe('the live subagent caps', () => {
       state,
       root,
       templates,
-      FREEBUFF_PROJECTS_SUBAGENT_ID,
+      FUCKBUFF_PROJECTS_SUBAGENT_ID,
       1,
       'projects-2',
     )
@@ -343,9 +343,9 @@ describe('the live subagent caps', () => {
         }
       },
     )
-    const root = template('root', [FREEBUFF_PROJECTS_SUBAGENT_ID])
+    const root = template('root', [FUCKBUFF_PROJECTS_SUBAGENT_ID])
     const templates = {
-      [FREEBUFF_PROJECTS_SUBAGENT_ID]: template(FREEBUFF_PROJECTS_SUBAGENT_ID),
+      [FUCKBUFF_PROJECTS_SUBAGENT_ID]: template(FUCKBUFF_PROJECTS_SUBAGENT_ID),
     }
     const state = getInitialSessionState(mockFileContext).mainAgentState
     state.runId = 'root-underscore'
@@ -355,28 +355,28 @@ describe('the live subagent caps', () => {
         state,
         root,
         templates,
-        FREEBUFF_PROJECTS_SUBAGENT_ID,
+        FUCKBUFF_PROJECTS_SUBAGENT_ID,
         n,
         `plain-${i}`,
       ),
     )
     await drainMicrotasks()
-    expect(started).toBe(FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS)
+    expect(started).toBe(FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS)
     const underscored = spawnFrom(
       state,
       root,
       templates,
-      FREEBUFF_PROJECTS_SUBAGENT_ID.replace(/-/g, '_'),
+      FUCKBUFF_PROJECTS_SUBAGENT_ID.replace(/-/g, '_'),
       6,
       'underscore',
     )
     await drainMicrotasks()
-    expect(started).toBe(FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS)
+    expect(started).toBe(FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS)
     gate.resolve()
     await Promise.all(plain)
     const refused = JSON.stringify((await underscored).output)
     expect(
-      refused.split(`at most ${FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS}`).length -
+      refused.split(`at most ${FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS}`).length -
         1,
     ).toBe(6)
     expect(liveCappedAgentCountForTests()).toBe(0)

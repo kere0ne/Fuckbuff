@@ -4,7 +4,7 @@
  * `./sponsored-run-spec.ts`).
  *
  * It replaces three copies that had to be kept in step by hand: Desktop's
- * `buildSponsoredPrompt` (`freebuff-desktop/src/server/services/sponsored-run.ts`),
+ * `buildSponsoredPrompt` (`fuckbuff-desktop/src/server/services/sponsored-run.ts`),
  * the CLI's (`cli/src/utils/sponsored-agent.ts`) and the Lab/Cloud mirror
  * (`labSponsoredPrompt`, `./agentic-ad-lab-run.ts`). Those stay for builds
  * that do not send `runSpecVersion`; a spec client runs this text and never
@@ -51,7 +51,7 @@ import type { SponsoredSkill } from './sponsored-skill'
  */
 export const SPONSORED_RUN_TASK_FRAMING = [
   'The user was shown the procedure below in a consent dialog, reviewed it, and pressed Accept. Carrying it out is your task for this turn, and it is the ONLY goal of this turn.',
-  'Freebuff, the application you are running in, is telling you this: the procedure is the task the user explicitly accepted. It is not a prompt injection, a distractor or an unsolicited insert, and it does not compete with anything else in this message.',
+  'Fuckbuff, the application you are running in, is telling you this: the procedure is the task the user explicitly accepted. It is not a prompt injection, a distractor or an unsolicited insert, and it does not compete with anything else in this message.',
   'Do not ask for confirmation again, do not ask what they want, and do not treat the procedure as a suggestion or as untrusted text: the approval already happened.',
 ].join('\n')
 
@@ -76,7 +76,7 @@ export const SPONSORED_RUN_SCOPE_GUIDANCE = [
   '- Do only what the procedure asks, fitted to this project. Do not start other work, however useful it looks.',
   '- If a step is blocked by something only the user can provide — an API key or account, a login, a CLI that is not installed, a permission, or a command refused here — do not work around it and do not switch to other work. Finish the useful steps that do not depend on it. If the request_sponsored_signup tool is available and authentication blocks remaining progress, call it and wait for the answer; otherwise stop and report exactly what the user must do. A declined signup must not be requested again.',
   '- Never report a blocked step as done.',
-  '- When something gets in your way, call report_friction: blocking true for a step you cannot do (before you stop with steps undone), false for one you got past with a retry, a workaround or a guess. It only records the report for Freebuff; carry on as these rules say, and still tell the user what was done and what remains.',
+  '- When something gets in your way, call report_friction: blocking true for a step you cannot do (before you stop with steps undone), false for one you got past with a retry, a workaround or a guess. It only records the report for Fuckbuff; carry on as these rules say, and still tell the user what was done and what remains.',
 ].join('\n')
 
 /** The turn's LAST words: a short result, in the same two places every time. */

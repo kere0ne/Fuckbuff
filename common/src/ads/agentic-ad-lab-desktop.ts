@@ -1,4 +1,4 @@
-/** Immutable, token-free handoff. The Desktop host fetches only from Freebuff. */
+/** Immutable, token-free handoff. The Desktop host fetches only from Fuckbuff. */
 import { z } from 'zod/v4'
 
 export const labDesktopTestRefSchema = z
@@ -22,7 +22,7 @@ export function labDesktopTestUrl(ref: LabDesktopTestRef): string {
     version: ref.version,
     sha256: ref.sha256,
   })
-  return `freebuff://agentic-lab?${new URLSearchParams(parsed)}`
+  return `fuckbuff://agentic-lab?${new URLSearchParams(parsed)}`
 }
 
 export function parseLabDesktopTestUrl(
@@ -31,7 +31,7 @@ export function parseLabDesktopTestUrl(
   try {
     const url = new URL(value)
     if (
-      url.protocol !== 'freebuff:' ||
+      url.protocol !== 'fuckbuff:' ||
       url.hostname !== 'agentic-lab' ||
       (url.pathname !== '' && url.pathname !== '/') ||
       url.hash ||

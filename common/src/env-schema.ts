@@ -5,15 +5,15 @@ export const CLIENT_ENV_PREFIX = 'NEXT_PUBLIC_'
 export const clientEnvSchema = z.object({
   NEXT_PUBLIC_CB_ENVIRONMENT: z.enum(['dev', 'test', 'prod']),
   NEXT_PUBLIC_CODEBUFF_APP_URL: z.url().min(1),
-  NEXT_PUBLIC_FREEBUFF_APP_URL: z.url().optional(),
+  NEXT_PUBLIC_FUCKBUFF_APP_URL: z.url().optional(),
   NEXT_PUBLIC_SUPPORT_EMAIL: z.email().min(1),
   NEXT_PUBLIC_POSTHOG_API_KEY: z.string().min(1),
   NEXT_PUBLIC_POSTHOG_HOST_URL: z.url().min(1),
   NEXT_PUBLIC_GRAVITY_PIXEL_ID: z.uuid().optional(),
-  /** Public Meta dataset/pixel ID. Unset disables Freebuff landing tracking. */
+  /** Public Meta dataset/pixel ID. Unset disables Fuckbuff landing tracking. */
   NEXT_PUBLIC_META_PIXEL_ID: z.string().regex(/^\d+$/).max(32).optional(),
   /** Separate Ads acquisition dataset. Never falls back to the consumer ID. */
-  NEXT_PUBLIC_META_FREEBUFF_ADS_PIXEL_ID: z
+  NEXT_PUBLIC_META_FUCKBUFF_ADS_PIXEL_ID: z
     .string()
     .regex(/^\d+$/)
     .max(32)
@@ -76,7 +76,7 @@ export const clientEnvSchema = z.object({
    * not.
    */
   NEXT_PUBLIC_RECAPTCHA_V2_SIZE: z.enum(['checkbox', 'invisible']).optional(),
-  /** Human Behavior session-replay write key for Freebuff Web. Public by
+  /** Human Behavior session-replay write key for Fuckbuff Web. Public by
    *  design — it only authorizes ingestion. Optional so a dev checkout without
    *  it boots with replay simply switched off. */
   NEXT_PUBLIC_HUMANBEHAVIOR_API_KEY: z.string().min(1).optional(),
@@ -92,14 +92,14 @@ export type ClientEnv = z.infer<typeof clientEnvSchema>
 export const clientProcessEnv: ClientInput = {
   NEXT_PUBLIC_CB_ENVIRONMENT: process.env.NEXT_PUBLIC_CB_ENVIRONMENT,
   NEXT_PUBLIC_CODEBUFF_APP_URL: process.env.NEXT_PUBLIC_CODEBUFF_APP_URL,
-  NEXT_PUBLIC_FREEBUFF_APP_URL: process.env.NEXT_PUBLIC_FREEBUFF_APP_URL,
+  NEXT_PUBLIC_FUCKBUFF_APP_URL: process.env.NEXT_PUBLIC_FUCKBUFF_APP_URL,
   NEXT_PUBLIC_SUPPORT_EMAIL: process.env.NEXT_PUBLIC_SUPPORT_EMAIL,
   NEXT_PUBLIC_POSTHOG_API_KEY: process.env.NEXT_PUBLIC_POSTHOG_API_KEY,
   NEXT_PUBLIC_POSTHOG_HOST_URL: process.env.NEXT_PUBLIC_POSTHOG_HOST_URL,
   NEXT_PUBLIC_GRAVITY_PIXEL_ID: process.env.NEXT_PUBLIC_GRAVITY_PIXEL_ID,
   NEXT_PUBLIC_META_PIXEL_ID: process.env.NEXT_PUBLIC_META_PIXEL_ID,
-  NEXT_PUBLIC_META_FREEBUFF_ADS_PIXEL_ID:
-    process.env.NEXT_PUBLIC_META_FREEBUFF_ADS_PIXEL_ID,
+  NEXT_PUBLIC_META_FUCKBUFF_ADS_PIXEL_ID:
+    process.env.NEXT_PUBLIC_META_FUCKBUFF_ADS_PIXEL_ID,
   NEXT_PUBLIC_X_PIXEL_ID: process.env.NEXT_PUBLIC_X_PIXEL_ID,
   NEXT_PUBLIC_TIKTOK_PIXEL_ID: process.env.NEXT_PUBLIC_TIKTOK_PIXEL_ID,
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:

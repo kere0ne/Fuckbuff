@@ -63,7 +63,7 @@ test('/todo takes over the composer during streaming and Escape restores it with
           {} as React.ComponentProps<typeof Chat>['logoutMutation']
         }
         authStatus="ok"
-        freebuffSession={null}
+        fuckbuffSession={null}
       />
     )
   }

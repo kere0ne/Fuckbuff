@@ -1,6 +1,6 @@
 import { describe, expect, it, test } from 'bun:test'
 
-import { isPartnerPlacement } from '../constants/freebuff-placements'
+import { isPartnerPlacement } from '../constants/fuckbuff-placements'
 import {
   CLI_COMPOSER_INTENT_PLACEMENT_ID,
   COMPOSER_INTENT_PLACEMENT_IDS,

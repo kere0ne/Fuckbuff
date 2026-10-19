@@ -6,7 +6,7 @@
  * fixed the case where Node IS installed but the sandbox hid it. This covers
  * the rest: the host (never the sandbox) downloads one pinned official Node.js
  * build from nodejs.org, checks it against a SHA-256 checked into this file,
- * and unpacks it under `~/.freebuff/toolchains/`. A run is then handed that
+ * and unpacks it under `~/.fuckbuff/toolchains/`. A run is then handed that
  * folder READ-ONLY and its `bin` at the END of `PATH`, so a Node the user
  * installed themselves always wins and this one is only the fallback.
  *
@@ -55,7 +55,7 @@ const SPONSORED_MANAGED_NODE_SHA256: Readonly<Record<string, string>> =
 /** The archive is ~53 MB; anything far past that is not the release. */
 const SPONSORED_MANAGED_NODE_MAX_BYTES = 96 * 1024 * 1024
 export const SPONSORED_MANAGED_NODE_TIMEOUT_MS = 180_000
-const VERIFIED_MARKER = '.freebuff-verified'
+const VERIFIED_MARKER = '.fuckbuff-verified'
 
 export type SponsoredManagedNode = {
   /** Grant READ-ONLY (`additionalReadRoots`). */
@@ -73,9 +73,9 @@ export function sponsoredManagedNodeTarget(
   return SPONSORED_MANAGED_NODE_SHA256[target] ? target : null
 }
 
-/** `~/.freebuff/toolchains`, where every managed toolchain lives. */
+/** `~/.fuckbuff/toolchains`, where every managed toolchain lives. */
 export function sponsoredToolchainsDir(home: string = os.homedir()): string {
-  return path.join(home, '.freebuff', 'toolchains')
+  return path.join(home, '.fuckbuff', 'toolchains')
 }
 
 function nodeDirName(target: string): string {

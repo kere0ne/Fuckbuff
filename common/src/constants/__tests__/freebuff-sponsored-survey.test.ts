@@ -25,7 +25,7 @@ import {
   sponsoredSurveyTargetingSchema,
   surveyEventBatchSchema,
   type SponsoredSurveyQuestionInput,
-} from '../freebuff-sponsored-survey'
+} from '../fuckbuff-sponsored-survey'
 
 const single = (n = 3): SponsoredSurveyQuestionInput => ({
   prompt: 'Pick one',

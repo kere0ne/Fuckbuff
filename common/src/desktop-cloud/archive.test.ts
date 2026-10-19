@@ -10,7 +10,7 @@ import {
 
 // Both refusals used to state the number and stop there, leaving the user no
 // move: the inventory already excludes .git, node_modules, dist, build, .next
-// and .cache, so "remove build output" is not the answer, and `.freebuffignore`
+// and .cache, so "remove build output" is not the answer, and `.fuckbuffignore`
 // appears nowhere else in the Desktop UI. 36 and 43 app sessions hit these in
 // the 7 days to 2026-10-16.
 test('a size refusal names the one lever the user has', () => {
@@ -18,7 +18,7 @@ test('a size refusal names the one lever the user has', () => {
     CLOUD_ARCHIVE_LIMIT_MESSAGE,
     CLOUD_SOURCE_LIMIT_MESSAGE,
   ]) {
-    expect(message).toContain('.freebuffignore')
+    expect(message).toContain('.fuckbuffignore')
     expect(message).toMatch(/retry\.$/)
     // Never advice we know is wrong for these users.
     expect(message).not.toMatch(/build output|node_modules/)

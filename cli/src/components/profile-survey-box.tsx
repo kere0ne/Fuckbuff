@@ -1,7 +1,7 @@
 import { TextAttributes } from '@opentui/core'
-import { profileSurveySnoozeDays } from '@codebuff/common/constants/freebuff-profile-survey'
-import { formatHoursWithUnit } from '@codebuff/common/util/freebuff-hours'
-import { SPONSORED_SURVEY_LIMITS } from '@codebuff/common/constants/freebuff-sponsored-survey'
+import { profileSurveySnoozeDays } from '@codebuff/common/constants/fuckbuff-profile-survey'
+import { formatHoursWithUnit } from '@codebuff/common/util/fuckbuff-hours'
+import { SPONSORED_SURVEY_LIMITS } from '@codebuff/common/constants/fuckbuff-sponsored-survey'
 import React from 'react'
 
 import { useTheme } from '../hooks/use-theme'

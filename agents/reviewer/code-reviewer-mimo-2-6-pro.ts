@@ -1,4 +1,4 @@
-import { FREEBUFF_MIMO_V26_PRO_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_MIMO_V26_PRO_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { publisher } from '../constants'
 import type { SecretAgentDefinition } from '../types/secret-agent-definition'
@@ -10,7 +10,7 @@ import { createReviewer } from './code-reviewer'
 const definition: SecretAgentDefinition = {
   id: 'code-reviewer-mimo-2-6-pro',
   publisher,
-  ...createReviewer(FREEBUFF_MIMO_V26_PRO_MODEL_ID),
+  ...createReviewer(FUCKBUFF_MIMO_V26_PRO_MODEL_ID),
 }
 
 export default definition

@@ -4,7 +4,7 @@ import {
   applyOnboardingAnswersToTally,
   classifyOnboardingOtherText,
   emptyOnboardingTally,
-  FREEBUFF_ONBOARDING_QUESTIONS,
+  FUCKBUFF_ONBOARDING_QUESTIONS,
   isOnboardingComplete,
   ONBOARDING_LEGACY_OPTION_IDS,
   ONBOARDING_OTHER_TEXT_MAX,
@@ -15,7 +15,7 @@ import {
   resumableOnboardingAnswers,
   type OnboardingAnswer,
   validateOnboardingSubmission,
-} from '../freebuff-onboarding'
+} from '../fuckbuff-onboarding'
 
 /** A complete, valid submission. */
 function fullAnswers(overrides: OnboardingAnswer[] = []): OnboardingAnswer[] {
@@ -32,7 +32,7 @@ function fullAnswers(overrides: OnboardingAnswer[] = []): OnboardingAnswer[] {
 describe('the question set itself', () => {
   it('gives every option a unique id within its question', () => {
     // A duplicate id would silently merge two distinct answers in the analytics.
-    for (const q of FREEBUFF_ONBOARDING_QUESTIONS) {
+    for (const q of FUCKBUFF_ONBOARDING_QUESTIONS) {
       const ids = q.options.map((o) => o.id)
       expect(new Set(ids).size).toBe(ids.length)
     }
@@ -41,7 +41,7 @@ describe('the question set itself', () => {
   it('offers Other everywhere except the ordinal scale', () => {
     // Free text on an ordered scale is unusable for the segmentation the
     // question exists to support.
-    for (const q of FREEBUFF_ONBOARDING_QUESTIONS) {
+    for (const q of FUCKBUFF_ONBOARDING_QUESTIONS) {
       const hasOther = q.options.some((o) => o.id === OTHER_OPTION_ID)
       expect(hasOther).toBe(q.id !== 'proficiency')
     }
@@ -51,7 +51,7 @@ describe('the question set itself', () => {
     // A successor that no longer exists silently drops the answers it was
     // supposed to rescue — the exact failure the map exists to prevent.
     for (const [questionId, map] of Object.entries(ONBOARDING_LEGACY_OPTION_IDS)) {
-      const question = FREEBUFF_ONBOARDING_QUESTIONS.find((q) => q.id === questionId)
+      const question = FUCKBUFF_ONBOARDING_QUESTIONS.find((q) => q.id === questionId)
       expect(question).toBeDefined()
       const live = new Set(question!.options.map((o) => o.id))
       for (const [retired, successor] of Object.entries(map ?? {})) {
@@ -64,7 +64,7 @@ describe('the question set itself', () => {
   it('only marks options exclusive on multi-select questions', () => {
     // On a single-choice question "exclusive" is meaningless, and reading as
     // though it does something is worse than not having it.
-    for (const q of FREEBUFF_ONBOARDING_QUESTIONS) {
+    for (const q of FUCKBUFF_ONBOARDING_QUESTIONS) {
       if (q.multi) continue
       expect(q.options.some((o) => o.exclusive)).toBe(false)
     }
@@ -333,7 +333,7 @@ describe('applyOnboardingAnswersToTally', () => {
 
   it('offers every current option at zero, so an unanswered question still has bars', () => {
     const tally = emptyOnboardingTally()
-    for (const q of FREEBUFF_ONBOARDING_QUESTIONS) {
+    for (const q of FUCKBUFF_ONBOARDING_QUESTIONS) {
       expect(Object.keys(tally[q.id]).sort()).toEqual(
         [...q.options, ...(q.retiredOptions ?? [])].map((o) => o.id).sort(),
       )
@@ -351,7 +351,7 @@ describe('applyOnboardingAnswersToTally', () => {
 })
 
 describe('question set (2026-09-16 edit)', () => {
-  const byId = Object.fromEntries(FREEBUFF_ONBOARDING_QUESTIONS.map((q) => [q.id, q]))
+  const byId = Object.fromEntries(FUCKBUFF_ONBOARDING_QUESTIONS.map((q) => [q.id, q]))
   it('no longer offers Reddit, GitHub, Designer/PM, Non-technical or Copilot', () => {
     const ids = (q: string) => byId[q].options.map((o) => o.id)
     expect(ids('referral_source')).not.toContain('reddit')
@@ -377,7 +377,7 @@ describe('question set (2026-09-16 edit)', () => {
   })
   it('shuffles every choice question while preserving the proficiency scale', () => {
     expect(
-      FREEBUFF_ONBOARDING_QUESTIONS.filter((q) => q.shuffleOptions).map((q) => q.id),
+      FUCKBUFF_ONBOARDING_QUESTIONS.filter((q) => q.shuffleOptions).map((q) => q.id),
     ).toEqual(['referral_source', 'role', 'intended_use', 'subscriptions'])
   })
   it('still validates a retired id as unknown rather than silently storing it', () => {
@@ -431,7 +431,7 @@ describe('onboardingSourceProperties', () => {
   })
 
   it('has a value for every option the form offers or used to', () => {
-    const question = FREEBUFF_ONBOARDING_QUESTIONS.find(
+    const question = FUCKBUFF_ONBOARDING_QUESTIONS.find(
       (q) => q.id === 'referral_source',
     )!
     for (const o of [...question.options, ...(question.retiredOptions ?? [])]) {

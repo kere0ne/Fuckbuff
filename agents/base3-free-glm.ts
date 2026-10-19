@@ -1,11 +1,11 @@
-import { FREEBUFF_GLM_V52_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GLM_V52_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase3CliRoot } from './base3'
 
 const definition = {
   ...createBase3CliRoot({
-    model: FREEBUFF_GLM_V52_MODEL_ID,
-    isFreebuff: true,
+    model: FUCKBUFF_GLM_V52_MODEL_ID,
+    isFuckbuff: true,
   }),
   id: 'base3-free-glm',
   displayName: 'Buffy on GLM 5.2',

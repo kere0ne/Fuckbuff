@@ -3,31 +3,31 @@ import { createHash } from 'node:crypto'
 import { describe, expect, mock, test } from 'bun:test'
 
 import {
-  FREEBUFF_DEVICE_KEY_HEADER,
-  FREEBUFF_DEVICE_KEYS_PATH,
-  FREEBUFF_DEVICE_SIGNATURE_HEADER,
-  FREEBUFF_DEVICE_TIMESTAMP_HEADER,
-  freebuffDeviceSignaturePayload,
-} from '../../types/freebuff-model-catalog'
+  FUCKBUFF_DEVICE_KEY_HEADER,
+  FUCKBUFF_DEVICE_KEYS_PATH,
+  FUCKBUFF_DEVICE_SIGNATURE_HEADER,
+  FUCKBUFF_DEVICE_TIMESTAMP_HEADER,
+  fuckbuffDeviceSignaturePayload,
+} from '../../types/fuckbuff-model-catalog'
 import {
   base64UrlDecode,
-  FreebuffDeviceSigner,
-  isFreebuffDeviceKeyUnknownError,
-  parseFreebuffDeviceKeyRecord,
-} from '../freebuff-device-signing'
+  FuckbuffDeviceSigner,
+  isFuckbuffDeviceKeyUnknownError,
+  parseFuckbuffDeviceKeyRecord,
+} from '../fuckbuff-device-signing'
 
-import type { FreebuffDeviceKeyRecord } from '../freebuff-device-signing'
+import type { FuckbuffDeviceKeyRecord } from '../fuckbuff-device-signing'
 
 const ACCOUNT = { token: 'tok-1', accountId: 'user-1', apiHost: 'https://api.test' }
 
-function memoryStore(initial: FreebuffDeviceKeyRecord | null = null) {
+function memoryStore(initial: FuckbuffDeviceKeyRecord | null = null) {
   const state = { record: initial, saves: 0 }
   return {
     state,
     store: {
       load: async () =>
-        state.record ? parseFreebuffDeviceKeyRecord(JSON.parse(JSON.stringify(state.record))) : null,
-      save: async (record: FreebuffDeviceKeyRecord) => {
+        state.record ? parseFuckbuffDeviceKeyRecord(JSON.parse(JSON.stringify(state.record))) : null,
+      save: async (record: FuckbuffDeviceKeyRecord) => {
         state.saves++
         state.record = JSON.parse(JSON.stringify(record))
       },
@@ -47,7 +47,7 @@ function registrar(answer: () => Response = () => Response.json({ keyId: 'key-1'
 /** Verifies the three headers independently of the signer: node's SHA-256,
  *  the contract's payload, WebCrypto's Ed25519 verify. */
 async function verifies(
-  record: FreebuffDeviceKeyRecord,
+  record: FuckbuffDeviceKeyRecord,
   headers: Record<string, string>,
   request: { method: string; url: string; body?: string; fetchId?: string | null },
 ): Promise<boolean> {
@@ -58,26 +58,26 @@ async function verifies(
     false,
     ['verify'],
   )
-  const payload = freebuffDeviceSignaturePayload({
+  const payload = fuckbuffDeviceSignaturePayload({
     method: request.method,
     path: new URL(request.url).pathname,
-    timestampMs: Number(headers[FREEBUFF_DEVICE_TIMESTAMP_HEADER]),
+    timestampMs: Number(headers[FUCKBUFF_DEVICE_TIMESTAMP_HEADER]),
     bodySha256: createHash('sha256').update(request.body ?? '').digest('hex'),
     fetchId: request.fetchId,
   })
   return crypto.subtle.verify(
     { name: 'Ed25519' },
     publicKey,
-    base64UrlDecode(headers[FREEBUFF_DEVICE_SIGNATURE_HEADER]!) as BufferSource,
+    base64UrlDecode(headers[FUCKBUFF_DEVICE_SIGNATURE_HEADER]!) as BufferSource,
     new TextEncoder().encode(payload) as BufferSource,
   )
 }
 
-describe('FreebuffDeviceSigner', () => {
+describe('FuckbuffDeviceSigner', () => {
   test('registers once, then signs a request that verifies against the contract payload', async () => {
     const { state, store } = memoryStore()
     const { calls, fetchImpl } = registrar()
-    const signer = new FreebuffDeviceSigner({
+    const signer = new FuckbuffDeviceSigner({
       store,
       client: 'cli',
       fetch: fetchImpl,
@@ -90,15 +90,15 @@ describe('FreebuffDeviceSigner', () => {
       fetchId: 'fetch-9',
     }
     const headers = await signer.headers(ACCOUNT, request)
-    expect(headers[FREEBUFF_DEVICE_KEY_HEADER]).toBe('key-1')
-    expect(headers[FREEBUFF_DEVICE_TIMESTAMP_HEADER]).toBe('1700000000000')
+    expect(headers[FUCKBUFF_DEVICE_KEY_HEADER]).toBe('key-1')
+    expect(headers[FUCKBUFF_DEVICE_TIMESTAMP_HEADER]).toBe('1700000000000')
     expect(await verifies(state.record!, headers, request)).toBe(true)
     // a different body, path or fetch id does not verify
     expect(await verifies(state.record!, headers, { ...request, body: '{}' })).toBe(false)
     expect(await verifies(state.record!, headers, { ...request, fetchId: null })).toBe(false)
 
     expect(calls).toHaveLength(1)
-    expect(calls[0]!.url).toBe(`https://api.test${FREEBUFF_DEVICE_KEYS_PATH}`)
+    expect(calls[0]!.url).toBe(`https://api.test${FUCKBUFF_DEVICE_KEYS_PATH}`)
     expect(new Headers(calls[0]!.init.headers).get('authorization')).toBe('Bearer tok-1')
     expect(JSON.parse(String(calls[0]!.init.body))).toEqual({
       publicKey: state.record!.publicKey,
@@ -116,14 +116,14 @@ describe('FreebuffDeviceSigner', () => {
   test('the key and its registration survive a restart; a new account or host registers once each', async () => {
     const { state, store } = memoryStore()
     const first = registrar()
-    await new FreebuffDeviceSigner({ store, client: 'cli', fetch: first.fetchImpl })
+    await new FuckbuffDeviceSigner({ store, client: 'cli', fetch: first.fetchImpl })
       .headers(ACCOUNT, { method: 'GET', url: 'https://api.test/x' })
     const publicKey = state.record!.publicKey
 
     const second = registrar(() => Response.json({ keyId: 'key-2' }))
-    const signer = new FreebuffDeviceSigner({ store, client: 'cli', fetch: second.fetchImpl })
+    const signer = new FuckbuffDeviceSigner({ store, client: 'cli', fetch: second.fetchImpl })
     const headers = await signer.headers(ACCOUNT, { method: 'GET', url: 'https://api.test/x' })
-    expect(headers[FREEBUFF_DEVICE_KEY_HEADER]).toBe('key-1')
+    expect(headers[FUCKBUFF_DEVICE_KEY_HEADER]).toBe('key-1')
     expect(second.calls).toHaveLength(0)
     expect(state.record!.publicKey).toBe(publicKey)
 
@@ -131,8 +131,8 @@ describe('FreebuffDeviceSigner', () => {
     await signer.headers({ ...ACCOUNT, accountId: 'user-2' }, { method: 'GET', url: 'https://api.test/x' })
     await signer.headers({ ...ACCOUNT, apiHost: 'https://other.test' }, { method: 'GET', url: 'https://other.test/x' })
     expect(second.calls.map((c) => c.url)).toEqual([
-      `https://api.test${FREEBUFF_DEVICE_KEYS_PATH}`,
-      `https://other.test${FREEBUFF_DEVICE_KEYS_PATH}`,
+      `https://api.test${FUCKBUFF_DEVICE_KEYS_PATH}`,
+      `https://other.test${FUCKBUFF_DEVICE_KEYS_PATH}`,
     ])
     await signer.settled()
     expect(Object.keys(state.record!.registrations)).toHaveLength(3)
@@ -141,11 +141,11 @@ describe('FreebuffDeviceSigner', () => {
   test('concurrent first requests share one registration', async () => {
     const { store } = memoryStore()
     const { calls, fetchImpl } = registrar()
-    const signer = new FreebuffDeviceSigner({ store, client: 'desktop', fetch: fetchImpl })
+    const signer = new FuckbuffDeviceSigner({ store, client: 'desktop', fetch: fetchImpl })
     const all = await Promise.all(
       [1, 2, 3].map(() => signer.headers(ACCOUNT, { method: 'GET', url: 'https://api.test/x' })),
     )
-    expect(all.every((h) => h[FREEBUFF_DEVICE_KEY_HEADER] === 'key-1')).toBe(true)
+    expect(all.every((h) => h[FUCKBUFF_DEVICE_KEY_HEADER] === 'key-1')).toBe(true)
     expect(calls).toHaveLength(1)
   })
 
@@ -153,12 +153,12 @@ describe('FreebuffDeviceSigner', () => {
     const { store } = memoryStore()
     let next = 1
     const { calls, fetchImpl } = registrar(() => Response.json({ keyId: `key-${next++}` }))
-    const signer = new FreebuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl })
+    const signer = new FuckbuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl })
     const request = { method: 'GET', url: 'https://api.test/x' }
-    expect((await signer.headers(ACCOUNT, request))[FREEBUFF_DEVICE_KEY_HEADER]).toBe('key-1')
+    expect((await signer.headers(ACCOUNT, request))[FUCKBUFF_DEVICE_KEY_HEADER]).toBe('key-1')
     signer.forgetRegistration(ACCOUNT)
     await signer.settled()
-    expect((await signer.headers(ACCOUNT, request))[FREEBUFF_DEVICE_KEY_HEADER]).toBe('key-2')
+    expect((await signer.headers(ACCOUNT, request))[FUCKBUFF_DEVICE_KEY_HEADER]).toBe('key-2')
     expect(calls).toHaveLength(2)
   })
 
@@ -166,7 +166,7 @@ describe('FreebuffDeviceSigner', () => {
     const { store } = memoryStore()
     let now = 1_000
     const { calls, fetchImpl } = registrar(() => new Response('nope', { status: 404 }))
-    const signer = new FreebuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl, now: () => now })
+    const signer = new FuckbuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl, now: () => now })
     const request = { method: 'GET', url: 'https://api.test/x' }
     expect(await signer.headers(ACCOUNT, request)).toEqual({})
     expect(await signer.headers(ACCOUNT, request)).toEqual({})
@@ -179,7 +179,7 @@ describe('FreebuffDeviceSigner', () => {
   test('register: false never registers or generates, but signs with a registration it has', async () => {
     const { state, store } = memoryStore()
     const { calls, fetchImpl } = registrar()
-    const signer = new FreebuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl })
+    const signer = new FuckbuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl })
     const request = { method: 'GET', url: 'https://api.test/api/v1/freebuff/models' }
     expect(await signer.headers(ACCOUNT, request, { register: false })).toEqual({})
     expect(calls).toHaveLength(0)
@@ -187,14 +187,14 @@ describe('FreebuffDeviceSigner', () => {
 
     await signer.headers(ACCOUNT, request)
     const headers = await signer.headers(ACCOUNT, request, { register: false })
-    expect(headers[FREEBUFF_DEVICE_KEY_HEADER]).toBe('key-1')
+    expect(headers[FUCKBUFF_DEVICE_KEY_HEADER]).toBe('key-1')
     expect(await verifies(state.record!, headers, request)).toBe(true)
   })
 
   test('no WebCrypto Ed25519: nothing is signed, stored or registered', async () => {
     const { state, store } = memoryStore()
     const { calls, fetchImpl } = registrar()
-    const signer = new FreebuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl, subtle: null })
+    const signer = new FuckbuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl, subtle: null })
     expect(await signer.headers(ACCOUNT, { method: 'GET', url: 'https://api.test/x' })).toEqual({})
     expect(calls).toHaveLength(0)
     expect(state.record).toBeNull()
@@ -208,7 +208,7 @@ describe('FreebuffDeviceSigner', () => {
         throw new Error('Ed25519 not supported')
       },
     } as unknown as SubtleCrypto
-    const signer = new FreebuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl, subtle: refusing })
+    const signer = new FuckbuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl, subtle: refusing })
     expect(await signer.headers(ACCOUNT, { method: 'GET', url: 'https://api.test/x' })).toEqual({})
     expect(calls).toHaveLength(0)
   })
@@ -216,7 +216,7 @@ describe('FreebuffDeviceSigner', () => {
   test('a store that cannot be read turns signing off instead of replacing the key', async () => {
     const save = mock(async () => {})
     const { calls, fetchImpl } = registrar()
-    const signer = new FreebuffDeviceSigner({
+    const signer = new FuckbuffDeviceSigner({
       store: {
         load: async () => {
           throw new Error('keychain refused')
@@ -241,17 +241,17 @@ describe('FreebuffDeviceSigner', () => {
       await gate
       return Response.json({ keyId: 'late' })
     }) as unknown as typeof fetch
-    const signer = new FreebuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl, waitMs: 20 })
+    const signer = new FuckbuffDeviceSigner({ store, client: 'cli', fetch: fetchImpl, waitMs: 20 })
     const request = { method: 'GET', url: 'https://api.test/x' }
     expect(await signer.headers(ACCOUNT, request)).toEqual({})
     release()
     await new Promise((resolve) => setTimeout(resolve, 10))
-    expect((await signer.headers(ACCOUNT, request))[FREEBUFF_DEVICE_KEY_HEADER]).toBe('late')
+    expect((await signer.headers(ACCOUNT, request))[FUCKBUFF_DEVICE_KEY_HEADER]).toBe('late')
   })
 
   test('an account without a known id is scoped by its token', async () => {
     const { calls, fetchImpl } = registrar()
-    const signer = new FreebuffDeviceSigner({ store: memoryStore().store, client: 'cli', fetch: fetchImpl })
+    const signer = new FuckbuffDeviceSigner({ store: memoryStore().store, client: 'cli', fetch: fetchImpl })
     const anon = { token: 't-a', apiHost: 'https://api.test' }
     await signer.headers(anon, { method: 'GET', url: 'https://api.test/x' })
     await signer.headers(anon, { method: 'GET', url: 'https://api.test/x' })
@@ -260,11 +260,11 @@ describe('FreebuffDeviceSigner', () => {
   })
 })
 
-test('isFreebuffDeviceKeyUnknownError matches device-key codes only', () => {
-  expect(isFreebuffDeviceKeyUnknownError('freebuff_device_key_unknown')).toBe(true)
-  expect(isFreebuffDeviceKeyUnknownError('device_key_not_found')).toBe(true)
-  expect(isFreebuffDeviceKeyUnknownError('invalid_device_key')).toBe(true)
-  expect(isFreebuffDeviceKeyUnknownError('freebuff_catalog_stale')).toBe(false)
-  expect(isFreebuffDeviceKeyUnknownError('not_found')).toBe(false)
-  expect(isFreebuffDeviceKeyUnknownError(undefined)).toBe(false)
+test('isFuckbuffDeviceKeyUnknownError matches device-key codes only', () => {
+  expect(isFuckbuffDeviceKeyUnknownError('fuckbuff_device_key_unknown')).toBe(true)
+  expect(isFuckbuffDeviceKeyUnknownError('device_key_not_found')).toBe(true)
+  expect(isFuckbuffDeviceKeyUnknownError('invalid_device_key')).toBe(true)
+  expect(isFuckbuffDeviceKeyUnknownError('fuckbuff_catalog_stale')).toBe(false)
+  expect(isFuckbuffDeviceKeyUnknownError('not_found')).toBe(false)
+  expect(isFuckbuffDeviceKeyUnknownError(undefined)).toBe(false)
 })

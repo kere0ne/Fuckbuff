@@ -1,4 +1,4 @@
-import { FREEBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { publisher } from '../constants'
 import {
@@ -18,7 +18,7 @@ export const createFilePicker = (
   return {
     displayName: 'Fletcher the File Fetcher',
     publisher,
-    model: FREEBUFF_GPT_6_LUNA_MODEL_ID,
+    model: FUCKBUFF_GPT_6_LUNA_MODEL_ID,
     reasoningOptions: {
       effort: 'none',
       exclude: true,

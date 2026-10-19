@@ -14,48 +14,48 @@
  * SUPPORTED entirely is one the server can only refuse, never coerce or
  * explain, and every released CLI and Desktop binary still holds this pick in
  * its compiled-in catalog — the retry loop that cost the limited tier 2.5x its
- * admissions in #1801. See FREEBUFF_PAUSED_FREE_MODEL_IDS and the
- * "Withdrawing it" section of docs/freebuff-ox-alpha.md.
+ * admissions in #1801. See FUCKBUFF_PAUSED_FREE_MODEL_IDS and the
+ * "Withdrawing it" section of docs/fuckbuff-ox-alpha.md.
  */
 import { describe, expect, it } from 'bun:test'
 
-import type { FreebuffModelOption } from '../constants/freebuff-models'
+import type { FuckbuffModelOption } from '../constants/fuckbuff-models'
 import {
-  DEFAULT_FREEBUFF_MODEL_ID,
-  FREEBUFF_MODELS,
-  FREEBUFF_PAUSED_FREE_MODEL_IDS,
-  FREEBUFF_WEB_GEO_EXEMPT_MODEL_IDS,
-  FREEBUFF_WEB_LIMITED_MODEL_IDS,
-  freebuffWithdrawnModelMessage,
-  isFreebuffPausedFreeModelId,
-  isFreebuffSessionModelAllowedForAccessTier,
-  isFreebuffWebModelAllowedForLimitedTier,
-  isSupportedFreebuffModelId,
-  LIMITED_FREEBUFF_MODEL_IDS,
-  FREEBUFF_MODEL_CONTEXT_WINDOWS,
-  FREEBUFF_OX_ALPHA_MAX_PRICE,
-  FREEBUFF_OX_ALPHA_MODEL_ID,
-  FREEBUFF_STANDARD_MODEL_IDS,
-  FREEBUFF_TRACED_MODEL_IDS,
-  FREEBUFF_WEB_ALL_MODELS,
-  FREEBUFF_WEB_MODELS,
-  FREEBUFF_WEB_PREMIUM_MODEL_IDS,
-  isFreebuffOxAlphaModelId,
-  isFreebuffWebModelId,
-  resolveFreebuffSessionModelForAccessTier,
-  SUPPORTED_FREEBUFF_MODELS,
-} from '../constants/freebuff-models'
+  DEFAULT_FUCKBUFF_MODEL_ID,
+  FUCKBUFF_MODELS,
+  FUCKBUFF_PAUSED_FREE_MODEL_IDS,
+  FUCKBUFF_WEB_GEO_EXEMPT_MODEL_IDS,
+  FUCKBUFF_WEB_LIMITED_MODEL_IDS,
+  fuckbuffWithdrawnModelMessage,
+  isFuckbuffPausedFreeModelId,
+  isFuckbuffSessionModelAllowedForAccessTier,
+  isFuckbuffWebModelAllowedForLimitedTier,
+  isSupportedFuckbuffModelId,
+  LIMITED_FUCKBUFF_MODEL_IDS,
+  FUCKBUFF_MODEL_CONTEXT_WINDOWS,
+  FUCKBUFF_OX_ALPHA_MAX_PRICE,
+  FUCKBUFF_OX_ALPHA_MODEL_ID,
+  FUCKBUFF_STANDARD_MODEL_IDS,
+  FUCKBUFF_TRACED_MODEL_IDS,
+  FUCKBUFF_WEB_ALL_MODELS,
+  FUCKBUFF_WEB_MODELS,
+  FUCKBUFF_WEB_PREMIUM_MODEL_IDS,
+  isFuckbuffOxAlphaModelId,
+  isFuckbuffWebModelId,
+  resolveFuckbuffSessionModelForAccessTier,
+  SUPPORTED_FUCKBUFF_MODELS,
+} from '../constants/fuckbuff-models'
 import {
-  FREEBUFF_ROOT_AGENT_IDS,
-  FREEBUFF_ROOT_AGENT_ID_BY_MODEL,
-  FREEBUFF_WEB_BASE3_AGENT_ID_BY_MODEL,
-  FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL,
+  FUCKBUFF_ROOT_AGENT_IDS,
+  FUCKBUFF_ROOT_AGENT_ID_BY_MODEL,
+  FUCKBUFF_WEB_BASE3_AGENT_ID_BY_MODEL,
+  FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL,
   FREE_MODE_AGENT_MODELS,
 } from '../constants/free-agents'
 
-const OX = FREEBUFF_OX_ALPHA_MODEL_ID
+const OX = FUCKBUFF_OX_ALPHA_MODEL_ID
 /** The catalog row survives the withdrawal; only the picker lists lose it. */
-const row = SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === OX)
+const row = SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === OX)
 
 describe('Ox Alpha is withdrawn from every surface', () => {
   /**
@@ -63,7 +63,7 @@ describe('Ox Alpha is withdrawn from every surface', () => {
    * carries its CLI root with it"). It flipped because the host ended the free
    * promotion, not because the measurements that justified widening it were
    * wrong — the four days of $0.0000 traffic recorded in
-   * docs/freebuff-ox-alpha.md all happened.
+   * docs/fuckbuff-ox-alpha.md all happened.
    *
    * What the flip costs is the thing the doc warned about in advance: on CLI
    * and Desktop the catalog ships INSIDE a binary, so removing the row here
@@ -71,37 +71,37 @@ describe('Ox Alpha is withdrawn from every surface', () => {
    * pause, asserted below.
    */
   it('is in no picker list on any surface', () => {
-    expect(FREEBUFF_MODELS.map((m) => m.id)).not.toContain(OX)
-    expect(FREEBUFF_WEB_MODELS.map((m) => m.id)).not.toContain(OX)
-    expect(FREEBUFF_WEB_ALL_MODELS.map((m) => m.id)).not.toContain(OX)
-    expect(isFreebuffWebModelId(OX)).toBe(false)
-    expect(isFreebuffWebModelId(OX, { includeGodOnly: true })).toBe(false)
+    expect(FUCKBUFF_MODELS.map((m) => m.id)).not.toContain(OX)
+    expect(FUCKBUFF_WEB_MODELS.map((m) => m.id)).not.toContain(OX)
+    expect(FUCKBUFF_WEB_ALL_MODELS.map((m) => m.id)).not.toContain(OX)
+    expect(isFuckbuffWebModelId(OX)).toBe(false)
+    expect(isFuckbuffWebModelId(OX, { includeGodOnly: true })).toBe(false)
   })
 
   it('is in no quota list, so nothing meters a row nothing may admit', () => {
-    expect(FREEBUFF_WEB_PREMIUM_MODEL_IDS as readonly string[]).not.toContain(
+    expect(FUCKBUFF_WEB_PREMIUM_MODEL_IDS as readonly string[]).not.toContain(
       OX,
     )
     // It was `premium: false`, which used to place it here via the
-    // `!premium` filter over FREEBUFF_WEB_ALL_MODELS. Leaving the catalog
+    // `!premium` filter over FUCKBUFF_WEB_ALL_MODELS. Leaving the catalog
     // dropped it from the derived list with no second edit — that derivation is
     // why the flag on the row could stay as written.
-    expect(FREEBUFF_STANDARD_MODEL_IDS as readonly string[]).not.toContain(OX)
+    expect(FUCKBUFF_STANDARD_MODEL_IDS as readonly string[]).not.toContain(OX)
   })
 
   it('reaches neither limited catalog, and the two still agree', () => {
-    expect(LIMITED_FREEBUFF_MODEL_IDS as readonly string[]).not.toContain(OX)
+    expect(LIMITED_FUCKBUFF_MODEL_IDS as readonly string[]).not.toContain(OX)
     expect(
-      FREEBUFF_WEB_GEO_EXEMPT_MODEL_IDS as readonly string[],
+      FUCKBUFF_WEB_GEO_EXEMPT_MODEL_IDS as readonly string[],
     ).not.toContain(OX)
-    expect(FREEBUFF_WEB_LIMITED_MODEL_IDS).not.toContain(OX)
+    expect(FUCKBUFF_WEB_LIMITED_MODEL_IDS).not.toContain(OX)
     // Both halves, because they are enforced in different places and only one
     // is visible to a user: the picker list decides whether the row is drawn,
     // the session gate decides whether a send works. A row that passes one and
-    // fails the other is the shape freebuff-offer-invariants.ts exists for —
+    // fails the other is the shape fuckbuff-offer-invariants.ts exists for —
     // and a withdrawal has to clear BOTH or it leaves that bug behind.
-    expect(isFreebuffWebModelAllowedForLimitedTier(OX)).toBe(false)
-    expect(isFreebuffSessionModelAllowedForAccessTier(OX, 'limited')).toBe(
+    expect(isFuckbuffWebModelAllowedForLimitedTier(OX)).toBe(false)
+    expect(isFuckbuffSessionModelAllowedForAccessTier(OX, 'limited')).toBe(
       false,
     )
   })
@@ -109,14 +109,14 @@ describe('Ox Alpha is withdrawn from every surface', () => {
   it('is refused at full access too', () => {
     // The pause is checked ahead of every other branch in this function, which
     // is what makes one list entry enough for both tiers.
-    expect(isFreebuffSessionModelAllowedForAccessTier(OX, 'full')).toBe(false)
+    expect(isFuckbuffSessionModelAllowedForAccessTier(OX, 'full')).toBe(false)
   })
 })
 
 describe('Ox Alpha is PAUSED, not deleted', () => {
   it('is on the pause list and answers the predicate', () => {
-    expect(FREEBUFF_PAUSED_FREE_MODEL_IDS).toContain(OX)
-    expect(isFreebuffPausedFreeModelId(OX)).toBe(true)
+    expect(FUCKBUFF_PAUSED_FREE_MODEL_IDS).toContain(OX)
+    expect(isFuckbuffPausedFreeModelId(OX)).toBe(true)
   })
 
   /**
@@ -126,15 +126,15 @@ describe('Ox Alpha is PAUSED, not deleted', () => {
    */
   it('stays a recognised id, so admission can explain rather than refuse', () => {
     expect(row).toBeDefined()
-    expect(isSupportedFreebuffModelId(OX)).toBe(true)
-    expect(resolveFreebuffSessionModelForAccessTier(OX, 'full')).toBe(OX)
+    expect(isSupportedFuckbuffModelId(OX)).toBe(true)
+    expect(resolveFuckbuffSessionModelForAccessTier(OX, 'full')).toBe(OX)
     // Named, not silently swapped: the client that sends this id is a released
     // binary whose picker still lists it, so the user is told what happened.
-    const message = freebuffWithdrawnModelMessage(OX)
+    const message = fuckbuffWithdrawnModelMessage(OX)
     expect(message).toContain('Ox Alpha')
     expect(message).toContain('no longer available')
     expect(message).not.toContain(OX)
-    expect(message).not.toBe(freebuffWithdrawnModelMessage('nonexistent/model'))
+    expect(message).not.toBe(fuckbuffWithdrawnModelMessage('nonexistent/model'))
   })
 
   /**
@@ -143,7 +143,7 @@ describe('Ox Alpha is PAUSED, not deleted', () => {
    * for an id no picker offers any more.
    */
   it('coerces to the tier default at limited access', () => {
-    expect(resolveFreebuffSessionModelForAccessTier(OX, 'limited')).not.toBe(OX)
+    expect(resolveFuckbuffSessionModelForAccessTier(OX, 'limited')).not.toBe(OX)
   })
 
   it('keeps its roots wired so live sessions drain instead of failing', () => {
@@ -151,11 +151,11 @@ describe('Ox Alpha is PAUSED, not deleted', () => {
     // deploy as the pause fails running turns mid-flight with
     // free_mode_invalid_agent_model. The door is shut in front of a session,
     // not under it.
-    expect(FREEBUFF_ROOT_AGENT_ID_BY_MODEL[OX]).toBe('base2-free-ox-alpha')
-    expect(FREEBUFF_WEB_BASE3_AGENT_ID_BY_MODEL[OX]).toBe('base3-free-ox-alpha')
-    expect(FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL[OX]).toBe('base3-free-ox-alpha')
+    expect(FUCKBUFF_ROOT_AGENT_ID_BY_MODEL[OX]).toBe('base2-free-ox-alpha')
+    expect(FUCKBUFF_WEB_BASE3_AGENT_ID_BY_MODEL[OX]).toBe('base3-free-ox-alpha')
+    expect(FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL[OX]).toBe('base3-free-ox-alpha')
     for (const id of ['base2-free-ox-alpha', 'base3-free-ox-alpha']) {
-      expect(FREEBUFF_ROOT_AGENT_IDS as readonly string[]).toContain(id)
+      expect(FUCKBUFF_ROOT_AGENT_IDS as readonly string[]).toContain(id)
       // Still pinned to exactly one model. A withdrawn root that widened would
       // be a door onto everything it allows, opened by nobody watching.
       expect([...(FREE_MODE_AGENT_MODELS[id] ?? [])]).toEqual([OX])
@@ -163,8 +163,8 @@ describe('Ox Alpha is PAUSED, not deleted', () => {
   })
 
   it('is not the default anywhere, and never was', () => {
-    expect(DEFAULT_FREEBUFF_MODEL_ID).not.toBe(OX)
-    expect(FREEBUFF_MODELS[0]?.id).not.toBe(OX)
+    expect(DEFAULT_FUCKBUFF_MODEL_ID).not.toBe(OX)
+    expect(FUCKBUFF_MODELS[0]?.id).not.toBe(OX)
   })
 })
 
@@ -175,20 +175,20 @@ describe('the fence and the row survive the withdrawal', () => {
     // ever restored — the one decision here that must not be "cleaned up"
     // together with the picker entry. Raising either number without giving the
     // model a quota is the mistake this has always existed to stop.
-    expect(FREEBUFF_OX_ALPHA_MAX_PRICE.prompt).toBe(0)
-    expect(FREEBUFF_OX_ALPHA_MAX_PRICE.completion).toBe(0)
+    expect(FUCKBUFF_OX_ALPHA_MAX_PRICE.prompt).toBe(0)
+    expect(FUCKBUFF_OX_ALPHA_MAX_PRICE.completion).toBe(0)
   })
 
   it('still matches dated builds, so a variant cannot escape the pause', () => {
     // The predicate now guards two things at once: the price fence on the
-    // OpenRouter lane, and — via freebuffModelIdMatches inside
-    // isFreebuffPausedFreeModelId — the withdrawal itself. A dated variant that
+    // OpenRouter lane, and — via fuckbuffModelIdMatches inside
+    // isFuckbuffPausedFreeModelId — the withdrawal itself. A dated variant that
     // slipped past would be the same model with both gates off.
-    expect(isFreebuffOxAlphaModelId(OX)).toBe(true)
-    expect(isFreebuffOxAlphaModelId('stealth/ox-alpha-20260820')).toBe(true)
-    expect(isFreebuffOxAlphaModelId('stealth/ox-beta')).toBe(false)
-    expect(isFreebuffOxAlphaModelId(null)).toBe(false)
-    expect(isFreebuffPausedFreeModelId('stealth/ox-alpha-20260820')).toBe(true)
+    expect(isFuckbuffOxAlphaModelId(OX)).toBe(true)
+    expect(isFuckbuffOxAlphaModelId('stealth/ox-alpha-20260820')).toBe(true)
+    expect(isFuckbuffOxAlphaModelId('stealth/ox-beta')).toBe(false)
+    expect(isFuckbuffOxAlphaModelId(null)).toBe(false)
+    expect(isFuckbuffPausedFreeModelId('stealth/ox-alpha-20260820')).toBe(true)
   })
 
   it('keeps its context window and its data disclosure', () => {
@@ -198,10 +198,10 @@ describe('the fence and the row survive the withdrawal', () => {
     // and the warning is the one row in the catalog where a disclosure does NOT
     // imply `dataUse: 'training'` — the host retains prompts and does not train
     // on them, so the warning is owed and the training label is not.
-    expect(FREEBUFF_MODEL_CONTEXT_WINDOWS[OX]).toBe(1_000_000)
+    expect(FUCKBUFF_MODEL_CONTEXT_WINDOWS[OX]).toBe(1_000_000)
     expect(row?.warning).toBe('Anonymous provider retains prompts')
     expect(row?.dataUse).toBe('service')
-    expect(FREEBUFF_TRACED_MODEL_IDS as readonly string[]).not.toContain(OX)
+    expect(FUCKBUFF_TRACED_MODEL_IDS as readonly string[]).not.toContain(OX)
   })
 
   it('no longer claims to be NEW', () => {
@@ -212,7 +212,7 @@ describe('the fence and the row survive the withdrawal', () => {
     // Read through the shared option type rather than off the `as const` row:
     // dropping the field narrows the literal type until `row.isNew` is a
     // compile error, which proves the point but cannot be asserted.
-    expect((row as FreebuffModelOption | undefined)?.isNew).toBeUndefined()
+    expect((row as FuckbuffModelOption | undefined)?.isNew).toBeUndefined()
     expect(row?.experimental).toBe(true)
   })
 })

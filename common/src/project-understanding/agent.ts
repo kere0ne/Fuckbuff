@@ -1,18 +1,18 @@
 /**
  * The project-understanding agent: a read-only agent that looks over a project and fills
- * in the backend's project-understanding template (docs/freebuff-project-understanding.md).
+ * in the backend's project-understanding template (docs/fuckbuff-project-understanding.md).
  *
  * Built at runtime from the template the backend served, so the sections it
  * fills in (and the output schema it is held to) change with a web deploy.
  * Everything that makes a request recognisably the project-understanding agent is fixed here and
  * mirrored on the server: the agent id, the one model, the opening of the
- * system prompt (FREEBUFF_ROOT_SYSTEM_PROMPT_OPENINGS and root-prompt-shape.ts)
+ * system prompt (FUCKBUFF_ROOT_SYSTEM_PROMPT_OPENINGS and root-prompt-shape.ts)
  * and the tools (subagent-prompt-gate.ts). Change one and the other in the same
  * PR, or the completions route refuses every profile.
  */
 import {
-  FREEBUFF_PROJECT_UNDERSTANDING_AGENT_ID,
-  FREEBUFF_PROJECT_UNDERSTANDING_MODEL_ID,
+  FUCKBUFF_PROJECT_UNDERSTANDING_AGENT_ID,
+  FUCKBUFF_PROJECT_UNDERSTANDING_MODEL_ID,
 } from '../constants/free-agents'
 import { buildProjectUnderstandingOutputSchema } from './template'
 
@@ -22,7 +22,7 @@ import type { AgentDefinition } from '../templates/initial-agents-dir/types/agen
 
 /** The project-understanding agent's first sentence, at position 0 of its system prompt. */
 export const PROJECT_UNDERSTANDING_OPENING =
-  'You are Buffy, the project-understanding agent behind Freebuff.'
+  'You are Buffy, the project-understanding agent behind Fuckbuff.'
 
 /** The sentence that follows it (root-prompt-shape.ts pins the pair). */
 export const PROJECT_UNDERSTANDING_CONTINUATION =
@@ -31,7 +31,7 @@ export const PROJECT_UNDERSTANDING_CONTINUATION =
 /** Every tool the project-understanding agent offers its model. Read-only by construction: it can
  *  look at the project and report, nothing else. No `code_search`: its `cwd`
  *  and flags can name any path, so it cannot be held to the project the way
- *  the clients hold these three (docs/freebuff-project-understanding.md). */
+ *  the clients hold these three (docs/fuckbuff-project-understanding.md). */
 export const PROJECT_UNDERSTANDING_TOOL_NAMES = [
   'list_directory',
   'glob',
@@ -65,11 +65,11 @@ export const PROJECT_UNDERSTANDING_MAX_OUTPUT_TOKENS = 4_096
  *
  * OpenAI's STANDARD tier list prices. Luna is served through OpenRouter on
  * OpenAI's flex tier first, which is exactly half of standard on every term,
- * with standard behind it (FREEBUFF_GPT_6_LUNA_UPSTREAM_ORDER, whose comment
+ * with standard behind it (FUCKBUFF_GPT_6_LUNA_UPSTREAM_ORDER, whose comment
  * documents both cards), so on OpenAI's endpoints the estimate is an upper
  * bound and the usual bill is about half of it. (OpenRouter's fallback may
  * still land on a dearer endpoint, e.g. Bedrock at ~1.1x standard; the hard
- * ceiling is FREEBUFF_GPT_6_LUNA_MAX_PRICE, which OpenRouter enforces by
+ * ceiling is FUCKBUFF_GPT_6_LUNA_MAX_PRICE, which OpenRouter enforces by
  * refusing to route above it.) There is no server-side Luna rate card to pin
  * this to: OpenRouter reports each request's cost itself. agent-cost.test.ts
  * pins it to the documented list and under that ceiling.
@@ -176,9 +176,9 @@ export function buildProjectUnderstandingAgent(
   template: ProjectUnderstandingTemplate,
 ): AgentDefinition {
   return {
-    id: FREEBUFF_PROJECT_UNDERSTANDING_AGENT_ID,
+    id: FUCKBUFF_PROJECT_UNDERSTANDING_AGENT_ID,
     displayName: 'Project understanding',
-    model: FREEBUFF_PROJECT_UNDERSTANDING_MODEL_ID,
+    model: FUCKBUFF_PROJECT_UNDERSTANDING_MODEL_ID,
     // Exactly what the Luna file helpers send (agents/file-explorer/): on
     // OpenAI `none` is reasoning off by itself. The completions route pins the
     // same value (subagent-prompt-gate.ts).

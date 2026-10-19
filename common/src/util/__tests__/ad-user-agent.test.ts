@@ -27,8 +27,8 @@ describe('getAdUserAgent', () => {
 
 describe('resolveGravityUserAgent', () => {
   test.each([
-    ['Freebuff-CLI/0.0.140', 'Freebuff-CLI/0.0.140'],
-    ['  Freebuff-CLI/0.0.140 ', 'Freebuff-CLI/0.0.140'],
+    ['Fuckbuff-CLI/0.0.140', 'Fuckbuff-CLI/0.0.140'],
+    ['  Fuckbuff-CLI/0.0.140 ', 'Fuckbuff-CLI/0.0.140'],
     ['Bun/1.3.11', 'Bun/1.3.11'],
     ['', 'Mozilla/5.0 fallback'],
     ['   ', 'Mozilla/5.0 fallback'],

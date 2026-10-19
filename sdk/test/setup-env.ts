@@ -41,13 +41,13 @@ const serverDefaults: Record<string, string> = {
 // Ops knobs that must NOT leak from a developer or operator shell into tests.
 // CI unit jobs are secretless, but local shells can still carry rollout state.
 // Tests that want the other setting set process.env themselves.
-process.env.FREEBUFF_GOD_QUOTA_EXEMPT = 'on'
+process.env.FUCKBUFF_GOD_QUOTA_EXEMPT = 'on'
 
 // Integration CI imports production secrets. Fixture campaigns must never
 // notify the real ads channel; notification tests inject their own transport.
-delete process.env.FREEBUFF_ADS_SLACK_WEBHOOK_URL
+delete process.env.FUCKBUFF_ADS_SLACK_WEBHOOK_URL
 // Submission fixtures must never update real Loops contacts or enroll leads.
-process.env.FREEBUFF_ADS_LEAD_NURTURE = 'off'
+process.env.FUCKBUFF_ADS_LEAD_NURTURE = 'off'
 // Fixture users, prompts and signups must never reach Vectoral's real feed
 // with the production key. Vectoral's own tests inject `apiKey` and `fetch`.
 delete process.env.VECTORAL_API_KEY
@@ -57,7 +57,7 @@ delete process.env.PRELUDE_API_KEY
 // The CPM leg defaults ON in production (COD-677: un-pausing an invoiced CPM
 // campaign is the only switch). Route tests written before that assume it
 // absent; the ones that exercise it set the knob themselves.
-process.env.FREEBUFF_FIRST_PARTY_CPM_LEG ??= 'off'
+process.env.FUCKBUFF_FIRST_PARTY_CPM_LEG ??= 'off'
 
 for (const [key, value] of Object.entries(testDefaults)) {
   if (!process.env[key]) {
@@ -82,5 +82,5 @@ process.env.BUN_ENV ||= 'test'
 // No test anywhere ships telemetry to the production Axiom dataset, even if the
 // caller's environment claims NEXT_PUBLIC_CB_ENVIRONMENT is prod. Desktop server
 // children are spawned with { ...process.env }, so they inherit this too.
-// An explicit override still wins (freebuff-desktop's log-shipper.test.ts opts in).
-process.env.FREEBUFF_SHIP_LOGS ??= 'false'
+// An explicit override still wins (fuckbuff-desktop's log-shipper.test.ts opts in).
+process.env.FUCKBUFF_SHIP_LOGS ??= 'false'

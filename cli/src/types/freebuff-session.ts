@@ -1,14 +1,14 @@
-export type { FreebuffSessionServerResponse } from '@codebuff/common/types/freebuff-session'
+export type { FuckbuffSessionServerResponse } from '@codebuff/common/types/fuckbuff-session'
 
-import type { FreebuffSessionServerResponse } from '@codebuff/common/types/freebuff-session'
+import type { FuckbuffSessionServerResponse } from '@codebuff/common/types/fuckbuff-session'
 
 /**
  * CLI session shape. Most states are wire-level `/api/v1/freebuff/session`
  * responses; `takeover_prompt` asks before displacing a server-named holder
  * at capacity (or taking over the legacy single-session trial).
  */
-export type FreebuffSessionResponse =
-  | FreebuffSessionServerResponse
+export type FuckbuffSessionResponse =
+  | FuckbuffSessionServerResponse
   | {
       status: 'takeover_prompt'
       model: string
@@ -17,4 +17,4 @@ export type FreebuffSessionResponse =
       message?: string
     }
 
-export type FreebuffSessionStatus = FreebuffSessionResponse['status']
+export type FuckbuffSessionStatus = FuckbuffSessionResponse['status']

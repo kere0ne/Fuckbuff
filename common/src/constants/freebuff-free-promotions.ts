@@ -1,4 +1,4 @@
-import { SOLAR_PRICE_CHANGES } from './freebuff-solar-promo'
+import { SOLAR_PRICE_CHANGES } from './fuckbuff-solar-promo'
 
 /**
  * Spans in which a model is free to the user, and whose provider cost must
@@ -93,7 +93,7 @@ function windowsFromPriceSchedule(
   return windows
 }
 
-export const FREEBUFF_FREE_PROMOTION_SPEND_WINDOWS: readonly FreePromotionSpendWindow[] =
+export const FUCKBUFF_FREE_PROMOTION_SPEND_WINDOWS: readonly FreePromotionSpendWindow[] =
   Object.freeze(windowsFromPriceSchedule(SOLAR_PRICE_CHANGES))
 
 /** Whether `modelId` was free to the user at `at` — the same question the SQL
@@ -103,7 +103,7 @@ export function isFreePromotionSpendAt(
   at: number | Date,
 ): boolean {
   const t = typeof at === 'number' ? at : at.getTime()
-  return FREEBUFF_FREE_PROMOTION_SPEND_WINDOWS.some(
+  return FUCKBUFF_FREE_PROMOTION_SPEND_WINDOWS.some(
     (window) =>
       window.modelId === modelId &&
       t >= Date.parse(window.from) &&

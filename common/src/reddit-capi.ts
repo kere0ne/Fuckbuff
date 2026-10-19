@@ -170,7 +170,7 @@ export async function sendRedditCustomConversion(
         headers: {
           Authorization: `Bearer ${params.accessToken}`,
           'Content-Type': 'application/json',
-          'User-Agent': 'freebuff/1.0 (reddit-capi)',
+          'User-Agent': 'fuckbuff/1.0 (reddit-capi)',
         },
         body: JSON.stringify(body),
         signal: AbortSignal.timeout(3_000),

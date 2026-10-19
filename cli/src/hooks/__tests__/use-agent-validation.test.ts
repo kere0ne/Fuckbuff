@@ -33,7 +33,7 @@ test('uses local agent validation without a hosted request while BYOK is selecte
   globalThis.fetch = recordingFetch(calls)
 
   const result = await validateSelectedAgentDefinitions([], {
-    isFreebuff: true,
+    isFuckbuff: true,
   })
 
   expect(shouldValidateAgentsRemotely(true)).toBe(false)
@@ -41,12 +41,12 @@ test('uses local agent validation without a hosted request while BYOK is selecte
   expect(calls).toEqual([])
 })
 
-test('uses the hosted validator after switching back to Freebuff', async () => {
+test('uses the hosted validator after switching back to Fuckbuff', async () => {
   const calls: string[] = []
   globalThis.fetch = recordingFetch(calls)
 
   const result = await validateSelectedAgentDefinitions([], {
-    isFreebuff: true,
+    isFuckbuff: true,
   })
 
   expect(shouldValidateAgentsRemotely(true)).toBe(true)
@@ -55,7 +55,7 @@ test('uses the hosted validator after switching back to Freebuff', async () => {
   expect(new URL(calls[0]).pathname).toBe('/api/agents/validate')
 })
 
-test('keeps remote validation in a non-Freebuff CLI even with a stale BYOK selection', () => {
+test('keeps remote validation in a non-Fuckbuff CLI even with a stale BYOK selection', () => {
   useByokSelectionStore.getState().setSelected({
     id: 'stale-byok-connection',
     revision: 1,

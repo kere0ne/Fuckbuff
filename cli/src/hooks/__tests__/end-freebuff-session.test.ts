@@ -2,16 +2,16 @@ import { afterEach, beforeEach, describe, expect, spyOn, test } from 'bun:test'
 
 import { getCurrentChatId } from '../../project-files'
 import { useChatStore } from '../../state/chat-store'
-import { useFreebuffSessionStore } from '../../state/freebuff-session-store'
+import { useFuckbuffSessionStore } from '../../state/fuckbuff-session-store'
 import * as auth from '../../utils/auth'
-import { IS_FREEBUFF } from '../../utils/constants'
+import { IS_FUCKBUFF } from '../../utils/constants'
 import { getUserMessage } from '../../utils/message-history'
-import { returnToFreebuffLanding } from '../use-freebuff-session'
+import { returnToFuckbuffLanding } from '../use-fuckbuff-session'
 
-// Exercise the command's real transition in Freebuff mode:
-// FREEBUFF_MODE=true bun test src/hooks/__tests__/end-freebuff-session.test.ts
+// Exercise the command's real transition in Fuckbuff mode:
+// FUCKBUFF_MODE=true bun test src/hooks/__tests__/end-fuckbuff-session.test.ts
 // The React poll controller is absent; the transition still owns release/reset.
-describe.skipIf(!IS_FREEBUFF)('end-session transition', () => {
+describe.skipIf(!IS_FUCKBUFF)('end-session transition', () => {
   let authSpy: ReturnType<typeof spyOn>
   let fetchSpy: ReturnType<typeof spyOn>
   const session = {
@@ -31,21 +31,21 @@ describe.skipIf(!IS_FREEBUFF)('end-session transition', () => {
     fetchSpy = spyOn(globalThis, 'fetch').mockRejectedValue(
       new Error('offline'),
     )
-    useFreebuffSessionStore.getState().setSession(session)
+    useFuckbuffSessionStore.getState().setSession(session)
     useChatStore.getState().setMessages([getUserMessage('Keep my work')])
   })
   afterEach(() => {
     authSpy.mockRestore()
     fetchSpy.mockRestore()
-    useFreebuffSessionStore.getState().setSession(null)
-    useFreebuffSessionStore.getState().setFailure(null)
+    useFuckbuffSessionStore.getState().setSession(null)
+    useFuckbuffSessionStore.getState().setFailure(null)
     useChatStore.getState().reset()
   })
 
   test('failed end preserves history and identity, explains retry, then resets on confirmation', async () => {
     const original = useChatStore.getState().messages[0]
     const originalChatId = getCurrentChatId()
-    await expect(returnToFreebuffLanding({ resetChat: true })).rejects.toThrow(
+    await expect(returnToFuckbuffLanding({ resetChat: true })).rejects.toThrow(
       'offline',
     )
     expect(useChatStore.getState().messages[0]).toEqual(original)
@@ -53,19 +53,19 @@ describe.skipIf(!IS_FREEBUFF)('end-session transition', () => {
     expect(JSON.stringify(useChatStore.getState().messages)).toContain(
       'Retry /end-session',
     )
-    expect(useFreebuffSessionStore.getState().session).toEqual(session)
+    expect(useFuckbuffSessionStore.getState().session).toEqual(session)
     fetchSpy.mockResolvedValue(
       Response.json({ status: 'ended', freebucksRefund: 4 }),
     )
     // Keep the ids from colliding: they are millisecond timestamps.
     await new Promise((resolve) => setTimeout(resolve, 2))
-    await returnToFreebuffLanding({ resetChat: true })
+    await returnToFuckbuffLanding({ resetChat: true })
     expect(useChatStore.getState().messages).toHaveLength(0)
     // The next session saves to a new chat, so the ended one stays in /history.
     expect(getCurrentChatId()).not.toBe(originalChatId)
-    expect(useFreebuffSessionStore.getState().lastRefund).toBe(4)
+    expect(useFuckbuffSessionStore.getState().lastRefund).toBe(4)
     for (const [, init] of fetchSpy.mock.calls) {
-      expect(new Headers(init.headers).get('x-freebuff-instance-id')).toBe(
+      expect(new Headers(init.headers).get('x-fuckbuff-instance-id')).toBe(
         'held-cli',
       )
     }
@@ -80,8 +80,8 @@ describe.skipIf(!IS_FREEBUFF)('end-session transition', () => {
         }),
     )
     const replacementChatId = getCurrentChatId()
-    const ending = returnToFreebuffLanding({ resetChat: true })
-    useFreebuffSessionStore
+    const ending = returnToFuckbuffLanding({ resetChat: true })
+    useFuckbuffSessionStore
       .getState()
       .setSession({ ...session, instanceId: 'new-cli' })
     const replacement = getUserMessage('New work')
@@ -90,6 +90,6 @@ describe.skipIf(!IS_FREEBUFF)('end-session transition', () => {
     await ending
     expect(useChatStore.getState().messages).toEqual([replacement])
     expect(getCurrentChatId()).toBe(replacementChatId)
-    expect(useFreebuffSessionStore.getState().lastRefund).toBeNull()
+    expect(useFuckbuffSessionStore.getState().lastRefund).toBeNull()
   })
 })

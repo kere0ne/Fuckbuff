@@ -32,7 +32,7 @@ export interface GenerateLoginUrlOptions {
   baseUrl: string
   fingerprintId: string
   via?: LoginVia
-  /** Explicit Freebuff CLI origin. Never use a fingerprint or auth token here. */
+  /** Explicit Fuckbuff CLI origin. Never use a fingerprint or auth token here. */
   cliFlowId?: string
 }
 

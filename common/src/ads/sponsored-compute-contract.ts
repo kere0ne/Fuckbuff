@@ -1,4 +1,4 @@
-import { FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '../constants/freebuff-model-ids'
+import { FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '../constants/fuckbuff-model-ids'
 import { SPONSORED_RUN_TOKEN_TTL_MS } from './sponsored-run-token'
 
 import type {
@@ -165,7 +165,7 @@ export function sponsoredComputeRunDeadlineMs(
 export const SPONSORED_RUNNING_SWEEP_GRACE_MS = 30 * 60_000
 
 /**
- * How long a Freebuff Web Accept may wait for its run to START before the
+ * How long a Fuckbuff Web Accept may wait for its run to START before the
  * stale sweep fails it (`web_start` in `sponsoredExecution.ts`), and before
  * the web worker refuses to start it.
  *
@@ -245,10 +245,10 @@ export type SponsoredComputePolicy = Readonly<{
 }>
 
 export type SponsoredComputePolicyEnv = {
-  FREEBUFF_SPONSORED_COMPUTE_ENABLED?: string
-  FREEBUFF_SPONSORED_COMPUTE_CAMPAIGN_IDS?: string
-  FREEBUFF_SPONSORED_COMPUTE_MODEL_ID?: string
-  FREEBUFF_SPONSORED_COMPUTE_ACCEPTANCE_PRICE_CENTS?: string
+  FUCKBUFF_SPONSORED_COMPUTE_ENABLED?: string
+  FUCKBUFF_SPONSORED_COMPUTE_CAMPAIGN_IDS?: string
+  FUCKBUFF_SPONSORED_COMPUTE_MODEL_ID?: string
+  FUCKBUFF_SPONSORED_COMPUTE_ACCEPTANCE_PRICE_CENTS?: string
 }
 
 const UUID =
@@ -264,7 +264,7 @@ export function sponsoredComputeAcceptancePriceCents(
   return Number.isSafeInteger(cents) ? cents : null
 }
 
-/** The value of `FREEBUFF_SPONSORED_COMPUTE_CAMPAIGN_IDS` that admits every campaign. */
+/** The value of `FUCKBUFF_SPONSORED_COMPUTE_CAMPAIGN_IDS` that admits every campaign. */
 export const SPONSORED_COMPUTE_ALL_CAMPAIGNS = '*'
 
 function parseSponsoredComputeCampaigns(
@@ -299,18 +299,18 @@ export function sponsoredComputeAdmitsCampaign(
 export function readSponsoredComputePolicy(
   env: SponsoredComputePolicyEnv,
 ): SponsoredComputePolicy | null {
-  if (env.FREEBUFF_SPONSORED_COMPUTE_ENABLED !== 'true') return null
+  if (env.FUCKBUFF_SPONSORED_COMPUTE_ENABLED !== 'true') return null
   const acceptancePriceCents = sponsoredComputeAcceptancePriceCents(
-    env.FREEBUFF_SPONSORED_COMPUTE_ACCEPTANCE_PRICE_CENTS,
+    env.FUCKBUFF_SPONSORED_COMPUTE_ACCEPTANCE_PRICE_CENTS,
   )
-  const modelId = env.FREEBUFF_SPONSORED_COMPUTE_MODEL_ID?.trim()
+  const modelId = env.FUCKBUFF_SPONSORED_COMPUTE_MODEL_ID?.trim()
   const campaigns = parseSponsoredComputeCampaigns(
-    env.FREEBUFF_SPONSORED_COMPUTE_CAMPAIGN_IDS,
+    env.FUCKBUFF_SPONSORED_COMPUTE_CAMPAIGN_IDS,
   )
   if (
     acceptancePriceCents === null ||
     !modelId ||
-    modelId !== FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID ||
+    modelId !== FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID ||
     modelId.length > 128 ||
     !/^[a-zA-Z0-9._:/-]+$/.test(modelId) ||
     !campaigns

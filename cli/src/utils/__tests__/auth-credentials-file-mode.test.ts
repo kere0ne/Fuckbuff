@@ -47,7 +47,7 @@ describe('credentials file permissions', () => {
   let originalUmask: number
 
   beforeEach(() => {
-    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-cred-mode-'))
+    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-cred-mode-'))
     // A nested, not-yet-existing dir so saveUserCredentials creates it.
     configDir = path.join(tempRoot, 'config')
     credentialsPath = path.join(configDir, 'credentials.json')

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 
-import type { FreebuffModelOption } from '../constants/freebuff-models'
+import type { FuckbuffModelOption } from '../constants/fuckbuff-models'
 import {
   clampReasoningEffort,
   reasoningEffortRank,
@@ -11,23 +11,23 @@ import {
   EFFORTS_THROUGH_HIGH,
   EFFORTS_THROUGH_MAX,
   EFFORTS_THROUGH_XHIGH,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-  FREEBUFF_FABLE_5_1_MODEL_ID,
-  FREEBUFF_GLM_V52_MODEL_ID,
-  FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
-  FREEBUFF_KIMI_K3_ECO_MODEL_ID,
-  FREEBUFF_MIMO_V25_MODEL_ID,
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
-  FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
-  FREEBUFF_WEB_ALL_MODELS,
-  getFreebuffModelDefaultEffort,
-  getFreebuffModelEfforts,
-  getFreebuffModelReasoningEffort,
-  resolveFreebuffReasoningEffort,
-  SUPPORTED_FREEBUFF_MODELS,
-} from '../constants/freebuff-models'
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  FUCKBUFF_FABLE_5_1_MODEL_ID,
+  FUCKBUFF_GLM_V52_MODEL_ID,
+  FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
+  FUCKBUFF_KIMI_K3_ECO_MODEL_ID,
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
+  FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+  FUCKBUFF_WEB_ALL_MODELS,
+  getFuckbuffModelDefaultEffort,
+  getFuckbuffModelEfforts,
+  getFuckbuffModelReasoningEffort,
+  resolveFuckbuffReasoningEffort,
+  SUPPORTED_FUCKBUFF_MODELS,
+} from '../constants/fuckbuff-models'
 
 describe('the shared effort ladder', () => {
   test('is ordered ascending, because the clamp does index arithmetic on it', () => {
@@ -75,19 +75,19 @@ describe('the shared effort ladder', () => {
   })
 })
 
-// `as const satisfies FreebuffModelOption` gives each row a narrow literal
+// `as const satisfies FuckbuffModelOption` gives each row a narrow literal
 // type, so the union has no `efforts` property at all unless every member
 // declares one. Widening once here keeps the invariants readable.
-const ALL_ROWS: readonly FreebuffModelOption[] = [
-  ...SUPPORTED_FREEBUFF_MODELS,
-  ...FREEBUFF_WEB_ALL_MODELS,
+const ALL_ROWS: readonly FuckbuffModelOption[] = [
+  ...SUPPORTED_FUCKBUFF_MODELS,
+  ...FUCKBUFF_WEB_ALL_MODELS,
 ]
 
 describe('per-model effort ladders', () => {
   test('every ladder contains its default', () => {
     for (const model of ALL_ROWS) {
       if (!model.efforts?.length) continue
-      const dflt = getFreebuffModelDefaultEffort(model.id)!
+      const dflt = getFuckbuffModelDefaultEffort(model.id)!
       expect({
         id: model.id,
         containsDefault: model.efforts.includes(dflt),
@@ -104,11 +104,11 @@ describe('per-model effort ladders', () => {
   })
 
   test('GPT-5.6 Luna keeps its complete native ladder', () => {
-    expect(getFreebuffModelEfforts(FREEBUFF_GPT_5_6_LUNA_MODEL_ID)).toEqual(
+    expect(getFuckbuffModelEfforts(FUCKBUFF_GPT_5_6_LUNA_MODEL_ID)).toEqual(
       EFFORTS_THROUGH_MAX,
     )
     expect(
-      resolveFreebuffReasoningEffort(FREEBUFF_GPT_5_6_LUNA_MODEL_ID, undefined),
+      resolveFuckbuffReasoningEffort(FUCKBUFF_GPT_5_6_LUNA_MODEL_ID, undefined),
     ).toBe('high')
   })
 
@@ -117,43 +117,43 @@ describe('per-model effort ladders', () => {
   test('caps GPT-6.1 Sol and Muse Spark at high, GPT-6 Luna at xhigh, and fixes Gemini 3.8 Flash at high', () => {
     for (const id of [
       'openai/gpt-6.1-sol',
-      FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+      FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
       'meta/muse-spark-1.3-contributor',
     ]) {
-      expect(getFreebuffModelEfforts(id)).toEqual(['low', 'medium', 'high'])
-      expect(resolveFreebuffReasoningEffort(id, 'xhigh')).toBe('high')
-      expect(resolveFreebuffReasoningEffort(id, 'max')).toBe('high')
+      expect(getFuckbuffModelEfforts(id)).toEqual(['low', 'medium', 'high'])
+      expect(resolveFuckbuffReasoningEffort(id, 'xhigh')).toBe('high')
+      expect(resolveFuckbuffReasoningEffort(id, 'max')).toBe('high')
     }
     expect(
-      resolveFreebuffReasoningEffort(
-        FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+      resolveFuckbuffReasoningEffort(
+        FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
         undefined,
       ),
     ).toBe('high')
-    expect(getFreebuffModelEfforts('openai/gpt-6-luna')).toEqual([
+    expect(getFuckbuffModelEfforts('openai/gpt-6-luna')).toEqual([
       'low',
       'medium',
       'high',
       'xhigh',
     ])
-    expect(resolveFreebuffReasoningEffort('openai/gpt-6-luna', 'max')).toBe(
+    expect(resolveFuckbuffReasoningEffort('openai/gpt-6-luna', 'max')).toBe(
       'xhigh',
     )
-    expect(getFreebuffModelEfforts('google/gemini-3.8-flash')).toEqual([
+    expect(getFuckbuffModelEfforts('google/gemini-3.8-flash')).toEqual([
       'high',
     ])
     for (const requested of ['low', 'medium', 'xhigh', 'max'] as const) {
       expect(
-        resolveFreebuffReasoningEffort('google/gemini-3.8-flash', requested),
+        resolveFuckbuffReasoningEffort('google/gemini-3.8-flash', requested),
       ).toBe('high')
     }
   })
 
   test('Claude Fable 5.1 exposes every enabled effort', () => {
-    expect(getFreebuffModelEfforts(FREEBUFF_FABLE_5_1_MODEL_ID)).toEqual(
+    expect(getFuckbuffModelEfforts(FUCKBUFF_FABLE_5_1_MODEL_ID)).toEqual(
       EFFORTS_THROUGH_MAX,
     )
-    expect(getFreebuffModelDefaultEffort(FREEBUFF_FABLE_5_1_MODEL_ID)).toBe(
+    expect(getFuckbuffModelDefaultEffort(FUCKBUFF_FABLE_5_1_MODEL_ID)).toBe(
       'high',
     )
   })
@@ -163,15 +163,15 @@ describe('per-model effort ladders', () => {
     // requested→actual mapping for flash and pro, and low is a real template on
     // both. Medium is not, on either, so it must not appear as a rung.
     for (const id of [
-      FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-      FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+      FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+      FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
     ]) {
-      expect(getFreebuffModelEfforts(id)).toEqual(['low', 'high', 'max'])
-      expect(resolveFreebuffReasoningEffort(id, undefined)).toBe('high')
-      expect(getFreebuffModelReasoningEffort(id)).toBe('high')
-      expect(resolveFreebuffReasoningEffort(id, 'medium')).toBe('high')
-      expect(resolveFreebuffReasoningEffort(id, 'max')).toBe('max')
-      expect(resolveFreebuffReasoningEffort(id, 'low')).toBe('low')
+      expect(getFuckbuffModelEfforts(id)).toEqual(['low', 'high', 'max'])
+      expect(resolveFuckbuffReasoningEffort(id, undefined)).toBe('high')
+      expect(getFuckbuffModelReasoningEffort(id)).toBe('high')
+      expect(resolveFuckbuffReasoningEffort(id, 'medium')).toBe('high')
+      expect(resolveFuckbuffReasoningEffort(id, 'max')).toBe('max')
+      expect(resolveFuckbuffReasoningEffort(id, 'low')).toBe('low')
     }
   })
 
@@ -180,7 +180,7 @@ describe('per-model effort ladders', () => {
     // re-issuing tool calls), came back on 2026-09-01 as the only rung that
     // thought at all, and was removed again on 2026-10-07 by product: the
     // ladder stops at `high`.
-    expect(getFreebuffModelEfforts(FREEBUFF_GLM_V53_FLASH_MODEL_ID)).toEqual([
+    expect(getFuckbuffModelEfforts(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)).toEqual([
       'low',
       'high',
     ])
@@ -188,31 +188,31 @@ describe('per-model effort ladders', () => {
     // An UNTOUCHED turn must send an explicit rung: unset measures deeper
     // than `max` on agent prompts, so leaving it unset would undo the cap.
     expect(
-      getFreebuffModelReasoningEffort(FREEBUFF_GLM_V53_FLASH_MODEL_ID),
+      getFuckbuffModelReasoningEffort(FUCKBUFF_GLM_V53_FLASH_MODEL_ID),
     ).toBe('high')
     expect(
-      resolveFreebuffReasoningEffort(FREEBUFF_GLM_V53_FLASH_MODEL_ID, undefined),
+      resolveFuckbuffReasoningEffort(FUCKBUFF_GLM_V53_FLASH_MODEL_ID, undefined),
     ).toBe('high')
     expect(
-      getFreebuffModelDefaultEffort(FREEBUFF_GLM_V53_FLASH_MODEL_ID),
+      getFuckbuffModelDefaultEffort(FUCKBUFF_GLM_V53_FLASH_MODEL_ID),
     ).toBe('high')
 
     // A persisted `max` pick — CLI settings, a Desktop thread, a Web
     // preference — and `xhigh` both clamp DOWN to the cap.
     expect(
-      resolveFreebuffReasoningEffort(FREEBUFF_GLM_V53_FLASH_MODEL_ID, 'max'),
+      resolveFuckbuffReasoningEffort(FUCKBUFF_GLM_V53_FLASH_MODEL_ID, 'max'),
     ).toBe('high')
     expect(
-      resolveFreebuffReasoningEffort(FREEBUFF_GLM_V53_FLASH_MODEL_ID, 'xhigh'),
+      resolveFuckbuffReasoningEffort(FUCKBUFF_GLM_V53_FLASH_MODEL_ID, 'xhigh'),
     ).toBe('high')
     // Downward picks still work.
     expect(
-      resolveFreebuffReasoningEffort(FREEBUFF_GLM_V53_FLASH_MODEL_ID, 'low'),
+      resolveFuckbuffReasoningEffort(FUCKBUFF_GLM_V53_FLASH_MODEL_ID, 'low'),
     ).toBe('low')
     // Including through a dated provider snapshot, which must not dodge it.
     expect(
-      resolveFreebuffReasoningEffort(
-        `${FREEBUFF_GLM_V53_FLASH_MODEL_ID}-20260601`,
+      resolveFuckbuffReasoningEffort(
+        `${FUCKBUFF_GLM_V53_FLASH_MODEL_ID}-20260601`,
         'max',
       ),
     ).toBe('high')
@@ -220,21 +220,21 @@ describe('per-model effort ladders', () => {
 
   test('binary, adaptive, and ignored controls do not masquerade as ladders', () => {
     for (const id of [
-      FREEBUFF_MINIMAX_M3_MODEL_ID,
-      FREEBUFF_MIMO_V25_MODEL_ID,
-      FREEBUFF_GLM_V52_MODEL_ID,
-      FREEBUFF_KIMI_K3_ECO_MODEL_ID,
+      FUCKBUFF_MINIMAX_M3_MODEL_ID,
+      FUCKBUFF_MIMO_V25_MODEL_ID,
+      FUCKBUFF_GLM_V52_MODEL_ID,
+      FUCKBUFF_KIMI_K3_ECO_MODEL_ID,
     ]) {
-      expect(getFreebuffModelEfforts(id)).toBeNull()
-      expect(resolveFreebuffReasoningEffort(id, 'low')).toBeNull()
+      expect(getFuckbuffModelEfforts(id)).toBeNull()
+      expect(resolveFuckbuffReasoningEffort(id, 'low')).toBeNull()
     }
-    expect(resolveFreebuffReasoningEffort('some/unknown-model', 'high')).toBeNull()
+    expect(resolveFuckbuffReasoningEffort('some/unknown-model', 'high')).toBeNull()
   })
 
   test('a dated provider snapshot resolves like the undated id', () => {
     expect(
-      resolveFreebuffReasoningEffort(
-        `${FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID}-20260901`,
+      resolveFuckbuffReasoningEffort(
+        `${FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID}-20260901`,
         'low',
       ),
     ).toBe('low')

@@ -12,8 +12,8 @@ import { labBatchSelectionSchema } from './agentic-ad-lab'
  * exclude.
  */
 
-const LAB = '$HOME/.cache/freebuff-lab'
-const RC_MARK = '# freebuff-lab toolchain'
+const LAB = '$HOME/.cache/fuckbuff-lab'
+const RC_MARK = '# fuckbuff-lab toolchain'
 
 /**
  * Shadow the VM's own Node binaries for this chat only. `~/.local/bin` is first
@@ -47,7 +47,7 @@ set +u
 nvm install 22 >/dev/null 2>&1
 nvm alias default 22 >/dev/null
 set -u
-${profile(`export NVM_DIR="$HOME/.cache/freebuff-lab/nvm"
+${profile(`export NVM_DIR="$HOME/.cache/fuckbuff-lab/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"`)}
 ${HIDE_SYSTEM_NODE}`
 
@@ -58,7 +58,7 @@ if [ ! -x "$MISE" ]; then
   curl -fsSL https://mise.run | MISE_INSTALL_PATH="$MISE" sh >/dev/null 2>&1
 fi
 "$MISE" use --global node@22 >/dev/null 2>&1
-${profile(`export MISE_DATA_DIR="$HOME/.cache/freebuff-lab/mise"
+${profile(`export MISE_DATA_DIR="$HOME/.cache/fuckbuff-lab/mise"
 eval "$("$MISE_DATA_DIR/bin/mise" activate bash)"`)}
 ${HIDE_SYSTEM_NODE}`
 
@@ -68,7 +68,7 @@ if [ ! -x "$VOLTA_HOME/bin/volta" ]; then
   curl -fsSL https://get.volta.sh | bash -s -- --skip-setup >/dev/null 2>&1
 fi
 "$VOLTA_HOME/bin/volta" install node@22 >/dev/null 2>&1
-${profile(`export VOLTA_HOME="$HOME/.cache/freebuff-lab/volta"
+${profile(`export VOLTA_HOME="$HOME/.cache/fuckbuff-lab/volta"
 export PATH="$VOLTA_HOME/bin:$PATH"`)}
 ${HIDE_SYSTEM_NODE}`
 
@@ -83,7 +83,7 @@ if [ ! -x "$FNM_DIR/fnm" ]; then
 fi
 "$FNM_DIR/fnm" install 22 >/dev/null 2>&1
 "$FNM_DIR/fnm" default 22 >/dev/null 2>&1
-${profile(`export FNM_DIR="$HOME/.cache/freebuff-lab/fnm"
+${profile(`export FNM_DIR="$HOME/.cache/fuckbuff-lab/fnm"
 export PATH="$FNM_DIR:$PATH"
 eval "$(fnm env --shell bash)"`)}
 ${HIDE_SYSTEM_NODE}`
@@ -100,7 +100,7 @@ export PATH="$ASDF_DATA_DIR/bin:$ASDF_DATA_DIR/shims:$PATH"
 asdf plugin add nodejs >/dev/null 2>&1 || true
 asdf install nodejs 22.12.0 >/dev/null 2>&1
 (cd "$HOME" && asdf set --home nodejs 22.12.0)
-${profile(`export ASDF_DATA_DIR="$HOME/.cache/freebuff-lab/asdf"
+${profile(`export ASDF_DATA_DIR="$HOME/.cache/fuckbuff-lab/asdf"
 export PATH="$ASDF_DATA_DIR/bin:$ASDF_DATA_DIR/shims:$PATH"`)}
 ${HIDE_SYSTEM_NODE}`
 
@@ -142,8 +142,8 @@ if [ ! -x "$UV_INSTALL_DIR/uv" ]; then
   curl -LsSf https://astral.sh/uv/0.9.5/install.sh | env UV_INSTALL_DIR="$UV_INSTALL_DIR" UV_NO_MODIFY_PATH=1 sh >/dev/null 2>&1
 fi
 UV_PYTHON_INSTALL_DIR="${LAB}/uv-python" UV_PYTHON_BIN_DIR="${LAB}/uv-python/bin" "$UV_INSTALL_DIR/uv" python install 3.12 >/dev/null 2>&1
-${profile(`export PATH="$HOME/.cache/freebuff-lab/uv:$PATH"
-export UV_PYTHON_INSTALL_DIR="$HOME/.cache/freebuff-lab/uv-python"`)}
+${profile(`export PATH="$HOME/.cache/fuckbuff-lab/uv:$PATH"
+export UV_PYTHON_INSTALL_DIR="$HOME/.cache/fuckbuff-lab/uv-python"`)}
 mkdir -p "$HOME/.local/bin"
 for tool in python python3 pip pip3; do
   printf '#!/bin/sh\\necho "sh: 1: %s: not found" >&2\\nexit 127\\n' "$tool" > "$HOME/.local/bin/$tool"
@@ -153,7 +153,7 @@ done`
 /**
  * A second thread editing package.json while the sponsored run works in the
  * same checkout. Every 20 seconds, for at most 40 minutes, a detached writer
- * sets `freebuffLabConcurrentEdit` to its next count and logs that count
+ * sets `fuckbuffLabConcurrentEdit` to its next count and logs that count
  * outside the checkout. The probe stops it and compares.
  */
 const CONCURRENT_WRITER = `set -eu
@@ -162,7 +162,7 @@ rm -f "${LAB}/edits"
 [ -f package.json ] || { echo 'No package.json in this repository; the collision case needs one.' >&2; exit 3; }
 setsid nohup python3 -c '
 import json, os, time
-log = os.path.expanduser("~/.cache/freebuff-lab/edits")
+log = os.path.expanduser("~/.cache/fuckbuff-lab/edits")
 for n in range(1, 121):
     time.sleep(20)
     try:
@@ -172,7 +172,7 @@ for n in range(1, 121):
         with open(log, "a") as f:
             f.write("unreadable\\n")
         continue
-    data["freebuffLabConcurrentEdit"] = n
+    data["fuckbuffLabConcurrentEdit"] = n
     with open("package.json", "w") as f:
         json.dump(data, f, indent=2)
         f.write("\\n")
@@ -188,11 +188,11 @@ const CONCURRENT_PROBE = `if [ -s "${LAB}/writer.pid" ]; then
 fi
 python3 -c '
 import json, os
-log = os.path.expanduser("~/.cache/freebuff-lab/edits")
+log = os.path.expanduser("~/.cache/fuckbuff-lab/edits")
 lines = open(log).read().split() if os.path.exists(log) else []
 written = [int(x) for x in lines if x.isdigit()]
 try:
-    marker = json.load(open("package.json")).get("freebuffLabConcurrentEdit")
+    marker = json.load(open("package.json")).get("fuckbuffLabConcurrentEdit")
     valid = True
 except Exception:
     marker, valid = None, False
@@ -315,7 +315,7 @@ export const LAB_BATCH_SIGNUP_LABELS: Record<LabBatchSignup, string> = {
   mock: 'Mock (Yes, with a placeholder key)',
 }
 /** Not a secret and not a real key: what a `mock` batch connects. */
-export const LAB_MOCK_CREDENTIAL = 'freebuff-lab-mock-credential'
+export const LAB_MOCK_CREDENTIAL = 'fuckbuff-lab-mock-credential'
 
 export const labBatchInputSchema = z
   .object({

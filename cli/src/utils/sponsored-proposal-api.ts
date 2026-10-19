@@ -17,7 +17,7 @@ import type { SponsoredComputeGrant } from '@codebuff/common/ads/sponsored-compu
 import type { SponsoredFrictionInput } from '@codebuff/common/ads/sponsored-run-friction'
 import { createHash } from 'node:crypto'
 
-import { FREEBUFF_WEB_URL } from '../login/constants'
+import { FUCKBUFF_WEB_URL } from '../login/constants'
 
 import { getCliAdRequestUserAgent } from './ad-client-identity'
 import { logger } from './logger'
@@ -31,7 +31,7 @@ import type { SponsoredProposalRow } from '@codebuff/common/ads/sponsored-propos
  * `git grep convex -- cli/` is empty, and a websocket subscription to reach one
  * card is a dependency the terminal would carry on every launch.
  *
- * FREEBUFF.COM, not codebuff.com, which is where the display-ad calls go. The
+ * freebuff.com, not codebuff.com, which is where the display-ad calls go. The
  * Convex functions live on freebuff.com and the two web apps share one Postgres,
  * so the session token the CLI already holds signs in on either.
  *
@@ -181,7 +181,7 @@ export function sponsoredProcedureSha256(procedure: string): string {
  * The freebuff.com origin these calls go to.
  *
  * THE SAME CONSTANT THE LOGIN FLOW USES, deliberately. This read
- * `process.env.NEXT_PUBLIC_FREEBUFF_APP_URL` raw, which skipped both things
+ * `process.env.NEXT_PUBLIC_FUCKBUFF_APP_URL` raw, which skipped both things
  * that constant does: the `@codebuff/common/env` schema, so an unset or
  * mistyped variable fell back to production with nothing said; and the
  * `IS_DEV` localhost branch, so a developer's proposal traffic left their
@@ -189,7 +189,7 @@ export function sponsoredProcedureSha256(procedure: string): string {
  * real prefs and real dismissals against their real account from a dev build.
  */
 function baseUrl(): string {
-  return FREEBUFF_WEB_URL.replace(/\/+$/, '')
+  return FUCKBUFF_WEB_URL.replace(/\/+$/, '')
 }
 
 /**
@@ -411,7 +411,7 @@ async function callDetailed<T>(
     return {
       ok: false,
       status: 0,
-      message: 'Could not reach Freebuff.',
+      message: 'Could not reach Fuckbuff.',
       code: null,
     }
   }
@@ -452,7 +452,7 @@ async function getDetailed<T>(
     })
   } catch (error) {
     logger.debug({ error, path }, '[sponsored-proposal] request failed')
-    return { ok: false, status: 0, message: 'Could not reach Freebuff.' }
+    return { ok: false, status: 0, message: 'Could not reach Fuckbuff.' }
   }
   if (!response.ok) {
     return {
@@ -471,7 +471,7 @@ async function getDetailed<T>(
     return {
       ok: false,
       status: 502,
-      message: 'Freebuff did not return the reviewed task.',
+      message: 'Fuckbuff did not return the reviewed task.',
     }
   }
 }
@@ -525,18 +525,18 @@ async function upstreamRefusal(
     code,
     message:
       response.status === 401
-        ? 'Sign in to Freebuff to accept a sponsored task.'
-        : 'Freebuff refused this sponsored task.',
+        ? 'Sign in to Fuckbuff to accept a sponsored task.'
+        : 'Fuckbuff refused this sponsored task.',
   }
 }
 
 /**
  * The accept and state routes' refusal codes, as sentences a person can act on.
  *
- * THE SAME KEYS as Desktop's map (`freebuff-desktop/src/server/services/
- * proposals.ts`), in this surface's words: where Desktop says "update Freebuff
- * Desktop", a terminal says "update Freebuff". Before the funded codes were
- * mapped every one of them reached the terminal as "Freebuff refused this
+ * THE SAME KEYS as Desktop's map (`fuckbuff-desktop/src/server/services/
+ * proposals.ts`), in this surface's words: where Desktop says "update Fuckbuff
+ * Desktop", a terminal says "update Fuckbuff". Before the funded codes were
+ * mapped every one of them reached the terminal as "Fuckbuff refused this
  * sponsored task."
  */
 const PROPOSAL_ERROR_SENTENCES: Record<string, string> = {
@@ -548,9 +548,9 @@ const PROPOSAL_ERROR_SENTENCES: Record<string, string> = {
     'This sponsored task has nothing to do yet. Nothing was started.',
   invalid_state: 'This proposal is no longer on offer.',
   cloud_keyed:
-    'This proposal belongs to a Freebuff Cloud project. Open it in the web app.',
+    'This proposal belongs to a Fuckbuff Cloud project. Open it in the web app.',
   funded_accept_required:
-    'Update Freebuff to accept sponsored tasks. Nothing was started.',
+    'Update Fuckbuff to accept sponsored tasks. Nothing was started.',
   invalid_transition:
     'This sponsored task has already finished, so it could not be updated.',
   report_conflict:
@@ -565,7 +565,7 @@ const PROPOSAL_ERROR_SENTENCES: Record<string, string> = {
   accept_target_mismatch:
     'This sponsored task was offered for a different project. Nothing was started.',
   accept_surface_mismatch:
-    'This sponsored task was offered in a different Freebuff app. Nothing was started.',
+    'This sponsored task was offered in a different Fuckbuff app. Nothing was started.',
   execution_surface_mismatch:
     'This sponsored task was offered for a different kind of computer. Nothing was started.',
   execution_surface_unavailable:
@@ -573,7 +573,7 @@ const PROPOSAL_ERROR_SENTENCES: Record<string, string> = {
   unsupported_surface:
     'Sponsored tasks can’t be started here yet. Nothing was started.',
   client_update_required:
-    'Update Freebuff to accept this sponsored task. Nothing was started.',
+    'Update Fuckbuff to accept this sponsored task. Nothing was started.',
   invalid_binding:
     'This sponsored task no longer matches what you approved. Nothing was started.',
   accept_binding_changed:
@@ -581,18 +581,18 @@ const PROPOSAL_ERROR_SENTENCES: Record<string, string> = {
   accept_identity_conflict:
     'This sponsored task was already started with a different approval. Nothing new was started.',
   acceptance_evidence_missing:
-    'Freebuff could not finish starting this sponsored task. Try again in a moment.',
+    'Fuckbuff could not finish starting this sponsored task. Try again in a moment.',
   sponsor_billing_failed:
-    'Freebuff could not finish starting this sponsored task. Try again in a moment.',
+    'Fuckbuff could not finish starting this sponsored task. Try again in a moment.',
   sponsor_funding_unavailable:
-    'Freebuff could not finish starting this sponsored task. Try again in a moment.',
+    'Fuckbuff could not finish starting this sponsored task. Try again in a moment.',
   // Both permanent: the Accept is refused, and asking again changes nothing.
   sponsor_funding_refused:
     'The sponsor could not fund this task, so it was not started. Nothing in your project changed.',
   accept_expired:
     'This sponsored task can no longer be started: too much time has passed since it was accepted. Nothing in your project changed.',
   compute_grant_persistence_failed:
-    'Freebuff could not finish starting this sponsored task. Try again in a moment.',
+    'Fuckbuff could not finish starting this sponsored task. Try again in a moment.',
 }
 
 /** `snake_case` or a bare lowercase word: how the routes spell a code. */
@@ -666,7 +666,7 @@ export async function acceptSponsoredProposal(
       ok: false,
       status: 502,
       message:
-        'Freebuff accepted the proposal but did not return the task to run.',
+        'Fuckbuff accepted the proposal but did not return the task to run.',
     }
   }
   return { ok: true, accept: attempt.value }
@@ -717,7 +717,7 @@ export async function previewSponsoredProposal(
     return {
       ok: false,
       status: 502,
-      message: 'Freebuff returned an invalid reviewed task.',
+      message: 'Fuckbuff returned an invalid reviewed task.',
     }
   }
   return { ok: true, preview }

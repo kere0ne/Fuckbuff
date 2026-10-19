@@ -13,7 +13,7 @@
  *              deployed as the rollback.
  *
  * Neither backend copies a lead into the feedback hub: the hub is frozen
- * (docs/freebuff-feedback-hub.md).
+ * (docs/fuckbuff-feedback-hub.md).
  *
  * Imported by Convex as well as by the Next servers, so it must stay a leaf.
  * A flip is a reviewed one-line diff here, never an env var; the revert is the

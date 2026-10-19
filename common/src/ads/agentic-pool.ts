@@ -1,6 +1,6 @@
 /**
- * The AGENTIC POOL's wire contract, shared by Freebuff Desktop and the
- * `/api/ads` route (`freebuff/web/src/server/ads/agentic-pool.ts`).
+ * The AGENTIC POOL's wire contract, shared by Fuckbuff Desktop and the
+ * `/api/ads` route (`fuckbuff/web/src/server/ads/agentic-pool.ts`).
  *
  * Agentic cards -- a paid generic proposal (lane A) or a non-billable setup
  * invitation (lane B) -- used to be served IN the `Desktop-Inline-Chat`
@@ -25,7 +25,7 @@ export const AGENTIC_POOL_PLACEMENT_ID = 'Desktop-Agentic'
  * `agenticPoolVersion` on an `/api/ads` request: this client renders an
  * agentic card as its own element and takes BOTH `ads` and `invitation` from
  * one response. A released client never sends it, and the server keeps
- * today's behaviour for it whatever `FREEBUFF_AGENTIC_POOL` says.
+ * today's behaviour for it whatever `FUCKBUFF_AGENTIC_POOL` says.
  */
 export const AGENTIC_POOL_CLIENT_VERSION = 1
 
@@ -41,7 +41,7 @@ export const DEFAULT_AGENTIC_CPC_CENTS = 300
  * What an agentic Accept from a TIER 2 request bills at most, in cents
  * (COD-665): `min(campaign cpc, this)`. Only an Accept priced at its posted
  * CPC: a paced Accept pays the same price in every tier. Applied, frozen and charged only by
- * the agentic offer route (`freebuff/web/src/server/ads/agentic-pool.ts`,
+ * the agentic offer route (`fuckbuff/web/src/server/ads/agentic-pool.ts`,
  * which documents the rule); here so the advertiser console can name the
  * same figure when it explains why an effective CPC sits below the list CPC.
  */

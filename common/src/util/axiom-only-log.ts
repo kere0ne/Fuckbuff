@@ -4,7 +4,7 @@ import {
   ADS_BREAK_CLOSED_EVENT,
   ADS_BREAK_SHOWN_EVENT,
 } from '../ads/sponsor-break-events'
-import { PLACEMENT_SLOTS } from '../constants/freebuff-placements'
+import { PLACEMENT_SLOTS } from '../constants/fuckbuff-placements'
 import {
   FIRST_PARTY_VIEW_ACK_CLIENT_FAMILIES,
   FIRST_PARTY_VIEW_ACK_MAX_DURATION_MS,
@@ -535,7 +535,7 @@ const ADS_FETCH_COMPLETED_FIELDS = {
   experiment_arm: 'string',
   /**
    * Which ad Redis held this user's per-user ad state ('shared' |
-   * 'dedicated'); under FREEBUFF_AD_SERVING_REDIS=split it is the store A/B
+   * 'dedicated'); under FUCKBUFF_AD_SERVING_REDIS=split it is the store A/B
    * arm, the same value the request's `ad_impression.ad_redis_store` carries.
    */
   ad_redis_store: 'string',
@@ -641,7 +641,7 @@ const ADS_FETCH_COMPLETED_FIELDS = {
    * the arm has to be compared on. Reporting it only on break requests would
    * leave the cadence half of the hypothesis unmeasurable.
    *
-   * While `FREEBUFF_SPONSOR_BREAK_EXPERIMENT` is `off` this reads `control`
+   * While `FUCKBUFF_SPONSOR_BREAK_EXPERIMENT` is `off` this reads `control`
    * for everyone, which is the same value it carried before the field
    * existed -- so the knob's `off` state remains a true no-op.
    */
@@ -769,7 +769,7 @@ const ADS_FIRST_PARTY_DECISION_FIELDS = {
   frequency_max_reservation_ms: 'number',
   duration_ms: 'number',
   /**
-   * The L2 v0 ranker, present only while `FREEBUFF_FIRST_PARTY_RANKER` is not
+   * The L2 v0 ranker, present only while `FUCKBUFF_FIRST_PARTY_RANKER` is not
    * `off`: its mode and model version, the state of its evidence -- `ready`
    * (scoring produced scores), `unscored` (evidence, but nothing scorable),
    * `uncovered` (the newest window is not covered and nothing was retained)
@@ -1010,7 +1010,7 @@ const ADS_EXTERNAL_CONVERSION_POSTBACK_FIELDS = {
   settlement_status: 'string',
   charged_cents: 'number',
   duration_ms: 'number',
-  // Identity rail only (docs/freebuff-placements-conversions.md §16): how the
+  // Identity rail only (docs/fuckbuff-placements-conversions.md §16): how the
   // hashed-email lookup ended — matched | observed_match | unmatched |
   // ambiguous | gated | consent_denied — and 'none' on every click-id row.
   // Bounded by construction; never a digest, never a user.

@@ -1,9 +1,9 @@
 import type { SandboxJobName } from '../../constants/sandbox-jobs-runner'
 
 /**
- * The wire contract between the freebuff-jobs worker and freebuff-web's
- * `POST /api/admin/sandbox-jobs` (COD-742 E1; docs/freebuff-sandbox-jobs.md).
- * The worker owns the SCHEDULE (crontab, per-slot jobs, retries); freebuff-web
+ * The wire contract between the fuckbuff-jobs worker and fuckbuff-web's
+ * `POST /api/admin/sandbox-jobs` (COD-742 E1; docs/fuckbuff-sandbox-jobs.md).
+ * The worker owns the SCHEDULE (crontab, per-slot jobs, retries); fuckbuff-web
  * owns the EXECUTION, because the sweep bodies, the Daytona SDK wiring and the
  * Convex admin client all live there. The data stays in Convex either way.
  *

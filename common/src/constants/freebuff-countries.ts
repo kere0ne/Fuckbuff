@@ -9,7 +9,7 @@
  * cannot disagree about which countries get what.
  *
  * Groups are ranked by advertiser value per account (see
- * docs/freebuff-freebucks.md "Country tiers"). The union of the three
+ * docs/fuckbuff-freebucks.md "Country tiers"). The union of the three
  * full-access groups is the full-access allowlist; everywhere else, and any
  * VPN, is limited access.
  *
@@ -54,7 +54,7 @@ export const FREE_MODE_TIER_THREE_COUNTRIES = new Set([
   'KR',
 ])
 
-/** Countries whose users get the full Freebuff tier: the union of the three
+/** Countries whose users get the full Fuckbuff tier: the union of the three
  *  groups above. Everyone else gets the limited tier. */
 export const FREE_MODE_ALLOWED_COUNTRIES = new Set([
   ...FREE_MODE_TIER_ONE_COUNTRIES,

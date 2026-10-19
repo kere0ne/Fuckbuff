@@ -192,9 +192,9 @@ describe('visibleResponseAds', () => {
 })
 
 describe('shouldHideGravityAds', () => {
-  test('a disabled hook is hidden at every height, Freebuff included', () => {
+  test('a disabled hook is hidden at every height, Fuckbuff included', () => {
     // The landing screen relies on this to stop fetching for a slot it does
-    // not draw: Freebuff ignores the compact-height rule, `enabled` does not.
+    // not draw: Fuckbuff ignores the compact-height rule, `enabled` does not.
     for (const isFreeMode of [true, false]) {
       for (const terminalHeight of [10, 17, 18, 60]) {
         expect(
@@ -204,7 +204,7 @@ describe('shouldHideGravityAds', () => {
     }
   })
 
-  test('Freebuff keeps ads on compact terminals; Codebuff drops them', () => {
+  test('Fuckbuff keeps ads on compact terminals; Codebuff drops them', () => {
     expect(
       shouldHideGravityAds({
         enabled: true,

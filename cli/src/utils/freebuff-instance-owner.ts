@@ -3,11 +3,11 @@ import fs from 'fs'
 import path from 'path'
 
 import { getConfigDir } from './auth'
-import { freebuffCliAttemptId } from './freebuff-session-identity'
-import { isProcessAlive } from './freebuff-session-relaunch'
+import { fuckbuffCliAttemptId } from './fuckbuff-session-identity'
+import { isProcessAlive } from './fuckbuff-session-relaunch'
 import { logger } from './logger'
 
-interface FreebuffInstanceOwner {
+interface FuckbuffInstanceOwner {
   instanceId: string
   pid: number
   /** Absent in records written before 0.0.201 (e.g. 0.0.196). */
@@ -17,14 +17,14 @@ interface FreebuffInstanceOwner {
 const tokenKey = (token: string) =>
   createHash('sha256').update(token).digest('hex')
 
-const OWNER_FILE = 'freebuff-instance-owner.json'
+const OWNER_FILE = 'fuckbuff-instance-owner.json'
 
 const getOwnerPath = (): string => path.join(getConfigDir(), OWNER_FILE)
 
-function readOwner(): FreebuffInstanceOwner | null {
+function readOwner(): FuckbuffInstanceOwner | null {
   try {
     const raw = fs.readFileSync(getOwnerPath(), 'utf8')
-    const parsed = JSON.parse(raw) as Partial<FreebuffInstanceOwner>
+    const parsed = JSON.parse(raw) as Partial<FuckbuffInstanceOwner>
     if (
       typeof parsed.instanceId !== 'string' ||
       typeof parsed.pid !== 'number'
@@ -53,7 +53,7 @@ function isProcessRunning(pid: number): boolean {
   }
 }
 
-export function recordFreebuffInstanceOwner(
+export function recordFuckbuffInstanceOwner(
   instanceId: string,
   token?: string,
 ): void {
@@ -74,12 +74,12 @@ export function recordFreebuffInstanceOwner(
   } catch (error) {
     logger.debug(
       { error: error instanceof Error ? error.message : String(error) },
-      '[freebuff-session] Failed to record local owner',
+      '[fuckbuff-session] Failed to record local owner',
     )
   }
 }
 
-export function isFreebuffInstanceOwnedByDeadLocalProcess(
+export function isFuckbuffInstanceOwnedByDeadLocalProcess(
   instanceId: string,
 ): boolean {
   const owner = readOwner()
@@ -102,9 +102,9 @@ export function isFreebuffInstanceOwnedByDeadLocalProcess(
  * unknowable owner (only ESRCH counts as dead), this process, and a record
  * that names a different account.
  */
-export function deadLegacyFreebuffOwner(token: string): string | undefined {
+export function deadLegacyFuckbuffOwner(token: string): string | undefined {
   const owner = readOwner()
-  if (!owner || !owner.instanceId || freebuffCliAttemptId(owner.instanceId))
+  if (!owner || !owner.instanceId || fuckbuffCliAttemptId(owner.instanceId))
     return undefined
   if (owner.tokenKey !== undefined && owner.tokenKey !== tokenKey(token))
     return undefined
@@ -120,7 +120,7 @@ export function deadLegacyFreebuffOwner(token: string): string | undefined {
 
 /** The recorded hour is over (ended, expired, or not this account's): stop
  *  offering it to later launches. Leaves a record naming anything else. */
-export function forgetFreebuffInstanceOwner(instanceId: string): void {
+export function forgetFuckbuffInstanceOwner(instanceId: string): void {
   if (readOwner()?.instanceId !== instanceId) return
   try {
     fs.unlinkSync(getOwnerPath())

@@ -6,7 +6,7 @@ import type { Message } from '@codebuff/common/types/messages/codebuff-message'
  * A step that calls suggest_prompts with only a short lead-in ("Here's the
  * plan.") gets one more step, with a note to write the answer, instead of
  * ending the turn. Once per user prompt; cards beside a real answer still end
- * it. Why and how it was measured: docs/freebuff-muse-spark.md.
+ * it. Why and how it was measured: docs/fuckbuff-muse-spark.md.
  */
 export const SUGGEST_PROMPTS_BEFORE_ANSWER_TAG = 'SUGGEST_PROMPTS_BEFORE_ANSWER'
 export const SUGGEST_PROMPTS_BEFORE_ANSWER_MESSAGE =

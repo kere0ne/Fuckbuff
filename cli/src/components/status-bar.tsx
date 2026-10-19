@@ -1,4 +1,4 @@
-import { FREEBUFF_DEFAULT_CONTEXT_WINDOW } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_DEFAULT_CONTEXT_WINDOW } from '@codebuff/common/constants/fuckbuff-models'
 import { TextAttributes } from '@opentui/core'
 import React, { useEffect, useState } from 'react'
 
@@ -6,22 +6,22 @@ import { Button } from './button'
 import { ScrollToBottomButton } from './scroll-to-bottom-button'
 import { ShimmerText } from './shimmer-text'
 
-import { useFreebuffSessionProgress } from '../hooks/use-freebuff-session-progress'
+import { useFuckbuffSessionProgress } from '../hooks/use-fuckbuff-session-progress'
 import { useTheme } from '../hooks/use-theme'
 import { useChatStore } from '../state/chat-store'
-import { useFreebuffModelDirectory } from '../state/freebuff-catalog-store'
+import { useFuckbuffModelDirectory } from '../state/fuckbuff-catalog-store'
 import { useByokSelectionStore } from '../utils/byok'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { freebucksOf } from '../utils/freebucks'
 import { formatElapsedTime } from '../utils/format-elapsed-time'
 import { formatContextUsage } from '../utils/format-token-count'
 import {
-  FREEBUFF_COUNTDOWN_VISIBLE_MS,
-  formatFreebuffSessionCountdown,
-  formatFreebuffSessionRemaining,
-} from '../utils/freebuff-session-display'
+  FUCKBUFF_COUNTDOWN_VISIBLE_MS,
+  formatFuckbuffSessionCountdown,
+  formatFuckbuffSessionRemaining,
+} from '../utils/fuckbuff-session-display'
 
-import type { FreebuffSessionResponse } from '../types/freebuff-session'
+import type { FuckbuffSessionResponse } from '../types/fuckbuff-session'
 import type { StatusIndicatorState } from '../utils/status-indicator-state'
 
 /** A small status-bar action button with hover-bold styling. */
@@ -63,7 +63,7 @@ interface StatusBarProps {
   statusIndicatorState: StatusIndicatorState
   onStop?: () => void
   onEndSession?: () => void
-  freebuffSession: FreebuffSessionResponse | null
+  fuckbuffSession: FuckbuffSessionResponse | null
 }
 
 export const StatusBar = ({
@@ -73,7 +73,7 @@ export const StatusBar = ({
   statusIndicatorState,
   onStop,
   onEndSession,
-  freebuffSession,
+  fuckbuffSession,
 }: StatusBarProps) => {
   const theme = useTheme()
   const byok = useByokSelectionStore((state) => state.selected)
@@ -113,17 +113,17 @@ export const StatusBar = ({
     return () => clearInterval(interval)
   }, [timerStartTime, shouldShowTimer, statusIndicatorState?.kind])
 
-  const sessionProgress = useFreebuffSessionProgress(freebuffSession)
-  const modelDirectory = useFreebuffModelDirectory()
+  const sessionProgress = useFuckbuffSessionProgress(fuckbuffSession)
+  const modelDirectory = useFuckbuffModelDirectory()
   // A metered session is NOT unlimited, and the absence of `rateLimit` is no
   // longer evidence that it is: a Freebucks row carries no pool row at all, so
   // the old test reported "unlimited" for the one kind of session that was
   // actually bought. It still means unlimited off the meter, where an unpriced
   // row genuinely has no ceiling.
   const isUnlimited =
-    freebuffSession?.status === 'active' &&
-    !freebuffSession.rateLimit &&
-    freebucksOf(freebuffSession) === undefined
+    fuckbuffSession?.status === 'active' &&
+    !fuckbuffSession.rateLimit &&
+    freebucksOf(fuckbuffSession) === undefined
 
   // Context occupancy of the main agent only: subagent states never land in
   // mainAgentState, so their tokens are excluded by construction. The store's
@@ -137,9 +137,9 @@ export const StatusBar = ({
       state.runState?.sessionState?.mainAgentState?.contextTokenCount,
   )
   const contextWindow =
-    freebuffSession?.status === 'active'
-      ? modelDirectory.contextWindow(freebuffSession.model)
-      : FREEBUFF_DEFAULT_CONTEXT_WINDOW
+    fuckbuffSession?.status === 'active'
+      ? modelDirectory.contextWindow(fuckbuffSession.model)
+      : FUCKBUFF_DEFAULT_CONTEXT_WINDOW
   const contextUsage =
     contextTokenCount !== undefined
       ? formatContextUsage(contextTokenCount, contextWindow)
@@ -178,7 +178,7 @@ export const StatusBar = ({
         // The connection monitor starts optimistic; this state means a check failed.
         return (
           <span fg={theme.warning}>
-            {`Can't reach ${IS_FREEBUFF ? 'Freebuff' : 'Codebuff'}'s servers. Retrying… Try another network.`}
+            {`Can't reach ${IS_FUCKBUFF ? 'Fuckbuff' : 'Codebuff'}'s servers. Retrying… Try another network.`}
           </span>
         )
 
@@ -213,13 +213,13 @@ export const StatusBar = ({
         }
         if (sessionProgress !== null) {
           const isUrgent =
-            sessionProgress.remainingMs < FREEBUFF_COUNTDOWN_VISIBLE_MS
+            sessionProgress.remainingMs < FUCKBUFF_COUNTDOWN_VISIBLE_MS
           // One template string on purpose: conditional text-node children
           // inside a <span> trip OpenTUI's reconciler (see knowledge.md).
           const idleLabel = `${
             isUnlimited
               ? 'unlimited'
-              : formatFreebuffSessionRemaining(sessionProgress.remainingMs)
+              : formatFuckbuffSessionRemaining(sessionProgress.remainingMs)
           }${contextUsage ? ` · ${contextUsage}` : ''}`
           return (
             <span
@@ -251,7 +251,7 @@ export const StatusBar = ({
   const elapsedTimeContent = renderElapsedTime()
 
   // Show gray background when there's status indicator, timer, or when the
-  // freebuff session fill is visible (otherwise the fill would float over
+  // fuckbuff session fill is visible (otherwise the fill would float over
   // transparent space).
   const hasContent =
     statusIndicatorContent || elapsedTimeContent || sessionProgress !== null
@@ -329,18 +329,18 @@ export const StatusBar = ({
           )}
         {onEndSession &&
           statusIndicatorState.kind === 'idle' &&
-          freebuffSession?.status === 'active' && (
+          fuckbuffSession?.status === 'active' && (
             <StatusActionButton onClick={onEndSession}>
               ✕ End session
             </StatusActionButton>
           )}
         {sessionProgress !== null &&
-          sessionProgress.remainingMs < FREEBUFF_COUNTDOWN_VISIBLE_MS &&
+          sessionProgress.remainingMs < FUCKBUFF_COUNTDOWN_VISIBLE_MS &&
           statusIndicatorState.kind !== 'idle' &&
           !isUnlimited && (
             <text style={{ wrapMode: 'none' }}>
               <span fg={theme.warning} attributes={TextAttributes.BOLD}>
-                {formatFreebuffSessionCountdown(sessionProgress.remainingMs)}
+                {formatFuckbuffSessionCountdown(sessionProgress.remainingMs)}
               </span>
             </text>
           )}

@@ -35,7 +35,7 @@ async function loadSkillFromDisk(
     // when this process belongs to the user whose skills these are — an
     // interactive CLI on their own machine. On a server the same call resolves
     // to the SERVER's home while `projectRoot` points at someone else's
-    // checkout: on Freebuff Cloud that is a Daytona sandbox path, so a skill
+    // checkout: on Fuckbuff Cloud that is a Daytona sandbox path, so a skill
     // sitting in the web server's `~/.agents/skills` would be served in place
     // of the repo's own, and the result of this lookup WINS over the
     // pre-loaded cache (`diskSkill ?? skills[name]` below).

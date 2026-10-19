@@ -14,7 +14,7 @@
  * The run used to get a linked worktree, a branch, a commit and a pull request
  * the user asked for. It now edits the folder the user is in, commits nothing,
  * and is undone by `/ads:undo`. The trade is written down in the 2026-09-24
- * amendment to `docs/freebuff-sponsored-local-execution.md`; this file carries
+ * amendment to `docs/fuckbuff-sponsored-local-execution.md`; this file carries
  * it out: `.git` is read-only to the run (`readOnlyGitDir` on the SDK broker
  * plus the git-subcommand refusal), secret-bearing files are unreadable, and
  * every file-tool write is receipted so the undo can put it back
@@ -144,12 +144,12 @@ import { useSponsoredRunStore } from '../state/sponsored-run-store'
 import { getAuthToken } from './auth'
 import { getConfigDir } from './config-dir'
 import { getSystemProcessEnv } from './env'
-import { IS_FREEBUFF } from './constants'
+import { IS_FUCKBUFF } from './constants'
 import {
   getAgentIdForMode,
-  getFreebuffCliAgentIdForModel,
-} from './freebuff-agent-selection'
-import { isFreebuffCatalogMode } from '../state/freebuff-catalog-store'
+  getFuckbuffCliAgentIdForModel,
+} from './fuckbuff-agent-selection'
+import { isFuckbuffCatalogMode } from '../state/fuckbuff-catalog-store'
 import { logger } from './logger'
 import { atomicPrivateWrite, privateStateFile } from './private-state'
 import {
@@ -489,7 +489,7 @@ const TERMINAL_REPORT_RETRY_MAX_MS = 5 * 60_000
 
 /**
  * The funded Accept's retry schedule: Desktop's first four attempts
- * (`freebuff-desktop/src/server/services/sponsored-run.ts`). The Accept is
+ * (`fuckbuff-desktop/src/server/services/sponsored-run.ts`). The Accept is
  * idempotent per run id within the token's TTL, so a retry after a lost
  * response returns the same token rather than charging twice.
  */
@@ -498,7 +498,7 @@ const TERMINAL_REPORT_RETRY_MAX_MS = 5 * 60_000
  * what they approved (`checkSponsoredRunSpec`). The run is reported failed.
  */
 export const SPONSORED_RUN_SPEC_INVALID_COPY =
-  'Freebuff returned a sponsored task this version could not verify against what you approved. Nothing was started.'
+  'Fuckbuff returned a sponsored task this version could not verify against what you approved. Nothing was started.'
 
 export const ACCEPT_RETRY_DELAYS_MS = [1_000, 3_000, 9_000] as const
 
@@ -551,7 +551,7 @@ export function sponsoredTaskEvidence(
  *
  * The sponsored turn ran with fresh memory and wrote none back, so the agent
  * the user is talking to has no idea these files moved. Mirrors Desktop's
- * `sponsoredChangesBrief` (`freebuff-desktop/src/server/services/briefs.ts`).
+ * `sponsoredChangesBrief` (`fuckbuff-desktop/src/server/services/briefs.ts`).
  */
 export function sponsoredChangesBrief(
   advertiserName: string,
@@ -788,7 +788,7 @@ export class SponsoredRun {
     if (!authToken) {
       return {
         ok: false,
-        message: 'Sign in to Freebuff to review this sponsored task.',
+        message: 'Sign in to Fuckbuff to review this sponsored task.',
       }
     }
     const surface = this.deps.executionSurface()
@@ -881,7 +881,7 @@ export class SponsoredRun {
     if (!authToken) {
       return {
         ok: false,
-        message: 'Sign in to Freebuff to accept a sponsored task.',
+        message: 'Sign in to Fuckbuff to accept a sponsored task.',
       }
     }
     const prepared = this.prepared
@@ -966,7 +966,7 @@ export class SponsoredRun {
         this.prepared = null
         return {
           ok: false,
-          message: 'Freebuff returned a task different from the reviewed task.',
+          message: 'Fuckbuff returned a task different from the reviewed task.',
         }
       }
 
@@ -1264,8 +1264,8 @@ export class SponsoredRun {
     const agentId = (
       this.deps.agentId ??
       (() =>
-        isFreebuffCatalogMode()
-          ? getFreebuffCliAgentIdForModel(grant.modelId)
+        isFuckbuffCatalogMode()
+          ? getFuckbuffCliAgentIdForModel(grant.modelId)
           : getAgentIdForMode('LITE'))
     )()
     return {
@@ -1283,7 +1283,7 @@ export class SponsoredRun {
       agent: sponsoredAgentDefinition({
         agentId,
         model: grant.modelId,
-        isFreebuff: IS_FREEBUFF,
+        isFuckbuff: IS_FUCKBUFF,
         reportFriction: !!this.deps.reportFriction,
         requestSignup: !!accountStep,
       }),
@@ -1305,14 +1305,14 @@ export class SponsoredRun {
       ],
       overrideTools,
       // A signed one-run grant is the only route through sponsored metering.
-      // No Freebuff session id rides beside it: the run is not the user's to
+      // No Fuckbuff session id rides beside it: the run is not the user's to
       // pay for, so it must not fall back to their free session when absent.
       extraCodebuffMetadata: {
-        freebuff_sponsored_proposal_id: active.proposalId,
-        freebuff_sponsored_run_id: grant.runId,
-        freebuff_sponsored_procedure_sha256: grant.procedureSha256,
-        freebuff_sponsored_compute_token: grant.token,
-        freebuff_sponsored_surface: 'cli',
+        fuckbuff_sponsored_proposal_id: active.proposalId,
+        fuckbuff_sponsored_run_id: grant.runId,
+        fuckbuff_sponsored_procedure_sha256: grant.procedureSha256,
+        fuckbuff_sponsored_compute_token: grant.token,
+        fuckbuff_sponsored_surface: 'cli',
       },
       signal: active.abort.signal,
       cwd: this.projectRoot,

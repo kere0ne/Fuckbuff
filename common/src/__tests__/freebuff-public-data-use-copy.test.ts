@@ -3,14 +3,14 @@ import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 import {
-  FREEBUFF_AI_TRAINING_NOTICE,
-  FREEBUFF_DATA_USE_GENERATED_MARKDOWN_BLOCK,
-  FREEBUFF_DATA_USE_GENERATED_MDX_BLOCK,
-  FREEBUFF_POLICY_METADATA,
-  FREEBUFF_PUBLIC_DATA_USE_COPY,
-  renderFreebuffDataUseFaqMarkdown,
-  renderFreebuffDataUseFaqMdx,
-} from '../constants/freebuff-data-use'
+  FUCKBUFF_AI_TRAINING_NOTICE,
+  FUCKBUFF_DATA_USE_GENERATED_MARKDOWN_BLOCK,
+  FUCKBUFF_DATA_USE_GENERATED_MDX_BLOCK,
+  FUCKBUFF_POLICY_METADATA,
+  FUCKBUFF_PUBLIC_DATA_USE_COPY,
+  renderFuckbuffDataUseFaqMarkdown,
+  renderFuckbuffDataUseFaqMdx,
+} from '../constants/fuckbuff-data-use'
 
 const REPO_ROOT = resolve(import.meta.dir, '../../..')
 
@@ -31,16 +31,16 @@ function generatedBlock(
   return source.slice(start, end + markers.end.length)
 }
 
-describe('public Freebuff data-use copy', () => {
+describe('public Fuckbuff data-use copy', () => {
   test('the legal metadata stays aligned', () => {
-    expect(FREEBUFF_POLICY_METADATA).toEqual({
+    expect(FUCKBUFF_POLICY_METADATA).toEqual({
       version: '2026-11-12',
       effectiveDate: 'November 12, 2026',
       lastUpdated: 'October 13, 2026',
       privacyPolicyLastUpdated: 'October 18, 2026',
     })
-    expect(FREEBUFF_AI_TRAINING_NOTICE).toBe('May use data for AI training')
-    expect(FREEBUFF_PUBLIC_DATA_USE_COPY.storageAnswer).not.toContain(
+    expect(FUCKBUFF_AI_TRAINING_NOTICE).toBe('May use data for AI training')
+    expect(FUCKBUFF_PUBLIC_DATA_USE_COPY.storageAnswer).not.toContain(
       'Starting ',
     )
   })
@@ -48,23 +48,23 @@ describe('public Freebuff data-use copy', () => {
   test.each([
     [
       'README.md',
-      FREEBUFF_DATA_USE_GENERATED_MARKDOWN_BLOCK,
-      renderFreebuffDataUseFaqMarkdown(),
+      FUCKBUFF_DATA_USE_GENERATED_MARKDOWN_BLOCK,
+      renderFuckbuffDataUseFaqMarkdown(),
     ],
     [
-      'freebuff/cli/release/README.md',
-      FREEBUFF_DATA_USE_GENERATED_MARKDOWN_BLOCK,
-      renderFreebuffDataUseFaqMarkdown(),
+      'fuckbuff/cli/release/README.md',
+      FUCKBUFF_DATA_USE_GENERATED_MARKDOWN_BLOCK,
+      renderFuckbuffDataUseFaqMarkdown(),
     ],
     [
       'web/src/content/advanced/privacy.mdx',
-      FREEBUFF_DATA_USE_GENERATED_MDX_BLOCK,
-      renderFreebuffDataUseFaqMdx(),
+      FUCKBUFF_DATA_USE_GENERATED_MDX_BLOCK,
+      renderFuckbuffDataUseFaqMdx(),
     ],
     [
       'web/src/content/help/faq.mdx',
-      FREEBUFF_DATA_USE_GENERATED_MDX_BLOCK,
-      renderFreebuffDataUseFaqMdx(),
+      FUCKBUFF_DATA_USE_GENERATED_MDX_BLOCK,
+      renderFuckbuffDataUseFaqMdx(),
     ],
   ] as const)('%s matches canonical generated copy', (path, markers, copy) => {
     expect(generatedBlock(readRepoFile(path), markers)).toBe(copy)
@@ -72,7 +72,7 @@ describe('public Freebuff data-use copy', () => {
 
   test('landing-lab uses the canonical data-use FAQ', () => {
     expect(readRepoFile('landing-lab/src/components/sections/Faq.tsx'))
-      .toContain(`    q: '${FREEBUFF_PUBLIC_DATA_USE_COPY.storageQuestion}',
-    a: '${FREEBUFF_PUBLIC_DATA_USE_COPY.storageAnswer}',`)
+      .toContain(`    q: '${FUCKBUFF_PUBLIC_DATA_USE_COPY.storageQuestion}',
+    a: '${FUCKBUFF_PUBLIC_DATA_USE_COPY.storageAnswer}',`)
   })
 })

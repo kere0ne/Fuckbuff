@@ -3,7 +3,7 @@
  * already say what they could: lockfiles, generated files and files too large
  * to be a manifest or config file. A live run on a six-file Python project
  * spent most of ~100k input tokens reading `uv.lock`, whose name alone says
- * the project uses uv (docs/freebuff-project-understanding.md).
+ * the project uses uv (docs/fuckbuff-project-understanding.md).
  *
  * Shared by the SDK's opt-in read guard (`RunOptions.refuseNonTextFileReads`)
  * and the Cloud project-understanding agent's read_files wrapper, so both

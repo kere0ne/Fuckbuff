@@ -3,6 +3,6 @@
 // silently ignored, so keep additions deliberate and spelling exact.
 export const OPENROUTER_DEFAULT_HEADERS = {
   'HTTP-Referer': 'https://freebuff.com',
-  'X-OpenRouter-Title': 'Freebuff',
+  'X-OpenRouter-Title': 'Fuckbuff',
   'X-OpenRouter-Categories': 'cli-agent,cloud-agent',
 } as const

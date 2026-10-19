@@ -17,7 +17,7 @@ import {
  * `node:crypto` construction and against fixed vectors.
  */
 describe('hmacSha256', () => {
-  const secret = 'freebuff-placements-dev-tracking-secret-0000'
+  const secret = 'fuckbuff-placements-dev-tracking-secret-0000'
 
   test('is exactly createHmac(sha256).update().digest()', () => {
     const expected = createHmac('sha256', secret).update('203.0.113.7').digest()

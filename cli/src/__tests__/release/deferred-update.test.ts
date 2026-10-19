@@ -52,12 +52,12 @@ async function withFixture(
     configDir: string
   }) => Promise<void>,
 ) {
-  const root = mkdtempSync(join(tmpdir(), 'freebuff-deferred-update-'))
+  const root = mkdtempSync(join(tmpdir(), 'fuckbuff-deferred-update-'))
   const configDir = join(root, 'config')
   const archiveDir = join(root, 'archive')
   mkdirSync(configDir)
   mkdirSync(archiveDir)
-  const binaryName = process.platform === 'win32' ? 'freebuff.exe' : 'freebuff'
+  const binaryName = process.platform === 'win32' ? 'fuckbuff.exe' : 'fuckbuff'
   const target = `${process.platform}-${process.arch}`
   writeFileSync(join(archiveDir, binaryName), 'new binary')
   writeFileSync(join(archiveDir, 'tree-sitter.wasm'), 'new wasm')
@@ -80,11 +80,11 @@ async function withFixture(
   const originalEnv = {
     app: process.env.NEXT_PUBLIC_CODEBUFF_APP_URL,
     proxy: process.env.NO_PROXY,
-    target: process.env.FREEBUFF_BINARY_TARGET,
+    target: process.env.FUCKBUFF_BINARY_TARGET,
   }
   process.env.NEXT_PUBLIC_CODEBUFF_APP_URL = `http://127.0.0.1:${(server.address() as AddressInfo).port}`
   process.env.NO_PROXY = '127.0.0.1'
-  process.env.FREEBUFF_BINARY_TARGET = target
+  process.env.FUCKBUFF_BINARY_TARGET = target
   const output: string[] = []
   const errors: string[] = []
   const exits: number[] = []
@@ -101,8 +101,8 @@ async function withFixture(
 
   try {
     const launcher = createLauncher({
-      packageName: 'freebuff',
-      displayName: 'Freebuff',
+      packageName: 'fuckbuff',
+      displayName: 'Fuckbuff',
       configDir,
       deferUpdatesUntilExit: true,
     }).__testing
@@ -151,7 +151,7 @@ async function withFixture(
     for (const [key, value] of Object.entries({
       NEXT_PUBLIC_CODEBUFF_APP_URL: originalEnv.app,
       NO_PROXY: originalEnv.proxy,
-      FREEBUFF_BINARY_TARGET: originalEnv.target,
+      FUCKBUFF_BINARY_TARGET: originalEnv.target,
     })) {
       if (value === undefined) delete process.env[key]
       else process.env[key] = value
@@ -162,7 +162,7 @@ async function withFixture(
   }
 }
 
-describe('Freebuff updates wait for exit', () => {
+describe('Fuckbuff updates wait for exit', () => {
   test('a ready update leaves the process and its binary/WASM untouched until exit', async () => {
     await withFixture(
       async ({ child, config, check, finish, exits, output }) => {
@@ -195,7 +195,7 @@ describe('Freebuff updates wait for exit', () => {
         ).toBe('2.0.0')
         expect(existsSync(config.tempDownloadDir)).toBe(false)
         expect(output).toEqual([
-          'Updated Freebuff to 2.0.0. Ready for your next launch.',
+          'Updated Fuckbuff to 2.0.0. Ready for your next launch.',
         ])
       },
     )
@@ -225,7 +225,7 @@ describe('Freebuff updates wait for exit', () => {
         JSON.parse(readFileSync(config.metadataPath, 'utf8')).version,
       ).toBe('1.0.0')
       expect(exits).toEqual([7])
-      expect(errors.join('\n')).toContain('Could not install Freebuff update')
+      expect(errors.join('\n')).toContain('Could not install Fuckbuff update')
     })
   })
 
@@ -302,7 +302,7 @@ describe('an update the terminal closed on is installed on the next launch', () 
       ).toBe('2.0.0')
       expect(existsSync(dir)).toBe(false)
       expect(existsSync(`${config.tempDownloadDir}.adopting`)).toBe(false)
-      // Quiet: stdout may be piped (`freebuff --help | …`).
+      // Quiet: stdout may be piped (`fuckbuff --help | …`).
       expect(output).toEqual([])
     })
   })
@@ -323,7 +323,7 @@ describe('an update the terminal closed on is installed on the next launch', () 
     await withFixture(async ({ check, config, adopt }) => {
       await check()
       const binaryName =
-        process.platform === 'win32' ? 'freebuff.exe' : 'freebuff'
+        process.platform === 'win32' ? 'fuckbuff.exe' : 'fuckbuff'
       writeFileSync(join(config.tempDownloadDir, binaryName), 'truncat')
       const dir = orphan(config)
 
@@ -373,19 +373,19 @@ describe('an update the terminal closed on is installed on the next launch', () 
       await check()
       orphan(config)
       // Older leftovers: one complete, one cut short.
-      const older = join(configDir, `.freebuff-download-temp-${deadPid()}`)
+      const older = join(configDir, `.fuckbuff-download-temp-${deadPid()}`)
       mkdirSync(older)
       writeFileSync(
         join(older, 'staged.json'),
         JSON.stringify({ version: '1.5.0', target: 'linux-x64', files: {} }),
       )
-      mkdirSync(join(configDir, `.freebuff-download-temp-${deadPid()}`))
+      mkdirSync(join(configDir, `.fuckbuff-download-temp-${deadPid()}`))
 
       expect(await adopt()).toBe('2.0.0')
       expect(readFileSync(config.binaryPath, 'utf8')).toBe('new binary')
       expect(
         readdirSync(configDir).filter((name) =>
-          name.startsWith('.freebuff-download-temp-'),
+          name.startsWith('.fuckbuff-download-temp-'),
         ),
       ).toEqual([])
     })
@@ -404,7 +404,7 @@ describe('an update the terminal closed on is installed on the next launch', () 
           rmSync(blocker, { recursive: true, force: true })
         }
         expect(exits).toEqual([0])
-        expect(errors.join('\n')).toContain('Could not install Freebuff update')
+        expect(errors.join('\n')).toContain('Could not install Fuckbuff update')
         expect(readFileSync(config.binaryPath, 'utf8')).toBe('binary 1.0.0')
         expect(existsSync(join(config.tempDownloadDir, 'staged.json'))).toBe(
           true,

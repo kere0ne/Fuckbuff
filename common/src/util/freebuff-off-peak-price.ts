@@ -1,10 +1,10 @@
 import {
   formatWindowTimeZoneLabel,
   resolveWindowTimeZone,
-} from '../constants/freebuff-peak-hours'
-import type { FreebuffFreebucksInfo } from '../types/freebuff-session'
-import { freebuffMultiplierText } from './freebuff-hours'
-import { offPeakPriceAt, offPeakRuns } from './freebuff-price-changes'
+} from '../constants/fuckbuff-peak-hours'
+import type { FuckbuffFreebucksInfo } from '../types/fuckbuff-session'
+import { fuckbuffMultiplierText } from './fuckbuff-hours'
+import { offPeakPriceAt, offPeakRuns } from './fuckbuff-price-changes'
 import { getZonedYmd } from './zoned-time'
 
 /**
@@ -13,7 +13,7 @@ import { getZonedYmd } from './zoned-time'
  *
  * A FORMATTING FAILURE HERE MUST NOT REACH THE CALLER. Every call site renders
  * this inside a row map — Desktop's `HostedModelRows`, the CLI's model
- * selector, the Freebuff Web picker — so a throw does not lose a price pill,
+ * selector, the Fuckbuff Web picker — so a throw does not lose a price pill,
  * it takes down whatever error boundary encloses the picker. On Desktop that
  * is the whole thread pane (transcript and composer, replaced by
  * "Something went wrong"); 11 such crashes in 24 h on 2026-10-15/16 came
@@ -25,7 +25,7 @@ import { getZonedYmd } from './zoned-time'
  * `new Intl.DateTimeFormat`, "took the whole Cloud page down to its error
  * boundary: 25 crashes in the week to 2026-09-26", and was fixed by
  * `isSupportedTimeZone`/`resolveWindowTimeZone`
- * (`constants/freebuff-peak-hours.ts:133-142`). That guard covers the zone
+ * (`constants/fuckbuff-peak-hours.ts:133-142`). That guard covers the zone
  * NAME; it cannot cover a runtime whose `formatToParts` does not return the
  * parts it asked for, which is what `getZonedParts` throws on.
  *
@@ -39,7 +39,7 @@ import { getZonedYmd } from './zoned-time'
  */
 export function freebucksOffPeakCopy(
   info:
-    | Pick<FreebuffFreebucksInfo, 'prices' | 'offPeak'>
+    | Pick<FuckbuffFreebucksInfo, 'prices' | 'offPeak'>
     | null
     | undefined,
   modelId: string,
@@ -55,7 +55,7 @@ export function freebucksOffPeakCopy(
 
 function offPeakCopy(
   info:
-    | Pick<FreebuffFreebucksInfo, 'prices' | 'offPeak'>
+    | Pick<FuckbuffFreebucksInfo, 'prices' | 'offPeak'>
     | null
     | undefined,
   modelId: string,
@@ -85,13 +85,13 @@ function offPeakCopy(
 
 /**
  * One sentence: the EXCEPTION window — whichever price holds for fewer hours
- * a week — named, with its price as a usage multiplier (freebuff-hours.ts),
+ * a week — named, with its price as a usage multiplier (fuckbuff-hours.ts),
  * its hours on the reader's clock and the server's reason, then the other
- * price. Flash reads "Off-peak: 2x 3 PM–11 PM PDT, when Freebuff is quiet. 3x
+ * price. Flash reads "Off-peak: 2x 3 PM–11 PM PDT, when Fuckbuff is quiet. 3x
  * otherwise."; fast mode reads "Peak: 10x Sun–Thu, …".
  */
 function scheduleSentence(
-  offer: NonNullable<FreebuffFreebucksInfo['offPeak']>[string],
+  offer: NonNullable<FuckbuffFreebucksInfo['offPeak']>[string],
   now: number,
   zone: string,
 ) {
@@ -106,7 +106,7 @@ function scheduleSentence(
   const [rare, usual] = offPeak
     ? [offer.price, offer.regularPrice]
     : [offer.regularPrice, offer.price]
-  if (!first) return `${freebuffMultiplierText(offer.price)}.`
+  if (!first) return `${fuckbuffMultiplierText(offer.price)}.`
   const start = new Date(first.start)
   const end = new Date(first.end)
   const startZone = formatWindowTimeZoneLabel(start, zone)
@@ -117,7 +117,7 @@ function scheduleSentence(
     zone,
   )
   const reason = offer.reason ? `, ${offer.reason}` : ''
-  return `${offPeak ? 'Off-peak' : 'Peak'}: ${freebuffMultiplierText(rare)} ${days ? `${days}, ` : ''}${hours}${reason}. ${freebuffMultiplierText(usual)} otherwise.`
+  return `${offPeak ? 'Off-peak' : 'Peak'}: ${fuckbuffMultiplierText(rare)} ${days ? `${days}, ` : ''}${hours}${reason}. ${fuckbuffMultiplierText(usual)} otherwise.`
 }
 
 /** "3 PM", or "3:30 PM" in a zone off the hour. */

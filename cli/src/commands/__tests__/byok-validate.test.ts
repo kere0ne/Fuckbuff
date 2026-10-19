@@ -25,7 +25,7 @@ afterEach(() => {
 })
 
 function useProxy(ids: string[]) {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-byok-validate-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-byok-validate-'))
   directories.push(directory)
   setCliByokStoreForTests(
     createBunByokConnectionStore({

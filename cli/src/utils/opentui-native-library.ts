@@ -88,7 +88,7 @@ export function findEmbeddedRenderLibrary(
 function probeTempDirectory(directory: string): string | null {
   const probePath = path.join(
     directory,
-    `.freebuff-tmp-probe-${process.pid}-${Date.now()}`,
+    `.fuckbuff-tmp-probe-${process.pid}-${Date.now()}`,
   )
   try {
     writeFileSync(probePath, 'x'.repeat(4096), { flag: 'wx' })
@@ -117,20 +117,20 @@ export function describeRenderLibraryFailure(
   const tempProblem = probeTempDirectory(tempDir)
   let cause: string
   if (tempProblem) {
-    cause = `Your temp directory (${tempDir}) ${tempProblem}, and Freebuff unpacks its terminal renderer there on every start.`
+    cause = `Your temp directory (${tempDir}) ${tempProblem}, and Fuckbuff unpacks its terminal renderer there on every start.`
   } else if (/failed to map segment/i.test(detail)) {
-    cause = `Your temp directory (${tempDir}) does not allow running programs (it is probably mounted noexec), and Freebuff unpacks its terminal renderer there on every start.`
+    cause = `Your temp directory (${tempDir}) does not allow running programs (it is probably mounted noexec), and Fuckbuff unpacks its terminal renderer there on every start.`
   } else {
-    cause = `Freebuff unpacks its terminal renderer into your temp directory (${tempDir}) on every start, and loading it from there failed.`
+    cause = `Fuckbuff unpacks its terminal renderer into your temp directory (${tempDir}) on every start, and loading it from there failed.`
   }
   const lines = [
-    'Freebuff could not load its terminal renderer.',
+    'Fuckbuff could not load its terminal renderer.',
     '',
     cause,
-    `Free up space there, or start Freebuff with TMPDIR pointing at a writable directory that allows programs, for example:`,
+    `Free up space there, or start Fuckbuff with TMPDIR pointing at a writable directory that allows programs, for example:`,
     process.platform === 'win32'
-      ? '  set the TMPDIR environment variable to a folder such as %USERPROFILE%\\freebuff-tmp'
-      : '  mkdir -p "$HOME/.cache/freebuff-tmp" && TMPDIR="$HOME/.cache/freebuff-tmp" freebuff',
+      ? '  set the TMPDIR environment variable to a folder such as %USERPROFILE%\\fuckbuff-tmp'
+      : '  mkdir -p "$HOME/.cache/fuckbuff-tmp" && TMPDIR="$HOME/.cache/fuckbuff-tmp" fuckbuff',
     '',
     `Details: ${detail}`,
   ]
@@ -166,7 +166,7 @@ export async function installRenderLibrary(
     try {
       renameSync(staging, target)
     } catch (error) {
-      // Windows refuses to replace a DLL another Freebuff has loaded; that
+      // Windows refuses to replace a DLL another Fuckbuff has loaded; that
       // copy is the same content-addressed bytes, so use it.
       if (!existsSync(target) || statSync(target).size !== bytes.byteLength) {
         throw error

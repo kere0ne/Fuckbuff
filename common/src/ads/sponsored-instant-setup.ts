@@ -9,7 +9,7 @@
  *    hosts:
  *
  *        requires-credential: env=SIEVE_API_KEY label="Sieve API key" get_url=https://sieve.example/signup?bfcid={bfcid}
- *        instant-setup: env=SIEVE_API_KEY endpoint=https://api.sieve.example/freebuff/instant-setup
+ *        instant-setup: env=SIEVE_API_KEY endpoint=https://api.sieve.example/fuckbuff/instant-setup
  *
  *    When the run reaches the account step and the user agrees, freebuff.com
  *    signs a short-lived identity assertion for that exact endpoint, Desktop
@@ -49,7 +49,7 @@ const DIRECTIVE_LINE = /^\s*instant-setup\s*:\s*(.*?)\s*$/i
 const KNOWN_KEYS: ReadonlySet<string> = new Set(['env', 'endpoint'])
 
 /** The JWT `typ` header of the assertion, so it can never pass as an id token. */
-export const INSTANT_SETUP_ASSERTION_TYPE = 'freebuff-instant-setup+jwt'
+export const INSTANT_SETUP_ASSERTION_TYPE = 'fuckbuff-instant-setup+jwt'
 /** The assertion's lifetime. Long enough for one POST, short enough to be useless later. */
 export const INSTANT_SETUP_ASSERTION_TTL_SECONDS = 300
 /** How long Desktop waits for the advertiser's answer before falling back. */

@@ -106,7 +106,7 @@ describe('ensureSponsoredManagedNode', () => {
     )
     fs.mkdirSync(path.join(root, 'bin'), { recursive: true })
     fs.writeFileSync(path.join(root, 'bin', 'node'), '', { mode: 0o755 })
-    fs.writeFileSync(path.join(root, '.freebuff-verified'), LINUX_X64_SHA)
+    fs.writeFileSync(path.join(root, '.fuckbuff-verified'), LINUX_X64_SHA)
     const d = deps(new Uint8Array())
     expect(await ensureSponsoredManagedNode({ baseDir, ...TARGET }, d)).toEqual(
       { root, binDir: path.join(root, 'bin') },
@@ -124,7 +124,7 @@ describe('ensureSponsoredManagedNode', () => {
     expect(
       installedSponsoredManagedNode(baseDir, TARGET.platform, TARGET.arch),
     ).toBeNull()
-    fs.writeFileSync(path.join(root, '.freebuff-verified'), 'another hash')
+    fs.writeFileSync(path.join(root, '.fuckbuff-verified'), 'another hash')
     expect(
       installedSponsoredManagedNode(baseDir, TARGET.platform, TARGET.arch),
     ).toBeNull()

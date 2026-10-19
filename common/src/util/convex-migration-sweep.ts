@@ -2,7 +2,7 @@
  * The stale-migration sweep rules for users' self-host Convex migrations
  * (`convex_migrations`). Shared by the Convex cron (`convex_migration/status.ts`
  * `sweepStaleMigrations`, through `migration_run_rules.ts`) and its
- * freebuff-jobs port (`app_convex.sweep_stale_migrations`), so the two cannot
+ * fuckbuff-jobs port (`app_convex.sweep_stale_migrations`), so the two cannot
  * drift. Pure; no imports.
  */
 
@@ -43,7 +43,7 @@ export function isStaleMigration(input: {
 /** Human-readable name for the step a row was in when it stopped moving. */
 const MIGRATION_STEP_LABELS: Record<string, string> = {
   initiated: 'preparing (no data had been exported yet)',
-  exporting: 'exporting data out of the Freebuff deployment',
+  exporting: 'exporting data out of the Fuckbuff deployment',
   importing: 'importing data into the user\u2019s own deployment',
   updating_credentials: 'repointing the project at its new deployment',
 }

@@ -34,7 +34,7 @@
  * `ads/proposals.ts` and `ads/sponsoredExecution.ts` call the builder, and
  * Convex evaluates a function module's whole import graph on every call, so
  * this module must stay zod-free (pinned by a test under
- * `freebuff/web/convex/ads/__tests__/`). The metadata TYPE is read from the
+ * `fuckbuff/web/convex/ads/__tests__/`). The metadata TYPE is read from the
  * schema module; type imports are erased.
  */
 
@@ -51,7 +51,7 @@ import type { SponsoredRunFunnelMetadata } from './sponsored-run-funnel-metadata
 
 /** Where the run executed. */
 export const SPONSORED_RUN_EXECUTION_MODES = [
-  /** Freebuff Cloud: a sandbox we own, keyed by `project_id`. */
+  /** Fuckbuff Cloud: a sandbox we own, keyed by `project_id`. */
   'cloud',
   /** Off Cloud, on its own branch in a worktree (the pre-2026-09-24 flow). */
   'worktree',
@@ -83,7 +83,7 @@ export const SPONSORED_RUN_FROM_STATES = ['accepted', 'running'] as const
  * Cloud failures already carry a machine refusal (`failSponsoredExecution`'s
  * `refusal`); off-Cloud ones carry only the surface's `diagnostic_reason`,
  * whose leading clause is authored by our own client code
- * (`freebuff-desktop/.../sponsored-run.ts`, `cli/src/utils/sponsored-run.ts`)
+ * (`fuckbuff-desktop/.../sponsored-run.ts`, `cli/src/utils/sponsored-run.ts`)
  * and is therefore stable enough to classify. Anything this list does not
  * name is `other` (a Cloud refusal) or `unclassified` (a surface diagnostic),
  * never passed through: a code that reaches Postgres verbatim is a code whose
@@ -137,7 +137,7 @@ export const SPONSORED_RUN_FAILURE_CODES = [
   'empty_procedure',
   'finished_no_changes',
   'run_missing',
-  // `run_<status>`, one per terminal runner status (`freebuff_agent_runs`).
+  // `run_<status>`, one per terminal runner status (`fuckbuff_agent_runs`).
   'run_error',
   'run_cancelled',
   'run_paused',
@@ -259,7 +259,7 @@ const OS_BY_SURFACE: Record<string, SponsoredRunOs> = {
   // WSL is a Linux kernel under Windows; the surface keeps the distinction.
   cli_wsl: 'linux',
   desktop_windows: 'windows',
-  // Freebuff Web's browser workspace VMs.
+  // Fuckbuff Web's browser workspace VMs.
   cloud_linux: 'linux',
 }
 
@@ -470,7 +470,7 @@ export function buildSponsoredRunFunnelMetadata(args: {
   )
     ? (clientRaw as (typeof SPONSORED_RUN_CLIENTS)[number])
     : undefined
-  // A Freebuff Web run executes on OUR Linux VM, in the accepting chat's
+  // A Fuckbuff Web run executes on OUR Linux VM, in the accepting chat's
   // worktree, and its row carries no Convex `project_id` (that key belongs to
   // the retired /cloud executor). It is Cloud execution all the same: the
   // worker reports it, not a user's machine.

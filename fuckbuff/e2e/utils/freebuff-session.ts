@@ -6,14 +6,14 @@ import { tmuxCapture, tmuxSend, tmuxSendKey, tmuxStart, tmuxStop } from './tmux-
 
 /** The chat header's line while no session is admitted: on launch, and again once
  *  `/end-session` has released the slot. Chat-first since #4170. */
-export const FREEBUFF_CHAT_READY_TEXT = 'Your first message starts the session.'
+export const FUCKBUFF_CHAT_READY_TEXT = 'Your first message starts the session.'
 
 /** Static strings that prove the CLI reached a post-init boot screen. */
-export const FREEBUFF_BOOT_SIGNALS = [
+export const FUCKBUFF_BOOT_SIGNALS = [
   '█████╗  ██████╔╝', // ASCII logo (full or small variant)
-  // Chat-first startup (#4170): Freebuff opens straight into chat, whose header
+  // Chat-first startup (#4170): Fuckbuff opens straight into chat, whose header
   // box says the first send admits a session and whose footer names the model.
-  FREEBUFF_CHAT_READY_TEXT,
+  FUCKBUFF_CHAT_READY_TEXT,
   '/model to change',
   'Start coding for free',
   'Enter a coding task',
@@ -24,7 +24,7 @@ export const FREEBUFF_BOOT_SIGNALS = [
   'will run commands on your behalf',
 ] as const
 
-export class FreebuffSession {
+export class FuckbuffSession {
   public readonly name: string
   public readonly workDir: string
 
@@ -37,7 +37,7 @@ export class FreebuffSession {
   }
 
   /**
-   * Start a freebuff binary in a tmux session.
+   * Start a fuckbuff binary in a tmux session.
    * Creates a temporary working directory to simulate a real user project.
    */
   static async start(
@@ -53,10 +53,10 @@ export class FreebuffSession {
        *  the session's recorded command line. */
       env?: Record<string, string>
     },
-  ): Promise<FreebuffSession> {
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-e2e-'))
+  ): Promise<FuckbuffSession> {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-e2e-'))
 
-    // Create a minimal project so freebuff has something to work with
+    // Create a minimal project so fuckbuff has something to work with
     fs.writeFileSync(
       path.join(tmpDir, 'README.md'),
       '# E2E Test Project\n',
@@ -85,7 +85,7 @@ export class FreebuffSession {
       height: options?.height ?? 30,
     })
 
-    return new FreebuffSession(sessionName, tmpDir, envDir)
+    return new FuckbuffSession(sessionName, tmpDir, envDir)
   }
 
   /** Write a file into the session's working directory. */
@@ -163,7 +163,7 @@ export class FreebuffSession {
     )
   }
 
-  /** Send text input to the freebuff CLI (presses Enter by default). */
+  /** Send text input to the fuckbuff CLI (presses Enter by default). */
   async send(
     text: string,
     options?: { noEnter?: boolean; waitIdle?: number },
@@ -196,7 +196,7 @@ export class FreebuffSession {
     const start = Date.now()
     while (Date.now() - start < timeoutMs) {
       const output = await this.capture()
-      if (FREEBUFF_BOOT_SIGNALS.some((signal) => output.includes(signal))) {
+      if (FUCKBUFF_BOOT_SIGNALS.some((signal) => output.includes(signal))) {
         return output
       }
       await new Promise((resolve) => setTimeout(resolve, 500))
@@ -204,7 +204,7 @@ export class FreebuffSession {
     const finalOutput = await this.capture()
     throw new Error(
       `Timed out after ${timeoutMs}ms waiting for a boot signal ` +
-        `(checked ${FREEBUFF_BOOT_SIGNALS.length} patterns).\n` +
+        `(checked ${FUCKBUFF_BOOT_SIGNALS.length} patterns).\n` +
         `Last output:\n${finalOutput}`,
     )
   }
@@ -269,7 +269,7 @@ const shellQuote = (value: string): string => `'${value.replace(/'/g, `'\\''`)}'
 function writeEnvFile(env: Record<string, string> | undefined): string | null {
   const entries = Object.entries(env ?? {})
   if (entries.length === 0) return null
-  const envDir = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-e2e-env-'))
+  const envDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-e2e-env-'))
   fs.writeFileSync(
     path.join(envDir, 'env.sh'),
     entries.map(([name, value]) => `export ${name}=${shellQuote(value)}`).join('\n') + '\n',

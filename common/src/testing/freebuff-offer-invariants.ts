@@ -1,15 +1,15 @@
 /**
  * One rule, checked the same way on every surface: **if a picker can OFFER a
- * freebuff model row, every gate that row then passes through must accept it.**
+ * fuckbuff model row, every gate that row then passes through must accept it.**
  *
- * Freebuff model ids fan out across several hand-kept lists — the per-tier
+ * Fuckbuff model ids fan out across several hand-kept lists — the per-tier
  * picker catalogs, the session-admission sets, the free-mode agent allowlist,
  * and each surface's own request validator. They are separate on purpose (a
  * model can be retired from a picker while live sessions keep running on it),
  * so nothing stops one from moving without the others. When they drift in the
- * offer→gate direction the user sees a row they cannot use: Freebuff Desktop
+ * offer→gate direction the user sees a row they cannot use: Fuckbuff Desktop
  * shipped the earned GLM 5.2 row while its `/api/thread/:id/agent` route still
- * validated against `FREEBUFF_MODELS` (which excludes GLM by design), so every
+ * validated against `FUCKBUFF_MODELS` (which excludes GLM by design), so every
  * user who earned the reward got 400 "invalid model" when they picked it.
  *
  * Drift the OTHER way is fine and deliberate — an id that is acceptable but not
@@ -17,35 +17,35 @@
  * offered ⊆ accepted.
  *
  * Each surface owns its offer set (they live in the desktop/cli/web packages,
- * which `common` cannot import), so each calls `freebuffOfferViolations` from
+ * which `common` cannot import), so each calls `fuckbuffOfferViolations` from
  * its own test with its own rows. Keeping the CHECKS here is what makes a new
  * gate apply to every surface at once.
  */
 
 import {
   FREE_MODE_AGENT_MODELS,
-  FREEBUFF_ROOT_AGENT_IDS,
+  FUCKBUFF_ROOT_AGENT_IDS,
 } from '../constants/free-agents'
 import {
-  getFreebuffModel,
-  getFreebuffWebModel,
-  isFreebuffSessionModelAllowedForAccessTier,
-  isFreebuffSessionModelId,
-  resolveFreebuffSessionModelForAccessTier,
-} from '../constants/freebuff-models'
+  getFuckbuffModel,
+  getFuckbuffWebModel,
+  isFuckbuffSessionModelAllowedForAccessTier,
+  isFuckbuffSessionModelId,
+  resolveFuckbuffSessionModelForAccessTier,
+} from '../constants/fuckbuff-models'
 
-import type { FreebuffAccessTier } from '../constants/freebuff-models'
+import type { FuckbuffAccessTier } from '../constants/fuckbuff-models'
 
 /** Which catalog the surface reads a row's name/tagline/badges out of. A
  *  surface that renders through the wrong one shows a fallback model's label on
  *  the row (both getters degrade to DeepSeek Flash rather than throwing). */
-export type FreebuffCatalogSource = 'supported' | 'web'
+export type FuckbuffCatalogSource = 'supported' | 'web'
 
-export interface FreebuffOfferSurface {
-  /** Names the surface in failure messages, e.g. 'freebuff-desktop picker (full)'. */
+export interface FuckbuffOfferSurface {
+  /** Names the surface in failure messages, e.g. 'fuckbuff-desktop picker (full)'. */
   surface: string
   /** The tier whose rows `offered` describes — gates are tier-sensitive. */
-  accessTier: FreebuffAccessTier
+  accessTier: FuckbuffAccessTier
   /** Whether `offered` describes what a LIVE PAID PLAN holder is shown.
    *
    *  A plan widens the limited catalog, so the same picker has two legitimate
@@ -63,11 +63,11 @@ export interface FreebuffOfferSurface {
    *  several when the surface has per-execution-mode roots. */
   rootAgentIdFor?: (model: string) => string | readonly string[]
   /** Catalog the surface renders from. Omit to skip the label check. */
-  catalog?: FreebuffCatalogSource
+  catalog?: FuckbuffCatalogSource
 }
 
 function rootAgentIds(
-  surface: FreebuffOfferSurface,
+  surface: FuckbuffOfferSurface,
   model: string,
 ): readonly string[] {
   if (!surface.rootAgentIdFor) return []
@@ -80,23 +80,23 @@ function rootAgentIds(
  * failing test can print verbatim. Empty array means the row is good.
  */
 function violationsForModel(
-  surface: FreebuffOfferSurface,
+  surface: FuckbuffOfferSurface,
   model: string,
 ): string[] {
   const where = `${surface.surface}: ${model}`
   const out: string[] = []
 
   // 1. the session layer has to know the id at all, on any tier
-  if (!isFreebuffSessionModelId(model)) {
+  if (!isFuckbuffSessionModelId(model)) {
     // everything below is derived from the same catalogs, so one unknown id
     // would otherwise produce five near-identical lines
-    return [`${where} is offered but is not a freebuff session model id`]
+    return [`${where} is offered but is not a fuckbuff session model id`]
   }
 
   // 2. …and admit it for THIS tier, or admission answers model_not_allowed
   const hasPaidSubscription = surface.hasPaidSubscription ?? false
   if (
-    !isFreebuffSessionModelAllowedForAccessTier(
+    !isFuckbuffSessionModelAllowedForAccessTier(
       model,
       surface.accessTier,
       hasPaidSubscription,
@@ -109,14 +109,14 @@ function violationsForModel(
 
   // 3. a resolver that silently swaps the pick is as bad as a refusal: the user
   //    picks GLM, the turn runs on DeepSeek, and nothing says why
-  const resolved = resolveFreebuffSessionModelForAccessTier(
+  const resolved = resolveFuckbuffSessionModelForAccessTier(
     model,
     surface.accessTier,
     { hasPaidSubscription },
   )
   if (resolved !== model) {
     out.push(
-      `${where} is offered but resolveFreebuffSessionModelForAccessTier coerces it to ${resolved}`,
+      `${where} is offered but resolveFuckbuffSessionModelForAccessTier coerces it to ${resolved}`,
     )
   }
 
@@ -147,9 +147,9 @@ function violationsForModel(
         `${where} runs under free-mode root ${rootId}, whose allowlist does not include it (free_mode_invalid_agent_model)`,
       )
     }
-    if (!FREEBUFF_ROOT_AGENT_IDS.some((id) => id === rootId)) {
+    if (!FUCKBUFF_ROOT_AGENT_IDS.some((id) => id === rootId)) {
       out.push(
-        `${where} runs under free-mode root ${rootId}, which is missing from FREEBUFF_ROOT_AGENT_IDS (its subagents would 403)`,
+        `${where} runs under free-mode root ${rootId}, which is missing from FUCKBUFF_ROOT_AGENT_IDS (its subagents would 403)`,
       )
     }
   }
@@ -158,8 +158,8 @@ function violationsForModel(
   if (surface.catalog) {
     const row =
       surface.catalog === 'web'
-        ? getFreebuffWebModel(model)
-        : getFreebuffModel(model)
+        ? getFuckbuffWebModel(model)
+        : getFuckbuffModel(model)
     if (row.id !== model) {
       out.push(
         `${where} is offered but the ${surface.catalog} catalog has no row for it, so it renders as ${row.id}`,
@@ -172,8 +172,8 @@ function violationsForModel(
 
 /** Every offer→gate violation on a surface. Assert `toEqual([])`: the strings
  *  are the failure message. */
-export function freebuffOfferViolations(
-  surface: FreebuffOfferSurface,
+export function fuckbuffOfferViolations(
+  surface: FuckbuffOfferSurface,
 ): string[] {
   // an empty offer set passes every check below while meaning the test wired
   // itself to the wrong list, which is the one failure mode a green run hides

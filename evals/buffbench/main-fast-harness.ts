@@ -16,7 +16,7 @@ import { runBuffBench } from './run-buffbench'
  * are saved for the read-through that follows the numbers.
  *
  * Same ten tasks as main-flash-harness.ts, so the result reads against the
- * base2/base3 numbers in docs/freebuff-base3-harness.md. Pass `all` as the
+ * base2/base3 numbers in docs/fuckbuff-base3-harness.md. Pass `all` as the
  * second argument to run every task in the eval file instead:
  *
  *   bun run buffbench/main-fast-harness.ts 5 all

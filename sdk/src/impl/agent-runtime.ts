@@ -33,7 +33,7 @@ import type { TrackEventFn } from '@codebuff/common/types/contracts/analytics'
 const DATABASE_AGENT_CACHE_MAX_ENTRIES = 200
 
 /** Insertion-order (FIFO) eviction so the cache can't grow without bound in
- *  long-lived processes (e.g. the freebuff chat server, which runs the agent
+ *  long-lived processes (e.g. the fuckbuff chat server, which runs the agent
  *  runtime in-process). Templates are large — prompts plus handleSteps source. */
 class BoundedAgentCache extends Map<string, AgentTemplate | null> {
   override set(key: string, value: AgentTemplate | null): this {
@@ -125,7 +125,7 @@ export function getAgentRuntimeImpl(
       ? async () => ({ id: BYOK_LOCAL_USER_ID }) as any
       : getUserInfoFromApiKey,
     // A BYOK run only uses its local agent registry. A missing local agent is
-    // an error, never a reason to send its prompt or identity to Freebuff.
+    // an error, never a reason to send its prompt or identity to Fuckbuff.
     // Otherwise a registry template is fetched through the publisher-trust
     // gate: its handleSteps is code this process would eval.
     fetchAgentFromDatabase: byok || disableAgentRegistry

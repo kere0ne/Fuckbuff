@@ -633,7 +633,7 @@ export const SponsoredProposalBlock: React.FC<{
       {refreshUnavailable && (
         <text style={{ fg: theme.muted }}>
           Could not refresh this proposal. Its controls will return when
-          Freebuff reconnects.
+          Fuckbuff reconnects.
         </text>
       )}
 

@@ -3,7 +3,7 @@
  * drifting.
  *
  * `DESKTOP_IN_PLACE_SPONSORED_GUIDANCE` lives in the Desktop orchestrator
- * (`freebuff-desktop/src/server/services/sponsored-run.ts`), and importing it
+ * (`fuckbuff-desktop/src/server/services/sponsored-run.ts`), and importing it
  * here would drag the orchestrator's graph into the CLI's typecheck program. So
  * the bullets are copied -- and read back out of the production file as TEXT,
  * so a copy that stops matching fails here rather than in a run the two
@@ -31,7 +31,7 @@ const DESKTOP_RUN = join(
   '..',
   '..',
   '..',
-  'freebuff-desktop',
+  'fuckbuff-desktop',
   'src',
   'server',
   'services',

@@ -2,7 +2,7 @@
  * The in-session profile survey (COD-779): the shared contract between the
  * question bank, the Postgres store, the API and every client (Desktop, Web,
  * CLI). Distinct from the post-signup onboarding questionnaire in
- * `freebuff-onboarding.ts` — different flow, table and gate.
+ * `fuckbuff-onboarding.ts` — different flow, table and gate.
  *
  * Versioning, three layers
  * ------------------------
@@ -208,7 +208,7 @@ export const PROFILE_SURVEY_QUESTIONS = [
     ],
   },
   // Version 2 (2026-10-09). No notApplicable option on these: every one
-  // applies to anyone using Freebuff.
+  // applies to anyone using Fuckbuff.
   {
     id: 'role',
     revision: 1,
@@ -249,13 +249,13 @@ export const PROFILE_SURVEY_QUESTIONS = [
       { id: 'cline', label: 'Cline or Roo' },
       { id: 'gemini_cli', label: 'Gemini CLI' },
       { id: 'other', label: 'Something else' },
-      { id: 'none', label: 'Only Freebuff', exclusive: true },
+      { id: 'none', label: 'Only Fuckbuff', exclusive: true },
     ],
   },
   {
     id: 'disappointment',
     revision: 1,
-    prompt: 'How would you feel if you could no longer use Freebuff?',
+    prompt: 'How would you feel if you could no longer use Fuckbuff?',
     multi: false,
     options: [
       { id: 'very', label: 'Very disappointed' },
@@ -266,7 +266,7 @@ export const PROFILE_SURVEY_QUESTIONS = [
   {
     id: 'pay_trigger',
     revision: 1,
-    prompt: 'What would get you to pay for Freebuff?',
+    prompt: 'What would get you to pay for Fuckbuff?',
     multi: true,
     options: [
       { id: 'subscribed', label: 'I already pay', exclusive: true },
@@ -404,7 +404,7 @@ export type ProfileSurveyAnswer = {
   optionIds: string[]
 }
 
-// ---- wire contract: GET/POST /api/profile-survey (freebuff/web) ----------
+// ---- wire contract: GET/POST /api/profile-survey (fuckbuff/web) ----------
 
 /** GET /api/profile-survey */
 export type ProfileSurveyStateResponse =

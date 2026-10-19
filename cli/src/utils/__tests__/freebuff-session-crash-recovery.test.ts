@@ -11,14 +11,14 @@ import { createHash } from 'node:crypto'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 
-import { useFreebuffSessionStore } from '../../state/freebuff-session-store'
+import { useFuckbuffSessionStore } from '../../state/fuckbuff-session-store'
 import * as auth from '../auth'
 import {
-  consumeCrashedFreebuffSession,
+  consumeCrashedFuckbuffSession,
   forgetCrashRecordsFor,
   isProcessAlive,
-  recordLiveFreebuffSession,
-} from '../freebuff-session-relaunch'
+  recordLiveFuckbuffSession,
+} from '../fuckbuff-session-relaunch'
 
 let configDir: string
 let configSpy: ReturnType<typeof spyOn>
@@ -36,7 +36,7 @@ function writeRecord(
   }> = {},
 ) {
   writeFileSync(
-    join(configDir, `freebuff-live-${pid}.json`),
+    join(configDir, `fuckbuff-live-${pid}.json`),
     JSON.stringify({
       instanceId: fields.instanceId ?? 'cli:held',
       model: fields.model ?? 'mimo/mimo-v2.5',
@@ -58,12 +58,12 @@ afterEach(() => {
 
 test('a dead owner on the same account resumes its unexpired hour once', () => {
   writeRecord(deadPid())
-  expect(consumeCrashedFreebuffSession('account-a')).toEqual({
+  expect(consumeCrashedFuckbuffSession('account-a')).toEqual({
     instanceId: 'cli:held',
     model: 'mimo/mimo-v2.5',
   })
   // single-use: a second terminal opened at the same time buys its own hour
-  expect(consumeCrashedFreebuffSession('account-a')).toBeUndefined()
+  expect(consumeCrashedFuckbuffSession('account-a')).toBeUndefined()
   expect(readdirSync(configDir)).toEqual([])
 })
 
@@ -72,8 +72,8 @@ test('a running CLI is never resumed from under itself', () => {
   try {
     writeRecord(child.pid)
     expect(isProcessAlive(child.pid)).toBe(true)
-    expect(consumeCrashedFreebuffSession('account-a')).toBeUndefined()
-    expect(existsSync(join(configDir, `freebuff-live-${child.pid}.json`))).toBe(
+    expect(consumeCrashedFuckbuffSession('account-a')).toBeUndefined()
+    expect(existsSync(join(configDir, `fuckbuff-live-${child.pid}.json`))).toBe(
       true,
     )
   } finally {
@@ -83,28 +83,28 @@ test('a running CLI is never resumed from under itself', () => {
 
 test('another account cannot resume the hour', () => {
   writeRecord(deadPid(), { token: 'account-a' })
-  expect(consumeCrashedFreebuffSession('account-b')).toBeUndefined()
+  expect(consumeCrashedFuckbuffSession('account-b')).toBeUndefined()
 })
 
 test('an expired hour is not resumed and its record is cleaned up', () => {
   const pid = deadPid()
   writeRecord(pid, { expiresAt: Date.now() - 1 })
-  expect(consumeCrashedFreebuffSession('account-a')).toBeUndefined()
-  expect(existsSync(join(configDir, `freebuff-live-${pid}.json`))).toBe(false)
+  expect(consumeCrashedFuckbuffSession('account-a')).toBeUndefined()
+  expect(existsSync(join(configDir, `fuckbuff-live-${pid}.json`))).toBe(false)
 })
 
 test('an instance a live CLI already holds is not resumed through a stale record', () => {
   // update restart: the dead parent's record and the live child's share one id
   writeRecord(deadPid(), { instanceId: 'cli:shared' })
   writeRecord(process.pid, { instanceId: 'cli:shared' })
-  expect(consumeCrashedFreebuffSession('account-a')).toBeUndefined()
+  expect(consumeCrashedFuckbuffSession('account-a')).toBeUndefined()
 })
 
 test('an update handoff retires the dead parent record of the same instance', () => {
   const pid = deadPid()
   writeRecord(pid, { instanceId: 'cli:handed-off' })
   forgetCrashRecordsFor('cli:handed-off')
-  expect(existsSync(join(configDir, `freebuff-live-${pid}.json`))).toBe(false)
+  expect(existsSync(join(configDir, `fuckbuff-live-${pid}.json`))).toBe(false)
 })
 
 test('the newest of several crashed hours is resumed first', () => {
@@ -113,13 +113,13 @@ test('the newest of several crashed hours is resumed first', () => {
     expiresAt: hour() - 60_000,
   })
   writeRecord(deadPid(), { instanceId: 'cli:newer' })
-  expect(consumeCrashedFreebuffSession('account-a')?.instanceId).toBe(
+  expect(consumeCrashedFuckbuffSession('account-a')?.instanceId).toBe(
     'cli:newer',
   )
 })
 
 test('only CLI multi-session claims are recorded', () => {
-  recordLiveFreebuffSession(
+  recordLiveFuckbuffSession(
     {
       instanceId: 'legacy-id',
       model: 'm',
@@ -128,7 +128,7 @@ test('only CLI multi-session claims are recorded', () => {
     'account-a',
   )
   expect(readdirSync(configDir)).toEqual([])
-  recordLiveFreebuffSession(
+  recordLiveFuckbuffSession(
     {
       instanceId: 'cli:x',
       model: 'm',
@@ -136,7 +136,7 @@ test('only CLI multi-session claims are recorded', () => {
     },
     'account-a',
   )
-  expect(readdirSync(configDir)).toEqual([`freebuff-live-${process.pid}.json`])
+  expect(readdirSync(configDir)).toEqual([`fuckbuff-live-${process.pid}.json`])
 })
 
 // "The CLI crashed (went blank) ... when manually opened again the Freebucks
@@ -163,35 +163,35 @@ describe('an exit from outside the app keeps the hour for the next launch', () =
     })
     fetchSpy = spyOn(globalThis, 'fetch').mockImplementation((async () =>
       Response.json({ status: 'ended' })) as unknown as typeof fetch)
-    useFreebuffSessionStore.getState().setSession(held)
-    recordLiveFreebuffSession(held, token)
+    useFuckbuffSessionStore.getState().setSession(held)
+    recordLiveFuckbuffSession(held, token)
   })
   afterEach(() => {
     fetchSpy.mockRestore()
     authSpy.mockRestore()
-    useFreebuffSessionStore.setState({ slotKeptForRelaunch: false })
-    useFreebuffSessionStore.getState().setSession(null)
+    useFuckbuffSessionStore.setState({ slotKeptForRelaunch: false })
+    useFuckbuffSessionStore.getState().setSession(null)
   })
 
   /** What the next launch sees once this process has exited. */
   function relaunch() {
-    const own = join(configDir, `freebuff-live-${process.pid}.json`)
-    if (!existsSync(own)) return consumeCrashedFreebuffSession(token)
+    const own = join(configDir, `fuckbuff-live-${process.pid}.json`)
+    if (!existsSync(own)) return consumeCrashedFuckbuffSession(token)
     const pid = deadPid()
     const record = JSON.parse(readFileSync(own, 'utf8'))
     rmSync(own)
     writeFileSync(
-      join(configDir, `freebuff-live-${pid}.json`),
+      join(configDir, `fuckbuff-live-${pid}.json`),
       JSON.stringify({ ...record, ownerPid: pid }),
     )
-    return consumeCrashedFreebuffSession(token)
+    return consumeCrashedFuckbuffSession(token)
   }
 
   test('terminal closed: no end is sent and the relaunch resumes the hour', async () => {
-    useFreebuffSessionStore.getState().keepSlotForResume()
+    useFuckbuffSessionStore.getState().keepSlotForResume()
     // exitCliCleanly and the session hook's unmount both release on the way out
-    await useFreebuffSessionStore.getState().releaseSlot()
-    await useFreebuffSessionStore.getState().releaseSlot(held)
+    await useFuckbuffSessionStore.getState().releaseSlot()
+    await useFuckbuffSessionStore.getState().releaseSlot(held)
     expect(fetchSpy).not.toHaveBeenCalled()
     expect(relaunch()).toEqual({
       instanceId: 'cli:closed-terminal',
@@ -200,19 +200,19 @@ describe('an exit from outside the app keeps the hour for the next launch', () =
   })
 
   test('an in-app quit still ends the hour, leaving nothing to resume', async () => {
-    await useFreebuffSessionStore.getState().releaseSlot()
+    await useFuckbuffSessionStore.getState().releaseSlot()
     expect(fetchSpy).toHaveBeenCalledTimes(1)
     expect(fetchSpy.mock.calls[0]![1].method).toBe('DELETE')
     expect(relaunch()).toBeUndefined()
   })
 
   test('only an active hour is kept; anything else is released as before', async () => {
-    useFreebuffSessionStore
+    useFuckbuffSessionStore
       .getState()
       .setSession({ ...held, status: 'ended' } as any)
-    useFreebuffSessionStore.getState().keepSlotForResume()
-    expect(useFreebuffSessionStore.getState().slotKeptForRelaunch).toBe(false)
-    await useFreebuffSessionStore.getState().releaseSlot()
+    useFuckbuffSessionStore.getState().keepSlotForResume()
+    expect(useFuckbuffSessionStore.getState().slotKeptForRelaunch).toBe(false)
+    await useFuckbuffSessionStore.getState().releaseSlot()
     expect(fetchSpy).toHaveBeenCalledTimes(1)
   })
 })

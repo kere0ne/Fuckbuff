@@ -45,12 +45,12 @@ import {
 // (not shimmer / animated) so they survive ANSI styling as contiguous
 // substrings. Cover the multiple boot states the binary might land on:
 //
-//   - "will run commands on your behalf" — codebuff/freebuff main surface
+//   - "will run commands on your behalf" — codebuff/fuckbuff main surface
 //     header (authed + session ready)
 //   - "Press ENTER to login" / "Open this URL" — login modal (no cached
 //     creds — typical CI smoke)
-//   - "Pick a model to start" — freebuff model-picker landing screen
-//   - "Free mode isn't available" — freebuff country-block screen (CI
+//   - "Pick a model to start" — fuckbuff model-picker landing screen
+//   - "Free mode isn't available" — fuckbuff country-block screen (CI
 //     runners with anonymized-network egress like GitHub Actions land here)
 //   - "Enter a coding task" — chat input prompt
 //   - OpenTUI terminal handshakes such as alternate-screen / Kitty keyboard
@@ -79,7 +79,7 @@ const BOOT_SIGNAL_PATTERNS = [
 // startup" (earlyFatalHandler in cli/src/index.tsx, fires while main()
 // is still wiring up) and "Unhandled rejection:" / "Uncaught exception:"
 // (installProcessCleanupHandlers in cli/src/utils/renderer-cleanup.ts,
-// fires after the renderer is up). The wasm-load rejection on freebuff
+// fires after the renderer is up). The wasm-load rejection on fuckbuff
 // 0.0.62 surfaced through the *late* renderer-cleanup path, after the
 // boot screen had already rendered.
 const FATAL_PATTERNS = [
@@ -93,7 +93,7 @@ const FATAL_PATTERNS = [
 
 // Long enough that an unhandled rejection from the eager Parser.init has
 // time to surface through the renderer-cleanup handler — that path is
-// what tripped freebuff 0.0.62 in the wild while a 5s window let CI pass.
+// what tripped fuckbuff 0.0.62 in the wild while a 5s window let CI pass.
 // Async wasm rejections can fire >5s after spawn (after React mounts and
 // the renderer is up).
 const DEFAULT_RUN_SECONDS = 10
@@ -358,7 +358,7 @@ async function main(): Promise<void> {
     console.error(`smoke-binary: bad seconds arg: ${process.argv[3]}`)
     process.exit(2)
   }
-  // CI passes `./freebuff`; the dotenv probes run from other directories.
+  // CI passes `./fuckbuff`; the dotenv probes run from other directories.
   const binary = resolvePath(binaryArg)
 
   console.log(`smoke-binary: spawning ${binaryArg} for ${runSeconds}s…`)

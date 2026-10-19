@@ -1,6 +1,6 @@
 import {
-  FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS,
-  FREEBUFF_PROJECTS_SUBAGENT_ID,
+  FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS,
+  FUCKBUFF_PROJECTS_SUBAGENT_ID,
 } from '@codebuff/common/constants/free-agents'
 import {
   MAX_LIVE_SUBAGENTS_PER_ROOT,
@@ -68,20 +68,20 @@ type LiveBucket = {
  *  runs below one, and in the root's otherwise, so a Projects subagent's
  *  helpers neither consume nor are starved by the rest of the tree. Helpers
  *  spawn no Projects subagents, so one root run holds at most
- *  MAX_LIVE_SUBAGENTS_PER_ROOT + FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS *
+ *  MAX_LIVE_SUBAGENTS_PER_ROOT + FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS *
  *  (1 + MAX_LIVE_SUBAGENTS_PER_ROOT) live subagents. */
 function liveBucket(parent: AgentState, agentTypeStr: string): LiveBucket {
   const root = parent.ancestorRunIds[0] ?? parent.runId ?? parent.agentId
-  if (bareAgentType(agentTypeStr) === FREEBUFF_PROJECTS_SUBAGENT_ID) {
+  if (bareAgentType(agentTypeStr) === FUCKBUFF_PROJECTS_SUBAGENT_ID) {
     return {
-      key: `${root}\u0000${FREEBUFF_PROJECTS_SUBAGENT_ID}`,
-      cap: FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS,
-      label: FREEBUFF_PROJECTS_SUBAGENT_ID,
+      key: `${root}\u0000${FUCKBUFF_PROJECTS_SUBAGENT_ID}`,
+      cap: FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS,
+      label: FUCKBUFF_PROJECTS_SUBAGENT_ID,
     }
   }
   const projectsScope =
     parent.agentType &&
-    bareAgentType(parent.agentType) === FREEBUFF_PROJECTS_SUBAGENT_ID
+    bareAgentType(parent.agentType) === FUCKBUFF_PROJECTS_SUBAGENT_ID
       ? parent.agentId
       : projectsScopeOf.get(parent.agentId)
   return {

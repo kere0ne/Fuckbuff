@@ -1,7 +1,7 @@
 import { z } from 'zod/v4'
 
 /** Older servers ignore this header; older clients never receive a blocking tool. */
-export const CLOUD_QUESTIONS_HEADER = 'x-freebuff-cloud-questions'
+export const CLOUD_QUESTIONS_HEADER = 'x-fuckbuff-cloud-questions'
 
 export const cloudQuestionsSchema = z.object({
   questions: z

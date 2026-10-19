@@ -3,8 +3,8 @@
  * permanent pause, as checked-in constants. They used to be rows of the
  * platform-Convex `settings` table (`legacy_usage_enforcement_enabled`,
  * `legacy_usage_pause_enabled`), which is retired; they live here, rather than
- * in freebuff/web, so the Convex crons that read them today
- * (freebuff/web/convex/legacy_usage_enforcement.ts, usage_limits_reconcile.ts,
+ * in fuckbuff/web, so the Convex crons that read them today
+ * (fuckbuff/web/convex/legacy_usage_enforcement.ts, usage_limits_reconcile.ts,
  * legacy_usage_pause.ts) and their graphile ports in packages/jobs read the
  * same value.
  *

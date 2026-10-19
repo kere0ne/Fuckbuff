@@ -1,5 +1,5 @@
 /**
- * Every appearance preset Freebuff Desktop ships, by id. Desktop reports which
+ * Every appearance preset Fuckbuff Desktop ships, by id. Desktop reports which
  * one an install is running (never a custom theme's name) and the web API
  * counts them, so both sides validate against this one list.
  */

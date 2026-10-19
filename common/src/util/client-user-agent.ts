@@ -2,7 +2,7 @@
  * Normalize an HTTP `User-Agent` into a bounded token for analytics.
  *
  * Records which client product made a request, for analytics. The official
- * CLI sends `Freebuff-CLI/<version>` (`getCliAdRequestUserAgent` in
+ * CLI sends `Fuckbuff-CLI/<version>` (`getCliAdRequestUserAgent` in
  * cli/src/hooks/use-gravity-ad.ts). A user agent is client-supplied, so the
  * output describes a request; it is never treated as proof of anything.
  *
@@ -37,7 +37,7 @@ export const UNRECOGNIZED_CLIENT = 'unrecognized'
 const VERSION_RE = /^\d[0-9A-Za-z.+-]*$/
 
 export type NormalizedClientUserAgent = {
-  /** Lowercased product token, e.g. `freebuff-cli`, or `unrecognized`. */
+  /** Lowercased product token, e.g. `fuckbuff-cli`, or `unrecognized`. */
   product: string
   /** Version token when the product declared a parseable one. */
   version?: string
@@ -72,7 +72,7 @@ export function normalizeClientUserAgent(
 
   // Empty after sanitizing, or implausibly long: collapse to one constant
   // rather than record a truncated fabrication. Real product tokens are short
-  // (`freebuff-cli` 12, `go-http-client` 14, `ai-sdk` 6), so anything past the
+  // (`fuckbuff-cli` 12, `go-http-client` 14, `ai-sdk` 6), so anything past the
   // cap is junk — and collapsing it also removes the cheapest way to pump
   // cardinality, which is a long random string per request.
   if (!product || product.length > MAX_PRODUCT_LEN) {

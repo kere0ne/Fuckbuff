@@ -1,11 +1,11 @@
 /**
- * The wire contract between the freebuff-jobs worker and freebuff-web's
+ * The wire contract between the fuckbuff-jobs worker and fuckbuff-web's
  * `POST /api/admin/support-jobs` (COD-742 Wave A; docs/convex-retirement-
  * wave-a.md, "Issue reports and feedback messages"). The worker owns the
- * retry; freebuff-web owns the work, because the email templates, Resend, the
+ * retry; fuckbuff-web owns the work, because the email templates, Resend, the
  * blob store (screenshot URLs) and the Convex admin client (thread context)
  * all live there. The `feed_hub` job went with the frozen feedback hub
- * (docs/freebuff-feedback-hub.md).
+ * (docs/fuckbuff-feedback-hub.md).
  *
  * Plain types and a hand-written parser rather than zod: both a Next route
  * and a leaf-only package read this.

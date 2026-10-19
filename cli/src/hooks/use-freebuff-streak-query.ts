@@ -4,21 +4,21 @@ import { getAuthToken } from '../utils/auth'
 import { getApiClient, setApiClientAuthToken } from '../utils/codebuff-api'
 import { logger as defaultLogger } from '../utils/logger'
 
-import type { FreebuffStreakResponse } from '@codebuff/common/types/freebuff-streak'
+import type { FuckbuffStreakResponse } from '@codebuff/common/types/fuckbuff-streak'
 import type { Logger } from '@codebuff/common/types/contracts/logger'
 
-export const freebuffStreakQueryKeys = {
-  all: ['freebuffStreak'] as const,
-  current: () => [...freebuffStreakQueryKeys.all, 'current'] as const,
+export const fuckbuffStreakQueryKeys = {
+  all: ['fuckbuffStreak'] as const,
+  current: () => [...fuckbuffStreakQueryKeys.all, 'current'] as const,
 }
 
-export async function fetchFreebuffStreak(params: {
+export async function fetchFuckbuffStreak(params: {
   authToken: string
   logger?: Logger
-}): Promise<FreebuffStreakResponse> {
+}): Promise<FuckbuffStreakResponse> {
   const { authToken, logger = defaultLogger } = params
   setApiClientAuthToken(authToken)
-  const response = await getApiClient().get<FreebuffStreakResponse>(
+  const response = await getApiClient().get<FuckbuffStreakResponse>(
     '/api/v1/freebuff/streak',
     { retry: false },
   )
@@ -26,19 +26,19 @@ export async function fetchFreebuffStreak(params: {
   if (!response.ok) {
     logger.error(
       { status: response.status, error: response.error },
-      'Failed to fetch freebuff streak',
+      'Failed to fetch fuckbuff streak',
     )
-    throw new Error(`Failed to fetch freebuff streak (HTTP ${response.status})`)
+    throw new Error(`Failed to fetch fuckbuff streak (HTTP ${response.status})`)
   }
 
   if (!response.data) {
-    throw new Error('Failed to fetch freebuff streak: empty response')
+    throw new Error('Failed to fetch fuckbuff streak: empty response')
   }
 
   return response.data
 }
 
-export function useFreebuffStreakQuery(
+export function useFuckbuffStreakQuery(
   params: {
     enabled?: boolean
     logger?: Logger
@@ -48,8 +48,8 @@ export function useFreebuffStreakQuery(
   const authToken = getAuthToken()
 
   return useQuery({
-    queryKey: freebuffStreakQueryKeys.current(),
-    queryFn: () => fetchFreebuffStreak({ authToken: authToken!, logger }),
+    queryKey: fuckbuffStreakQueryKeys.current(),
+    queryFn: () => fetchFuckbuffStreak({ authToken: authToken!, logger }),
     enabled: enabled && !!authToken,
     staleTime: 60_000,
     gcTime: 10 * 60_000,

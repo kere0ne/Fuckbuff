@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 
-import { resolveFreebuffLimitNudge } from '../freebuff-limit-nudge'
+import { resolveFuckbuffLimitNudge } from '../fuckbuff-limit-nudge'
 
 const USAGE = {
   dayUsed: 0, dayLimit: 3, fiveDayUsed: 0, fiveDayLimit: 10,
@@ -9,10 +9,10 @@ const USAGE = {
   monthSpendUsd: 0, monthSpendLimitUsd: 15,
 }
 
-describe('resolveFreebuffLimitNudge', () => {
+describe('resolveFuckbuffLimitNudge', () => {
   test('quiet below 80% everywhere', () => {
     expect(
-      resolveFreebuffLimitNudge({
+      resolveFuckbuffLimitNudge({
         subscription: { tierId: 'starter', usage: { ...USAGE, dayUsed: 2 } },
         rateLimits: null,
       }),
@@ -20,28 +20,28 @@ describe('resolveFreebuffLimitNudge', () => {
   })
 
   test('a subscriber nudges on the first window at 80%', () => {
-    const n = resolveFreebuffLimitNudge({
+    const n = resolveFuckbuffLimitNudge({
       subscription: { tierId: 'starter', usage: { ...USAGE, fiveDayUsed: 8 } },
     })
     expect(n).toEqual({ kind: 'near', label: 'weekly plan sessions', used: 8, limit: 10 })
   })
 
   test("the server's blockedBy IS the wall — no client arithmetic", () => {
-    const n = resolveFreebuffLimitNudge({
+    const n = resolveFuckbuffLimitNudge({
       subscription: { tierId: 'starter', usage: USAGE, blockedBy: 'daily' },
     })
     expect(n).toEqual({ kind: 'wall', label: 'your plan sessions' })
   })
 
   test('a free account walls on any exhausted pool row', () => {
-    const n = resolveFreebuffLimitNudge({
+    const n = resolveFuckbuffLimitNudge({
       rateLimits: { m: { recentCount: 4, limit: 4, poolLabel: 'Premium' } },
     })
     expect(n).toEqual({ kind: 'wall', label: 'your free sessions' })
   })
 
   test('a free account nudges with the pool label at 80%', () => {
-    const n = resolveFreebuffLimitNudge({
+    const n = resolveFuckbuffLimitNudge({
       rateLimits: { m: { recentCount: 3.5, limit: 4, poolLabel: 'Premium' } },
     })
     expect(n).toEqual({ kind: 'near', label: 'premium sessions', used: 3.5, limit: 4 })
@@ -49,7 +49,7 @@ describe('resolveFreebuffLimitNudge', () => {
 
   test('unlimited rows (limit 0) never nudge', () => {
     expect(
-      resolveFreebuffLimitNudge({
+      resolveFuckbuffLimitNudge({
         rateLimits: { m: { recentCount: 100, limit: 0 } },
       }),
     ).toBeNull()

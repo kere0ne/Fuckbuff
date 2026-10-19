@@ -1,8 +1,8 @@
 import { isAbortError, isTransientNetworkError } from '@codebuff/common/util/error'
-import { FREEBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/fuckbuff-models'
 import {
-  FREEBUFF_SSE_GZIP_RECOVERY_HEADER,
-  FREEBUFF_SSE_GZIP_RECOVERY_VALUE,
+  FUCKBUFF_SSE_GZIP_RECOVERY_HEADER,
+  FUCKBUFF_SSE_GZIP_RECOVERY_VALUE,
 } from '@codebuff/common/constants/sse-compression'
 import { afterEach, describe, expect, mock, test } from 'bun:test'
 
@@ -266,7 +266,7 @@ describe('SDK delegated user headers', () => {
       if (part.type === 'error') message = String(part.error)
     }
     expect(message).toContain('rejected the API key in OMNIROUTE_API_KEY (HTTP 401)')
-    expect(message).toContain('is set in this Freebuff process')
+    expect(message).toContain('is set in this Fuckbuff process')
     expect(message).not.toContain(key)
   })
 
@@ -279,14 +279,14 @@ describe('SDK delegated user headers', () => {
 
     expect((model as any).config.headers()).toMatchObject({
       Authorization: 'Bearer service-key',
-      [FREEBUFF_ACTING_USER_HEADER]: 'end-user',
+      [FUCKBUFF_ACTING_USER_HEADER]: 'end-user',
     })
   })
 
   test('tells the backend it recovers a cut gzip stream, and never tells a BYOK provider', async () => {
     const backend = getModelForRequest({ apiKey: 'user-key', model: 'test/model' })
     expect((backend as any).config.headers()).toMatchObject({
-      [FREEBUFF_SSE_GZIP_RECOVERY_HEADER]: FREEBUFF_SSE_GZIP_RECOVERY_VALUE,
+      [FUCKBUFF_SSE_GZIP_RECOVERY_HEADER]: FUCKBUFF_SSE_GZIP_RECOVERY_VALUE,
     })
 
     let byokHeaders = new Headers()
@@ -304,7 +304,7 @@ describe('SDK delegated user headers', () => {
       messages: [{ role: 'user', content: 'hello' }],
     })
     await result.text
-    expect(byokHeaders.has(FREEBUFF_SSE_GZIP_RECOVERY_HEADER)).toBe(false)
+    expect(byokHeaders.has(FUCKBUFF_SSE_GZIP_RECOVERY_HEADER)).toBe(false)
   })
 
   test('sends userId on agent run requests', async () => {
@@ -351,7 +351,7 @@ describe('SDK delegated user headers', () => {
     expect(requests).toHaveLength(2)
     for (const request of requests) {
       expect(request.headers).toMatchObject({
-        [FREEBUFF_ACTING_USER_HEADER]: 'end-user',
+        [FUCKBUFF_ACTING_USER_HEADER]: 'end-user',
       })
     }
   })
@@ -370,7 +370,7 @@ describe('SDK delegated user headers', () => {
       logger,
     })
 
-    expect(headers).not.toHaveProperty(FREEBUFF_ACTING_USER_HEADER)
+    expect(headers).not.toHaveProperty(FUCKBUFF_ACTING_USER_HEADER)
   })
 })
 

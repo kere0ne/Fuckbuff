@@ -1,25 +1,25 @@
 import { useEffect, useRef } from 'react'
-import { formatHoursWithUnit } from '@codebuff/common/util/freebuff-hours'
-import { formatFreebuffHardBlockedPrivacySignals } from '@codebuff/common/util/freebuff-privacy'
+import { formatHoursWithUnit } from '@codebuff/common/util/fuckbuff-hours'
+import { formatFuckbuffHardBlockedPrivacySignals } from '@codebuff/common/util/fuckbuff-privacy'
 
 import {
-  resolveFreebuffModelPickForSession,
-  refreshFreebuffSessionMetadata,
-  startFreebuffSession,
-} from './use-freebuff-session'
+  resolveFuckbuffModelPickForSession,
+  refreshFuckbuffSessionMetadata,
+  startFuckbuffSession,
+} from './use-fuckbuff-session'
 import {
-  useFreebuffChatStore,
+  useFuckbuffChatStore,
   type ChatAdmission,
-} from '../state/freebuff-chat-store'
-import { getFreebuffModelDirectory } from '../state/freebuff-catalog-store'
-import { useFreebuffModelStore } from '../state/freebuff-model-store'
-import { useFreebuffSessionStore } from '../state/freebuff-session-store'
+} from '../state/fuckbuff-chat-store'
+import { getFuckbuffModelDirectory } from '../state/fuckbuff-catalog-store'
+import { useFuckbuffModelStore } from '../state/fuckbuff-model-store'
+import { useFuckbuffSessionStore } from '../state/fuckbuff-session-store'
 import { freebucksOf, freebucksRowIntent } from '../utils/freebucks'
-import type { FreebuffSessionResponse } from '../types/freebuff-session'
+import type { FuckbuffSessionResponse } from '../types/fuckbuff-session'
 import type { StreamStatus } from './use-message-queue'
 
-export function freebuffAdmissionNotice(
-  session: FreebuffSessionResponse | null,
+export function fuckbuffAdmissionNotice(
+  session: FuckbuffSessionResponse | null,
 ): string | null {
   if (!session) return null
   switch (session.status) {
@@ -27,10 +27,10 @@ export function freebuffAdmissionNotice(
       return 'This account is suspended. To appeal, visit https://freebuff.com/account?tab=standing. If this is a mistake, contact support@freebuff.com.'
     case 'country_blocked':
       return session.countryBlockReason === 'anonymous_network'
-        ? `Freebuff detected ${formatFreebuffHardBlockedPrivacySignals(session.ipPrivacySignals)} traffic. Disable VPN, proxy or Tor traffic and try again.`
+        ? `Fuckbuff detected ${formatFuckbuffHardBlockedPrivacySignals(session.ipPrivacySignals)} traffic. Disable VPN, proxy or Tor traffic and try again.`
         : session.countryCode === 'UNKNOWN'
-          ? 'Freebuff could not verify your location. Check your VPN or proxy settings and try again.'
-          : `Freebuff is unavailable in ${session.countryCode}. Use /byok to use your own API key.`
+          ? 'Fuckbuff could not verify your location. Check your VPN or proxy settings and try again.'
+          : `Fuckbuff is unavailable in ${session.countryCode}. Use /byok to use your own API key.`
     case 'rate_limited':
       return session.freebucksShortfall
         ? `Not enough hours: ${formatHoursWithUnit(session.freebucksShortfall.balance)} available. See https://freebuff.com/plans or use /model.`
@@ -38,7 +38,7 @@ export function freebuffAdmissionNotice(
     case 'spend_limited':
       return session.message
     case 'ip_capped':
-      return 'Too many Freebuff sessions on this network. Try again after another session finishes.'
+      return 'Too many Fuckbuff sessions on this network. Try again after another session finishes.'
     case 'superseded':
       return 'This session was taken over elsewhere. Send again to start a new session.'
     default:
@@ -47,10 +47,10 @@ export function freebuffAdmissionNotice(
 }
 
 /** Identity-check every continuation: a cancelled send must never restart itself. */
-export async function beginFreebuffChatAdmission(admission: ChatAdmission) {
-  if (useFreebuffChatStore.getState().admission !== admission) return
+export async function beginFuckbuffChatAdmission(admission: ChatAdmission) {
+  if (useFuckbuffChatStore.getState().admission !== admission) return
   if (admission.phase === 'confirm') {
-    const intentFor = (session: FreebuffSessionResponse | null | undefined) =>
+    const intentFor = (session: FuckbuffSessionResponse | null | undefined) =>
       freebucksRowIntent(
         freebucksOf(session),
         admission.model,
@@ -61,9 +61,9 @@ export async function beginFreebuffChatAdmission(admission: ChatAdmission) {
     // no wallet ceiling, so a stale answer would spend unasked.
     if (
       JSON.stringify(intentFor(admission.previousSession)) !==
-      JSON.stringify(intentFor(useFreebuffSessionStore.getState().session))
+      JSON.stringify(intentFor(useFuckbuffSessionStore.getState().session))
     ) {
-      useFreebuffChatStore.setState({
+      useFuckbuffChatStore.setState({
         admission: { phase: 'requested', model: admission.model },
       })
       return
@@ -73,18 +73,18 @@ export async function beginFreebuffChatAdmission(admission: ChatAdmission) {
     ...admission,
     phase: 'starting',
     message: undefined,
-    previousSession: useFreebuffSessionStore.getState().session,
+    previousSession: useFuckbuffSessionStore.getState().session,
   }
-  useFreebuffSessionStore.getState().setFailure(null)
-  useFreebuffChatStore.setState({ admission: starting })
+  useFuckbuffSessionStore.getState().setFailure(null)
+  useFuckbuffChatStore.setState({ admission: starting })
   try {
-    await startFreebuffSession(starting.model, {
+    await startFuckbuffSession(starting.model, {
       preserveQueue: true,
       persistSelection: false,
     })
   } catch (error) {
-    if (useFreebuffChatStore.getState().admission !== starting) return
-    useFreebuffChatStore.setState({
+    if (useFuckbuffChatStore.getState().admission !== starting) return
+    useFuckbuffChatStore.setState({
       admission: {
         ...starting,
         phase: 'failed',
@@ -99,7 +99,7 @@ export async function beginFreebuffChatAdmission(admission: ChatAdmission) {
  * can spend it. A user-paused queue sends nothing: admitting for one bought
  * an hour no turn started, which the server refunds after five minutes.
  */
-export function freebuffChatAdmissionMayStart(queue: {
+export function fuckbuffChatAdmissionMayStart(queue: {
   chainInProgress: boolean
   streamStatus: StreamStatus
   queuedCount: number
@@ -114,21 +114,21 @@ export function freebuffChatAdmissionMayStart(queue: {
 }
 
 /** Shown while a requested admission waits on a paused queue. */
-export const FREEBUFF_ADMISSION_QUEUE_PAUSED_MESSAGE =
+export const FUCKBUFF_ADMISSION_QUEUE_PAUSED_MESSAGE =
   'Your queue is paused, so no session was started. Press Esc to put your message back in the draft and send it when you are ready.'
 
 /** The queue holds the submitted text and attachments while admission runs. */
-export function useFreebuffChatAdmission(enabled: boolean) {
+export function useFuckbuffChatAdmission(enabled: boolean) {
   const checking = useRef<ChatAdmission | null>(null)
-  const admission = useFreebuffChatStore((s) => s.admission)
-  const session = useFreebuffSessionStore((s) => s.session)
-  const failure = useFreebuffSessionStore((s) => s.failure)
+  const admission = useFuckbuffChatStore((s) => s.admission)
+  const session = useFuckbuffSessionStore((s) => s.session)
+  const failure = useFuckbuffSessionStore((s) => s.failure)
 
   useEffect(() => {
     if (!enabled || !admission) return
     if (admission.phase === 'starting') {
       if (failure && !failure.retry) {
-        useFreebuffChatStore.setState({
+        useFuckbuffChatStore.setState({
           admission: {
             ...admission,
             phase: 'failed',
@@ -138,11 +138,11 @@ export function useFreebuffChatAdmission(enabled: boolean) {
       } else if (session === admission.previousSession) {
         return
       } else if (session?.status === 'active') {
-        useFreebuffChatStore.setState({ admission: null, nextModel: null })
+        useFuckbuffChatStore.setState({ admission: null, nextModel: null })
       } else {
-        const message = freebuffAdmissionNotice(session)
+        const message = fuckbuffAdmissionNotice(session)
         if (message)
-          useFreebuffChatStore.setState({
+          useFuckbuffChatStore.setState({
             admission: { ...admission, phase: 'failed', message },
           })
       }
@@ -151,7 +151,7 @@ export function useFreebuffChatAdmission(enabled: boolean) {
     if (admission.phase !== 'requested') return
     if (!session) {
       if (failure && !failure.retry)
-        useFreebuffChatStore.setState({
+        useFuckbuffChatStore.setState({
           admission: {
             ...admission,
             phase: 'failed',
@@ -163,16 +163,16 @@ export function useFreebuffChatAdmission(enabled: boolean) {
     if (!admission.metadataChecked) {
       if (checking.current === admission) return
       checking.current = admission
-      void refreshFreebuffSessionMetadata()
+      void refreshFuckbuffSessionMetadata()
         .then(() => {
-          if (useFreebuffChatStore.getState().admission === admission)
-            useFreebuffChatStore.setState({
+          if (useFuckbuffChatStore.getState().admission === admission)
+            useFuckbuffChatStore.setState({
               admission: { ...admission, metadataChecked: true },
             })
         })
         .catch((error) => {
-          if (useFreebuffChatStore.getState().admission === admission)
-            useFreebuffChatStore.setState({
+          if (useFuckbuffChatStore.getState().admission === admission)
+            useFuckbuffChatStore.setState({
               admission: {
                 ...admission,
                 phase: 'failed',
@@ -183,18 +183,18 @@ export function useFreebuffChatAdmission(enabled: boolean) {
       return
     }
     if (session.status === 'banned' || session.status === 'country_blocked') {
-      useFreebuffChatStore.setState({
+      useFuckbuffChatStore.setState({
         admission: {
           ...admission,
           phase: 'failed',
-          message: freebuffAdmissionNotice(session)!,
+          message: fuckbuffAdmissionNotice(session)!,
         },
       })
       return
     }
     // A send before the first session response captured the launch seed.
-    const { hasExplicitPick, selectedModel } = useFreebuffModelStore.getState()
-    const model = resolveFreebuffModelPickForSession(
+    const { hasExplicitPick, selectedModel } = useFuckbuffModelStore.getState()
+    const model = resolveFuckbuffModelPickForSession(
       hasExplicitPick ? admission.model : selectedModel,
       session,
     )
@@ -206,11 +206,11 @@ export function useFreebuffChatAdmission(enabled: boolean) {
     )
     const resolved = { ...admission, model }
     if (intent.kind === 'paywall') {
-      useFreebuffChatStore.setState({
+      useFuckbuffChatStore.setState({
         admission: {
           ...resolved,
           phase: 'failed',
-          message: `Not enough hours for ${getFreebuffModelDirectory().get(model).displayName}: an hour on it takes ${formatHoursWithUnit(intent.price)}. Choose another model with /model or visit https://freebuff.com/plans.`,
+          message: `Not enough hours for ${getFuckbuffModelDirectory().get(model).displayName}: an hour on it takes ${formatHoursWithUnit(intent.price)}. Choose another model with /model or visit https://freebuff.com/plans.`,
         },
       })
     } else if (
@@ -230,18 +230,18 @@ export function useFreebuffChatAdmission(enabled: boolean) {
         intent.kind === 'confirm' && intent.walletSpend
           ? ` Uses ${formatHoursWithUnit(intent.walletSpend)} from your wallet.`
           : ''
-      useFreebuffChatStore.setState({
+      useFuckbuffChatStore.setState({
         admission: {
           ...resolved,
           phase: 'confirm',
           previousSession: session,
-          message: `${getFreebuffModelDirectory().get(model).displayName} ${cost}.${wallet}${session.status === 'active' ? ' This ends your current model session; your conversation is kept.' : ''}${intent.kind === 'confirm' && 'claimEarned' in intent && intent.claimEarned ? ' Earned hours will be claimed on admission.' : ''}`,
+          message: `${getFuckbuffModelDirectory().get(model).displayName} ${cost}.${wallet}${session.status === 'active' ? ' This ends your current model session; your conversation is kept.' : ''}${intent.kind === 'confirm' && 'claimEarned' in intent && intent.claimEarned ? ' Earned hours will be claimed on admission.' : ''}`,
         },
       })
     } else {
       // Keep the exact object used by the asynchronous admission continuation.
-      useFreebuffChatStore.setState({ admission: resolved })
-      void beginFreebuffChatAdmission(resolved)
+      useFuckbuffChatStore.setState({ admission: resolved })
+      void beginFuckbuffChatAdmission(resolved)
     }
   }, [enabled, admission, session, failure])
 }

@@ -1,38 +1,38 @@
 import {
-  FREEBUFF_EARN_PATH,
-  FREEBUFF_EARN_PROMPT_SHORT,
-} from '@codebuff/common/constants/freebuff-earn'
+  FUCKBUFF_EARN_PATH,
+  FUCKBUFF_EARN_PROMPT_SHORT,
+} from '@codebuff/common/constants/fuckbuff-earn'
 import { TextAttributes } from '@opentui/core'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import { Button } from './button'
 import { useCopyToClipboard } from './copy-button'
-import { FREEBUFF_REWARD_MODEL_DISPLAY_NAME } from '@codebuff/common/constants/freebuff-models'
-import { FREEBUFF_REWARD_MAX_DAILY_SESSIONS } from '@codebuff/common/constants/freebuff-models'
-import { REFERRAL_CLI_DAILY_SESSION_BONUS_CAP } from '@codebuff/common/constants/freebuff-referral-tiers'
+import { FUCKBUFF_REWARD_MODEL_DISPLAY_NAME } from '@codebuff/common/constants/fuckbuff-models'
+import { FUCKBUFF_REWARD_MAX_DAILY_SESSIONS } from '@codebuff/common/constants/fuckbuff-models'
+import { REFERRAL_CLI_DAILY_SESSION_BONUS_CAP } from '@codebuff/common/constants/fuckbuff-referral-tiers'
 import { pluralize } from '@codebuff/common/util/string'
 
-import { startFreebuffSession } from '../hooks/use-freebuff-session'
+import { startFuckbuffSession } from '../hooks/use-fuckbuff-session'
 import { useNow } from '../hooks/use-now'
 import { useTheme } from '../hooks/use-theme'
-import { useFreebuffModelDirectory } from '../state/freebuff-catalog-store'
+import { useFuckbuffModelDirectory } from '../state/fuckbuff-catalog-store'
 import { LOGIN_WEBSITE_URL } from '../login/constants'
-import { formatFreebuffPremiumResetCountdown } from '../utils/freebuff-premium-reset'
+import { formatFuckbuffPremiumResetCountdown } from '../utils/fuckbuff-premium-reset'
 import { safeOpen } from '../utils/open-url'
 import { BORDER_CHARS } from '../utils/ui-constants'
 
-import type { FreebuffAccessTier } from '@codebuff/common/constants/freebuff-models'
+import type { FuckbuffAccessTier } from '@codebuff/common/constants/fuckbuff-models'
 import type {
-  FreebuffGlmPromo,
-  FreebuffReferralInfo,
-} from '@codebuff/common/types/freebuff-session'
+  FuckbuffGlmPromo,
+  FuckbuffReferralInfo,
+} from '@codebuff/common/types/fuckbuff-session'
 
 /** Build a friend's share link from the referral code. Points at the
  *  /get-started page (CLI install walkthrough + hero + FAQs) rather than the
  *  bare landing page; the `?ref=` code is still captured into the attribution
  *  cookie there via the root layout's ReferralCodeCapture. When we know the
  *  inviter's name we pass `?referrer=` too so the page greets the friend with
- *  "X invited you to try Freebuff!". */
+ *  "X invited you to try Fuckbuff!". */
 function referralLink(code: string, referrerName: string | null): string {
   const params = new URLSearchParams({ ref: code })
   if (referrerName) params.set('referrer', referrerName)
@@ -45,11 +45,11 @@ function referralLink(code: string, referrerName: string | null): string {
  * Was `/earn?tab=referrals#referral-status`, which sent a rate-limited user to
  * the slowest of the three ways to earn — a referral pays when somebody else
  * signs up and sticks around. `/earn/trust` is the engagement feed, which pays
- * within a minute. `FREEBUFF_EARN_PATH` is shared so the CLI, Desktop and the
+ * within a minute. `FUCKBUFF_EARN_PATH` is shared so the CLI, Desktop and the
  * browser all point at the same place.
  */
-const EARN_URL = `${LOGIN_WEBSITE_URL}${FREEBUFF_EARN_PATH}`
-const DASHBOARD_LABEL = `${FREEBUFF_EARN_PROMPT_SHORT} ↵`
+const EARN_URL = `${LOGIN_WEBSITE_URL}${FUCKBUFF_EARN_PATH}`
+const DASHBOARD_LABEL = `${FUCKBUFF_EARN_PROMPT_SHORT} ↵`
 /** Link to details about earning hours. */
 const METERED_DASHBOARD_LABEL = 'Learn More ↵'
 // Two columns of leading space separate the label from the copy control beside
@@ -65,7 +65,7 @@ function BountyPromoLine({
   promo,
 }: {
   theme: ReturnType<typeof useTheme>
-  promo?: FreebuffGlmPromo
+  promo?: FuckbuffGlmPromo
 }) {
   if (!promo) return null
   return (
@@ -119,22 +119,22 @@ function formatPromoEnd(endsAt: string): string {
 
 // Navigation ids for the banner's keyboard-focusable buttons. The model
 // selector owns the landing keyboard handler and appends these after its rows.
-const COPY_FOCUS_ID = '__freebuff_referral_copy__'
-const GLM_FOCUS_ID = '__freebuff_referral_glm__'
+const COPY_FOCUS_ID = '__fuckbuff_referral_copy__'
+const GLM_FOCUS_ID = '__fuckbuff_referral_glm__'
 /** Opens the Earn page — bounties to claim, referrals to track, balance to
  *  read. The CLI can open a browser (`safeOpen`), so this is a real button
  *  rather than a URL the user has to select and paste. */
-const DASHBOARD_FOCUS_ID = '__freebuff_referral_dashboard__'
+const DASHBOARD_FOCUS_ID = '__fuckbuff_referral_dashboard__'
 const BUTTON_HORIZONTAL_CHROME = 6 // two border + four padding columns
 
-export interface FreebuffReferralFocusTarget {
+export interface FuckbuffReferralFocusTarget {
   id: string
   activate: () => void
 }
 
 /** Below this menu width, the model action and referral/dashboard action group
  * no longer fit beside each other. */
-const shouldStackFreebuffReferralActions = (width: number): boolean =>
+const shouldStackFuckbuffReferralActions = (width: number): boolean =>
   width < 70
 
 const firstLabelThatFits = (
@@ -287,22 +287,22 @@ const CopyInviteLinkButton: React.FC<{
  * Renders nothing unless the server attached a `referral` block, so
  * pre-referral-code users never see it.
  */
-interface FreebuffReferralBannerProps {
+interface FuckbuffReferralBannerProps {
   onSelectModel?: (model: string) => void
 
   width: number
-  referral: FreebuffReferralInfo
+  referral: FuckbuffReferralInfo
   /** A live GLM promo, or undefined. Undefined is the ordinary state. */
-  glmPromo?: FreebuffGlmPromo
-  accessTier: FreebuffAccessTier
+  glmPromo?: FuckbuffGlmPromo
+  accessTier: FuckbuffAccessTier
   /** The account is on the Freebucks meter: referrals pay hours, and
    *  nothing here may count sessions. */
   metered?: boolean
   focusedId: string
-  onFocusTargetsChange: (targets: FreebuffReferralFocusTarget[]) => void
+  onFocusTargetsChange: (targets: FuckbuffReferralFocusTarget[]) => void
 }
 
-export const FreebuffReferralBanner: React.FC<FreebuffReferralBannerProps> = ({
+export const FuckbuffReferralBanner: React.FC<FuckbuffReferralBannerProps> = ({
   width,
   onSelectModel,
   referral,
@@ -322,7 +322,7 @@ export const FreebuffReferralBanner: React.FC<FreebuffReferralBannerProps> = ({
   const dashboardFocused = focusedId === DASHBOARD_FOCUS_ID
 
   // The reward model's catalog key in catalog mode, its id otherwise.
-  const rewardModelId = useFreebuffModelDirectory().rewardModelId
+  const rewardModelId = useFuckbuffModelDirectory().rewardModelId
   const useGlm = useCallback(() => {
     if (onSelectModel) {
       onSelectModel(rewardModelId)
@@ -331,7 +331,7 @@ export const FreebuffReferralBanner: React.FC<FreebuffReferralBannerProps> = ({
     if (joiningRef.current) return
     joiningRef.current = true
     setJoining(true)
-    startFreebuffSession(rewardModelId).finally(() => {
+    startFuckbuffSession(rewardModelId).finally(() => {
       joiningRef.current = false
       setJoining(false)
     })
@@ -466,7 +466,7 @@ export const FreebuffReferralBanner: React.FC<FreebuffReferralBannerProps> = ({
   // The reward's balance and reset. The reward-only fields are always present
   // on a full-tier block from the server; default defensively for the wire type.
   const weeklySessionsRemaining = referral.weeklySessionsRemaining ?? 0
-  const resetsIn = formatFreebuffPremiumResetCountdown(
+  const resetsIn = formatFuckbuffPremiumResetCountdown(
     referral.resetAt ? new Date(referral.resetAt) : new Date(now),
     now,
     {
@@ -510,9 +510,9 @@ export const FreebuffReferralBanner: React.FC<FreebuffReferralBannerProps> = ({
               <span fg={theme.muted}>
                 {' '}
                 from referrals · refills in {resetsIn}
-                {qualifiedCount >= FREEBUFF_REWARD_MAX_DAILY_SESSIONS
+                {qualifiedCount >= FUCKBUFF_REWARD_MAX_DAILY_SESSIONS
                   ? ''
-                  : ` · refer more (${qualifiedCount}/${FREEBUFF_REWARD_MAX_DAILY_SESSIONS}):`}
+                  : ` · refer more (${qualifiedCount}/${FUCKBUFF_REWARD_MAX_DAILY_SESSIONS}):`}
               </span>
             </>
           ) : (
@@ -533,14 +533,14 @@ export const FreebuffReferralBanner: React.FC<FreebuffReferralBannerProps> = ({
   // whole sessions for a clean count — an early-ended session leaves a fraction
   // that the user can still spend, so never show 0 here.
   const sessionsLeft = Math.max(1, Math.ceil(weeklySessionsRemaining))
-  const stackActions = shouldStackFreebuffReferralActions(width)
+  const stackActions = shouldStackFuckbuffReferralActions(width)
   const actionRowWidth = width - 4 // card border + horizontal padding
   // The card is limited-tier only now, so this always names the reward model.
   // Read off the catalog rather than written out, so the label cannot drift
   // from the model the button actually starts.
   const glmLabel = firstLabelThatFits(actionRowWidth, [
-    `▶ Use ${FREEBUFF_REWARD_MODEL_DISPLAY_NAME} ↵`,
-    `▶ ${FREEBUFF_REWARD_MODEL_DISPLAY_NAME}`,
+    `▶ Use ${FUCKBUFF_REWARD_MODEL_DISPLAY_NAME} ↵`,
+    `▶ ${FUCKBUFF_REWARD_MODEL_DISPLAY_NAME}`,
     '▶ Reward',
   ])
   const inviteAvailableWidth = stackActions
@@ -549,13 +549,13 @@ export const FreebuffReferralBanner: React.FC<FreebuffReferralBannerProps> = ({
       (glmLabel.length + BUTTON_HORIZONTAL_CHROME) -
       2 -
       DASHBOARD_BUTTON_WIDTH
-  // The reward is CAPPED at FREEBUFF_REWARD_MAX_DAILY_SESSIONS, so past
+  // The reward is CAPPED at FUCKBUFF_REWARD_MAX_DAILY_SESSIONS, so past
   // that point another referral buys nothing and the button must stop
   // promising "+1/day" — the same max-earned state the limited-tier card above
   // already renders against its own cap. `qualifiedCount` arrives already
   // clamped (referral-info.ts sends the entitlement, not the raw count), so
   // this compares like with like.
-  const glmAtCap = qualifiedCount >= FREEBUFF_REWARD_MAX_DAILY_SESSIONS
+  const glmAtCap = qualifiedCount >= FUCKBUFF_REWARD_MAX_DAILY_SESSIONS
   const inviteLabels = glmAtCap
     ? ['⎘ Invite a friend', '⎘ Invite']
     : [
@@ -586,7 +586,7 @@ export const FreebuffReferralBanner: React.FC<FreebuffReferralBannerProps> = ({
         flexShrink: 0,
       }}
       border={['top', 'bottom', 'left', 'right']}
-      title={` ✦ ${FREEBUFF_REWARD_MODEL_DISPLAY_NAME} unlocked `}
+      title={` ✦ ${FUCKBUFF_REWARD_MODEL_DISPLAY_NAME} unlocked `}
       titleAlignment="left"
     >
       <text style={{ wrapMode: 'word' }}>

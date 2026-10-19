@@ -46,7 +46,7 @@ describe('credentials.json is replaced atomically', () => {
   let credentialsPath: string
 
   beforeEach(() => {
-    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-cred-atomic-'))
+    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-cred-atomic-'))
     configDir = path.join(tempRoot, 'config')
     credentialsPath = path.join(configDir, 'credentials.json')
     setProjectRoot(tempRoot)

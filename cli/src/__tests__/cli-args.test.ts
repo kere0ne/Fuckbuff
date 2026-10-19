@@ -142,11 +142,11 @@ describe('CLI Argument Parsing', () => {
   })
 })
 
-describe('Freebuff CLI Argument Parsing', () => {
+describe('Fuckbuff CLI Argument Parsing', () => {
   test('accepts login as a command, not an unexpected argument', () => {
     const result = parseArgs({
-      argv: ['node', 'freebuff', 'login'],
-      isFreebuff: true,
+      argv: ['node', 'fuckbuff', 'login'],
+      isFuckbuff: true,
       version: '1.0.0',
     })
 
@@ -157,8 +157,8 @@ describe('Freebuff CLI Argument Parsing', () => {
 
   test('allows cwd before the login command', () => {
     const result = parseArgs({
-      argv: ['node', 'freebuff', '--cwd', '/tmp', 'login'],
-      isFreebuff: true,
+      argv: ['node', 'fuckbuff', '--cwd', '/tmp', 'login'],
+      isFuckbuff: true,
       version: '1.0.0',
     })
 
@@ -169,8 +169,8 @@ describe('Freebuff CLI Argument Parsing', () => {
 
   test('allows cwd after the login command', () => {
     const result = parseArgs({
-      argv: ['node', 'freebuff', 'login', '--cwd', '/tmp'],
-      isFreebuff: true,
+      argv: ['node', 'fuckbuff', 'login', '--cwd', '/tmp'],
+      isFuckbuff: true,
       version: '1.0.0',
     })
 
@@ -182,15 +182,15 @@ describe('Freebuff CLI Argument Parsing', () => {
   test('parses --trust-agents and defaults it to false', () => {
     expect(
       parseArgs({
-        argv: ['node', 'freebuff', '--trust-agents'],
-        isFreebuff: true,
+        argv: ['node', 'fuckbuff', '--trust-agents'],
+        isFuckbuff: true,
         version: '1.0.0',
       }).trustAgents,
     ).toBe(true)
     expect(
       parseArgs({
-        argv: ['node', 'freebuff'],
-        isFreebuff: true,
+        argv: ['node', 'fuckbuff'],
+        isFuckbuff: true,
         version: '1.0.0',
       }).trustAgents,
     ).toBe(false)
@@ -201,7 +201,7 @@ describe('Codebuff --trust-agents', () => {
   test('parses --trust-agents alongside a prompt', () => {
     const result = parseArgs({
       argv: ['node', 'codebuff', '--trust-agents', 'fix', 'it'],
-      isFreebuff: false,
+      isFuckbuff: false,
       version: '1.0.0',
     })
     expect(result.trustAgents).toBe(true)

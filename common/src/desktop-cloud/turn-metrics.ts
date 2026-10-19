@@ -6,7 +6,7 @@ import type {
 } from '../types/contracts/llm'
 
 /**
- * A cloud run's token receipts, as a `freebuff_cloud_event` row of this kind.
+ * A cloud run's token receipts, as a `fuckbuff_cloud_event` row of this kind.
  * Each row is the run's whole cumulative snapshot so far, never a delta: the
  * newest row of a run is its receipt, and a reader that missed earlier rows
  * loses nothing. Readers that predate the kind ignore it.
@@ -15,7 +15,7 @@ export const CLOUD_METRICS_EVENT_KIND = 'metrics'
 
 /**
  * The wire shape of the payload. It mirrors Desktop's `TurnMetrics`
- * (`freebuff-desktop/src/shared/turn-metrics.ts`), which forwards it whole, so
+ * (`fuckbuff-desktop/src/shared/turn-metrics.ts`), which forwards it whole, so
  * an optional field added on both sides needs no protocol change. Missing
  * fields are unknown, never zero.
  */
@@ -43,7 +43,7 @@ export type CloudTurnMetrics = {
   }>
 }
 
-/** A history row's receipt, or null for any other row. Read by Desktop and Freebuff Web. */
+/** A history row's receipt, or null for any other row. Read by Desktop and Fuckbuff Web. */
 export function readCloudTurnMetrics(
   kind: string,
   payload: unknown,

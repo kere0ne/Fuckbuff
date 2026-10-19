@@ -59,7 +59,7 @@ export const PROVIDER_ERROR_TAG = 'PROVIDER_ERROR'
 export const MAX_CONSECUTIVE_STREAM_RECOVERIES = 3
 
 export const REPEATED_STREAM_INTERRUPTIONS_MESSAGE =
-  'Freebuff could not confirm that the provider finished its response after several retries. This can be a connection problem or an incompatible provider response. Check the provider settings or try a different model.'
+  'Fuckbuff could not confirm that the provider finished its response after several retries. This can be a connection problem or an incompatible provider response. Check the provider settings or try a different model.'
 
 export const REPEATED_OUTPUT_LIMIT_MESSAGE =
   'The model kept ending after reasoning without producing a response. Try a simpler request or a different model.'
@@ -71,7 +71,7 @@ export const REPEATED_PROVIDER_ERRORS_MESSAGE =
  * Follow-up suggestion tools render a clickable card per call and do nothing
  * else, so a model that degenerates into repeating one inside a single
  * response has no natural brake: every call streams, executes and renders
- * before the model ever sees a result. Seen 2026-09-22 on Freebuff Desktop
+ * before the model ever sees a result. Seen 2026-09-22 on Fuckbuff Desktop
  * (MiMo v2.5): a single response streamed suggest_prompts calls for 3.5
  * minutes (the turn logged 90 tool calls) until the user pressed Stop. The
  * guidance asks for two to four, one per call, so this cap leaves generous

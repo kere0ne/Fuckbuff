@@ -1,21 +1,21 @@
-// The label/dots/perk-note logic is shared with Freebuff Desktop and lives in
+// The label/dots/perk-note logic is shared with Fuckbuff Desktop and lives in
 // common; this module re-exports it and adds the terminal rendering and layout
 // gating only the CLI needs.
 export {
-  FREEBUFF_STREAK_WEEK,
-  getFreebuffStreakBonusNote,
-} from '@codebuff/common/util/freebuff-streak-line'
-export type { FreebuffStreakLine } from '@codebuff/common/util/freebuff-streak-line'
+  FUCKBUFF_STREAK_WEEK,
+  getFuckbuffStreakBonusNote,
+} from '@codebuff/common/util/fuckbuff-streak-line'
+export type { FuckbuffStreakLine } from '@codebuff/common/util/fuckbuff-streak-line'
 
 import {
-  FREEBUFF_STREAK_WEEK,
-  getFreebuffStreakBonusNote,
-  getFreebuffStreakLine as getSharedFreebuffStreakLine,
-} from '@codebuff/common/util/freebuff-streak-line'
+  FUCKBUFF_STREAK_WEEK,
+  getFuckbuffStreakBonusNote,
+  getFuckbuffStreakLine as getSharedFuckbuffStreakLine,
+} from '@codebuff/common/util/fuckbuff-streak-line'
 
-import type { FreebuffStreakLine } from '@codebuff/common/util/freebuff-streak-line'
+import type { FuckbuffStreakLine } from '@codebuff/common/util/fuckbuff-streak-line'
 
-const FREEBUFF_STREAK_BONUS_MIN_HEIGHT = 30
+const FUCKBUFF_STREAK_BONUS_MIN_HEIGHT = 30
 
 /** Progress glyphs for a terminal — the same ●/○ pair the shared module and
  *  the desktop app use. Bullet and middle dot were tried here because U+25CF
@@ -31,15 +31,15 @@ const FREEBUFF_STREAK_BONUS_MIN_HEIGHT = 30
 const TERMINAL_DOT_CHARS = { filled: '●', empty: '○' }
 
 /** The streak line as the CLI draws it. */
-export function getFreebuffStreakLine(
+export function getFuckbuffStreakLine(
   streak: number,
-): FreebuffStreakLine | null {
-  return getSharedFreebuffStreakLine(streak, TERMINAL_DOT_CHARS)
+): FuckbuffStreakLine | null {
+  return getSharedFuckbuffStreakLine(streak, TERMINAL_DOT_CHARS)
 }
 
 /** Returns the earned perk note only when the landing layout can show it
  * without crowding the picker or wrapping onto additional rows. */
-export function getFreebuffStreakBonusNoteForLayout(params: {
+export function getFuckbuffStreakBonusNoteForLayout(params: {
   streak: number
   accessTier: 'full' | 'limited'
   /** From the streak response: Freebucks a streak day pays on the meter, or
@@ -48,10 +48,10 @@ export function getFreebuffStreakBonusNoteForLayout(params: {
   terminalHeight: number
   availableWidth: number
 }): string | null {
-  if (params.streak < FREEBUFF_STREAK_WEEK) return null
-  if (params.terminalHeight < FREEBUFF_STREAK_BONUS_MIN_HEIGHT) return null
+  if (params.streak < FUCKBUFF_STREAK_WEEK) return null
+  if (params.terminalHeight < FUCKBUFF_STREAK_BONUS_MIN_HEIGHT) return null
 
-  const note = getFreebuffStreakBonusNote(params)
+  const note = getFuckbuffStreakBonusNote(params)
   if (!note || note.length > params.availableWidth) return null
 
   return note

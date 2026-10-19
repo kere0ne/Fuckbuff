@@ -6,7 +6,7 @@
  * run (POST an answer, POST a dismissal, POST an engagement event).
  * `state/profile-survey-store.ts` owns the effects; `profile-survey-box.tsx` only draws `state`. The contract — the
  * question bank, the wire types and the validity rule — is
- * `@codebuff/common/constants/freebuff-profile-survey`.
+ * `@codebuff/common/constants/fuckbuff-profile-survey`.
  *
  * Numbering: the question's options other than its notApplicable one are
  * `1..n` in the order the server sent them (bank order, or this user's
@@ -15,13 +15,13 @@
  * its number.
  */
 
-import { isValidProfileSurveyAnswer } from '@codebuff/common/constants/freebuff-profile-survey'
+import { isValidProfileSurveyAnswer } from '@codebuff/common/constants/fuckbuff-profile-survey'
 import {
   isValidSponsoredSurveyAnswer,
   SPONSORED_SURVEY_LIMITS,
   type SponsoredSurveyQuestionKind,
-} from '@codebuff/common/constants/freebuff-sponsored-survey'
-import { formatHoursWithUnit } from '@codebuff/common/util/freebuff-hours'
+} from '@codebuff/common/constants/fuckbuff-sponsored-survey'
+import { formatHoursWithUnit } from '@codebuff/common/util/fuckbuff-hours'
 import { sanitizeTerminalStrings } from '@codebuff/common/util/terminal-safe-text'
 
 import { isPlainEnterKey } from './terminal-enter-detection'
@@ -33,7 +33,7 @@ import type {
   ProfileSurveyQuestion,
   ProfileSurveyQuestionId,
   ProfileSurveyStateResponse,
-} from '@codebuff/common/constants/freebuff-profile-survey'
+} from '@codebuff/common/constants/fuckbuff-profile-survey'
 
 /** The profile bank fits the digit shortcuts; sponsored surveys also use a–c. */
 export const MAX_NUMBERED_OPTIONS = 9

@@ -1,5 +1,5 @@
 /**
- * Free-text sponsored procedures are retired (docs/freebuff-agentic-ads.md,
+ * Free-text sponsored procedures are retired (docs/fuckbuff-agentic-ads.md,
  * "Free text is retired"). Every procedure that serves is a rendered sponsored
  * skill (`skill: <id>@<version> sha256:<hash>` on its first line, see
  * `sponsoredSkillDirective`): the step driver checks each step and the run may
@@ -17,11 +17,11 @@ import { sponsoredSkillDirective } from './sponsored-skill'
 
 /** The refusal an authoring path answers for free text. Advertiser-facing. */
 export const SPONSORED_PROCEDURE_NOT_SKILL_ERROR =
-  'Agent instructions must be a Freebuff skill; free-text instructions are no longer accepted. Leave the instructions empty and submit the campaign for review: Freebuff builds a skill from your goal, website and intent criteria, and the campaign serves once that skill is approved.'
+  'Agent instructions must be a Fuckbuff skill; free-text instructions are no longer accepted. Leave the instructions empty and submit the campaign for review: Fuckbuff builds a skill from your goal, website and intent criteria, and the campaign serves once that skill is approved.'
 
 /** The refusal for text that names a skill no store renders to exactly it. */
 export const SPONSORED_PROCEDURE_UNKNOWN_SKILL_ERROR =
-  'These agent instructions name a skill Freebuff cannot find, or were edited after the skill rendered them. Paste the skill’s exact rendered text, or leave the instructions empty so Freebuff builds one.'
+  'These agent instructions name a skill Fuckbuff cannot find, or were edited after the skill rendered them. Paste the skill’s exact rendered text, or leave the instructions empty so Fuckbuff builds one.'
 
 /**
  * Whether a procedure text names a skill on its first line. The cheap, sync

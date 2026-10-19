@@ -1,7 +1,7 @@
 import {
-  freebuffChatNeedsAdmission,
-  requestFreebuffChatAdmission,
-} from '../state/freebuff-chat-store'
+  fuckbuffChatNeedsAdmission,
+  requestFuckbuffChatAdmission,
+} from '../state/fuckbuff-chat-store'
 import { capturePendingAttachments } from '../utils/pending-attachments'
 import { randomUUID } from 'node:crypto'
 
@@ -10,8 +10,8 @@ import { useCallback, useEffect, useRef } from 'react'
 import { setCurrentChatId } from '../project-files'
 import { createStreamController } from './stream-state'
 import { useChatStore } from '../state/chat-store'
-import { getFreebuffInstanceId } from './use-freebuff-session'
-import { getSelectedFreebuffReasoningEffort } from '../state/freebuff-model-store'
+import { getFuckbuffInstanceId } from './use-fuckbuff-session'
+import { getSelectedFuckbuffReasoningEffort } from '../state/fuckbuff-model-store'
 import { getCodebuffClient } from '../utils/codebuff-client'
 import {
   byokLoadFailureMessage,
@@ -19,16 +19,16 @@ import {
   resolveByokConnection,
   selectedByokConnection,
 } from '../utils/byok'
-import { AGENT_MODE_TO_COST_MODE, IS_FREEBUFF } from '../utils/constants'
+import { AGENT_MODE_TO_COST_MODE, IS_FUCKBUFF } from '../utils/constants'
 import { createEventHandlerState } from '../utils/create-event-handler-state'
 import { createRunConfig } from '../utils/create-run-config'
-import { getAgentIdForMode } from '../utils/freebuff-agent-selection'
+import { getAgentIdForMode } from '../utils/fuckbuff-agent-selection'
 import {
   clientDescriptorMetadata,
-  freebuffSessionMetadata,
-} from '../utils/freebuff-session-identity'
+  fuckbuffSessionMetadata,
+} from '../utils/fuckbuff-session-identity'
 import { loadAgentDefinitions } from '../utils/local-agent-registry'
-import { runWithFreebuffCatalogStaleRetry } from '../utils/freebuff-model-catalog'
+import { runWithFuckbuffCatalogStaleRetry } from '../utils/fuckbuff-model-catalog'
 import { logger } from '../utils/logger'
 import { clearActiveRun, registerActiveRun } from '../utils/active-run'
 import {
@@ -98,7 +98,7 @@ interface UseSendMessageOptions {
   isQueuePausedRef?: React.MutableRefObject<boolean>
   isProcessingQueueRef?: React.MutableRefObject<boolean>
   resumeQueue?: () => void
-  /** Put a message back at the head of the queue. Used by the freebuff
+  /** Put a message back at the head of the queue. Used by the fuckbuff
    *  run-start guard so a message that can't be sent (session fully over)
    *  is held for the next session instead of consumed. */
   requeueMessageAtFront?: (message: {
@@ -309,7 +309,7 @@ export const useSendMessage = ({
       setCanProcessQueue(false)
 
       // A sponsored turn is paid by the sponsor's grant and never by the
-      // user's own source: no BYOK connection, and no Freebuff session.
+      // user's own source: no BYOK connection, and no Fuckbuff session.
       let sponsoredErrorText: string | null = null
       let sponsoredSettled = false
       const settleSponsored = (aborted: boolean) => {
@@ -319,22 +319,22 @@ export const useSendMessage = ({
       }
 
       // Snapshot the source before any await. A selected connection always
-      // runs directly and must never attempt Freebuff session admission.
+      // runs directly and must never attempt Fuckbuff session admission.
       const selectedByok =
-        IS_FREEBUFF && !sponsored ? selectedByokConnection() : undefined
+        IS_FUCKBUFF && !sponsored ? selectedByokConnection() : undefined
       const shouldUseByok = selectedByok !== undefined
 
       // Preserve the submitted text and attachments until send-time admission
       // (and any wallet/model-switch consent) finishes. The persistent runtime
       // holds the queue until this model has a live session.
       if (
-        IS_FREEBUFF &&
+        IS_FUCKBUFF &&
         !shouldUseByok &&
         !sponsored &&
-        freebuffChatNeedsAdmission()
+        fuckbuffChatNeedsAdmission()
       ) {
-        // BYOK setup must never purchase a Freebuff session.
-        if (!isByokSetupOpen()) requestFreebuffChatAdmission()
+        // BYOK setup must never purchase a Fuckbuff session.
+        if (!isByokSetupOpen()) requestFuckbuffChatAdmission()
         requeueMessageAtFront?.({
           content,
           attachments: attachments ?? capturePendingAttachments(),
@@ -585,7 +585,7 @@ export const useSendMessage = ({
           '[send-message] No Codebuff client available. Please ensure you are authenticated.',
         )
         // Show error to user instead of silently failing
-        const brandName = IS_FREEBUFF ? 'Freebuff' : 'Codebuff'
+        const brandName = IS_FUCKBUFF ? 'Fuckbuff' : 'Codebuff'
         setMessages((prev) => [
           ...prev,
           createErrorChatMessage(
@@ -687,16 +687,16 @@ export const useSendMessage = ({
           },
         })
 
-        const freebuffInstanceId = getFreebuffInstanceId()
+        const fuckbuffInstanceId = getFuckbuffInstanceId()
         // The user's reasoning picker choice, when they made one. Read HERE rather
         // than captured earlier so a mid-session change lands on the very next
         // message without restarting the session. Null means "send nothing",
         // which is what makes the server fall back to the catalog default —
         // sending the default explicitly instead would make every turn look
         // like a deliberate user choice and would override an agent's own
-        // declared reasoning (see applyFreebuffReasoningDefaults).
-        const freebuffReasoningEffort = IS_FREEBUFF
-          ? getSelectedFreebuffReasoningEffort()
+        // declared reasoning (see applyFuckbuffReasoningDefaults).
+        const fuckbuffReasoningEffort = IS_FUCKBUFF
+          ? getSelectedFuckbuffReasoningEffort()
           : null
         const priorByok = pinnedByokConnection(previousRunStateRef.current)
         if (
@@ -765,20 +765,20 @@ export const useSendMessage = ({
               prompt: effectivePrompt,
               content: messageContent,
               // A persisted run has a non-secret source pin. Never resume its
-              // transcript after switching to Freebuff or another BYOK revision.
+              // transcript after switching to Fuckbuff or another BYOK revision.
               previousRunState: previousRunStateForTurn,
               agentDefinitions,
               eventHandlerState,
               signal: abortController.signal,
-              // BYOK never enters the Freebuff free-mode admission or budget path.
+              // BYOK never enters the Fuckbuff free-mode admission or budget path.
               costMode: byok ? 'normal' : AGENT_MODE_TO_COST_MODE[agentMode],
               ...(byok ? { byok } : {}),
               extraCodebuffMetadata:
-                IS_FREEBUFF && !byok && freebuffInstanceId
+                IS_FUCKBUFF && !byok && fuckbuffInstanceId
                   ? {
-                      ...freebuffSessionMetadata(freebuffInstanceId),
-                      ...(freebuffReasoningEffort
-                        ? { freebuff_reasoning_effort: freebuffReasoningEffort }
+                      ...fuckbuffSessionMetadata(fuckbuffInstanceId),
+                      ...(fuckbuffReasoningEffort
+                        ? { fuckbuff_reasoning_effort: fuckbuffReasoningEffort }
                         : {}),
                       ...clientDescriptorMetadata(content),
                     }
@@ -852,7 +852,7 @@ export const useSendMessage = ({
         // sponsor's run, so with no mailbox open it waits in the queue.
         if (!sponsored) activateSteering(runOwnerId)
         let runState = pinByokConnection(
-          await runWithFreebuffCatalogStaleRetry({
+          await runWithFuckbuffCatalogStaleRetry({
             run: (attempt) => {
               if (attempt > 0) {
                 // The catalog was refetched: rebuild the root so the same
@@ -868,7 +868,7 @@ export const useSendMessage = ({
               return client.run(runConfig as Parameters<typeof client.run>[0])
             },
             canRetry: () =>
-              IS_FREEBUFF &&
+              IS_FUCKBUFF &&
               !sponsored &&
               !byok &&
               !abortController.signal.aborted &&
@@ -957,7 +957,7 @@ export const useSendMessage = ({
           updater,
           aiMessageId,
           wasAbortedByUser: abortController.signal.aborted,
-          // A sponsored turn is not billed to the user's Freebuff session, so
+          // A sponsored turn is not billed to the user's Fuckbuff session, so
           // none of the session-gate errors that assume it was apply; they are
           // read exactly as a BYOK turn's are.
           isByokRun: shouldUseByok || Boolean(sponsored),

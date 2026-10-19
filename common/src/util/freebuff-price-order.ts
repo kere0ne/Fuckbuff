@@ -1,4 +1,4 @@
-import type { FreebuffFreebucksInfo } from '../types/freebuff-session'
+import type { FuckbuffFreebucksInfo } from '../types/fuckbuff-session'
 
 /**
  * The model pickers' order on the meter: cheapest first.
@@ -13,7 +13,7 @@ import type { FreebuffFreebucksInfo } from '../types/freebuff-session'
  * Shared by Desktop, the CLI and Web so the three pickers cannot disagree.
  */
 export function compareByFreebucksPrice(
-  freebucks: Pick<FreebuffFreebucksInfo, 'prices' | 'listPrices'>,
+  freebucks: Pick<FuckbuffFreebucksInfo, 'prices' | 'listPrices'>,
   a: { id: string; displayName: string },
   b: { id: string; displayName: string },
 ): number {
@@ -40,7 +40,7 @@ function orderOf(x: number, y: number): number {
  * list price (a catalog discount's `listPrices`) is not above what it costs.
  */
 export function freebucksListPriceFor(
-  info: Pick<FreebuffFreebucksInfo, 'prices' | 'listPrices'> | null | undefined,
+  info: Pick<FuckbuffFreebucksInfo, 'prices' | 'listPrices'> | null | undefined,
   modelId: string,
 ): number | undefined {
   const price = info?.prices[modelId]

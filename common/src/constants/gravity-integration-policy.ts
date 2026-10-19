@@ -1,7 +1,7 @@
 /**
  * Which Gravity pending-integration row an upsert reuses, and which rows are
  * still reportable. Pure; used by the Convex mutations
- * (freebuff/web/convex/gravity_integrations.ts) and their Postgres port
+ * (fuckbuff/web/convex/gravity_integrations.ts) and their Postgres port
  * (packages/internal/src/kept-integrations/gravity.ts, COD-742 batch 6).
  */
 export type PendingIntegrationState = {

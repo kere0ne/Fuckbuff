@@ -13,17 +13,17 @@ import {
   throttledUnrecognisedSwitchReporter,
 } from './sponsored-windows'
 
-describe('FREEBUFF_SPONSORED_WINDOWS (COD-642), switch-only', () => {
+describe('FUCKBUFF_SPONSORED_WINDOWS (COD-642), switch-only', () => {
   test('absent is the shipped position: closed', () => {
     expect(readSponsoredWindowsPolicy({})).toBeNull()
     expect(
-      readSponsoredWindowsPolicy({ FREEBUFF_SPONSORED_WINDOWS: undefined }),
+      readSponsoredWindowsPolicy({ FUCKBUFF_SPONSORED_WINDOWS: undefined }),
     ).toBeNull()
   })
 
   test('the exact value `on` opens it, with no campaign list to go with it', () => {
     const policy = readSponsoredWindowsPolicy({
-      FREEBUFF_SPONSORED_WINDOWS: 'on',
+      FUCKBUFF_SPONSORED_WINDOWS: 'on',
     })
     expect(policy).toBe(SPONSORED_WINDOWS_ON)
     expect(policy).toEqual({ switch: 'on' })
@@ -50,7 +50,7 @@ describe('FREEBUFF_SPONSORED_WINDOWS (COD-642), switch-only', () => {
       '\ton',
     ]) {
       expect(
-        readSponsoredWindowsPolicy({ FREEBUFF_SPONSORED_WINDOWS: value }),
+        readSponsoredWindowsPolicy({ FUCKBUFF_SPONSORED_WINDOWS: value }),
       ).toBeNull()
     }
   })
@@ -69,13 +69,13 @@ describe('FREEBUFF_SPONSORED_WINDOWS (COD-642), switch-only', () => {
     const onUnrecognised = (value: string) => reported.push(value)
     for (const value of [undefined, '', 'off', 'on'])
       readSponsoredWindowsPolicy(
-        { FREEBUFF_SPONSORED_WINDOWS: value },
+        { FUCKBUFF_SPONSORED_WINDOWS: value },
         { onUnrecognised },
       )
     expect(reported).toEqual([])
     expect(
       readSponsoredWindowsPolicy(
-        { FREEBUFF_SPONSORED_WINDOWS: ' on ' },
+        { FUCKBUFF_SPONSORED_WINDOWS: ' on ' },
         { onUnrecognised },
       ),
     ).toBeNull()

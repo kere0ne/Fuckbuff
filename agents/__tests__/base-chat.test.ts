@@ -3,10 +3,10 @@ import {
   DEEPSEEK_FLASH_COMPACTION_POLICY,
 } from '@codebuff/common/constants/compaction-policy'
 import {
-  FREEBUFF_DEFAULT_CONTEXT_WINDOW,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_MODEL_CONTEXT_WINDOWS,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_DEFAULT_CONTEXT_WINDOW,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_MODEL_CONTEXT_WINDOWS,
+} from '@codebuff/common/constants/fuckbuff-models'
 import { describe, test, expect } from 'bun:test'
 
 import baseChat from '../base-chat'
@@ -76,7 +76,7 @@ function budgetFor(model?: string): number {
 
 describe('base-chat context pruning', () => {
   test('defaults to the direct DeepSeek Flash model', () => {
-    expect(baseChat.model).toBe(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    expect(baseChat.model).toBe(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
   })
 
   test('spawns context-pruner before the first step', () => {
@@ -127,7 +127,7 @@ describe('base-chat context pruning', () => {
 describe('base-chat per-model context budget', () => {
   test('budgets each model well below its real context window', () => {
     for (const [model, window] of Object.entries(
-      FREEBUFF_MODEL_CONTEXT_WINDOWS,
+      FUCKBUFF_MODEL_CONTEXT_WINDOWS,
     )) {
       const budget = budgetFor(model)
       // contextTokenCount is a local GPT-4o-based estimate, and measurements
@@ -155,11 +155,11 @@ describe('base-chat per-model context budget', () => {
     // thread permanently, guessing low only prunes earlier than needed.
     const unknown = budgetFor('some/model-we-have-never-shipped')
     const smallestKnown = Math.min(
-      ...Object.values(FREEBUFF_MODEL_CONTEXT_WINDOWS),
+      ...Object.values(FUCKBUFF_MODEL_CONTEXT_WINDOWS),
     )
 
     expect(unknown).toBeLessThan(smallestKnown)
-    expect(unknown).toBeLessThan(FREEBUFF_DEFAULT_CONTEXT_WINDOW)
+    expect(unknown).toBeLessThan(FUCKBUFF_DEFAULT_CONTEXT_WINDOW)
   })
 
   test('falls back to the conservative default when the runtime omits the model', () => {
@@ -176,10 +176,10 @@ describe('base-chat per-model context budget', () => {
     // source-shape assertion would be checking the bundler, not the table.
     const budgetFraction =
       budgetFor('minimax/minimax-m3') /
-      FREEBUFF_MODEL_CONTEXT_WINDOWS['minimax/minimax-m3']
+      FUCKBUFF_MODEL_CONTEXT_WINDOWS['minimax/minimax-m3']
 
     for (const [model, window] of Object.entries(
-      FREEBUFF_MODEL_CONTEXT_WINDOWS,
+      FUCKBUFF_MODEL_CONTEXT_WINDOWS,
     )) {
       // A model missing from the inline table would silently fall back to the
       // default, giving a ratio nothing like the others — which is exactly the
@@ -190,13 +190,13 @@ describe('base-chat per-model context budget', () => {
 
     expect(
       budgetFor('some/model-we-have-never-shipped') /
-        FREEBUFF_DEFAULT_CONTEXT_WINDOW,
+        FUCKBUFF_DEFAULT_CONTEXT_WINDOW,
     ).toBeCloseTo(budgetFraction, 4)
   })
 
   test('budgets Luna 400k, not the 52k it got while missing from the table', () => {
     // Luna's real window is ~1.05M (every OpenRouter endpoint reports it), so
-    // falling through to FREEBUFF_DEFAULT_CONTEXT_WINDOW budgeted a
+    // falling through to FUCKBUFF_DEFAULT_CONTEXT_WINDOW budgeted a
     // million-token model 131_072 * 0.4 = 52_428. Each summarize rewrites the
     // thread from the front and discards the prompt cache with it, so an
     // under-budget model pays for it in cache misses as well as lost context.
@@ -234,7 +234,7 @@ describe('base-chat budget vs. the thread that actually wedged', () => {
 
   test('leaves room for the provider undercount the estimator cannot see', () => {
     const budget = budgetFor('minimax/minimax-m3')
-    const window = FREEBUFF_MODEL_CONTEXT_WINDOWS['minimax/minimax-m3']
+    const window = FUCKBUFF_MODEL_CONTEXT_WINDOWS['minimax/minimax-m3']
 
     // Worst observed skew: the estimate reads ~half what the provider charges.
     // Even doubled, the budget must stay inside the window, or we would only
@@ -248,7 +248,7 @@ describe('base-chat model switch mid-thread', () => {
   // The reported wedge: a thread grown on a big-window model that the user then
   // switches to a smaller-window one. It was first seen switching minimax-m3
   // (512k) to kimi-k2.7-code (256k) — "Range of input length should be
-  // [1, 262144]". Kimi was removed from Freebuff on 2026-07-31, so the case is
+  // [1, 262144]". Kimi was removed from Fuckbuff on 2026-07-31, so the case is
   // now reproduced with an unmapped model, which takes the deliberately small
   // DEFAULT_CONTEXT_WINDOW (128k) and is therefore an even sharper drop.
   const M3 = 'minimax/minimax-m3'
@@ -257,7 +257,7 @@ describe('base-chat model switch mid-thread', () => {
   test('the budget follows the selected model, not the thread', () => {
     const m3Budget = budgetFor(M3)
     const smallBudget = budgetFor(SMALL)
-    const smallWindow = FREEBUFF_DEFAULT_CONTEXT_WINDOW
+    const smallWindow = FUCKBUFF_DEFAULT_CONTEXT_WINDOW
 
     // Precondition for the bug. Budgets are in *estimated* tokens, and the
     // estimate can run ~2x under what the provider charges, so a thread filling
@@ -327,7 +327,7 @@ describe('base-chat pruning triggers', () => {
   test('DeepSeek Flash follows the shared compaction policy: 15 minutes, 40k floor', () => {
     // Flash's Luminal lane forgets the prefix in ~15 minutes, so the 24-hour
     // gap only postponed a compaction the cold prefill was going to pay for.
-    const params = firstPrunerSpawn(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID).input
+    const params = firstPrunerSpawn(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID).input
       .params as any
     expect(params).toEqual({
       maxContextLength: params.maxContextLength,

@@ -19,7 +19,7 @@
  * A client must still hold what it receives to the procedure it consented to
  * ({@link deliveredSponsoredSkillForProcedure}) or to the reference its run
  * recorded ({@link deliveredSponsoredSkillForRef}); never run an unmatched one.
- * Doc: `docs/freebuff-sponsored-local-execution.md`, "Skills are delivered by
+ * Doc: `docs/fuckbuff-sponsored-local-execution.md`, "Skills are delivered by
  * the server".
  */
 

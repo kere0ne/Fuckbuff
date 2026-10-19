@@ -1,12 +1,12 @@
 import { describe, expect, test } from 'bun:test'
 
 import {
-  FREEBUFF_FABLE_5_1_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
-  FREEBUFF_MIMO_V25_MODEL_ID,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_FABLE_5_1_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+} from '@codebuff/common/constants/fuckbuff-models'
 import {
   compactionPolicyForModel,
   DEEPSEEK_FLASH_COMPACTION_POLICY,
@@ -18,9 +18,9 @@ import { createBase2 } from '../base2/base2'
 import { createBaseDeep } from '../base2/base-deep'
 import codeReviewerLite from '../reviewer/code-reviewer-lite'
 
-const FREEBUFF_KIMI_MODEL_ID = 'moonshotai/kimi-k2.7-code'
-// Removed from Freebuff 2026-08-04, so it is now just an unmapped model here.
-const FREEBUFF_MIMO_V25_PRO_MODEL_ID = 'mimo/mimo-v2.5-pro'
+const FUCKBUFF_KIMI_MODEL_ID = 'moonshotai/kimi-k2.7-code'
+// Removed from Fuckbuff 2026-08-04, so it is now just an unmapped model here.
+const FUCKBUFF_MIMO_V25_PRO_MODEL_ID = 'mimo/mimo-v2.5-pro'
 
 describe('base2 reviewer selection', () => {
   test('Codebuff lite uses GPT-5.6 Luna and the lite reviewer', () => {
@@ -34,7 +34,7 @@ describe('base2 reviewer selection', () => {
   test('free mode still uses MiniMax M3 and its matching reviewer', () => {
     const base2 = createBase2('free')
 
-    expect(base2.model).toBe(FREEBUFF_MINIMAX_M3_MODEL_ID)
+    expect(base2.model).toBe(FUCKBUFF_MINIMAX_M3_MODEL_ID)
     expect(base2.spawnableAgents).toContain('code-reviewer-minimax-m3')
     expect(base2.instructionsPrompt).toContain(
       'Spawn a code-reviewer-minimax-m3',
@@ -59,9 +59,9 @@ describe('base2 reviewer selection', () => {
 
   test('free mode cannot reach the paid reviewer even on lite’s own model', () => {
     // Reviewer lookup is per product. Sharing one model-keyed table between
-    // them let a freebuff agent pointed at lite's model resolve to the paid
+    // them let a fuckbuff agent pointed at lite's model resolve to the paid
     // code-reviewer-lite, which a free session is not allowed to spend on.
-    // Freebuff now offers GPT-5.6 Luna too, so free mode on this model gets its
+    // Fuckbuff now offers GPT-5.6 Luna too, so free mode on this model gets its
     // own free reviewer — still never lite's.
     const base2 = createBase2('free', { model: 'openai/gpt-5.6-luna' })
 
@@ -72,10 +72,10 @@ describe('base2 reviewer selection', () => {
   })
 
   test.each([
-    [FREEBUFF_MINIMAX_M3_MODEL_ID, 'code-reviewer-minimax-m3'],
-    [FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID, 'code-reviewer-deepseek'],
-    [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID, 'code-reviewer-deepseek-flash'],
-    [FREEBUFF_MIMO_V25_MODEL_ID, 'code-reviewer-mimo'],
+    [FUCKBUFF_MINIMAX_M3_MODEL_ID, 'code-reviewer-minimax-m3'],
+    [FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID, 'code-reviewer-deepseek'],
+    [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID, 'code-reviewer-deepseek-flash'],
+    [FUCKBUFF_MIMO_V25_MODEL_ID, 'code-reviewer-mimo'],
   ])('uses matching reviewer for model %p', (model, expectedReviewer) => {
     const base2 = createBase2('free', { model })
 
@@ -86,22 +86,22 @@ describe('base2 reviewer selection', () => {
   test('the reviewer follows the model, not the mode', () => {
     // Overriding lite's model moves the reviewer with it, the same way the
     // context-pruner budget and provider routing follow the model.
-    const base2 = createBase2('lite', { model: FREEBUFF_MIMO_V25_MODEL_ID })
+    const base2 = createBase2('lite', { model: FUCKBUFF_MIMO_V25_MODEL_ID })
 
     expect(base2.spawnableAgents).toContain('code-reviewer-mimo')
     expect(base2.spawnableAgents).not.toContain('code-reviewer-lite')
   })
 
   test('an unmapped model falls back to the cheap reviewer', () => {
-    // Kimi was removed from Freebuff on 2026-07-31 along with its reviewer,
+    // Kimi was removed from Fuckbuff on 2026-07-31 along with its reviewer,
     // and MiMo 2.5 Pro on 2026-08-04, so both are now just unmapped models: no
     // reviewer of their own is resolvable in any mode, and the lean fallback
     // takes over.
     for (const mode of ['free', 'lite'] as const) {
-      const base2 = createBase2(mode, { model: FREEBUFF_KIMI_MODEL_ID })
+      const base2 = createBase2(mode, { model: FUCKBUFF_KIMI_MODEL_ID })
       expect(base2.spawnableAgents).not.toContain('code-reviewer-kimi')
       const mimoPro = createBase2(mode, {
-        model: FREEBUFF_MIMO_V25_PRO_MODEL_ID,
+        model: FUCKBUFF_MIMO_V25_PRO_MODEL_ID,
       })
       expect(mimoPro.spawnableAgents).not.toContain('code-reviewer-mimo-pro')
       expect(base2.spawnableAgents).toContain('code-reviewer-deepseek-flash')
@@ -124,11 +124,11 @@ describe('base2 gemini thinker', () => {
     // The parent-model set gates free-session admission to Gemini Pro on an
     // unbilled path. Lite is billed, so the completions gate exempts it.
     expect(
-      createBase2('lite', { model: FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID })
+      createBase2('lite', { model: FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID })
         .spawnableAgents,
     ).toContain(GEMINI_THINKER)
     expect(
-      createBase2('free', { model: FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID })
+      createBase2('free', { model: FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID })
         .spawnableAgents,
     ).not.toContain(GEMINI_THINKER)
     expect(createBase2('free').spawnableAgents).toContain(GEMINI_THINKER)
@@ -251,7 +251,7 @@ describe('base2 escalation guidance', () => {
     )
     expect(systemPrompt).toContain('costs about the same per token')
     expect(systemPrompt).toContain('DEFAULT or MAX mode')
-    // The rationale must be Codebuff's cost story, not Freebuff's.
+    // The rationale must be Codebuff's cost story, not Fuckbuff's.
     expect(systemPrompt).not.toContain('ChatGPT subscription')
   })
 
@@ -273,10 +273,10 @@ describe('base2 escalation guidance', () => {
 
   test.each([
     ['default free root', undefined],
-    ['Fable', FREEBUFF_FABLE_5_1_MODEL_ID],
-    ['DeepSeek Flash', FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID],
+    ['Fable', FUCKBUFF_FABLE_5_1_MODEL_ID],
+    ['DeepSeek Flash', FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID],
   ] as const)('%s has no thinker-gpt to restrict', (_label, model) => {
-    // Freebuff reached thinker-gpt only through /connect-chatgpt, on the user's
+    // Fuckbuff reached thinker-gpt only through /connect-chatgpt, on the user's
     // own subscription. With that integration gone the agent 403s for every
     // free session, so it is off the list — and the prompt must not name it
     // either, which would just invite a spawn that cannot succeed.
@@ -308,14 +308,14 @@ describe('base2 product branding', () => {
   const CREDITS_LINE =
     "Every prompt sent consumes the user's credits, which is calculated based on the API cost of the models used."
 
-  test('lite is branded as paid Codebuff, not as Freebuff', () => {
+  test('lite is branded as paid Codebuff, not as Fuckbuff', () => {
     // Lite charges credits. It used to inherit free mode's branding and tell
     // paying users they were coding with AI for free.
     const systemPrompt = createBase2('lite').systemPrompt
 
     expect(systemPrompt).toContain('the product, Codebuff')
     expect(systemPrompt).toContain('# Codebuff Meta-information')
-    expect(systemPrompt).not.toContain('Freebuff')
+    expect(systemPrompt).not.toContain('Fuckbuff')
     expect(systemPrompt).not.toContain('for free')
     expect(systemPrompt).not.toContain('freebuff.com')
   })
@@ -334,12 +334,12 @@ describe('base2 product branding', () => {
     )
   })
 
-  test('free mode keeps its Freebuff branding', () => {
+  test('free mode keeps its Fuckbuff branding', () => {
     const free = createBase2('free').systemPrompt
 
-    expect(free).toContain('the product, Freebuff')
+    expect(free).toContain('the product, Fuckbuff')
     expect(free).toContain('to code with AI for free')
-    expect(free).toContain('# Freebuff Meta-information')
+    expect(free).toContain('# Fuckbuff Meta-information')
     expect(free).toContain('freebuff.com')
     expect(free).not.toContain(CREDITS_LINE)
     expect(free).not.toContain('"/usage"')
@@ -385,7 +385,7 @@ describe('base2 provider routing', () => {
       data_collection: 'deny',
     })
     expect(
-      createBase2('default', { model: FREEBUFF_MIMO_V25_PRO_MODEL_ID })
+      createBase2('default', { model: FUCKBUFF_MIMO_V25_PRO_MODEL_ID })
         .providerOptions,
     ).toEqual({ data_collection: 'deny' })
   })
@@ -468,7 +468,7 @@ describe('base2 context pruning', () => {
 
   test('free Kimi mode defaults context pruning to 250k tokens', () => {
     expect(
-      getContextPrunerParams('free', { model: FREEBUFF_KIMI_MODEL_ID }),
+      getContextPrunerParams('free', { model: FUCKBUFF_KIMI_MODEL_ID }),
     ).toEqual({
       maxContextLength: 250_000,
       cacheExpiryMs: 30 * 60 * 1000,
@@ -478,7 +478,7 @@ describe('base2 context pruning', () => {
   test('free non-MiniMax/Kimi models default context pruning to 400k tokens', () => {
     expect(
       getContextPrunerParams('free', {
-        model: FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+        model: FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
       }),
     ).toEqual({
       maxContextLength: 400_000,
@@ -489,14 +489,14 @@ describe('base2 context pruning', () => {
   test('DeepSeek Flash prunes under the Flash policy; other models keep 30 minutes, no floor', () => {
     // Flash's numbers arrive through the runtime's `contextPruning`; the model
     // id is the one literal in the generator, so pin it to the constant.
-    expect(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID).toBe(
+    expect(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID).toBe(
       'deepseek/deepseek-v4-flash',
     )
     const flashParams = {
       maxContextLength: 400_000,
       ...DEEPSEEK_FLASH_COMPACTION_POLICY,
     }
-    const flash = { model: FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID }
+    const flash = { model: FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID }
     expect(getContextPrunerParams('free', flash)).toEqual(flashParams)
     expect(getSerializedContextPrunerParams('default', flash)).toEqual(
       flashParams,
@@ -506,7 +506,7 @@ describe('base2 context pruning', () => {
     expect(DEFAULT_COMPACTION_POLICY.cacheExpiryMs).toBe(60 * 60 * 1000)
     expect(
       getContextPrunerParams('free', {
-        model: FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+        model: FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
       }),
     ).toEqual({ maxContextLength: 400_000, cacheExpiryMs: 30 * 60 * 1000 })
   })
@@ -539,8 +539,8 @@ describe('base2 context pruning', () => {
   )
 
   test.each([
-    [FREEBUFF_KIMI_MODEL_ID, 250_000],
-    [FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID, 400_000],
+    [FUCKBUFF_KIMI_MODEL_ID, 250_000],
+    [FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID, 400_000],
   ] as const)(
     'non-free model %p defaults context pruning to %p tokens',
     (model, maxContextLength) => {
@@ -552,10 +552,10 @@ describe('base2 context pruning', () => {
   )
 
   test.each([
-    ['free', { model: FREEBUFF_KIMI_MODEL_ID }, 250_000],
-    ['free', { model: FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID }, 400_000],
-    ['default', { model: FREEBUFF_KIMI_MODEL_ID }, 250_000],
-    ['default', { model: FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID }, 400_000],
+    ['free', { model: FUCKBUFF_KIMI_MODEL_ID }, 250_000],
+    ['free', { model: FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID }, 400_000],
+    ['default', { model: FUCKBUFF_KIMI_MODEL_ID }, 250_000],
+    ['default', { model: FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID }, 400_000],
   ] as const)(
     'serialized %s handleSteps for model %p defaults to %p tokens',
     (mode, options, maxContextLength) => {
@@ -570,7 +570,7 @@ describe('base2 context pruning', () => {
       getContextPrunerParams(
         'default',
         {
-          model: FREEBUFF_KIMI_MODEL_ID,
+          model: FUCKBUFF_KIMI_MODEL_ID,
         },
         {
           maxContextLength: 123_000,
@@ -587,7 +587,7 @@ describe('base2 context pruning', () => {
 
 describe('Claude Fable 5.1 root', () => {
   const fable = createBase2('free', {
-    model: FREEBUFF_FABLE_5_1_MODEL_ID,
+    model: FUCKBUFF_FABLE_5_1_MODEL_ID,
   })
 
   test('reviews with a Fable reviewer, not the cross-model fallback', () => {

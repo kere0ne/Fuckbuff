@@ -233,7 +233,7 @@ function canonicalInstall(
  * {@link SPONSORED_LOCAL_INSTALL_REFUSAL} so a trace says which it was.
  */
 export const SPONSORED_SKILL_UNRESOLVED_INSTALL_REFUSAL =
-  "Refusing this install: this Freebuff build could not load the skill's list of pinned packages, so it cannot install them. Declare the pinned version in the package manifest, write the code against it, and tell the user to update Freebuff and run the procedure's pinned install command themselves."
+  "Refusing this install: this Fuckbuff build could not load the skill's list of pinned packages, so it cannot install them. Declare the pinned version in the package manifest, write the code against it, and tell the user to update Fuckbuff and run the procedure's pinned install command themselves."
 
 const REFUSAL_PREFIX =
   'Refusing this install: a sponsored run may install only the packages its skill declares, at the declared versions, as one plain command (a leading `cd <subfolder> &&` is fine; no other chaining or quoting).'

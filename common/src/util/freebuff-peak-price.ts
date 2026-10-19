@@ -2,7 +2,7 @@
  * Peak-price copy for the pickers.
  *
  * Lives in `util/` rather than beside the price table in
- * `constants/freebuff-freebucks.ts` for one reason: that module is
+ * `constants/fuckbuff-freebucks.ts` for one reason: that module is
  * export-excluded (scripts/public-export-manifest.txt) because it carries the
  * price table, and the CLI IS published. A public file importing an excluded
  * one fails the export leak check, which is how this landed here.
@@ -10,18 +10,18 @@
  * Everything below reads the wire block a client already has, so nothing
  * private crosses the line.
  */
-import { freebuffMultiplierText } from './freebuff-hours'
+import { fuckbuffMultiplierText } from './fuckbuff-hours'
 import {
   formatDeepSeekExpensiveWindowLocal,
   resolveWindowTimeZone,
-} from '../constants/freebuff-peak-hours'
+} from '../constants/fuckbuff-peak-hours'
 
-import type { FreebuffFreebucksPeak } from '../types/freebuff-session'
+import type { FuckbuffFreebucksPeak } from '../types/fuckbuff-session'
 
 
 /** Whether `modelId` is peak-priced in this session block. */
 export function isFreebucksPeakModel(
-  freebucks: { peak?: FreebuffFreebucksPeak } | null | undefined,
+  freebucks: { peak?: FuckbuffFreebucksPeak } | null | undefined,
   modelId: string,
 ): boolean {
   return freebucks?.peak?.modelIds.includes(modelId) ?? false
@@ -39,7 +39,7 @@ export function isFreebucksPeakModel(
  * rather than leaving the reader to subtract.
  */
 export function freebucksPeakCopy(params: {
-  peak: FreebuffFreebucksPeak
+  peak: FuckbuffFreebucksPeak
   basePrice: number
   now?: number
   timeZone?: string
@@ -61,12 +61,12 @@ export function freebucksPeakCopy(params: {
       }).format(endsAt)
     : undefined
   const window =
-    `Peak pricing: +${freebuffMultiplierText(params.peak.surcharge)} while DeepSeek charges double, ` +
+    `Peak pricing: +${fuckbuffMultiplierText(params.peak.surcharge)} while DeepSeek charges double, ` +
     `${formatDeepSeekExpensiveWindowLocal(new Date(now), zone)} on weekdays.`
   return {
     badge: 'Peak pricing',
     tooltip: endsLocal
-      ? `${window} Back to ${freebuffMultiplierText(params.basePrice)} at ${endsLocal}.`
+      ? `${window} Back to ${fuckbuffMultiplierText(params.basePrice)} at ${endsLocal}.`
       : window,
   }
 }

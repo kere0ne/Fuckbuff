@@ -1,5 +1,5 @@
 /**
- * The root a catalog-mode turn runs as (docs/freebuff-model-catalog.md).
+ * The root a catalog-mode turn runs as (docs/fuckbuff-model-catalog.md).
  *
  * ONE root id for every catalog row, `base3-free-catalog`, whose definition is
  * built here from the row at send time: the row's HANDLE is the model (the
@@ -10,7 +10,7 @@
  * release.
  *
  * The one exception is the harness: a row that replaces a fast-mode model
- * (FREEBUFF_FAST_MODE_MODEL_IDS, by its legacy digests) runs the base3-fast
+ * (FUCKBUFF_FAST_MODE_MODEL_IDS, by its legacy digests) runs the base3-fast
  * root, with `spawn_agents` and its file-picker, code-searcher and worker
  * fan-out, as its compiled root does. Its helpers keep their own plain model
  * ids; the worker's is the fast id the handle resolves to, so the session
@@ -22,32 +22,32 @@
  */
 import { createBase3CliRoot } from '../../../agents/base3'
 import { createBase3FastCliRoot } from '../../../agents/base3-fast'
-import { FREEBUFF_CLI_CATALOG_ROOT_AGENT_ID } from '@codebuff/common/constants/free-agents'
-import { isFreebuffFastModeModel } from '@codebuff/common/constants/freebuff-model-ids'
-import { compiledFreebuffModelIdOfRow } from '@codebuff/common/util/freebuff-catalog-compiled-model'
+import { FUCKBUFF_CLI_CATALOG_ROOT_AGENT_ID } from '@codebuff/common/constants/free-agents'
+import { isFuckbuffFastModeModel } from '@codebuff/common/constants/fuckbuff-model-ids'
+import { compiledFuckbuffModelIdOfRow } from '@codebuff/common/util/fuckbuff-catalog-compiled-model'
 
-import type { FreebuffCatalogRow } from '@codebuff/common/types/freebuff-model-catalog'
+import type { FuckbuffCatalogRow } from '@codebuff/common/types/fuckbuff-model-catalog'
 import type { AgentDefinition } from '@codebuff/sdk'
 
-export function freebuffCatalogRootAgent(
+export function fuckbuffCatalogRootAgent(
   row: Pick<
-    FreebuffCatalogRow,
+    FuckbuffCatalogRow,
     'handle' | 'displayName' | 'compaction' | 'legacyDigests'
   >,
 ): AgentDefinition {
   const rowOptions = { modelLabel: row.displayName, compaction: row.compaction }
-  const compiledModelId = compiledFreebuffModelIdOfRow(row)
-  const root = isFreebuffFastModeModel(compiledModelId)
+  const compiledModelId = compiledFuckbuffModelIdOfRow(row)
+  const root = isFuckbuffFastModeModel(compiledModelId)
     ? createBase3FastCliRoot(row.handle, rowOptions)
     : createBase3CliRoot({
         model: row.handle,
-        isFreebuff: true,
+        isFuckbuff: true,
         ...rowOptions,
         compiledModelId,
       })
   return {
     ...root,
-    id: FREEBUFF_CLI_CATALOG_ROOT_AGENT_ID,
+    id: FUCKBUFF_CLI_CATALOG_ROOT_AGENT_ID,
     // The bundled roots' naming ("Buffy on MiMo"), from the row.
     displayName: `Buffy on ${row.displayName}`,
   } as AgentDefinition

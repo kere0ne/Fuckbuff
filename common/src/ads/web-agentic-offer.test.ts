@@ -220,7 +220,7 @@ describe('the worktree capability', () => {
 
   test('runtimes map python3 to python and drop anything unknown', () => {
     const output = [
-      '@@freebuff-capability:runtimes',
+      '@@fuckbuff-capability:runtimes',
       'node',
       'python3',
       'python',
@@ -343,7 +343,7 @@ describe('the worktree fit facts (Track A5)', () => {
 
   test('a fit listing that did not finish proves no absence', async () => {
     const cut = parseWebWorktreeFacts(
-      ['@@freebuff-capability:inside', 'true', '@@freebuff-capability:fitpaths', 'package.json'].join('\n'),
+      ['@@fuckbuff-capability:inside', 'true', '@@fuckbuff-capability:fitpaths', 'package.json'].join('\n'),
     )
     expect(cut.fitPaths).toBeNull()
     expect((await webWorktreeRepoFacts(cut))?.complete).toBe(false)

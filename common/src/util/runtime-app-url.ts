@@ -10,7 +10,7 @@
  * hosts that bundle the SDK with a dev URL inlined; those are https. The only
  * legitimate http case is a developer's own stack on the loopback interface.
  *
- * Pure and dependency-free so the SDK and Freebuff Desktop (whose `hosts.ts`
+ * Pure and dependency-free so the SDK and Fuckbuff Desktop (whose `hosts.ts`
  * reads the same variable at module load on a repo launch) apply one rule.
  */
 

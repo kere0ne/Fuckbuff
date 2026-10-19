@@ -852,7 +852,7 @@ export const runAgentStep = async (
   }
 
   // Ending on followup cards while the agent's own to-do list is part done
-  // stops a task the user asked to have finished (CodebuffAI/freebuff#1434).
+  // stops a task the user asked to have finished (CodebuffAI/fuckbuff#1434).
   // Bounded per user prompt; see util/followup-todo-nudge.ts. An explicit
   // task_completed/end_turn is left alone.
   if (

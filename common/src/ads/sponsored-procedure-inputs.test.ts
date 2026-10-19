@@ -29,7 +29,7 @@ const SILENT = 'Wire Acme into this repo and open no links.'
 describe('onboarding bfcid templates', () => {
   const procedure = [
     'Read https://acme.example/docs.',
-    'Sign in at https://accounts.acme.example/login?source=freebuff&bfcid={bfcid}#start.',
+    'Sign in at https://accounts.acme.example/login?source=fuckbuff&bfcid={bfcid}#start.',
     'Then open https://acme.example/keys?bfcid={bfcid}.',
   ].join('\n')
 
@@ -46,12 +46,12 @@ describe('onboarding bfcid templates', () => {
   test('resolves placeholders after the actual save-time UTM tagging', () => {
     const tagged = tagSponsoredProcedureLinks(
       'Sign up at https://acme.example/signup?bfcid={bfcid}#start',
-      { domains: ['acme.example'], tags: [['utm_source', 'freebuff']] },
+      { domains: ['acme.example'], tags: [['utm_source', 'fuckbuff']] },
     )
     const rendered = sponsoredProcedurePrompt(tagged, { advertiserLink: LINK })
     const url = new URL(rendered.slice('Sign up at '.length))
     expect(url.searchParams.get('bfcid')).toBe('bfc_1.p.s')
-    expect(url.searchParams.get('utm_source')).toBe('freebuff')
+    expect(url.searchParams.get('utm_source')).toBe('fuckbuff')
     expect(url.hash).toBe('#start')
   })
 
@@ -96,7 +96,7 @@ describe('procedureDeclaresAdvertiserLink', () => {
 
 describe('command-scoped advertiser attribution', () => {
   const procedure =
-    "SPECIFIC_FREEBUFF_BFCID='{{advertiserClickId}}' specific login\nSPECIFIC_FREEBUFF_BFCID='{{advertiserClickId}}' specific claim"
+    "SPECIFIC_FUCKBUFF_BFCID='{{advertiserClickId}}' specific login\nSPECIFIC_FUCKBUFF_BFCID='{{advertiserClickId}}' specific claim"
 
   test('supplies the click ID without rewriting consent or exposing an unrequested URL', () => {
     const section = sponsoredProcedureRuntimeInputsSection(procedure, {
@@ -164,7 +164,7 @@ describe('command-scoped advertiser attribution', () => {
       [
         '/bin/sh',
         '-c',
-        `SPECIFIC_FREEBUFF_BFCID='${token}' sh -c 'printf "%s" "$SPECIFIC_FREEBUFF_BFCID"'; printf "|%s" "${'$'}{SPECIFIC_FREEBUFF_BFCID-unset}"`,
+        `SPECIFIC_FUCKBUFF_BFCID='${token}' sh -c 'printf "%s" "$SPECIFIC_FUCKBUFF_BFCID"'; printf "|%s" "${'$'}{SPECIFIC_FUCKBUFF_BFCID-unset}"`,
       ],
       { env: { PATH: '/usr/bin:/bin' }, stdout: 'pipe', stderr: 'pipe' },
     )

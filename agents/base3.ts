@@ -3,11 +3,11 @@ import {
   type RootCompactionPolicy,
 } from '@codebuff/common/constants/compaction-policy'
 import {
-  FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
-  FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-  freebuffModelIdMatches,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+  fuckbuffModelIdMatches,
+} from '@codebuff/common/constants/fuckbuff-models'
 import {
   TURN_ENDING_NOTE,
   TURN_ENDING_RULE,
@@ -30,7 +30,7 @@ import {
  * The models that end a turn on a status line or a plan instead of calling the
  * tool that does the work, and so get TURN_ENDING_NOTE as `instructionsPrompt`
  * — the rule again, right after every user message. The system prompt's
- * TURN_ENDING_RULE alone does not stop them (docs/freebuff-muse-spark.md).
+ * TURN_ENDING_RULE alone does not stop them (docs/fuckbuff-muse-spark.md).
  * Every copy stays in history, so the cached prefix only grows.
  *
  * Muse Spark 1.3 has been here since 2026-10-11, and the note measurably
@@ -60,9 +60,9 @@ import {
  * last sentence arguably licenses, and wants an eval rather than a patch.
  */
 const TURN_ENDING_NOTE_MODELS = [
-  FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
-  FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+  FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
 ]
 
 export function createBase3(
@@ -82,7 +82,7 @@ export function createBase3(
   } = {},
 ): Omit<SecretAgentDefinition, 'id'> {
   const turnEndingNote = TURN_ENDING_NOTE_MODELS.some((id) =>
-    freebuffModelIdMatches(options.compiledModelId ?? model, id),
+    fuckbuffModelIdMatches(options.compiledModelId ?? model, id),
   )
   const { lean, ...compactContext }: RootCompactionPolicy =
     options.compaction ?? compactionPolicyForModel(model)
@@ -155,23 +155,23 @@ ${leanGuidance}`,
 
 /**
  * The CLI's own base3 roots — Codebuff's DEFAULT and LITE modes, and every
- * Freebuff model the picker offers.
+ * Fuckbuff model the picker offers.
  *
- * Kept separate from `createBase3` rather than folded into it, because Freebuff
+ * Kept separate from `createBase3` rather than folded into it, because Fuckbuff
  * Desktop derives its toolset from `createBase3().toolNames` and would silently
  * inherit whatever is added here (THREAD_AGENT_TOOLS in
- * freebuff-desktop/.../thread-agent.ts unions that array with its own extras).
+ * fuckbuff-desktop/.../thread-agent.ts unions that array with its own extras).
  * The bare eight are the harness; what follows is CLI product surface.
  *
  * One thing is load-bearing, for the same reason it is on the Web roots
- * (docs/freebuff-base3-harness.md): the appendix is APPENDED. The root prompt
- * must keep its canonical opening first (`hasFreebuffRootSystemPromptOpening`).
+ * (docs/fuckbuff-base3-harness.md): the appendix is APPENDED. The root prompt
+ * must keep its canonical opening first (`hasFuckbuffRootSystemPromptOpening`).
  */
 export function createBase3CliRoot(
   options: {
     model?: SecretAgentDefinition['model']
-    /** Freebuff branding and meta-information instead of Codebuff's. */
-    isFreebuff?: boolean
+    /** Fuckbuff branding and meta-information instead of Codebuff's. */
+    isFuckbuff?: boolean
     /** Drop the tools that address a human. For the eval harness, where an
      *  ask_user call would stall the run rather than gather anything. */
     noAskUser?: boolean
@@ -196,7 +196,7 @@ export function createBase3CliRoot(
 ): Omit<SecretAgentDefinition, 'id'> {
   const {
     model = OPUS_MODEL,
-    isFreebuff = false,
+    isFuckbuff = false,
     noAskUser = false,
     noWeb = false,
     extraSystemPrompt,
@@ -225,7 +225,7 @@ export function createBase3CliRoot(
     ],
     systemPrompt: `${base3.systemPrompt}
 ${extraSystemPrompt ? `${extraSystemPrompt}\n` : ''}${buildCliAppendix({
-      isFreebuff,
+      isFuckbuff,
       model: options.modelLabel ?? model,
       noAskUser,
     })}`,
@@ -252,11 +252,11 @@ const HUMAN_TOOL_NAMES: ReadonlySet<string> = new Set([
 ])
 
 function buildCliAppendix({
-  isFreebuff,
+  isFuckbuff,
   model,
   noAskUser = false,
 }: {
-  isFreebuff: boolean
+  isFuckbuff: boolean
   /** The model id, or its human name when the id is an opaque handle. */
   model: string
   noAskUser?: boolean
@@ -273,13 +273,13 @@ ${
 ${gravityIndexGuidance()}
 ${SKILL_DISCOVERY_GUIDANCE}
 
-# ${isFreebuff ? 'Freebuff' : 'Codebuff'} Meta-information
+# ${isFuckbuff ? 'Fuckbuff' : 'Codebuff'} Meta-information
 
 You are running on the ${model} model.
 
 ${
-  isFreebuff
-    ? 'You are the AI agent behind Freebuff, a tool where users can chat with you to code with AI for free. See freebuff.com for more information about the product.'
+  isFuckbuff
+    ? 'You are the AI agent behind Fuckbuff, a tool where users can chat with you to code with AI for free. See freebuff.com for more information about the product.'
     : [
         'Users send prompts to you in one of a few user-selected modes, like DEFAULT, LITE, MAX, or PLAN.',
         "Every prompt sent consumes the user's credits, which is calculated based on the API cost of the models used.",

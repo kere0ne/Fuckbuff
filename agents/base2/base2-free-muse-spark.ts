@@ -1,4 +1,4 @@
-import { FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase2 } from './base2'
 
@@ -9,7 +9,7 @@ import { createBase2 } from './base2'
 const definition = {
   ...createBase2('free', {
     noReview: true,
-    model: FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+    model: FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
   }),
   id: 'base2-free-muse-spark',
   displayName: 'Buffy the Muse Spark 1.2 Free Orchestrator',

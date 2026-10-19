@@ -14,7 +14,7 @@ export type PostUserMessageFn = (prev: ChatMessage[]) => ChatMessage[]
  * It rides the ordinary send path so it streams into the transcript and holds
  * the chain -- which is what queues the user's next message behind it -- but it
  * is NOT the user's turn: no user bubble, fresh agent memory, nothing written
- * back to the conversation's run state, no steering, and no Freebuff session
+ * back to the conversation's run state, no steering, and no Fuckbuff session
  * or credits, because the sponsor's grant pays for it.
  */
 export type SponsoredSend = {

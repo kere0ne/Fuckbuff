@@ -4,15 +4,15 @@ import path from 'path'
 
 import { afterEach, describe, expect, spyOn, test } from 'bun:test'
 import {
-  DEFAULT_FREEBUFF_MODEL_ID,
-  FALLBACK_FREEBUFF_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_GLM_V52_MODEL_ID,
-  FREEBUFF_MIMO_V25_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-  FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-  PREVIOUS_DEFAULT_FREEBUFF_MODEL_ID,
-} from '@codebuff/common/constants/freebuff-models'
+  DEFAULT_FUCKBUFF_MODEL_ID,
+  FALLBACK_FUCKBUFF_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_GLM_V52_MODEL_ID,
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+  PREVIOUS_DEFAULT_FUCKBUFF_MODEL_ID,
+} from '@codebuff/common/constants/fuckbuff-models'
 
 import * as auth from '../auth'
 import {
@@ -20,9 +20,9 @@ import {
   hasSeenFreebucksIntro,
   loadSettings,
   markFreebucksIntroSeen,
-  loadFreebuffModelPreference,
+  loadFuckbuffModelPreference,
   saveSettings,
-  saveFreebuffModelPreference,
+  saveFuckbuffModelPreference,
 } from '../settings'
 
 let testConfigDir: string | undefined
@@ -40,7 +40,7 @@ afterEach(() => {
 describe('BYOK connection selection', () => {
   test('persists only an opaque connection id and revision', () => {
     testConfigDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'freebuff-settings-test-'),
+      path.join(os.tmpdir(), 'fuckbuff-settings-test-'),
     )
     getConfigDirSpy = spyOn(auth, 'getConfigDir').mockReturnValue(testConfigDir)
 
@@ -55,7 +55,7 @@ describe('BYOK connection selection', () => {
 
   test('drops malformed or stale selection shapes', () => {
     testConfigDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'freebuff-settings-test-'),
+      path.join(os.tmpdir(), 'fuckbuff-settings-test-'),
     )
     getConfigDirSpy = spyOn(auth, 'getConfigDir').mockReturnValue(testConfigDir)
     fs.writeFileSync(
@@ -67,22 +67,22 @@ describe('BYOK connection selection', () => {
   })
 })
 
-describe('freebuff model preference', () => {
+describe('fuckbuff model preference', () => {
   test('referral-only GLM does not replace the remembered picker model', () => {
     testConfigDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'freebuff-settings-test-'),
+      path.join(os.tmpdir(), 'fuckbuff-settings-test-'),
     )
     getConfigDirSpy = spyOn(auth, 'getConfigDir').mockReturnValue(testConfigDir)
 
-    saveFreebuffModelPreference(FALLBACK_FREEBUFF_MODEL_ID)
-    saveFreebuffModelPreference(FREEBUFF_GLM_V52_MODEL_ID)
+    saveFuckbuffModelPreference(FALLBACK_FUCKBUFF_MODEL_ID)
+    saveFuckbuffModelPreference(FUCKBUFF_GLM_V52_MODEL_ID)
 
-    expect(loadFreebuffModelPreference()).toBe(FALLBACK_FREEBUFF_MODEL_ID)
+    expect(loadFuckbuffModelPreference()).toBe(FALLBACK_FUCKBUFF_MODEL_ID)
   })
 
   test('keeps a saved pick exactly as chosen, for every catalog row', () => {
     testConfigDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'freebuff-settings-test-'),
+      path.join(os.tmpdir(), 'fuckbuff-settings-test-'),
     )
     getConfigDirSpy = spyOn(auth, 'getConfigDir').mockReturnValue(testConfigDir)
 
@@ -93,27 +93,27 @@ describe('freebuff model preference', () => {
     // is. From here on every pick below is the user's.
     fs.writeFileSync(
       path.join(testConfigDir, 'settings.json'),
-      JSON.stringify({ freebuffModel: FREEBUFF_GLM_V53_FLASH_MODEL_ID }),
+      JSON.stringify({ fuckbuffModel: FUCKBUFF_GLM_V53_FLASH_MODEL_ID }),
     )
-    expect(loadFreebuffModelPreference()).toBe(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+    expect(loadFuckbuffModelPreference()).toBe(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
 
     // And a round-trip through save/load leaves every selectable row alone. The
     // property is "the picker is the user's decision, not ours" — asserted
     // across the catalog rather than on one row, because the failure mode is a
     // notice added for ONE model quietly acquiring this behaviour.
     for (const id of [
-      FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-      FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-      FREEBUFF_MIMO_V25_MODEL_ID,
+      FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+      FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+      FUCKBUFF_MIMO_V25_MODEL_ID,
     ]) {
-      saveFreebuffModelPreference(id)
-      expect(loadFreebuffModelPreference()).toBe(id)
+      saveFuckbuffModelPreference(id)
+      expect(loadFuckbuffModelPreference()).toBe(id)
     }
   })
 
   test('a withdrawn pick is DROPPED, not carried or rewritten', () => {
     testConfigDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'freebuff-settings-test-'),
+      path.join(os.tmpdir(), 'fuckbuff-settings-test-'),
     )
     getConfigDirSpy = spyOn(auth, 'getConfigDir').mockReturnValue(testConfigDir)
 
@@ -126,19 +126,19 @@ describe('freebuff model preference', () => {
     // client cannot SAVE the id, and the file predates the update.
     fs.writeFileSync(
       path.join(testConfigDir, 'settings.json'),
-      JSON.stringify({ freebuffModel: FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID }),
+      JSON.stringify({ fuckbuffModel: FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID }),
     )
     // Undefined, not a substitute. The catalog validation drops it and the
     // landing screen falls to its own default — which is a decision that
     // belongs there, not to a rewrite here. A migration would silently move the
     // user onto a specific model on every launch, which is exactly what the
     // supersedes machinery was removed for.
-    expect(loadFreebuffModelPreference()).toBeUndefined()
+    expect(loadFuckbuffModelPreference()).toBeUndefined()
 
     // And the updated client refuses to write it back, so the drop is durable
     // rather than re-inflicted from the picker.
-    saveFreebuffModelPreference(FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID)
-    expect(loadFreebuffModelPreference()).toBeUndefined()
+    saveFuckbuffModelPreference(FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID)
+    expect(loadFuckbuffModelPreference()).toBeUndefined()
   })
 })
 
@@ -147,7 +147,7 @@ describe('one-time default migration', () => {
   // the wiring onto the settings file.
   const useTempConfigDir = () => {
     testConfigDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'freebuff-settings-test-'),
+      path.join(os.tmpdir(), 'fuckbuff-settings-test-'),
     )
     getConfigDirSpy = spyOn(auth, 'getConfigDir').mockReturnValue(testConfigDir)
   }
@@ -156,19 +156,19 @@ describe('one-time default migration', () => {
     useTempConfigDir()
     fs.writeFileSync(
       getSettingsPath(),
-      JSON.stringify({ freebuffModel: PREVIOUS_DEFAULT_FREEBUFF_MODEL_ID }),
+      JSON.stringify({ fuckbuffModel: PREVIOUS_DEFAULT_FUCKBUFF_MODEL_ID }),
     )
-    expect(loadFreebuffModelPreference()).toBe(DEFAULT_FREEBUFF_MODEL_ID)
-    saveFreebuffModelPreference(FREEBUFF_MIMO_V25_MODEL_ID)
-    expect(loadFreebuffModelPreference()).toBe(FREEBUFF_MIMO_V25_MODEL_ID)
+    expect(loadFuckbuffModelPreference()).toBe(DEFAULT_FUCKBUFF_MODEL_ID)
+    saveFuckbuffModelPreference(FUCKBUFF_MIMO_V25_MODEL_ID)
+    expect(loadFuckbuffModelPreference()).toBe(FUCKBUFF_MIMO_V25_MODEL_ID)
   })
 
   test('an empty file is stamped on first read, so a later pick of the old default sticks', () => {
     useTempConfigDir()
-    expect(loadFreebuffModelPreference()).toBeUndefined()
-    saveFreebuffModelPreference(PREVIOUS_DEFAULT_FREEBUFF_MODEL_ID)
-    expect(loadFreebuffModelPreference()).toBe(
-      PREVIOUS_DEFAULT_FREEBUFF_MODEL_ID,
+    expect(loadFuckbuffModelPreference()).toBeUndefined()
+    saveFuckbuffModelPreference(PREVIOUS_DEFAULT_FUCKBUFF_MODEL_ID)
+    expect(loadFuckbuffModelPreference()).toBe(
+      PREVIOUS_DEFAULT_FUCKBUFF_MODEL_ID,
     )
   })
 })
@@ -179,7 +179,7 @@ describe('the one-time Freebucks introduction mark', () => {
   // launch until this was pinned.
   test('survives a round trip through the settings file', () => {
     testConfigDir = fs.mkdtempSync(
-      path.join(os.tmpdir(), 'freebuff-settings-test-'),
+      path.join(os.tmpdir(), 'fuckbuff-settings-test-'),
     )
     getConfigDirSpy = spyOn(auth, 'getConfigDir').mockReturnValue(testConfigDir)
 

@@ -1,4 +1,4 @@
-import { FREEBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import thinker from './thinker'
 
@@ -12,14 +12,14 @@ import type { SecretAgentDefinition } from '../types/secret-agent-definition'
  * Luna is its successor and the cheaper of the two on its flex lane.
  *
  * The id stays `thinker-gemini`: chat/agent.ts registers it by import, the
- * hidden-agent list and FREEBUFF_GEMINI_PRO_AGENT_IDS name it, and base-chat's
+ * hidden-agent list and FUCKBUFF_GEMINI_PRO_AGENT_IDS name it, and base-chat's
  * prompt spawns it by name. Renaming buys nothing and touches all of them.
  */
 const definition: SecretAgentDefinition = {
   ...thinker,
   id: 'thinker-gemini',
   displayName: 'Thinker',
-  model: FREEBUFF_GPT_6_LUNA_MODEL_ID,
+  model: FUCKBUFF_GPT_6_LUNA_MODEL_ID,
   providerOptions: undefined,
   reasoningOptions: {
     enabled: true,

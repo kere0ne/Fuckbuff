@@ -18,10 +18,10 @@ node_modules
 dev
 # The agentic e2e harness's interactive mode lives in folders named `dev`.
 !scripts/agentic-e2e/dev/
-!freebuff-desktop/src/ui/dev/
+!fuckbuff-desktop/src/ui/dev/
 dist
 # The Convex HTTP edge proxies /api/browser-runtime/dist; this is a Next route, not build output.
-!freebuff/web/src/app/api/browser-runtime/dist/
+!fuckbuff/web/src/app/api/browser-runtime/dist/
 dist-env
 *.tsbuildinfo
 .manicode
@@ -49,17 +49,17 @@ docs/specs/
 # Buffbench DEBUG_ERROR dumps
 evals/buffbench/*-error-*.json
 
-# Freebuff Desktop local runtime state in an opened project (SQLite DB, git
+# Fuckbuff Desktop local runtime state in an opened project (SQLite DB, git
 # worktrees, materialized built-in skills) — never source, always regenerated.
-.freebuff/
+.fuckbuff/
 
 # Materialized by release package prepack scripts and removed by postpack.
 cli/release/launcher.js
 cli/release/http.js
 cli/release-staging/launcher.js
 cli/release-staging/http.js
-freebuff/cli/release/launcher.js
-freebuff/cli/release/http.js
+fuckbuff/cli/release/launcher.js
+fuckbuff/cli/release/http.js
 xcuserdata/
 .claude/settings.local.json
 
@@ -69,7 +69,7 @@ xcuserdata/
 feedback-lab/src/real-data.json
 
 # Design-tooling scratch.
-freebuff/web/.impeccable/
+fuckbuff/web/.impeccable/
 
 # Throwaway helper scripts written next to the repo during a task. Never part
 # of the build; one reached a PR before review caught it. At the ROOT so it
@@ -102,17 +102,17 @@ gha-creds-*.json
 .local-agentic-ads/
 
 # Desktop Cloud private credentials (loaded by the API and runner)
-.freebuff-cloud.json
-.freebuff-cloud.json.tmp
+.fuckbuff-cloud.json
+.fuckbuff-cloud.json.tmp
 web/.cloud-r2/
 
 # Hosted staging build output and mounted credentials
 .staging/
 web/.cloud-worker/
-freebuff-staging-api.json
-freebuff-staging-auth.json
+fuckbuff-staging-api.json
+fuckbuff-staging-auth.json
 # Billboard asset storage credentials and the local R2 emulator's data
-.freebuff-ad-assets.json
+.fuckbuff-ad-assets.json
 web/.ad-assets-r2/
 
 # Python build artifacts

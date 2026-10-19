@@ -1,9 +1,9 @@
 /**
- * The wire contract between the freebuff-jobs worker's `support.ingest_email`
- * cron and freebuff-web's `POST /api/admin/support-email-ingest`: ingest the
+ * The wire contract between the fuckbuff-jobs worker's `support.ingest_email`
+ * cron and fuckbuff-web's `POST /api/admin/support-email-ingest`: ingest the
  * support mail Resend received in one half-open window, `[windowStart,
  * windowEnd)`. The worker owns the schedule (one window per cron tick, so no
- * cursor table); freebuff-web owns the work, because `RESEND_API_KEY` and the
+ * cursor table); fuckbuff-web owns the work, because `RESEND_API_KEY` and the
  * `feedback.received` logger live there.
  *
  * Plain types and a hand-written parser, as `./support-jobs.ts`: a Next route

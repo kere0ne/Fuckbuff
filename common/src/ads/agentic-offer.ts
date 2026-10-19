@@ -1,6 +1,6 @@
 /**
- * THE AGENTIC OFFER ROUTE's wire contract (COD-665), shared by Freebuff
- * Desktop and `POST /api/v1/ads/agentic/offer` on freebuff-web.
+ * THE AGENTIC OFFER ROUTE's wire contract (COD-665), shared by Fuckbuff
+ * Desktop and `POST /api/v1/ads/agentic/offer` on fuckbuff-web.
  *
  * The agentic pool (COD-662, `agentic-pool.ts`) gave agentic cards a
  * placement of their own, but still decided them INSIDE the display request:
@@ -19,14 +19,14 @@
  * CUTOVER. There is no server knob: the Desktop release that sends
  * `agenticOfferRoute: 1` is the cutover. For such a client this endpoint
  * serves and `/api/ads` skips agentic discovery, wherever the channel's kill
- * switch (`FREEBUFF_AGENTIC_ADS`) admits the caller. Where it does not, this
+ * switch (`FUCKBUFF_AGENTIC_ADS`) admits the caller. Where it does not, this
  * endpoint answers `none/disabled` and `/api/ads` ignores the flag -- one
- * predicate on the server, so exactly one path serves. `FREEBUFF_AGENTIC_ADS=off`
+ * predicate on the server, so exactly one path serves. `FUCKBUFF_AGENTIC_ADS=off`
  * therefore stops agentic on BOTH paths; there is no position that sends an
  * updated Desktop back to the old one.
  *
- * THE CLI (`Freebuff-CLI/` UA) is served here too, under the same
- * `FREEBUFF_AGENTIC_ADS` audience as Desktop; it has no switch of its own. A
+ * THE CLI (`Fuckbuff-CLI/` UA) is served here too, under the same
+ * `FUCKBUFF_AGENTIC_ADS` audience as Desktop; it has no switch of its own. A
  * CLI request must also carry `inPlaceExecutionVersion: 1` and report macOS
  * or Linux; a CLI request without the in-place flag, or from Windows, is
  * `ineligible_client`, so the CLI's old worktree flow is never served. The CLI reads offers from the `CLI-Chat-Inline` book,
@@ -70,7 +70,7 @@ export const AGENTIC_OFFER_TRAINING_LOG_PROVIDER = 'agentic_offer'
 
 /**
  * Was a mirror of `localCapabilitySchema` in
- * `freebuff/web/src/app/api/ads/route.ts`, and DELIBERATELY IS NOT ANY MORE
+ * `fuckbuff/web/src/app/api/ads/route.ts`, and DELIBERATELY IS NOT ANY MORE
  * in two fields: `repoFullName` accepts `''` here, and `workspaceId` exists
  * only here.
  *
@@ -96,7 +96,7 @@ export const agenticOfferLocalCapabilitySchema = z
     hasCommittedDatabaseBoundary: z.boolean(),
     hasGitRepository: z.boolean(),
     /**
-     * The folder's durable opaque id (`.freebuff/project-id`), which keys an
+     * The folder's durable opaque id (`.fuckbuff/project-id`), which keys an
      * in-place offer where `owner/repo` keys a worktree one. A path is never
      * sent.
      */
@@ -104,7 +104,7 @@ export const agenticOfferLocalCapabilitySchema = z
   })
   .strict()
 
-/** Mirrors `desktopDeviceSchema` in `freebuff/web/src/app/api/ads/route.ts`. */
+/** Mirrors `desktopDeviceSchema` in `fuckbuff/web/src/app/api/ads/route.ts`. */
 export const agenticOfferDeviceSchema = z
   .object({
     os: z.enum(['macos', 'windows', 'linux']),
@@ -243,7 +243,7 @@ export type AgenticOfferRequest = z.infer<typeof agenticOfferRequestSchema>
 /** Why nothing was offered. Closed, so a dashboard can group by it. */
 export const AGENTIC_OFFER_NONE_REASONS = [
   /**
-   * `FREEBUFF_AGENTIC_ADS` does not admit this caller; `/api/ads` asks their
+   * `FUCKBUFF_AGENTIC_ADS` does not admit this caller; `/api/ads` asks their
    * agentic question as before.
    */
   'disabled',

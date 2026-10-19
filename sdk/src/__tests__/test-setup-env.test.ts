@@ -8,7 +8,7 @@ test('the shared test preload removes an inherited ads Slack webhook', () => {
       '--preload',
       fileURLToPath(new URL('../../test/setup-env.ts', import.meta.url)),
       '--eval',
-      'console.log(process.env.FREEBUFF_ADS_SLACK_WEBHOOK_URL === undefined)',
+      'console.log(process.env.FUCKBUFF_ADS_SLACK_WEBHOOK_URL === undefined)',
     ],
     {
       env: {
@@ -16,7 +16,7 @@ test('the shared test preload removes an inherited ads Slack webhook', () => {
         NODE_ENV: 'production',
         BUN_ENV: 'production',
         NEXT_PUBLIC_CB_ENVIRONMENT: 'prod',
-        FREEBUFF_ADS_SLACK_WEBHOOK_URL:
+        FUCKBUFF_ADS_SLACK_WEBHOOK_URL:
           'https://slack.example.invalid/inherited',
       },
       stdout: 'pipe',

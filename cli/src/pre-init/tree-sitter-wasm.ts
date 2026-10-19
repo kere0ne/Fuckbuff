@@ -14,7 +14,7 @@
 //
 // It's 200KB, the npm tarball already contains the binary; adding one
 // more file is trivial. The build script copies the wasm into `cli/bin/`
-// after compile, the release workflow tarballs both, and the freebuff /
+// after compile, the release workflow tarballs both, and the fuckbuff /
 // codebuff downloader extracts both into the same directory. At runtime,
 // `process.execPath` plus a relative file lookup gets us the wasm with
 // zero bundler involvement.

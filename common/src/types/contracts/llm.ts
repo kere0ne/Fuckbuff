@@ -120,7 +120,7 @@ export type PromptAiSdkStreamFn = (
     /** Cost mode - 'free' mode means 0 credits charged for all agents */
     costMode?: string
     /** Extra key/values merged into the request's `codebuff_metadata` field.
-     *  Used to forward client-scoped identifiers (e.g. `freebuff_instance_id`)
+     *  Used to forward client-scoped identifiers (e.g. `fuckbuff_instance_id`)
      *  that server-side gates read from the chat-completions body. */
     extraCodebuffMetadata?: Record<string, string>
     sendAction: SendActionFn
@@ -165,7 +165,7 @@ export type PromptAiSdkFn = (
 
 export type PromptAiSdkStructuredInput<T> = {
   apiKey: string
-  /** Freebuff's 'free' mode uses platform provider credentials. */
+  /** Fuckbuff's 'free' mode uses platform provider credentials. */
   costMode?: string
   runId: string
   messages: Message[]

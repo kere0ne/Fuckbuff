@@ -162,7 +162,7 @@ export type CodebuffClientOptions = {
    * Refuse every agent-registry fetch for this run. Unknown or missing agent
    * ids fail as "not found" instead of falling back to
    * `codebuff/<id>@latest` on the public registry. For hosts that bundle
-   * every agent they will ever run (the embedded Freebuff Web runner): a
+   * every agent they will ever run (the embedded Fuckbuff Web runner): a
    * registry template can carry executable `handleSteps`, and `codebuff` is
    * an always-trusted publisher, so on a server the fallback is a code path
    * from a publisher account into the host process for no benefit.
@@ -285,7 +285,7 @@ export type RunOptions = {
   costMode?: string
   /** Extra key/values merged into each LLM request's `codebuff_metadata`.
    *  Used by hosts (e.g. the CLI) to forward client-scoped identifiers like
-   *  `freebuff_instance_id`, sent with the request. */
+   *  `fuckbuff_instance_id`, sent with the request. */
   extraCodebuffMetadata?: Record<string, string>
   /** Optional checkpoint hook. Called once when the run starts and then
    * periodically while it is in flight, with a RunState snapshot that
@@ -320,7 +320,7 @@ export type RunOptions = {
   traceSessionId?: string
   /**
    * Hold the SDK's own read tools to the project at `cwd`. Off by default:
-   * only the project-understanding agent sets it (docs/freebuff-project-understanding.md).
+   * only the project-understanding agent sets it (docs/fuckbuff-project-understanding.md).
    * When true:
    *  - read_files refuses, per file, any path outside `cwd` as written OR
    *    through a symlink (realpaths compared), with a
@@ -678,7 +678,7 @@ async function runOnce({
 
   if (byok) {
     // The selected connection is a run snapshot. Apply its model to every
-    // local helper/subagent template so no helper silently consumes Freebuff
+    // local helper/subagent template so no helper silently consumes Fuckbuff
     // inference or switches to a different provider.
     const limits = byokModelLimits(byok)
     for (const template of Object.values(sessionState.fileContext.agentTemplates)) {

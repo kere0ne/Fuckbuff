@@ -1,18 +1,18 @@
 import { compactionPolicyForModel } from '@codebuff/common/constants/compaction-policy'
 import {
   FREE_MODE_AGENT_MODELS,
-  FREEBUFF_BASE3_FAST_AGENT_ID,
-  FREEBUFF_BASE3_FAST_WORKER_AGENT_ID,
-  FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL,
-  FREEBUFF_ROOT_AGENT_IDS,
-  FREEBUFF_WEB_BASE3_AGENT_ID_BY_MODEL,
-  hasFreebuffRootSystemPromptOpening,
+  FUCKBUFF_BASE3_FAST_AGENT_ID,
+  FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID,
+  FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL,
+  FUCKBUFF_ROOT_AGENT_IDS,
+  FUCKBUFF_WEB_BASE3_AGENT_ID_BY_MODEL,
+  hasFuckbuffRootSystemPromptOpening,
   isFreeModeAllowedAgentModel,
 } from '@codebuff/common/constants/free-agents'
 import {
-  FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
-  isFreebuffFastModeModel,
-} from '@codebuff/common/constants/freebuff-model-ids'
+  FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+  isFuckbuffFastModeModel,
+} from '@codebuff/common/constants/fuckbuff-model-ids'
 import { describe, expect, test } from 'bun:test'
 
 import base3FreeDeepseekFlash from '../base3-free-deepseek-flash'
@@ -33,7 +33,7 @@ import { createBase3, createBase3CliRoot } from '../base3'
  * What makes the fan-out affordable is a property of the WORKER definition —
  * it inherits its root's prompt and history, so its request is a cache hit —
  * and what makes it safe is a property of the ROOT prompt: the root reconciles
- * and verifies. These pin both, the registrations a Freebuff root needs to run
+ * and verifies. These pin both, the registrations a Fuckbuff root needs to run
  * at all, and the shape of the guidance: short, suggestive, and firm about
  * exactly two things.
  */
@@ -41,35 +41,35 @@ describe('the base3-fast root', () => {
   const root = base3FastFreeDeepseekFlash
 
   test('is registered as the fast-mode model root on both surfaces', () => {
-    expect(root.id).toBe(FREEBUFF_BASE3_FAST_AGENT_ID)
-    expect(root.model).toBe(FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID)
+    expect(root.id).toBe(FUCKBUFF_BASE3_FAST_AGENT_ID)
+    expect(root.model).toBe(FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID)
     expect(
-      FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL[
-        FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID
+      FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL[
+        FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID
       ],
     ).toBe(root.id)
     expect(
-      FREEBUFF_WEB_BASE3_AGENT_ID_BY_MODEL[
-        FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID
+      FUCKBUFF_WEB_BASE3_AGENT_ID_BY_MODEL[
+        FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID
       ],
     ).toBe(root.id)
-    expect(FREEBUFF_ROOT_AGENT_IDS).toContain(root.id)
+    expect(FUCKBUFF_ROOT_AGENT_IDS).toContain(root.id)
     expect(isFreeModeAllowedAgentModel(root.id, root.model)).toBe(true)
-    expect(isFreebuffFastModeModel(root.model)).toBe(true)
-    expect(isFreebuffFastModeModel(base3FreeDeepseekFlash.model)).toBe(false)
+    expect(isFuckbuffFastModeModel(root.model)).toBe(true)
+    expect(isFuckbuffFastModeModel(base3FreeDeepseekFlash.model)).toBe(false)
   })
 
   test('is the CLI root plus spawn_agents, assembled from it, and nothing else moved', () => {
     const plain = createBase3CliRoot({
-      model: FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
-      isFreebuff: true,
+      model: FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+      isFuckbuff: true,
     })
     expect(root.toolNames).toEqual([...plain.toolNames!, 'spawn_agents'])
     expect(root.spawnableAgents).toEqual([...BASE3_FAST_SPAWNABLE_AGENTS])
     // Searchers for context, in parallel; the worker for slices.
     expect(root.spawnableAgents).not.toContain('file-picker')
     expect(root.spawnableAgents).toContain('code-searcher')
-    expect(root.spawnableAgents).toContain(FREEBUFF_BASE3_FAST_WORKER_AGENT_ID)
+    expect(root.spawnableAgents).toContain(FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID)
     // The base3 levers the runtime reads are untouched.
     expect(root.windowedFileReads).toBe(true)
     expect(root.compactContext).toEqual(compactionPolicyForModel(root.model))
@@ -82,7 +82,7 @@ describe('the base3-fast root', () => {
   test('appends the fan-out guidance after base3 and before the CLI appendix', () => {
     const prompt = root.systemPrompt!
     // Byte 0, or the chat-completions gate 403s every free-mode turn.
-    expect(hasFreebuffRootSystemPromptOpening(prompt)).toBe(true)
+    expect(hasFuckbuffRootSystemPromptOpening(prompt)).toBe(true)
     expect(prompt).toContain(BASE3_FAST_GUIDANCE)
     expect(prompt.indexOf(BASE3_FAST_GUIDANCE)).toBeLessThan(
       prompt.indexOf('# Working with the user'),
@@ -149,7 +149,7 @@ describe('the base3-fast root', () => {
     }
     // The split still names the worker and opens every assignment with its role.
     expect(guidance).toContain(
-      `spawn one ${FREEBUFF_BASE3_FAST_WORKER_AGENT_ID} per slice`,
+      `spawn one ${FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID} per slice`,
     )
     expect(guidance).toContain(BASE3_FAST_WORKER_ASSIGNMENT_OPENING)
     expect(guidance).toContain('Never give two workers the same file')
@@ -182,12 +182,12 @@ describe('the base3-fast worker', () => {
   const root = base3FastFreeDeepseekFlash
 
   test('is pinned to its root model and allowlisted for free mode', () => {
-    expect(worker.id).toBe(FREEBUFF_BASE3_FAST_WORKER_AGENT_ID)
+    expect(worker.id).toBe(FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID)
     expect(worker.model).toBe(root.model)
     expect(FREE_MODE_AGENT_MODELS[worker.id]).toEqual(new Set([worker.model]))
     expect(isFreeModeAllowedAgentModel(worker.id, worker.model)).toBe(true)
     // Not a root: it never opens a session and never passes the root gate.
-    expect(FREEBUFF_ROOT_AGENT_IDS).not.toContain(worker.id)
+    expect(FUCKBUFF_ROOT_AGENT_IDS).not.toContain(worker.id)
   })
 
   test('shares its root prefix: inherited prompt, full history, no prompt of its own', () => {

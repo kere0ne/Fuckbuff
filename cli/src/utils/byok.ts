@@ -23,10 +23,10 @@ let store: ByokConnectionStore | undefined
 type ByokSelectionStore = {
   selected: SelectedByokConnection | undefined
   /**
-   * The user asked, from a Freebuff wall, to set up BYOK. `/byok` is a chat
+   * The user asked, from a Fuckbuff wall, to set up BYOK. `/byok` is a chat
    * command, and a user whose Freebucks are spent never reaches the chat: the
    * landing screen's refusal has no input. This opens the chat WITHOUT a
-   * Freebuff session so the command can run; nothing but slash commands can
+   * Fuckbuff session so the command can run; nothing but slash commands can
    * be sent until a connection is selected.
    */
   setupOpen: boolean
@@ -92,7 +92,7 @@ export function saveSelectedByokConnection(
       : { byokConnection: undefined },
   )
   // Selecting ends setup; turning BYOK off (or removing the selected
-  // connection) returns the user to the Freebuff landing screen.
+  // connection) returns the user to the Fuckbuff landing screen.
   closeByokSetup()
   useByokSelectionStore.getState().setSelected(
     connection

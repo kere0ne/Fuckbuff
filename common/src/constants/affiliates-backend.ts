@@ -1,5 +1,5 @@
 /**
- * Which store owns the Freebuff affiliate program (Convex `affiliates` and
+ * Which store owns the Fuckbuff affiliate program (Convex `affiliates` and
  * `affiliate_*`; Postgres `affiliate` and `affiliate_*`, migration 0336) — the
  * checked-in switch for moving it off platform Convex (COD-742 Wave A,
  * light tier; runbook in docs/convex-retirement-wave-a.md, "Affiliates").

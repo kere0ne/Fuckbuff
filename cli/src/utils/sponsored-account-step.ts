@@ -3,7 +3,7 @@
  * skill's user step needs (COD-665, COD-827 on Desktop).
  *
  * THE SAME SHAPE AS DESKTOP'S (`SponsoredSignupHandoff` in
- * `freebuff-desktop/src/server/services/sponsored-signup.ts`), and the words
+ * `fuckbuff-desktop/src/server/services/sponsored-signup.ts`), and the words
  * the model reads are the shared ones the Lab already mirrors
  * (`agentic-ad-lab-run.ts`, held to Desktop's text by
  * `lab-sponsored-parity.test.ts`):
@@ -169,8 +169,8 @@ export function sponsoredCredentialSavedLine(
   savedTo: string | undefined,
 ): string {
   return savedTo
-    ? `- Freebuff already saved ${count === 1 ? 'it' : 'them'} to \`${savedTo}\` in this project for the user, under the same name${count === 1 ? '' : 's'}, so the app can read ${count === 1 ? 'it' : 'them'} after this run. Do not write an env file yourself: this run cannot read or write one. Tell the user it is in \`${savedTo}\`.`
-    : '- Freebuff did NOT save the value to an env file in this project, and this run cannot write one. In your final message, tell the user to add it to their local env file themselves, naming the variable.'
+    ? `- Fuckbuff already saved ${count === 1 ? 'it' : 'them'} to \`${savedTo}\` in this project for the user, under the same name${count === 1 ? '' : 's'}, so the app can read ${count === 1 ? 'it' : 'them'} after this run. Do not write an env file yourself: this run cannot read or write one. Tell the user it is in \`${savedTo}\`.`
+    : '- Fuckbuff did NOT save the value to an env file in this project, and this run cannot write one. In your final message, tell the user to add it to their local env file themselves, naming the variable.'
 }
 
 export type SponsoredAccountStepDeps = {

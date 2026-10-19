@@ -29,7 +29,7 @@ export type MessageRow = {
 
 /**
  * One Postgres `message` row as the BigQuery backfill reads it from the
- * replica (COD-744; docs/freebuff-message-archive.md, "Backfilling BigQuery
+ * replica (COD-744; docs/fuckbuff-message-archive.md, "Backfilling BigQuery
  * gaps"). Text columns arrive as Postgres renders them so nothing is
  * re-encoded on the way: `request` is the jsonb's own text, `response` the
  * jsonb string's text (`response #>> '{}'`), timestamps ISO-8601 UTC with

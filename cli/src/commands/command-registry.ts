@@ -1,9 +1,9 @@
 import {
-  freebuffChatModel,
-  openFreebuffModelPicker,
-  openFreebuffReasoningPicker,
-} from '../state/freebuff-chat-store'
-import { getFreebuffModelDirectory } from '../state/freebuff-catalog-store'
+  fuckbuffChatModel,
+  openFuckbuffModelPicker,
+  openFuckbuffReasoningPicker,
+} from '../state/fuckbuff-chat-store'
+import { getFuckbuffModelDirectory } from '../state/fuckbuff-catalog-store'
 import { safeOpen } from '../utils/open-url'
 
 import {
@@ -35,7 +35,7 @@ import {
 import { runBashCommand } from './router'
 import { handleUsageCommand } from './usage'
 import { handleByokCommand } from './byok'
-import { returnToFreebuffLanding } from '../hooks/use-freebuff-session'
+import { returnToFuckbuffLanding } from '../hooks/use-fuckbuff-session'
 import { useThemeStore } from '../hooks/use-theme'
 import { LOGIN_WEBSITE_URL, WEBSITE_URL } from '../login/constants'
 import { startNewChat } from '../project-files'
@@ -46,7 +46,7 @@ import { useLoginStore } from '../state/login-store'
 import {
   AGENT_MODES,
   END_SESSION_MESSAGE,
-  IS_FREEBUFF,
+  IS_FUCKBUFF,
 } from '../utils/constants'
 import { exitCliCleanly } from '../utils/exit-cleanly'
 import { getSystemMessage, getUserMessage } from '../utils/message-history'
@@ -200,7 +200,7 @@ const clearInput = (params: RouterParams) => {
   params.setInputValue({ text: '', cursorPosition: 0, lastEditDueToNav: false })
 }
 
-const FREEBUFF_REMOVED_COMMANDS = new Set([
+const FUCKBUFF_REMOVED_COMMANDS = new Set([
   'ads:enable',
   'ads:disable',
   'usage',
@@ -210,15 +210,15 @@ const FREEBUFF_REMOVED_COMMANDS = new Set([
   'gpt-5-agent',
 ])
 
-const FREEBUFF_ONLY_COMMANDS = new Set([
+const FUCKBUFF_ONLY_COMMANDS = new Set([
   'byok',
   'plan',
   'end-session',
   'model',
   'dashboard',
-  // Freebuff-only because the ladder it reads is the FREEBUFF catalog's, and
+  // Fuckbuff-only because the ladder it reads is the FUCKBUFF catalog's, and
   // the metadata it sets is honored only for free-mode traffic
-  // (isFreebuffOriginatedRequest). On Codebuff the command would take a value
+  // (isFuckbuffOriginatedRequest). On Codebuff the command would take a value
   // and silently drop it.
   'reasoning',
 ])
@@ -530,10 +530,10 @@ const ALL_COMMANDS: CommandDefinition[] = [
   }),
   defineCommand({
     name: 'dashboard',
-    // Freebuff-only (see FREEBUFF_ONLY_COMMANDS): the hub is a Freebuff web
+    // Fuckbuff-only (see FUCKBUFF_ONLY_COMMANDS): the hub is a Fuckbuff web
     // surface, and Codebuff has its own credits-shaped `/usage` banner.
     //
-    // `usage` is one of the aliases because Freebuff removes that command —
+    // `usage` is one of the aliases because Fuckbuff removes that command —
     // its banner is credits- and subscription-shaped — leaving the product
     // with no answer at all to "how much have I used?". The word now lands
     // somewhere, and only in the build where nothing else claims it.
@@ -575,8 +575,8 @@ const ALL_COMMANDS: CommandDefinition[] = [
       clearInput(params)
     },
   }),
-  // Mode commands generated from AGENT_MODES (excluded in Freebuff)
-  ...(IS_FREEBUFF ? [] : AGENT_MODES).map((mode) =>
+  // Mode commands generated from AGENT_MODES (excluded in Fuckbuff)
+  ...(IS_FUCKBUFF ? [] : AGENT_MODES).map((mode) =>
     defineCommandWithArgs({
       name: `mode:${mode.toLowerCase()}`,
       aliases: [`model:${mode.toLowerCase()}`],
@@ -763,7 +763,7 @@ const ALL_COMMANDS: CommandDefinition[] = [
     handler: (params) => {
       params.saveToHistory(params.inputValue.trim())
       clearInput(params)
-      openFreebuffModelPicker()
+      openFuckbuffModelPicker()
     },
   }),
   defineCommand({
@@ -772,8 +772,8 @@ const ALL_COMMANDS: CommandDefinition[] = [
     handler: (params) => {
       params.saveToHistory(params.inputValue.trim())
       clearInput(params)
-      const model = freebuffChatModel()
-      const directory = getFreebuffModelDirectory()
+      const model = fuckbuffChatModel()
+      const directory = getFuckbuffModelDirectory()
       if (!directory.efforts(model)?.length) {
         params.setMessages((prev) => [
           ...prev,
@@ -783,7 +783,7 @@ const ALL_COMMANDS: CommandDefinition[] = [
         ])
         return
       }
-      openFreebuffReasoningPicker()
+      openFuckbuffReasoningPicker()
     },
   }),
   defineCommand({
@@ -796,7 +796,7 @@ const ALL_COMMANDS: CommandDefinition[] = [
       ])
       params.saveToHistory(params.inputValue.trim())
       clearInput(params)
-      returnToFreebuffLanding().catch(() => {
+      returnToFuckbuffLanding().catch(() => {
         // The hook surfaces poll errors via the session store; nothing to do
         // here beyond letting the chat history reflect the attempt.
       })
@@ -804,9 +804,9 @@ const ALL_COMMANDS: CommandDefinition[] = [
   }),
 ]
 
-export const COMMAND_REGISTRY: CommandDefinition[] = IS_FREEBUFF
-  ? ALL_COMMANDS.filter((cmd) => !FREEBUFF_REMOVED_COMMANDS.has(cmd.name))
-  : ALL_COMMANDS.filter((cmd) => !FREEBUFF_ONLY_COMMANDS.has(cmd.name))
+export const COMMAND_REGISTRY: CommandDefinition[] = IS_FUCKBUFF
+  ? ALL_COMMANDS.filter((cmd) => !FUCKBUFF_REMOVED_COMMANDS.has(cmd.name))
+  : ALL_COMMANDS.filter((cmd) => !FUCKBUFF_ONLY_COMMANDS.has(cmd.name))
 
 export function findCommand(cmd: string): CommandDefinition | undefined {
   const lowerCmd = cmd.toLowerCase()

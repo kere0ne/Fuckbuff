@@ -1,4 +1,4 @@
-import { AGENT_MODES, IS_FREEBUFF } from '../utils/constants'
+import { AGENT_MODES, IS_FUCKBUFF } from '../utils/constants'
 
 import type { SkillsMap } from '@codebuff/common/types/skill'
 
@@ -20,8 +20,8 @@ export interface SlashCommand {
   insertText?: string
 }
 
-// Generate mode commands from the AGENT_MODES constant (excluded in Freebuff)
-const MODE_COMMANDS: SlashCommand[] = IS_FREEBUFF
+// Generate mode commands from the AGENT_MODES constant (excluded in Fuckbuff)
+const MODE_COMMANDS: SlashCommand[] = IS_FUCKBUFF
   ? []
   : AGENT_MODES.map((mode) => ({
       id: `mode:${mode.toLowerCase()}`,
@@ -30,7 +30,7 @@ const MODE_COMMANDS: SlashCommand[] = IS_FREEBUFF
       aliases: [`model:${mode.toLowerCase()}`],
     }))
 
-const FREEBUFF_REMOVED_COMMAND_IDS = new Set([
+const FUCKBUFF_REMOVED_COMMAND_IDS = new Set([
   'ads:enable',
   'ads:disable',
   'usage',
@@ -41,7 +41,7 @@ const FREEBUFF_REMOVED_COMMAND_IDS = new Set([
   'init',
 ])
 
-const FREEBUFF_ONLY_COMMAND_IDS = new Set([
+const FUCKBUFF_ONLY_COMMAND_IDS = new Set([
   'byok',
   'plan',
   'end-session',
@@ -169,7 +169,7 @@ const ALL_SLASH_COMMANDS: SlashCommand[] = [
   {
     id: 'feedback',
     label: 'feedback',
-    description: IS_FREEBUFF ? 'Share general feedback about Freebuff' : 'Share general feedback about Codebuff',
+    description: IS_FUCKBUFF ? 'Share general feedback about Fuckbuff' : 'Share general feedback about Codebuff',
   },
   {
     id: 'bash',
@@ -238,11 +238,11 @@ const ALL_SLASH_COMMANDS: SlashCommand[] = [
   },
 ]
 
-export const SLASH_COMMANDS = IS_FREEBUFF
+export const SLASH_COMMANDS = IS_FUCKBUFF
   ? ALL_SLASH_COMMANDS.filter(
-      (cmd) => !FREEBUFF_REMOVED_COMMAND_IDS.has(cmd.id),
+      (cmd) => !FUCKBUFF_REMOVED_COMMAND_IDS.has(cmd.id),
     )
-  : ALL_SLASH_COMMANDS.filter((cmd) => !FREEBUFF_ONLY_COMMAND_IDS.has(cmd.id))
+  : ALL_SLASH_COMMANDS.filter((cmd) => !FUCKBUFF_ONLY_COMMAND_IDS.has(cmd.id))
 
 export const SLASHLESS_COMMAND_IDS = new Set(
   SLASH_COMMANDS.filter((cmd) => cmd.implicitCommand).map((cmd) =>

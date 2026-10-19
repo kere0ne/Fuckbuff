@@ -1,14 +1,14 @@
 /**
- * Every question the CLI asks about a Freebuff model, behind one seam.
+ * Every question the CLI asks about a Fuckbuff model, behind one seam.
  *
  * Two implementations, and exactly one is live at a time:
  *
- * - `compiledFreebuffModelDirectory`: the compiled catalog and plain model
- *   ids, delegating to the same `freebuff-models` functions the CLI called
+ * - `compiledFuckbuffModelDirectory`: the compiled catalog and plain model
+ *   ids, delegating to the same `fuckbuff-models` functions the CLI called
  *   before the server catalog existed. Fallback mode (an older server, the
  *   network) is this object, so it must stay a pure pass-through.
- * - `catalogFreebuffModelDirectory(catalog)`: the server catalog
- *   (docs/freebuff-model-catalog.md). Every "model id" it hands out or accepts
+ * - `catalogFuckbuffModelDirectory(catalog)`: the server catalog
+ *   (docs/fuckbuff-model-catalog.md). Every "model id" it hands out or accepts
  *   is a catalog KEY, because that is what a catalog-aware session response
  *   carries wherever it used to carry a model id. A legacy id still resolves,
  *   through the row's `legacyDigests`, so a pick or a relaunch record written
@@ -18,66 +18,66 @@
  * is what lets a store hold either kind in one field across a mode switch.
  *
  * Nothing here selects a model on the wire. The HANDLE does that, and it is
- * looked up at send time (`freebuffCatalogHandleFor`), never stored.
+ * looked up at send time (`fuckbuffCatalogHandleFor`), never stored.
  */
 import {
-  FALLBACK_FREEBUFF_MODEL_ID,
-  FREEBUFF_DEFAULT_CONTEXT_WINDOW,
-  FREEBUFF_LIMITED_OFFER_MODEL_IDS,
-  FREEBUFF_MODEL_CONTEXT_WINDOWS,
-  FREEBUFF_REWARD_MODEL_ID,
-  freebuffWithdrawnModelMessage,
-  getFreebuffModel,
-  getFreebuffModelDefaultEffort,
-  getFreebuffModelEfforts,
-  getFreebuffModelSupersededBy,
-  getFreebuffModelUnavailableLabel,
-  getFreebuffModelsForAccessTier,
-  getRecommendedFreebuffModelId,
-  isFreebuffLimitedOfferModelId,
-  isFreebuffModelAvailable,
-  isFreebuffModelId,
-  isFreebuffPremiumModelId,
-  isFreebuffRewardModelId,
-  isSupportedFreebuffModelId,
-  resolveFreebuffModelForAccessTier,
-  resolveSupportedFreebuffModel,
-} from '@codebuff/common/constants/freebuff-models'
+  FALLBACK_FUCKBUFF_MODEL_ID,
+  FUCKBUFF_DEFAULT_CONTEXT_WINDOW,
+  FUCKBUFF_LIMITED_OFFER_MODEL_IDS,
+  FUCKBUFF_MODEL_CONTEXT_WINDOWS,
+  FUCKBUFF_REWARD_MODEL_ID,
+  fuckbuffWithdrawnModelMessage,
+  getFuckbuffModel,
+  getFuckbuffModelDefaultEffort,
+  getFuckbuffModelEfforts,
+  getFuckbuffModelSupersededBy,
+  getFuckbuffModelUnavailableLabel,
+  getFuckbuffModelsForAccessTier,
+  getRecommendedFuckbuffModelId,
+  isFuckbuffLimitedOfferModelId,
+  isFuckbuffModelAvailable,
+  isFuckbuffModelId,
+  isFuckbuffPremiumModelId,
+  isFuckbuffRewardModelId,
+  isSupportedFuckbuffModelId,
+  resolveFuckbuffModelForAccessTier,
+  resolveSupportedFuckbuffModel,
+} from '@codebuff/common/constants/fuckbuff-models'
 import {
-  findFreebuffCatalogRowForLegacyId,
-  listableFreebuffCatalogRows,
-} from '@codebuff/common/types/freebuff-model-catalog'
-import { freebuffPlanRequired } from '@codebuff/common/util/freebuff-model-selection'
+  findFuckbuffCatalogRowForLegacyId,
+  listableFuckbuffCatalogRows,
+} from '@codebuff/common/types/fuckbuff-model-catalog'
+import { fuckbuffPlanRequired } from '@codebuff/common/util/fuckbuff-model-selection'
 
 import type {
-  FreebuffAccessTier,
-  FreebuffModelOption,
-} from '@codebuff/common/constants/freebuff-models'
+  FuckbuffAccessTier,
+  FuckbuffModelOption,
+} from '@codebuff/common/constants/fuckbuff-models'
 import type { ReasoningEffort } from '@codebuff/common/constants/reasoning-effort'
 import type {
-  FreebuffCatalogBadge,
-  FreebuffCatalogRow,
-  FreebuffModelCatalog,
-} from '@codebuff/common/types/freebuff-model-catalog'
-import type { FreebuffFreebucksInfo } from '@codebuff/common/types/freebuff-session'
+  FuckbuffCatalogBadge,
+  FuckbuffCatalogRow,
+  FuckbuffModelCatalog,
+} from '@codebuff/common/types/fuckbuff-model-catalog'
+import type { FuckbuffFreebucksInfo } from '@codebuff/common/types/fuckbuff-session'
 
-export interface FreebuffModelDirectory {
+export interface FuckbuffModelDirectory {
   /** The catalog this directory answers from; null in fallback mode. */
-  readonly catalog: FreebuffModelCatalog | null
+  readonly catalog: FuckbuffModelCatalog | null
   /** The picker's rows for this viewer, in list order (before any price sort). */
   pickerModels(
-    accessTier: FreebuffAccessTier | null | undefined,
+    accessTier: FuckbuffAccessTier | null | undefined,
     hasPaidSubscription: boolean,
-  ): readonly FreebuffModelOption[]
+  ): readonly FuckbuffModelOption[]
   /** The row for an id (or key); an unknown one gets a best-effort row, as
-   *  `getFreebuffModel` does, so display code never has to null-check. */
-  get(id: string): FreebuffModelOption
-  /** A model this client can name at all (`isSupportedFreebuffModelId`). */
+   *  `getFuckbuffModel` does, so display code never has to null-check. */
+  get(id: string): FuckbuffModelOption
+  /** A model this client can name at all (`isSupportedFuckbuffModelId`). */
   isKnown(id: string | null | undefined): boolean
-  /** A model the picker offers (`isFreebuffModelId`). */
+  /** A model the picker offers (`isFuckbuffModelId`). */
   isPickerModel(id: string | null | undefined): boolean
   /** The catalog row behind an id or key; always undefined in fallback mode. */
-  row(id: string | null | undefined): FreebuffCatalogRow | undefined
+  row(id: string | null | undefined): FuckbuffCatalogRow | undefined
   efforts(id: string | null | undefined): readonly ReasoningEffort[] | null
   defaultEffort(id: string | null | undefined): ReasoningEffort | null
   isAvailable(id: string, now: Date): boolean
@@ -90,32 +90,32 @@ export interface FreebuffModelDirectory {
   /** The always-joinable row a pick steps down to. */
   readonly fallbackModelId: string
   recommendedModelId(
-    accessTier: FreebuffAccessTier | null | undefined,
+    accessTier: FuckbuffAccessTier | null | undefined,
     options?: { premiumExhausted?: boolean },
   ): string
   supersededBy(
     id: string,
     visibleIds: readonly string[],
-  ): FreebuffModelOption['supersededBy'] | undefined
+  ): FuckbuffModelOption['supersededBy'] | undefined
   /** Whether the picker draws this row locked (paid plan required). */
   planRequired(
     id: string,
     hasPaidSubscription: boolean,
-    freebucks: FreebuffFreebucksInfo | null | undefined,
+    freebucks: FuckbuffFreebucksInfo | null | undefined,
     /** Fallback mode only: the resolved access tier, read when the server
-     *  sent no verdict (see `freebuffPlanRequired`). */
-    accessTier?: FreebuffAccessTier | null,
+     *  sent no verdict (see `fuckbuffPlanRequired`). */
+    accessTier?: FuckbuffAccessTier | null,
   ): boolean
   /** The pill set a row carries. Fallback mode draws its compiled flags
    *  itself and gets none here. */
-  badges(id: string): readonly FreebuffCatalogBadge[]
+  badges(id: string): readonly FuckbuffCatalogBadge[]
   contextWindow(id: string | null | undefined): number
-  /** What an arbitrary stored value selects (`resolveSupportedFreebuffModel`). */
+  /** What an arbitrary stored value selects (`resolveSupportedFuckbuffModel`). */
   resolveSelection(id: string | null | undefined): string
   /** What an explicit pick sends to admission for this viewer. */
   resolveForAccessTier(
     id: string,
-    accessTier: FreebuffAccessTier | null | undefined,
+    accessTier: FuckbuffAccessTier | null | undefined,
     hasPaidSubscription: boolean,
   ): string
   withdrawnMessage(id: string): string
@@ -123,36 +123,36 @@ export interface FreebuffModelDirectory {
   readonly plansUrl: string | undefined
 }
 
-export const compiledFreebuffModelDirectory: FreebuffModelDirectory = {
+export const compiledFuckbuffModelDirectory: FuckbuffModelDirectory = {
   catalog: null,
   pickerModels: (accessTier, hasPaidSubscription) =>
-    getFreebuffModelsForAccessTier(accessTier, hasPaidSubscription),
-  get: (id) => getFreebuffModel(id),
-  isKnown: (id) => isSupportedFreebuffModelId(id),
-  isPickerModel: (id) => isFreebuffModelId(id),
+    getFuckbuffModelsForAccessTier(accessTier, hasPaidSubscription),
+  get: (id) => getFuckbuffModel(id),
+  isKnown: (id) => isSupportedFuckbuffModelId(id),
+  isPickerModel: (id) => isFuckbuffModelId(id),
   row: () => undefined,
-  efforts: (id) => getFreebuffModelEfforts(id),
-  defaultEffort: (id) => getFreebuffModelDefaultEffort(id),
-  isAvailable: (id, now) => isFreebuffModelAvailable(id, now),
-  unavailableLabel: (id, now) => getFreebuffModelUnavailableLabel(id, now),
-  isPremium: (id) => isFreebuffPremiumModelId(id),
-  isReward: (id) => isFreebuffRewardModelId(id),
-  isLimitedOffer: (id) => isFreebuffLimitedOfferModelId(id),
-  rewardModelId: FREEBUFF_REWARD_MODEL_ID,
-  fallbackModelId: FALLBACK_FREEBUFF_MODEL_ID,
+  efforts: (id) => getFuckbuffModelEfforts(id),
+  defaultEffort: (id) => getFuckbuffModelDefaultEffort(id),
+  isAvailable: (id, now) => isFuckbuffModelAvailable(id, now),
+  unavailableLabel: (id, now) => getFuckbuffModelUnavailableLabel(id, now),
+  isPremium: (id) => isFuckbuffPremiumModelId(id),
+  isReward: (id) => isFuckbuffRewardModelId(id),
+  isLimitedOffer: (id) => isFuckbuffLimitedOfferModelId(id),
+  rewardModelId: FUCKBUFF_REWARD_MODEL_ID,
+  fallbackModelId: FALLBACK_FUCKBUFF_MODEL_ID,
   recommendedModelId: (accessTier, options) =>
-    getRecommendedFreebuffModelId(accessTier, options),
-  supersededBy: (id, visibleIds) => getFreebuffModelSupersededBy(id, visibleIds),
+    getRecommendedFuckbuffModelId(accessTier, options),
+  supersededBy: (id, visibleIds) => getFuckbuffModelSupersededBy(id, visibleIds),
   planRequired: (id, hasPaidSubscription, freebucks, accessTier) =>
-    freebuffPlanRequired(id, hasPaidSubscription, freebucks, accessTier),
+    fuckbuffPlanRequired(id, hasPaidSubscription, freebucks, accessTier),
   badges: () => [],
   contextWindow: (id) =>
-    (id ? FREEBUFF_MODEL_CONTEXT_WINDOWS[id] : undefined) ??
-    FREEBUFF_DEFAULT_CONTEXT_WINDOW,
-  resolveSelection: (id) => resolveSupportedFreebuffModel(id),
+    (id ? FUCKBUFF_MODEL_CONTEXT_WINDOWS[id] : undefined) ??
+    FUCKBUFF_DEFAULT_CONTEXT_WINDOW,
+  resolveSelection: (id) => resolveSupportedFuckbuffModel(id),
   resolveForAccessTier: (id, accessTier, hasPaidSubscription) =>
-    resolveFreebuffModelForAccessTier(id, accessTier, hasPaidSubscription),
-  withdrawnMessage: (id) => freebuffWithdrawnModelMessage(id),
+    resolveFuckbuffModelForAccessTier(id, accessTier, hasPaidSubscription),
+  withdrawnMessage: (id) => fuckbuffWithdrawnModelMessage(id),
   plansUrl: undefined,
 }
 
@@ -165,9 +165,9 @@ export const compiledFreebuffModelDirectory: FreebuffModelDirectory = {
  * no client release. Availability is always `always`: a row the server does
  * not want joined is one it does not list, or lists `locked`.
  */
-export function freebuffCatalogRowModelOption(
-  row: FreebuffCatalogRow,
-): FreebuffModelOption {
+export function fuckbuffCatalogRowModelOption(
+  row: FuckbuffCatalogRow,
+): FuckbuffModelOption {
   return {
     id: row.key,
     displayName: row.displayName,
@@ -183,7 +183,7 @@ export function freebuffCatalogRowModelOption(
     ...(row.reasoningEffort || row.defaultEffort
       ? {
           reasoningEffort: (row.reasoningEffort ??
-            row.defaultEffort) as FreebuffModelOption['reasoningEffort'],
+            row.defaultEffort) as FuckbuffModelOption['reasoningEffort'],
         }
       : {}),
     ...(row.efforts?.length ? { efforts: row.efforts } : {}),
@@ -191,48 +191,48 @@ export function freebuffCatalogRowModelOption(
   }
 }
 
-export function catalogFreebuffModelDirectory(
-  catalog: FreebuffModelCatalog,
+export function catalogFuckbuffModelDirectory(
+  catalog: FuckbuffModelCatalog,
   now: number = Date.now(),
-): FreebuffModelDirectory {
+): FuckbuffModelDirectory {
   // A row scheduled to open later does not exist for this client until it
   // opens: it
   // is never listed, selected, mapped onto, or sent. Every lookup below reads
   // these rows only, so no path through the directory can reach one.
-  const listable = { rows: listableFreebuffCatalogRows(catalog, now) }
+  const listable = { rows: listableFuckbuffCatalogRows(catalog, now) }
   const rowsByKey = new Map(listable.rows.map((row) => [row.key, row]))
   const options = new Map(
-    listable.rows.map((row) => [row.key, freebuffCatalogRowModelOption(row)]),
+    listable.rows.map((row) => [row.key, fuckbuffCatalogRowModelOption(row)]),
   )
   /** The row an id or key names: a key directly, a legacy id by digest. */
   const rowFor = (id: string | null | undefined) =>
     id
-      ? (rowsByKey.get(id) ?? findFreebuffCatalogRowForLegacyId(listable, id))
+      ? (rowsByKey.get(id) ?? findFuckbuffCatalogRowForLegacyId(listable, id))
       : undefined
   const keyForLegacy = (legacyId: string) =>
-    findFreebuffCatalogRowForLegacyId(listable, legacyId)?.key
+    findFuckbuffCatalogRowForLegacyId(listable, legacyId)?.key
   const recommendedKey = (() => {
     if (catalog.recommendedKey && rowsByKey.has(catalog.recommendedKey))
       return catalog.recommendedKey
     return (
       listable.rows.find((row) => row.access === 'open')?.key ??
       listable.rows[0]?.key ??
-      FALLBACK_FREEBUFF_MODEL_ID
+      FALLBACK_FUCKBUFF_MODEL_ID
     )
   })()
   const fallbackKey =
     catalog.fallbackKey && rowsByKey.has(catalog.fallbackKey)
       ? catalog.fallbackKey
       : recommendedKey
-  const rewardKey = keyForLegacy(FREEBUFF_REWARD_MODEL_ID)
+  const rewardKey = keyForLegacy(FUCKBUFF_REWARD_MODEL_ID)
   const limitedOfferKeys = new Set(
-    FREEBUFF_LIMITED_OFFER_MODEL_IDS.flatMap((id) => {
+    FUCKBUFF_LIMITED_OFFER_MODEL_IDS.flatMap((id) => {
       const key = keyForLegacy(id)
       return key ? [key] : []
     }),
   )
   const displayNameOf = (id: string) =>
-    rowFor(id)?.displayName ?? getFreebuffModel(id).displayName
+    rowFor(id)?.displayName ?? getFuckbuffModel(id).displayName
 
   return {
     catalog,
@@ -241,7 +241,7 @@ export function catalogFreebuffModelDirectory(
       const row = rowFor(id)
       // An id no row names (a session admitted before the catalog arrived)
       // still gets its compiled name rather than a blank.
-      return row ? options.get(row.key)! : getFreebuffModel(id)
+      return row ? options.get(row.key)! : getFuckbuffModel(id)
     },
     isKnown: (id) => rowFor(id) !== undefined,
     isPickerModel: (id) => rowFor(id) !== undefined,
@@ -265,7 +265,7 @@ export function catalogFreebuffModelDirectory(
       const key = rowFor(id)?.key
       return key !== undefined && limitedOfferKeys.has(key)
     },
-    rewardModelId: rewardKey ?? FREEBUFF_REWARD_MODEL_ID,
+    rewardModelId: rewardKey ?? FUCKBUFF_REWARD_MODEL_ID,
     fallbackModelId: fallbackKey,
     // The server already resolved the recommendation for THIS viewer; a
     // spent pool is handled by the picker stepping down to a joinable row.
@@ -277,24 +277,24 @@ export function catalogFreebuffModelDirectory(
     planRequired: (id) => rowFor(id)?.access === 'locked',
     badges: (id) => rowFor(id)?.badges ?? [],
     contextWindow: (id) =>
-      rowFor(id)?.contextWindow ?? FREEBUFF_DEFAULT_CONTEXT_WINDOW,
+      rowFor(id)?.contextWindow ?? FUCKBUFF_DEFAULT_CONTEXT_WINDOW,
     resolveSelection: (id) => rowFor(id)?.key ?? recommendedKey,
     // The rows are already this viewer's; nothing else is admissible.
     resolveForAccessTier: (id) => rowFor(id)?.key ?? recommendedKey,
     withdrawnMessage: (id) =>
-      `${displayNameOf(id)} is no longer available in Freebuff. We recommend using ${displayNameOf(recommendedKey)} instead.`,
+      `${displayNameOf(id)} is no longer available in Fuckbuff. We recommend using ${displayNameOf(recommendedKey)} instead.`,
     plansUrl: catalog.plansUrl,
   }
 }
 
 /** The handle a key is sent as, from the catalog held right now. A row that
  *  has not opened yet has no handle this client will send. */
-export function freebuffCatalogHandleFor(
-  catalog: FreebuffModelCatalog | null,
+export function fuckbuffCatalogHandleFor(
+  catalog: FuckbuffModelCatalog | null,
   key: string,
   now: number = Date.now(),
 ): string | undefined {
   if (!catalog) return undefined
-  return listableFreebuffCatalogRows(catalog, now).find((row) => row.key === key)
+  return listableFuckbuffCatalogRows(catalog, now).find((row) => row.key === key)
     ?.handle
 }

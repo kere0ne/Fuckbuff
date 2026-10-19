@@ -1,15 +1,15 @@
-import { freebuffLegacyModelDigest } from '@codebuff/common/types/freebuff-model-catalog'
+import { fuckbuffLegacyModelDigest } from '@codebuff/common/types/fuckbuff-model-catalog'
 
 import type {
-  FreebuffCatalogRow,
-  FreebuffModelCatalog,
-} from '@codebuff/common/types/freebuff-model-catalog'
+  FuckbuffCatalogRow,
+  FuckbuffModelCatalog,
+} from '@codebuff/common/types/fuckbuff-model-catalog'
 
 /** A catalog row with sensible defaults; `legacyIds` become its digests. */
 export function catalogRow(
   key: string,
-  overrides: Partial<FreebuffCatalogRow> & { legacyIds?: string[] } = {},
-): FreebuffCatalogRow {
+  overrides: Partial<FuckbuffCatalogRow> & { legacyIds?: string[] } = {},
+): FuckbuffCatalogRow {
   const { legacyIds, ...rest } = overrides
   return {
     key,
@@ -23,16 +23,16 @@ export function catalogRow(
     access: 'open',
     sortOrder: 10,
     ...(legacyIds
-      ? { legacyDigests: legacyIds.map(freebuffLegacyModelDigest) }
+      ? { legacyDigests: legacyIds.map(fuckbuffLegacyModelDigest) }
       : {}),
     ...rest,
   }
 }
 
 export function catalogFixture(
-  rows: FreebuffCatalogRow[],
-  overrides: Partial<FreebuffModelCatalog> = {},
-): FreebuffModelCatalog {
+  rows: FuckbuffCatalogRow[],
+  overrides: Partial<FuckbuffModelCatalog> = {},
+): FuckbuffModelCatalog {
   return {
     protocol: 1,
     version: 'v1',
@@ -48,9 +48,9 @@ export function catalogFixture(
 
 /** Every catalog handle in a catalog, by key, re-minted as `-h<n>`. */
 export function rotateHandles(
-  catalog: FreebuffModelCatalog,
+  catalog: FuckbuffModelCatalog,
   generation: number,
-): FreebuffModelCatalog {
+): FuckbuffModelCatalog {
   return {
     ...catalog,
     rows: catalog.rows.map((row) => ({

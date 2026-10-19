@@ -2,11 +2,11 @@ import { describe, expect, test } from 'bun:test'
 
 import {
   addDaysToDateKey,
-  calculateFreebuffStreak,
-  getFreebuffDailyStreakRewardPool,
-  getFreebuffStreakGlmBonusUnits,
-  getFreebuffUsageDateKey,
-} from '../freebuff-streak'
+  calculateFuckbuffStreak,
+  getFuckbuffDailyStreakRewardPool,
+  getFuckbuffStreakGlmBonusUnits,
+  getFuckbuffUsageDateKey,
+} from '../fuckbuff-streak'
 
 function usageDatesFrom(startDateKey: string, count: number): string[] {
   return Array.from({ length: count }, (_, index) =>
@@ -14,12 +14,12 @@ function usageDatesFrom(startDateKey: string, count: number): string[] {
   )
 }
 
-describe('freebuff streak helpers', () => {
-  test('formats usage dates in the Freebuff reset timezone', () => {
-    expect(getFreebuffUsageDateKey(new Date('2026-05-27T06:30:00.000Z'))).toBe(
+describe('fuckbuff streak helpers', () => {
+  test('formats usage dates in the Fuckbuff reset timezone', () => {
+    expect(getFuckbuffUsageDateKey(new Date('2026-05-27T06:30:00.000Z'))).toBe(
       '2026-05-26',
     )
-    expect(getFreebuffUsageDateKey(new Date('2026-05-27T08:30:00.000Z'))).toBe(
+    expect(getFuckbuffUsageDateKey(new Date('2026-05-27T08:30:00.000Z'))).toBe(
       '2026-05-27',
     )
   })
@@ -32,7 +32,7 @@ describe('freebuff streak helpers', () => {
 
   test('counts a streak that includes today', () => {
     expect(
-      calculateFreebuffStreak({
+      calculateFuckbuffStreak({
         todayDateKey: '2026-05-27',
         usageDates: ['2026-05-25', '2026-05-23', '2026-05-27', '2026-05-26'],
       }),
@@ -45,7 +45,7 @@ describe('freebuff streak helpers', () => {
 
   test('keeps yesterday-anchored streaks alive before today is used', () => {
     expect(
-      calculateFreebuffStreak({
+      calculateFuckbuffStreak({
         todayDateKey: '2026-05-27',
         usageDates: ['2026-05-26', '2026-05-25', '2026-05-24'],
       }),
@@ -58,7 +58,7 @@ describe('freebuff streak helpers', () => {
 
   test('returns zero after a missed full day', () => {
     expect(
-      calculateFreebuffStreak({
+      calculateFuckbuffStreak({
         todayDateKey: '2026-05-27',
         usageDates: ['2026-05-25', '2026-05-24'],
       }),
@@ -70,7 +70,7 @@ describe('freebuff streak helpers', () => {
   })
 })
 
-describe('freebuff streak rewards', () => {
+describe('fuckbuff streak rewards', () => {
   test('grants one weekly GLM session per completed 7 days, capped at 4', () => {
     const expected: Array<[streak: number, units: number]> = [
       [7, 1],
@@ -83,7 +83,7 @@ describe('freebuff streak rewards', () => {
     ]
     for (const [streak, units] of expected) {
       expect(
-        getFreebuffStreakGlmBonusUnits({
+        getFuckbuffStreakGlmBonusUnits({
           todayDateKey: addDaysToDateKey('2026-07-01', streak - 1),
           usageDates: usageDatesFrom('2026-07-01', streak),
         }),
@@ -93,13 +93,13 @@ describe('freebuff streak rewards', () => {
 
   test('returns zero for empty and six-day usage histories', () => {
     expect(
-      getFreebuffStreakGlmBonusUnits({
+      getFuckbuffStreakGlmBonusUnits({
         todayDateKey: '2026-07-13',
         usageDates: [],
       }),
     ).toBe(0)
     expect(
-      getFreebuffStreakGlmBonusUnits({
+      getFuckbuffStreakGlmBonusUnits({
         todayDateKey: '2026-07-13',
         usageDates: usageDatesFrom('2026-07-07', 6),
       }),
@@ -111,7 +111,7 @@ describe('freebuff streak rewards', () => {
     // the oldest still-active max-tier streak (today unused) must be fully
     // visible inside that window.
     expect(
-      getFreebuffStreakGlmBonusUnits({
+      getFuckbuffStreakGlmBonusUnits({
         todayDateKey: addDaysToDateKey('2026-07-01', 28),
         usageDates: usageDatesFrom('2026-07-01', 28),
       }),
@@ -120,7 +120,7 @@ describe('freebuff streak rewards', () => {
 
   test('refills GLM before the first use of a new week while the streak is alive', () => {
     expect(
-      getFreebuffStreakGlmBonusUnits({
+      getFuckbuffStreakGlmBonusUnits({
         todayDateKey: '2026-07-13',
         usageDates: usageDatesFrom('2026-07-06', 7),
       }),
@@ -129,7 +129,7 @@ describe('freebuff streak rewards', () => {
 
   test('removes the live GLM entitlement after a missed full day', () => {
     expect(
-      getFreebuffStreakGlmBonusUnits({
+      getFuckbuffStreakGlmBonusUnits({
         todayDateKey: '2026-07-14',
         usageDates: usageDatesFrom('2026-07-06', 7),
       }),
@@ -138,7 +138,7 @@ describe('freebuff streak rewards', () => {
 
   test('full access persists only the daily premium bonus', () => {
     expect(
-      getFreebuffDailyStreakRewardPool({
+      getFuckbuffDailyStreakRewardPool({
         streak: 7,
         todayUsed: true,
         accessTier: 'full',
@@ -148,14 +148,14 @@ describe('freebuff streak rewards', () => {
 
   test('full access grants the daily premium bonus throughout the streak', () => {
     expect(
-      getFreebuffDailyStreakRewardPool({
+      getFuckbuffDailyStreakRewardPool({
         streak: 8,
         todayUsed: true,
         accessTier: 'full',
       }),
     ).toBe('premium')
     expect(
-      getFreebuffDailyStreakRewardPool({
+      getFuckbuffDailyStreakRewardPool({
         streak: 13,
         todayUsed: true,
         accessTier: 'full',
@@ -166,14 +166,14 @@ describe('freebuff streak rewards', () => {
   test('limited access grants the limited bonus every day at streak >= 7', () => {
     // The threshold day and later days both grant the bonus.
     expect(
-      getFreebuffDailyStreakRewardPool({
+      getFuckbuffDailyStreakRewardPool({
         streak: 14,
         todayUsed: true,
         accessTier: 'limited',
       }),
     ).toBe('limited')
     expect(
-      getFreebuffDailyStreakRewardPool({
+      getFuckbuffDailyStreakRewardPool({
         streak: 9,
         todayUsed: true,
         accessTier: 'limited',
@@ -183,16 +183,16 @@ describe('freebuff streak rewards', () => {
 
   test('no daily reward below seven days or before today is used', () => {
     expect(
-      getFreebuffDailyStreakRewardPool({
+      getFuckbuffDailyStreakRewardPool({
         streak: 6,
         todayUsed: true,
         accessTier: 'full',
       }),
     ).toBeNull()
     // Streak is at 7 only because yesterday anchored it; the user hasn't used
-    // Freebuff today, so no bonus is earned yet.
+    // Fuckbuff today, so no bonus is earned yet.
     expect(
-      getFreebuffDailyStreakRewardPool({
+      getFuckbuffDailyStreakRewardPool({
         streak: 7,
         todayUsed: false,
         accessTier: 'full',

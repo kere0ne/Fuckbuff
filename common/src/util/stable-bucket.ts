@@ -7,7 +7,7 @@
  * So a weight edit mid-experiment moves no one who is already assigned.
  *
  * FNV-1a then the lowbias32 finalizer, as in `glideHash`
- * (`constants/freebuff-ads.ts`). The finalizer matters: user ids share long
+ * (`constants/fuckbuff-ads.ts`). The finalizer matters: user ids share long
  * prefixes and raw FNV-1a leaves the changing tail in the low bits, which is
  * exactly what `% 10000` reads. Existing callers of the older hashes are left
  * untouched on purpose — changing them would reassign live experiments.

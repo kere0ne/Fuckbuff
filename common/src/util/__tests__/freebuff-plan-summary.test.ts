@@ -3,11 +3,11 @@ import { describe, expect, test } from 'bun:test'
 import {
   formatPlanUnits,
   formatPlanWindows,
-  freebuffFreeWindowsSummary,
-  freebuffPlanSummary,
-} from '../freebuff-plan-summary'
+  fuckbuffFreeWindowsSummary,
+  fuckbuffPlanSummary,
+} from '../fuckbuff-plan-summary'
 
-import type { FreebuffSubscriptionInfo } from '../../types/freebuff-session'
+import type { FuckbuffSubscriptionInfo } from '../../types/fuckbuff-session'
 
 const USAGE = {
   dayUsed: 1.3,
@@ -25,8 +25,8 @@ const USAGE = {
 }
 
 function info(
-  overrides: Partial<FreebuffSubscriptionInfo> = {},
-): FreebuffSubscriptionInfo {
+  overrides: Partial<FuckbuffSubscriptionInfo> = {},
+): FuckbuffSubscriptionInfo {
   return {
     tierId: 'starter',
     tiers: [
@@ -51,9 +51,9 @@ function info(
   }
 }
 
-describe('freebuffPlanSummary', () => {
+describe('fuckbuffPlanSummary', () => {
   test('summarises a live plan', () => {
-    const s = freebuffPlanSummary(info())!
+    const s = fuckbuffPlanSummary(info())!
     expect(s.tierName).toBe('Starter')
     expect(formatPlanWindows(s)).toBe(
       'today 1.3 of 2 · week 3 of 6 · month 11 of 50',
@@ -64,19 +64,19 @@ describe('freebuffPlanSummary', () => {
 
   test('ignores retired spend blocks from an older server', () => {
     expect(
-      freebuffPlanSummary(info({ blockedBy: 'monthly_spend' }))!.blocked,
+      fuckbuffPlanSummary(info({ blockedBy: 'monthly_spend' }))!.blocked,
     ).toBeUndefined()
   })
 
   test('absent for no plan, and for a server that omits usage', () => {
-    expect(freebuffPlanSummary(undefined)).toBeUndefined()
-    expect(freebuffPlanSummary(info({ tierId: null }))).toBeUndefined()
-    expect(freebuffPlanSummary(info({ usage: undefined }))).toBeUndefined()
+    expect(fuckbuffPlanSummary(undefined)).toBeUndefined()
+    expect(fuckbuffPlanSummary(info({ tierId: null }))).toBeUndefined()
+    expect(fuckbuffPlanSummary(info({ usage: undefined }))).toBeUndefined()
   })
 
   test('falls back to the raw tier id when the catalog misses it', () => {
-    const s = freebuffPlanSummary(
-      info({ tiers: [] as FreebuffSubscriptionInfo['tiers'] }),
+    const s = fuckbuffPlanSummary(
+      info({ tiers: [] as FuckbuffSubscriptionInfo['tiers'] }),
     )!
     expect(s.tierName).toBe('starter')
   })
@@ -86,13 +86,13 @@ describe('freebuffPlanSummary', () => {
     ['premium_daily', USAGE.dayResetAt],
     ['monthly', USAGE.periodEndsAt],
   ] as const)('blockedBy %s names the binding reset', (blockedBy, resetsAt) => {
-    const s = freebuffPlanSummary(info({ blockedBy }))!
+    const s = fuckbuffPlanSummary(info({ blockedBy }))!
     expect(s.blocked?.resetsAt).toBe(resetsAt)
     expect(s.blocked?.label.length).toBeGreaterThan(0)
   })
 
   test('the rolling weekly window names no reset instant', () => {
-    const s = freebuffPlanSummary(info({ blockedBy: 'five_day' }))!
+    const s = fuckbuffPlanSummary(info({ blockedBy: 'five_day' }))!
     expect(s.blocked?.label).toBe('weekly limit reached')
     expect(s.blocked?.resetsAt).toBeUndefined()
   })
@@ -104,9 +104,9 @@ describe('freebuffPlanSummary', () => {
   })
 })
 
-describe('freebuffFreeWindowsSummary', () => {
+describe('fuckbuffFreeWindowsSummary', () => {
   test('mirrors the plan window shape so the two share one layout', () => {
-    const s = freebuffFreeWindowsSummary({
+    const s = fuckbuffFreeWindowsSummary({
       dayUsed: 1,
       dayLimit: 4,
       weekUsed: 3,
@@ -121,7 +121,7 @@ describe('freebuffFreeWindowsSummary', () => {
     )
   })
   test('absent block renders nothing', () => {
-    expect(freebuffFreeWindowsSummary(undefined)).toBeUndefined()
+    expect(fuckbuffFreeWindowsSummary(undefined)).toBeUndefined()
   })
 })
 

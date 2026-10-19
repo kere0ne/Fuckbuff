@@ -96,7 +96,7 @@ async function main(): Promise<void> {
   const binary = path.resolve(process.argv[2] ?? '')
   if (!process.argv[2] || !existsSync(binary)) {
     throw new Error(
-      `Freebuff binary not found: ${process.argv[2] ?? '<missing>'}`,
+      `Fuckbuff binary not found: ${process.argv[2] ?? '<missing>'}`,
     )
   }
 

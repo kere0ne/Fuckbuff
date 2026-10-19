@@ -19,7 +19,7 @@ import {
   normalizeDailyBudgetCents,
   platformForUrl,
   platformRequiresComment,
-} from '../constants/freebuff-ads'
+} from '../constants/fuckbuff-ads'
 
 describe('pricing', () => {
   it('makes the headline claim true by arithmetic', () => {

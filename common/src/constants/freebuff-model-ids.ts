@@ -1,20 +1,20 @@
 /**
- * Stable Freebuff model identifiers that are safe to import from browser code.
+ * Stable Fuckbuff model identifiers that are safe to import from browser code.
  *
- * Keep this module dependency-free: the full Freebuff model catalog pulls in
+ * Keep this module dependency-free: the full Fuckbuff model catalog pulls in
  * server-side model configuration that is not part of the desktop renderer's
  * type environment.
  */
-export const FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID = 'deepseek/deepseek-v4-flash'
-export const FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID = 'deepseek/deepseek-v4-pro'
-export const FREEBUFF_MINIMAX_M3_MODEL_ID = 'minimax/minimax-m3'
+export const FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID = 'deepseek/deepseek-v4-flash'
+export const FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID = 'deepseek/deepseek-v4-pro'
+export const FUCKBUFF_MINIMAX_M3_MODEL_ID = 'minimax/minimax-m3'
 /** DeepSeek V4.1 Flash in FAST MODE: the same model as
- *  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID, served ONLY by DeepSeek's own API
+ *  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID, served ONLY by DeepSeek's own API
  *  (never the rationed Luminal lane) and run on the `base3-fast` harness,
  *  which gathers context with parallel subagents. Its own wire id because
  *  it is its own entitlement: one wire id per price is the rule, and this
  *  row is priced on DeepSeek's own peak and off-peak hours. */
-export const FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID =
+export const FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID =
   'deepseek/deepseek-v4-flash-fast'
 
 /**
@@ -26,12 +26,12 @@ export const FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID =
  * output budget, image handling) and is NOT one to the two things that follow
  * the lane.
  */
-export const FREEBUFF_FAST_MODE_MODEL_IDS: ReadonlySet<string> = new Set([
-  FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+export const FUCKBUFF_FAST_MODE_MODEL_IDS: ReadonlySet<string> = new Set([
+  FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
 ])
 
-export function isFreebuffFastModeModel(
+export function isFuckbuffFastModeModel(
   model: string | null | undefined,
 ): boolean {
-  return !!model && FREEBUFF_FAST_MODE_MODEL_IDS.has(model)
+  return !!model && FUCKBUFF_FAST_MODE_MODEL_IDS.has(model)
 }

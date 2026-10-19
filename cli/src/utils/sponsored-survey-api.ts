@@ -14,15 +14,15 @@ import {
   SPONSORED_SURVEY_PATH,
   type SponsoredSurveyClient,
   type SponsoredSurveyOffer,
-} from '@codebuff/common/constants/freebuff-sponsored-survey-client'
-import { formatHoursWithUnit } from '@codebuff/common/util/freebuff-hours'
+} from '@codebuff/common/constants/fuckbuff-sponsored-survey-client'
+import { formatHoursWithUnit } from '@codebuff/common/util/fuckbuff-hours'
 import { sanitizeTerminalStrings } from '@codebuff/common/util/terminal-safe-text'
 import {
   SPONSORED_SURVEY_QUESTION_KINDS,
   type SponsoredSurveyQuestionKind,
-} from '@codebuff/common/constants/freebuff-sponsored-survey'
+} from '@codebuff/common/constants/fuckbuff-sponsored-survey'
 
-import { FREEBUFF_WEB_URL } from '../login/constants'
+import { FUCKBUFF_WEB_URL } from '../login/constants'
 
 import { getCliAdRequestUserAgent } from './ad-client-identity'
 import { getAuthToken } from './auth'
@@ -43,7 +43,7 @@ export function createCliSponsoredSurveyClient(
     fetchImpl?: typeof fetch
   } = {},
 ): SponsoredSurveyClient {
-  const base = (deps.baseUrl ?? FREEBUFF_WEB_URL).replace(/\/+$/, '')
+  const base = (deps.baseUrl ?? FUCKBUFF_WEB_URL).replace(/\/+$/, '')
   const getToken = deps.getToken ?? getAuthToken
   const fetchImpl = deps.fetchImpl ?? fetch
   const send = async <T>(path: string, init: RequestInit): Promise<T> => {

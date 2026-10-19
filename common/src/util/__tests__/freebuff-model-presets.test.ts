@@ -1,20 +1,20 @@
 import { describe, expect, test } from 'bun:test'
 import {
-  FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID as fast,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID as flash,
-  FREEBUFF_GPT_6_LUNA_MODEL_ID as luna,
-  FREEBUFF_MIMO_V25_MODEL_ID as mimo,
-  FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID as muse,
-} from '../../constants/freebuff-models'
+  FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID as fast,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID as flash,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID as luna,
+  FUCKBUFF_MIMO_V25_MODEL_ID as mimo,
+  FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID as muse,
+} from '../../constants/fuckbuff-models'
 import {
-  FREEBUFF_MIMO_SLOW_CATALOG_KEY as slowKey,
-  getFreebuffModelPresets,
-  matchingFreebuffModelPreset,
-} from '../freebuff-model-presets'
+  FUCKBUFF_MIMO_SLOW_CATALOG_KEY as slowKey,
+  getFuckbuffModelPresets,
+  matchingFuckbuffModelPreset,
+} from '../fuckbuff-model-presets'
 
-const choices = (input: Parameters<typeof getFreebuffModelPresets>[0] = {}) =>
-  getFreebuffModelPresets(input)
-const ids = (input: Parameters<typeof getFreebuffModelPresets>[0] = {}) =>
+const choices = (input: Parameters<typeof getFuckbuffModelPresets>[0] = {}) =>
+  getFuckbuffModelPresets(input)
+const ids = (input: Parameters<typeof getFuckbuffModelPresets>[0] = {}) =>
   choices(input).map((preset) => preset.modelId)
 
 describe('model picker presets', () => {
@@ -130,7 +130,7 @@ describe('model picker presets', () => {
       ids({ accessTier: 'limited', models: [slow], recommendedModelId: 'm-slow' }),
     ).toEqual(['m-slow', 'm-slow', flash])
     expect(
-      matchingFreebuffModelPreset(
+      matchingFuckbuffModelPreset(
         choices({ accessTier: 'limited', models: [slow], recommendedModelId: 'm-slow' }),
         'm-slow',
         null,
@@ -187,7 +187,7 @@ describe('model picker presets', () => {
     ).toEqual(['high', 'high', 'max'])
     // A withdrawn stop on the same model as Balanced reads as Balanced.
     expect(
-      matchingFreebuffModelPreset(
+      matchingFuckbuffModelPreset(
         choices({ models: withdrawn }),
         'm-flash',
         'high',
@@ -206,33 +206,33 @@ describe('model picker presets', () => {
 
   test('custom models and effort overrides keep their detailed trigger labels', () => {
     const presets = choices()
-    expect(matchingFreebuffModelPreset(presets, luna, 'low')?.id).toBe(
+    expect(matchingFuckbuffModelPreset(presets, luna, 'low')?.id).toBe(
       'efficient',
     )
-    expect(matchingFreebuffModelPreset(presets, flash, 'high')?.id).toBe(
+    expect(matchingFuckbuffModelPreset(presets, flash, 'high')?.id).toBe(
       'balanced',
     )
-    expect(matchingFreebuffModelPreset(presets, flash, 'max')?.id).toBe(
+    expect(matchingFuckbuffModelPreset(presets, flash, 'max')?.id).toBe(
       'powerful',
     )
     // Any other effort on a stop's model is a custom pick.
-    expect(matchingFreebuffModelPreset(presets, luna, 'xhigh')).toBeUndefined()
-    expect(matchingFreebuffModelPreset(presets, flash, 'low')).toBeUndefined()
+    expect(matchingFuckbuffModelPreset(presets, luna, 'xhigh')).toBeUndefined()
+    expect(matchingFuckbuffModelPreset(presets, flash, 'low')).toBeUndefined()
     // Flash's fast mode and Muse Spark are not full-access stops.
-    expect(matchingFreebuffModelPreset(presets, fast, 'high')).toBeUndefined()
-    expect(matchingFreebuffModelPreset(presets, muse, 'high')).toBeUndefined()
+    expect(matchingFuckbuffModelPreset(presets, fast, 'high')).toBeUndefined()
+    expect(matchingFuckbuffModelPreset(presets, muse, 'high')).toBeUndefined()
     expect(
-      matchingFreebuffModelPreset(presets, 'byok/provider', null),
+      matchingFuckbuffModelPreset(presets, 'byok/provider', null),
     ).toBeUndefined()
     expect(
-      matchingFreebuffModelPreset(
+      matchingFuckbuffModelPreset(
         choices({ accessTier: 'limited', isSubscriber: true }),
         muse,
         'high',
       )?.id,
     ).toBe('powerful')
     expect(
-      matchingFreebuffModelPreset(
+      matchingFuckbuffModelPreset(
         choices({ accessTier: 'limited' }),
         mimo,
         null,

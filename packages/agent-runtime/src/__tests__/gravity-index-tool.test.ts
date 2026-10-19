@@ -152,7 +152,7 @@ describe('gravity_index tool', () => {
     expect(spy.mock.calls[0]?.[0]?.input).not.toHaveProperty('external_user_id')
   })
 
-  test('tags base-chat traffic with the freebuff_chat surface', async () => {
+  test('tags base-chat traffic with the fuckbuff_chat surface', async () => {
     const spy = spyOn(webApi, 'callGravityIndexAPI').mockResolvedValue({
       result: { search_id: 'search-1' },
     })
@@ -171,7 +171,7 @@ describe('gravity_index tool', () => {
         'base-chat': {
           ...gravityTestAgent,
           id: 'base-chat',
-          displayName: 'Freebuff Chat',
+          displayName: 'Fuckbuff Chat',
         },
       },
     }
@@ -200,20 +200,20 @@ describe('gravity_index tool', () => {
         input: expect.objectContaining({
           external_user_id: 'test-fingerprint',
           metadata: expect.objectContaining({
-            surface: 'freebuff_chat',
+            surface: 'fuckbuff_chat',
           }),
         }),
       }),
     )
   })
 
-  // Freebuff Desktop's thread agents run on the user's own key, so they attribute like the CLI (no
+  // Fuckbuff Desktop's thread agents run on the user's own key, so they attribute like the CLI (no
   // external_user_id) but under their own label, not as CLI traffic.
   test.each([
-    'freebuff-desktop-thread-local-v3',
-    'freebuff-desktop-thread-worktree',
+    'fuckbuff-desktop-thread-local-v3',
+    'fuckbuff-desktop-thread-worktree',
   ])(
-    'tags %s traffic with the freebuff_desktop surface and no external_user_id',
+    'tags %s traffic with the fuckbuff_desktop surface and no external_user_id',
     async (rootAgentId) => {
       const spy = spyOn(webApi, 'callGravityIndexAPI').mockResolvedValue({
         result: { search_id: 'search-1' },
@@ -233,7 +233,7 @@ describe('gravity_index tool', () => {
           [rootAgentId]: {
             ...gravityTestAgent,
             id: rootAgentId,
-            displayName: 'Freebuff',
+            displayName: 'Fuckbuff',
           },
         },
       }
@@ -258,17 +258,17 @@ describe('gravity_index tool', () => {
       })
 
       const input = spy.mock.calls[0]?.[0]?.input
-      expect(input).toMatchObject({ metadata: { surface: 'freebuff_desktop' } })
+      expect(input).toMatchObject({ metadata: { surface: 'fuckbuff_desktop' } })
       expect(input).not.toHaveProperty('external_user_id')
     },
   )
 
-  // Both freebuff Web root families, because the harness swap changed the id
+  // Both fuckbuff Web root families, because the harness swap changed the id
   // prefix: a base3 root that fell through to `codebuff_cli` would attribute
   // Web clicks to the CLI and would stop forwarding the per-end-user id that
   // keeps the shared service account from collapsing every user into one.
   test.each(['base2-free-deepseek', 'base3-free-deepseek'])(
-    'tags %s traffic with the freebuff_web surface and forwards external_user_id',
+    'tags %s traffic with the fuckbuff_web surface and forwards external_user_id',
     async (rootAgentId) => {
       const spy = spyOn(webApi, 'callGravityIndexAPI').mockResolvedValue({
         result: { search_id: 'search-1' },
@@ -315,12 +315,12 @@ describe('gravity_index tool', () => {
       expect(spy).toHaveBeenCalledWith(
         expect.objectContaining({
           input: expect.objectContaining({
-            // Freebuff Web runs under a shared service account, so the handler
+            // Fuckbuff Web runs under a shared service account, so the handler
             // forwards the stable per-end-user signal (fingerprintId) for
             // attribution instead of letting it collapse onto the service account.
             external_user_id: 'test-fingerprint',
             metadata: expect.objectContaining({
-              surface: 'freebuff_web',
+              surface: 'fuckbuff_web',
             }),
           }),
         }),

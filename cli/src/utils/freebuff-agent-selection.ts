@@ -1,21 +1,21 @@
 import {
-  FREEBUFF_CLI_CATALOG_ROOT_AGENT_ID,
-  getFreebuffBase3RootAgentIdForModel,
-  getFreebuffRootAgentIdForModel,
+  FUCKBUFF_CLI_CATALOG_ROOT_AGENT_ID,
+  getFuckbuffBase3RootAgentIdForModel,
+  getFuckbuffRootAgentIdForModel,
 } from '@codebuff/common/constants/free-agents'
 
-import { getFreebuffModelDirectory } from '../state/freebuff-catalog-store'
-import { getSelectedFreebuffModel } from '../state/freebuff-model-store'
+import { getFuckbuffModelDirectory } from '../state/fuckbuff-catalog-store'
+import { getSelectedFuckbuffModel } from '../state/fuckbuff-model-store'
 import {
   AGENT_MODE_TO_ID,
   CLI_HARNESS,
-  IS_FREEBUFF,
+  IS_FUCKBUFF,
   type AgentMode,
 } from './constants'
 
 /**
- * Freebuff is locked to LITE (chat-store's setAgentMode is a no-op when
- * IS_FREEBUFF), so this is effectively "which root does the selected model
+ * Fuckbuff is locked to LITE (chat-store's setAgentMode is a no-op when
+ * IS_FUCKBUFF), so this is effectively "which root does the selected model
  * run". Both harnesses have a root per picker model; CLI_HARNESS picks the
  * family. Fable 5.1 is a deliberate base2 exception for its trace campaign.
  * The default is currently base3; keeping both branches live preserves the
@@ -24,26 +24,26 @@ import {
  * Takes a plain model id: a catalog row has no id and runs the catalog root
  * (see `getAgentIdForMode`).
  */
-export function getFreebuffCliAgentIdForModel(model: string): string {
+export function getFuckbuffCliAgentIdForModel(model: string): string {
   return CLI_HARNESS === 'base3'
-    ? getFreebuffBase3RootAgentIdForModel(model)
-    : getFreebuffRootAgentIdForModel(model)
+    ? getFuckbuffBase3RootAgentIdForModel(model)
+    : getFuckbuffRootAgentIdForModel(model)
 }
 
 /**
  * The root a turn on this selection runs. A catalog row (the selection is a
  * catalog key) runs the ONE catalog root, whose definition is built at runtime
- * from the row (`freebuffCatalogRootAgent`); a compiled model keeps its own.
+ * from the row (`fuckbuffCatalogRootAgent`); a compiled model keeps its own.
  */
-export function getFreebuffCliAgentIdForSelection(selection: string): string {
-  return getFreebuffModelDirectory().row(selection)?.key === selection
-    ? FREEBUFF_CLI_CATALOG_ROOT_AGENT_ID
-    : getFreebuffCliAgentIdForModel(selection)
+export function getFuckbuffCliAgentIdForSelection(selection: string): string {
+  return getFuckbuffModelDirectory().row(selection)?.key === selection
+    ? FUCKBUFF_CLI_CATALOG_ROOT_AGENT_ID
+    : getFuckbuffCliAgentIdForModel(selection)
 }
 
 export function getAgentIdForMode(agentMode: AgentMode): string {
-  if (IS_FREEBUFF && agentMode === 'LITE') {
-    return getFreebuffCliAgentIdForSelection(getSelectedFreebuffModel())
+  if (IS_FUCKBUFF && agentMode === 'LITE') {
+    return getFuckbuffCliAgentIdForSelection(getSelectedFuckbuffModel())
   }
 
   return AGENT_MODE_TO_ID[agentMode]

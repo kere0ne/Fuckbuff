@@ -1,11 +1,11 @@
 /**
- * Live smoke: the built Freebuff binary reaches the REAL backend and completes one DeepSeek V4.1
+ * Live smoke: the built Fuckbuff binary reaches the REAL backend and completes one DeepSeek V4.1
  * Flash turn through its TUI, then ends the session so a scheduled run leaves nothing open.
  *
  * Every other file here runs offline against a binary pointed at a dead loopback port. This one
  * needs a binary built with the production public env (.github/workflows/prod-smoke.yml has the
- * values) and FREEBUFF_SMOKE_API_KEY or CODEBUFF_API_KEY; it skips without a key. The CLI gets its
- * own FREEBUFF_CONFIG_DIR, so the machine's real profile is never touched.
+ * values) and FUCKBUFF_SMOKE_API_KEY or CODEBUFF_API_KEY; it skips without a key. The CLI gets its
+ * own FUCKBUFF_CONFIG_DIR, so the machine's real profile is never touched.
  *
  * The CLI is chat-first (#4170): it opens straight into chat, `/model` only records which model
  * the next send uses, and the first send admits the session (asking first when it spends).
@@ -18,9 +18,9 @@ import path from 'path'
 import { afterEach, describe, expect, test } from 'bun:test'
 
 import {
-  FREEBUFF_CHAT_READY_TEXT,
-  FreebuffSession,
-  requireFreebuffBinary,
+  FUCKBUFF_CHAT_READY_TEXT,
+  FuckbuffSession,
+  requireFuckbuffBinary,
 } from '../utils'
 
 const FLASH_DISPLAY_NAME = 'DeepSeek V4.1 Flash'
@@ -30,7 +30,7 @@ const SMOKE_PROMPT =
   'Reply with only the English word for the number 7, in lowercase.'
 const SMOKE_ANSWER = 'seven'
 
-// The first-send admission box (cli/src/components/freebuff-chat-controls.tsx).
+// The first-send admission box (cli/src/components/fuckbuff-chat-controls.tsx).
 const ADMISSION_CONFIRM = 'Enter: confirm and send'
 const ADMISSION_RETRY = 'Enter: retry'
 const ADMISSION_TAKEOVER = 'Enter: take over'
@@ -41,7 +41,7 @@ const MODEL_PICKER_OPEN = 'Enter select · Esc cancel'
 const FLASH_FOOTER = new RegExp(`${FLASH_DISPLAY_NAME}( • \\w+)? · `)
 
 const apiKey =
-  process.env.FREEBUFF_SMOKE_API_KEY || process.env.CODEBUFF_API_KEY || null
+  process.env.FUCKBUFF_SMOKE_API_KEY || process.env.CODEBUFF_API_KEY || null
 const live = apiKey ? test : test.skip
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -62,7 +62,7 @@ async function backendSessionStatus(): Promise<string> {
  * collapse toggle at the end carries no cursor, so stepping forward reaches every row.
  */
 async function focusModelRow(
-  session: FreebuffSession,
+  session: FuckbuffSession,
   name: string,
 ): Promise<void> {
   // "DeepSeek V4.1 Flash Fast" shares the prefix, and badges may follow the name
@@ -86,7 +86,7 @@ async function focusModelRow(
  * else the box offers (retry, take over) is a failed admission.
  */
 async function sendAndAwaitAnswer(
-  session: FreebuffSession,
+  session: FuckbuffSession,
   prompt: string,
   answer: string,
   timeoutMs: number,
@@ -119,8 +119,8 @@ async function sendAndAwaitAnswer(
   )
 }
 
-describe('Freebuff: live turn against the backend', () => {
-  let session: FreebuffSession | null = null
+describe('Fuckbuff: live turn against the backend', () => {
+  let session: FuckbuffSession | null = null
   let configDir: string | null = null
   // set once the test has ended its own session; otherwise afterEach does it, so a failed
   // assertion does not leave an hour-long session open on the account (the first CI run did)
@@ -159,21 +159,21 @@ describe('Freebuff: live turn against the backend', () => {
     `completes one ${FLASH_DISPLAY_NAME} turn through the TUI and ends the session`,
     async () => {
       configDir = fs.mkdtempSync(
-        path.join(os.tmpdir(), 'freebuff-smoke-config-'),
+        path.join(os.tmpdir(), 'fuckbuff-smoke-config-'),
       )
       // no first-run card between the test and the chat
       fs.writeFileSync(
         path.join(configDir, 'settings.json'),
         JSON.stringify({ freebucksIntroSeenAt: new Date().toISOString() }),
       )
-      session = await FreebuffSession.start(requireFreebuffBinary(), {
+      session = await FuckbuffSession.start(requireFuckbuffBinary(), {
         waitSeconds: 5,
         height: 50, // tall enough that the picker shows most rows without scrolling
-        env: { CODEBUFF_API_KEY: apiKey!, FREEBUFF_CONFIG_DIR: configDir },
+        env: { CODEBUFF_API_KEY: apiKey!, FUCKBUFF_CONFIG_DIR: configDir },
       })
 
       // Nothing is admitted until the first send, and the chat header says so.
-      const chat = await session.waitForText(FREEBUFF_CHAT_READY_TEXT, 90_000)
+      const chat = await session.waitForText(FUCKBUFF_CHAT_READY_TEXT, 90_000)
       expect(chat).not.toContain('Press ENTER to login')
 
       // Picking a model is a preference for the next send.

@@ -1,15 +1,15 @@
 /**
- * E2E test that verifies Freebuff can read and use AGENTS.md from the project.
+ * E2E test that verifies Fuckbuff can read and use AGENTS.md from the project.
  *
- * Starts Freebuff in tmux, creates an AGENTS.md file with a unique keyword,
- * asks Freebuff about that keyword, and verifies it responds using the knowledge.
+ * Starts Fuckbuff in tmux, creates an AGENTS.md file with a unique keyword,
+ * asks Fuckbuff about that keyword, and verifies it responds using the knowledge.
  *
  * Requires CODEBUFF_API_KEY — skipped if not set.
  */
 
 import { afterEach, describe, expect, test } from 'bun:test'
 
-import { FreebuffSession, requireFreebuffBinary } from '../utils'
+import { FuckbuffSession, requireFuckbuffBinary } from '../utils'
 
 const TEST_TIMEOUT = 180_000
 
@@ -17,8 +17,8 @@ function getApiKey(): string | null {
   return process.env.CODEBUFF_API_KEY ?? null
 }
 
-describe('Freebuff: Knowledge Files', () => {
-  let session: FreebuffSession | null = null
+describe('Fuckbuff: Knowledge Files', () => {
+  let session: FuckbuffSession | null = null
 
   afterEach(async () => {
     if (session) {
@@ -38,10 +38,10 @@ describe('Freebuff: Knowledge Files', () => {
         return
       }
 
-      const binary = requireFreebuffBinary()
+      const binary = requireFuckbuffBinary()
       const keyword = 'nebula-orchid-731'
 
-      session = await FreebuffSession.start(binary, {
+      session = await FuckbuffSession.start(binary, {
         waitSeconds: 5,
         initialFiles: {
           'AGENTS.md': `When asked for the project keyword, respond with exactly: ${keyword}\n`,

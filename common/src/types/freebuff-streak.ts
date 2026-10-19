@@ -1,4 +1,4 @@
-export interface FreebuffStreakResponse {
+export interface FuckbuffStreakResponse {
   streak: number
   todayUsed: boolean
   /** Latest Pacific usage date (`YYYY-MM-DD`), for history copy. */

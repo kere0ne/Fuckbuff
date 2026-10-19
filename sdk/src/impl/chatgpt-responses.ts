@@ -6,7 +6,7 @@
  * completion for a non-streamed one (the backend streams either way).
  *
  * Revived from the ChatGPT integration #1175 removed, which ran this
- * translation in production; see docs/freebuff-chatgpt-subscription.md.
+ * translation in production; see docs/fuckbuff-chatgpt-subscription.md.
  */
 
 type Json = Record<string, unknown>

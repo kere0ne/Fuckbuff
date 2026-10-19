@@ -1,14 +1,14 @@
-import { formatHoursWithUnit } from './freebuff-hours'
-import { FREEBUFF_STREAK_REWARDS_ENABLED } from '../constants/freebuff-models'
+import { formatHoursWithUnit } from './fuckbuff-hours'
+import { FUCKBUFF_STREAK_REWARDS_ENABLED } from '../constants/fuckbuff-models'
 import {
-  getFreebuffStreakGlmWeeklyUnits,
-  isFreebuffStreakGlmBonusActive,
-} from './freebuff-streak'
+  getFuckbuffStreakGlmWeeklyUnits,
+  isFuckbuffStreakGlmBonusActive,
+} from './fuckbuff-streak'
 
 /** Days in a streak "week" — the milestone the progress dots fill toward. */
-export const FREEBUFF_STREAK_WEEK = 7
+export const FUCKBUFF_STREAK_WEEK = 7
 
-export interface FreebuffStreakLine {
+export interface FuckbuffStreakLine {
   /** Count label, e.g. "2 day streak". */
   label: string
   /** A week's worth of progress dots toward the 7-day milestone, e.g.
@@ -18,13 +18,13 @@ export interface FreebuffStreakLine {
   dots: string
   /** The same progress as counts, for a surface that draws its own dots rather
    *  than glyphs (the desktop app draws CSS circles). `total` is always
-   *  FREEBUFF_STREAK_WEEK, carried so a renderer that can't import this module
+   *  FUCKBUFF_STREAK_WEEK, carried so a renderer that can't import this module
    *  knows how many slots to draw; `beyond` is the trailing "+". */
   progress: { filled: number; total: number; beyond: boolean }
 }
 
 /** Glyph pair used to draw the progress dots. */
-export interface FreebuffStreakDotChars {
+export interface FuckbuffStreakDotChars {
   filled: string
   empty: string
 }
@@ -39,20 +39,20 @@ export interface FreebuffStreakDotChars {
  * The glyphs default to ●/○, which is what a real UI font renders best; a
  * surface whose font can't be trusted with those passes its own pair.
  */
-export function getFreebuffStreakLine(
+export function getFuckbuffStreakLine(
   streak: number,
-  chars: FreebuffStreakDotChars = { filled: '●', empty: '○' },
-): FreebuffStreakLine | null {
+  chars: FuckbuffStreakDotChars = { filled: '●', empty: '○' },
+): FuckbuffStreakLine | null {
   if (streak <= 0) return null
 
   // Fill toward the 7-day milestone, then stay full — a 19-day streak should
   // read as fully earned, not roll back over into a partial second week. Past
   // the week, a trailing "+" marks that the streak has run beyond the row.
-  const filled = Math.min(streak, FREEBUFF_STREAK_WEEK)
-  const beyond = streak > FREEBUFF_STREAK_WEEK
+  const filled = Math.min(streak, FUCKBUFF_STREAK_WEEK)
+  const beyond = streak > FUCKBUFF_STREAK_WEEK
   const dots =
     chars.filled.repeat(filled) +
-    chars.empty.repeat(FREEBUFF_STREAK_WEEK - filled) +
+    chars.empty.repeat(FUCKBUFF_STREAK_WEEK - filled) +
     (beyond ? '+' : '')
 
   // "day" stays singular — it's a compound modifier ("7 day streak"), not a
@@ -60,13 +60,13 @@ export function getFreebuffStreakLine(
   return {
     label: `${streak} day streak`,
     dots,
-    progress: { filled, total: FREEBUFF_STREAK_WEEK, beyond },
+    progress: { filled, total: FUCKBUFF_STREAK_WEEK, beyond },
   }
 }
 
 /** The perk a 7+ day streak pays, as copy: Freebucks on the meter (added to
  *  each day's allowance, gone at its reset), sessions off it. */
-function getFreebuffStreakPerk(params: {
+function getFuckbuffStreakPerk(params: {
   streak: number
   accessTier: 'full' | 'limited'
   freebucksDailyBonus?: number | null
@@ -80,10 +80,10 @@ function getFreebuffStreakPerk(params: {
   // Only advertise GLM when the recurring full-access streak entitlement is
   // active, so the copy never promises a perk the gate won't honor.
   const includesGlm =
-    params.accessTier === 'full' && isFreebuffStreakGlmBonusActive()
+    params.accessTier === 'full' && isFuckbuffStreakGlmBonusActive()
   // Below the milestone this is the first tier being unlocked (1/day); at 7+
   // it's whatever tier the current streak has earned (up to 4/day).
-  const glmDaily = Math.max(1, getFreebuffStreakGlmWeeklyUnits(params.streak))
+  const glmDaily = Math.max(1, getFuckbuffStreakGlmWeeklyUnits(params.streak))
   return includesGlm
     ? `+1 bonus session every day + ${glmDaily} reward ${glmDaily === 1 ? 'session' : 'sessions'} each day`
     : '+1 bonus session every day'
@@ -110,7 +110,7 @@ function getFreebuffStreakPerk(params: {
  * says which applies through the streak response, so the copy never promises
  * a currency the meter will not grant.
  */
-export function getFreebuffStreakBonusNote(params: {
+export function getFuckbuffStreakBonusNote(params: {
   streak: number
   accessTier: 'full' | 'limited'
   /** Freebucks a streak day pays on this account (the streak response's
@@ -118,12 +118,12 @@ export function getFreebuffStreakBonusNote(params: {
    *  meter and the perk is Freebucks; null/undefined keeps the session copy. */
   freebucksDailyBonus?: number | null
 }): string | null {
-  if (!FREEBUFF_STREAK_REWARDS_ENABLED) return null
+  if (!FUCKBUFF_STREAK_REWARDS_ENABLED) return null
   if (params.streak <= 0) return null
-  const perk = getFreebuffStreakPerk(params)
+  const perk = getFuckbuffStreakPerk(params)
 
-  if (params.streak < FREEBUFF_STREAK_WEEK) {
-    const remaining = FREEBUFF_STREAK_WEEK - params.streak
+  if (params.streak < FUCKBUFF_STREAK_WEEK) {
+    const remaining = FUCKBUFF_STREAK_WEEK - params.streak
     return `🎁 ${remaining} more ${remaining === 1 ? 'day' : 'days'} to unlock ${perk}`
   }
   return `🎁 Streak perk: ${perk}`

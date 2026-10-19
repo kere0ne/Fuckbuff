@@ -21,7 +21,7 @@ describe('Convex cron job runners (COD-742)', () => {
       reconcile_usage_limits: 'graphile',
       enforce_legacy_usage_limits: 'graphile',
       audit_fleet_usage: 'graphile',
-      sweep_freebuff_runs: 'convex',
+      sweep_fuckbuff_runs: 'convex',
       // Built dark 2026-10-07; triggers flipped on Owen's go, 2026-10-14.
       sweep_cli_agent_runs: 'graphile',
       rotate_github_tokens: 'graphile',
@@ -52,7 +52,7 @@ describe('Convex cron job runners (COD-742)', () => {
   test('the run sweep moves with the agent core writer, never alone', () => {
     // Postgres reaping Convex's runs, or Convex reaping frozen placeholders
     // beside the Postgres sweep, would reap twice or not at all.
-    expect(CONVEX_CRON_JOB_RUNNERS.sweep_freebuff_runs === 'graphile').toBe(
+    expect(CONVEX_CRON_JOB_RUNNERS.sweep_fuckbuff_runs === 'graphile').toBe(
       AGENT_CORE_WRITER_FOR_CONVEX === 'postgres',
     )
   })

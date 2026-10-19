@@ -21,7 +21,7 @@ afterEach(() => {
 })
 
 function useStore() {
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-byok-help-'))
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-byok-help-'))
   directories.push(directory)
   const requests: string[] = []
   const store = createBunByokConnectionStore({

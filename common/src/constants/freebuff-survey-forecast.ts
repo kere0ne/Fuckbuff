@@ -8,7 +8,7 @@ import {
   type SponsoredSurveyCountryTier,
   type SponsoredSurveyLengthBucket,
   type SponsoredSurveySpeed,
-} from './freebuff-sponsored-survey'
+} from './fuckbuff-sponsored-survey'
 
 export const surveyForecastQuerySchema = z.object({
   questions: z.coerce.number().int().min(1).max(SPONSORED_SURVEY_MAX_QUESTIONS),

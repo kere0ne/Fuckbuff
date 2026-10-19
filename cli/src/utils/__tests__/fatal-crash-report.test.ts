@@ -36,7 +36,7 @@ test('a fatal error is recorded for the next launch to ship, exactly once', () =
     'Unhandled rejection',
     error,
     {
-      heldFreebuffSession: true,
+      heldFuckbuffSession: true,
     },
     dir,
   )
@@ -45,7 +45,7 @@ test('a fatal error is recorded for the next launch to ship, exactly once', () =
   expect(report).toMatchObject({
     label: 'Unhandled rejection',
     errorName: 'Error',
-    heldFreebuffSession: true,
+    heldFuckbuffSession: true,
     platform: process.platform,
   })
   // bounded payload
@@ -67,7 +67,7 @@ test('non-Error rejections and unprintable values are still recorded', () => {
     'Uncaught exception',
     unprintable,
     {
-      heldFreebuffSession: false,
+      heldFuckbuffSession: false,
     },
     dir,
   )
@@ -87,7 +87,7 @@ test('a stale or corrupt report is dropped, never shipped', () => {
     'Uncaught exception',
     new Error('old'),
     {
-      heldFreebuffSession: false,
+      heldFuckbuffSession: false,
     },
     dir,
   )
@@ -104,7 +104,7 @@ test('recording never throws, even when the directory is unusable', () => {
       'Uncaught exception',
       new Error('x'),
       {
-        heldFreebuffSession: false,
+        heldFuckbuffSession: false,
       },
       join(blocker, 'nested'),
     ),

@@ -17,7 +17,7 @@ import {
   profileSurveyVersion,
   type ProfileSurveyAnswer,
   type ProfileSurveyQuestion,
-} from '../freebuff-profile-survey'
+} from '../fuckbuff-profile-survey'
 
 function q(id: string): ProfileSurveyQuestion {
   const question = profileSurveyQuestion(id)

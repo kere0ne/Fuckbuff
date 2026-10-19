@@ -1,14 +1,14 @@
 const DAY_MS = 24 * 60 * 60 * 1000
 
 /** PostHog-style retention windows to mirror in Reddit CAPI custom events. */
-export const FREEBUFF_REDDIT_RETENTION_MILESTONE_DAYS = [1, 7, 24] as const
+export const FUCKBUFF_REDDIT_RETENTION_MILESTONE_DAYS = [1, 7, 24] as const
 
-export type FreebuffRedditRetentionMilestoneDays =
-  (typeof FREEBUFF_REDDIT_RETENTION_MILESTONE_DAYS)[number]
+export type FuckbuffRedditRetentionMilestoneDays =
+  (typeof FUCKBUFF_REDDIT_RETENTION_MILESTONE_DAYS)[number]
 
-export type FreebuffRedditConversionPlan = {
+export type FuckbuffRedditConversionPlan = {
   fireFirstPrompt: boolean
-  retentionMilestones: FreebuffRedditRetentionMilestoneDays[]
+  retentionMilestones: FuckbuffRedditRetentionMilestoneDays[]
 }
 
 function daysBetween(fromDateKey: string, toDateKey: string): number {
@@ -20,8 +20,8 @@ function daysBetween(fromDateKey: string, toDateKey: string): number {
   return Math.round((to - from) / DAY_MS)
 }
 
-/** First successful freebuff prompt = first-ever usage day recorded. */
-export function isFirstFreebuffPrompt(params: {
+/** First successful fuckbuff prompt = first-ever usage day recorded. */
+export function isFirstFuckbuffPrompt(params: {
   previousUsageDays: readonly string[]
   newUsageDayRecorded: boolean
 }): boolean {
@@ -29,11 +29,11 @@ export function isFirstFreebuffPrompt(params: {
 }
 
 /** Exact calendar-day milestones reached by this newly recorded usage day. */
-export function getFreebuffRetentionMilestonesToFire(params: {
+export function getFuckbuffRetentionMilestonesToFire(params: {
   previousUsageDays: readonly string[]
   todayDateKey: string
   newUsageDayRecorded: boolean
-}): FreebuffRedditRetentionMilestoneDays[] {
+}): FuckbuffRedditRetentionMilestoneDays[] {
   if (!params.newUsageDayRecorded) {
     return []
   }
@@ -43,18 +43,18 @@ export function getFreebuffRetentionMilestonesToFire(params: {
   )
   const daysSinceFirstToday = daysBetween(firstDay, params.todayDateKey)
 
-  return FREEBUFF_REDDIT_RETENTION_MILESTONE_DAYS.filter(
+  return FUCKBUFF_REDDIT_RETENTION_MILESTONE_DAYS.filter(
     (milestone) => daysSinceFirstToday === milestone,
   )
 }
 
-export function planFreebuffRedditConversionEvents(params: {
+export function planFuckbuffRedditConversionEvents(params: {
   previousUsageDays: readonly string[]
   todayDateKey: string
   newUsageDayRecorded: boolean
-}): FreebuffRedditConversionPlan {
+}): FuckbuffRedditConversionPlan {
   return {
-    fireFirstPrompt: isFirstFreebuffPrompt(params),
-    retentionMilestones: getFreebuffRetentionMilestonesToFire(params),
+    fireFirstPrompt: isFirstFuckbuffPrompt(params),
+    retentionMilestones: getFuckbuffRetentionMilestonesToFire(params),
   }
 }

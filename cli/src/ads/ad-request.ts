@@ -14,7 +14,7 @@ import { COMPOSER_INTENT_MAX_DRAFT_CHARS } from '@codebuff/common/ads/composer-i
 
 import { collectCliAdClientContext } from './ad-client-context'
 import { getSessionDockArm } from '../hooks/use-dock-panel'
-import { FREEBUFF_WEB_URL } from '../login/constants'
+import { FUCKBUFF_WEB_URL } from '../login/constants'
 import { tryGetProjectRoot } from '../project-files'
 import { useChatStore } from '../state/chat-store'
 import {
@@ -146,7 +146,7 @@ export async function buildAdAuctionRequest(params: {
   placementId?: string
   placementIds?: string[]
   /**
-   * Whether this request may be routed to Freebuff Web's sponsored-capable
+   * Whether this request may be routed to Fuckbuff Web's sponsored-capable
    * `/api/ads` when the project supports a sponsored run.
    *
    * FALSE FOR A PARTNER SLOT. That route resolves a placement against the
@@ -177,7 +177,7 @@ export async function buildAdAuctionRequest(params: {
   const clientContext = collectCliAdClientContext()
 
   return {
-    url: `${capabilityRoute ? FREEBUFF_WEB_URL : WEBSITE_URL}${capabilityRoute ? '/api/ads' : '/api/v1/ads'}`,
+    url: `${capabilityRoute ? FUCKBUFF_WEB_URL : WEBSITE_URL}${capabilityRoute ? '/api/ads' : '/api/v1/ads'}`,
     init: {
       method: 'POST',
       headers: {

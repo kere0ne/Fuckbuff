@@ -1,7 +1,7 @@
 /**
  * Folders too broad to be "a project": the project-understanding agent never runs on
- * them (docs/freebuff-project-understanding.md). Opening the home folder, Desktop
- * or Documents in Freebuff is not a request to have everything in it looked at.
+ * them (docs/fuckbuff-project-understanding.md). Opening the home folder, Desktop
+ * or Documents in Fuckbuff is not a request to have everything in it looked at.
  *
  * Pure and platform-parameterised so it is testable anywhere: no node:os, no
  * node:path. The caller passes the user's home directory.

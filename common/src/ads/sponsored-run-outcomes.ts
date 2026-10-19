@@ -26,7 +26,7 @@
  *
  * This is a read of the diff after the run, inside our own process; it grants
  * the sponsored agent nothing and changes no refusal in
- * `docs/freebuff-sponsored-local-execution.md`.
+ * `docs/fuckbuff-sponsored-local-execution.md`.
  */
 
 // Where a project declares the variables it expects: an env TEMPLATE

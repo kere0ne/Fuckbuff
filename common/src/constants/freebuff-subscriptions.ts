@@ -1,23 +1,23 @@
-import { FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID } from './freebuff-model-ids'
+import { FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID } from './fuckbuff-model-ids'
 import {
-  FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
-  FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
-  FREEBUFF_GPT_6_LUNA_MODEL_ID,
-  FREEBUFF_GPT_61_SOL_MODEL_ID,
-  FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
-  FREEBUFF_PLAN_METERED_CATALOG_MODEL_IDS,
-  FREEBUFF_PRO_ONLY_CATALOG_MODEL_IDS,
-  getFreebuffWebModel,
-} from './freebuff-models'
+  FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
+  FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_61_SOL_MODEL_ID,
+  FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
+  FUCKBUFF_PLAN_METERED_CATALOG_MODEL_IDS,
+  FUCKBUFF_PRO_ONLY_CATALOG_MODEL_IDS,
+  getFuckbuffWebModel,
+} from './fuckbuff-models'
 import {
   formatDeepSeekExpensiveWindowLocal,
   formatDeepSeekOffPeakWindowLocal,
   isDeepSeekExpensiveWindow,
-} from './freebuff-peak-hours'
+} from './fuckbuff-peak-hours'
 
 /**
- * Paid Freebuff subscription tiers.
+ * Paid Fuckbuff subscription tiers.
  *
  * **One subscription per account, not per model.** A tier grants a single
  * pooled session allowance that every subscribable model draws from, so a user
@@ -34,11 +34,11 @@ import {
 
 /** Models a subscription's pooled allowance can be spent on. */
 // DeepSeek V4 Pro left this set on 2026-08-26 with its withdrawal from free
-// mode (FREEBUFF_PAUSED_FREE_MODEL_IDS). A subscribable model has to be a model
+// mode (FUCKBUFF_PAUSED_FREE_MODEL_IDS). A subscribable model has to be a model
 // admission will actually open a session on, or the plan sells a row whose
 // first send fails; GLM 5.3 Flash takes its place in the same slot.
-export const FREEBUFF_SUBSCRIPTION_MODEL_IDS: readonly string[] =
-  FREEBUFF_PLAN_METERED_CATALOG_MODEL_IDS
+export const FUCKBUFF_SUBSCRIPTION_MODEL_IDS: readonly string[] =
+  FUCKBUFF_PLAN_METERED_CATALOG_MODEL_IDS
 
 /**
  * The expensive half of the pool, sub-capped within each day.
@@ -49,29 +49,29 @@ export const FREEBUFF_SUBSCRIPTION_MODEL_IDS: readonly string[] =
  * one spending them on Flash, at the same price, so the daily allowance would
  * have to be priced for the worst case and would be small for everyone.
  */
-export const FREEBUFF_SUBSCRIPTION_PREMIUM_MODEL_IDS: readonly string[] =
+export const FUCKBUFF_SUBSCRIPTION_PREMIUM_MODEL_IDS: readonly string[] =
   Object.freeze([
     // GLM 5.3 Flash is cheap enough to be unmetered for ordinary full-access
     // users. It remains in this subscription-only classification because that
     // list controls the plan's daily sub-cap, not free-tier entitlement.
-    FREEBUFF_GLM_V53_FLASH_MODEL_ID,
+    FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
     // GPT-6 Luna replaced 5.6 here on 2026-09-22. Priced at 20 like the row it
     // replaces, so a subscriber spending every daily session on it is exactly
     // what this sub-cap exists to bound.
-    FREEBUFF_GPT_6_LUNA_MODEL_ID,
+    FUCKBUFF_GPT_6_LUNA_MODEL_ID,
     // Gemini 3.8 Flash is the dearest row in the catalog per message, so it
     // belongs in the sub-capped half for exactly the reason this list exists:
     // without the cap, a subscriber spending every daily session here would
     // have to be priced for, and the allowance would shrink for everyone.
-    FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
+    FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
     // GPT-6.1 Sol (2026-09-29) and Gemini 4 Argon (2026-10-13) are dearer
     // still, for the same reason.
-    FREEBUFF_GPT_61_SOL_MODEL_ID,
-    FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
+    FUCKBUFF_GPT_61_SOL_MODEL_ID,
+    FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
   ])
 
-export function isFreebuffSubscriptionPremiumModelId(modelId: string): boolean {
-  return FREEBUFF_SUBSCRIPTION_PREMIUM_MODEL_IDS.includes(modelId)
+export function isFuckbuffSubscriptionPremiumModelId(modelId: string): boolean {
+  return FUCKBUFF_SUBSCRIPTION_PREMIUM_MODEL_IDS.includes(modelId)
 }
 
 /**
@@ -97,44 +97,44 @@ export function isFreebuffSubscriptionPremiumModelId(modelId: string): boolean {
  * silently hiding. Two suppressions on one string means neither is load-bearing
  * until the other goes.
  */
-export const FREEBUFF_SUBSCRIPTION_PEAK_PAUSED_MODEL_IDS: readonly string[] =
+export const FUCKBUFF_SUBSCRIPTION_PEAK_PAUSED_MODEL_IDS: readonly string[] =
   Object.freeze([])
 
-export function isFreebuffSubscriptionModelId(modelId: string): boolean {
-  return FREEBUFF_SUBSCRIPTION_MODEL_IDS.includes(modelId)
+export function isFuckbuffSubscriptionModelId(modelId: string): boolean {
+  return FUCKBUFF_SUBSCRIPTION_MODEL_IDS.includes(modelId)
 }
 
 /** Tier identifiers. Ordered: a higher index is a strictly larger plan. */
-export const FREEBUFF_SUBSCRIPTION_TIER_IDS = [
+export const FUCKBUFF_SUBSCRIPTION_TIER_IDS = [
   'starter',
   'plus',
   // Restored 2026-08-31 with the marketed-totals retune. Its Stripe price
   // already existed from the withheld launch, so restoring it was this edit.
   'pro',
 ] as const
-export type FreebuffSubscriptionTierId =
-  (typeof FREEBUFF_SUBSCRIPTION_TIER_IDS)[number]
+export type FuckbuffSubscriptionTierId =
+  (typeof FUCKBUFF_SUBSCRIPTION_TIER_IDS)[number]
 
-export const FREEBUFF_SUBSCRIPTION_BILLING_INTERVALS = [
+export const FUCKBUFF_SUBSCRIPTION_BILLING_INTERVALS = [
   'monthly',
   'yearly',
 ] as const
-export type FreebuffSubscriptionBillingInterval =
-  (typeof FREEBUFF_SUBSCRIPTION_BILLING_INTERVALS)[number]
+export type FuckbuffSubscriptionBillingInterval =
+  (typeof FUCKBUFF_SUBSCRIPTION_BILLING_INTERVALS)[number]
 
-export function isFreebuffSubscriptionBillingInterval(
+export function isFuckbuffSubscriptionBillingInterval(
   value: unknown,
-): value is FreebuffSubscriptionBillingInterval {
+): value is FuckbuffSubscriptionBillingInterval {
   return (
     typeof value === 'string' &&
-    FREEBUFF_SUBSCRIPTION_BILLING_INTERVALS.includes(
-      value as FreebuffSubscriptionBillingInterval,
+    FUCKBUFF_SUBSCRIPTION_BILLING_INTERVALS.includes(
+      value as FuckbuffSubscriptionBillingInterval,
     )
   )
 }
 
-export interface FreebuffSubscriptionTier {
-  id: FreebuffSubscriptionTierId
+export interface FuckbuffSubscriptionTier {
+  id: FuckbuffSubscriptionTierId
   displayName: string
   /** Every period after the first, in USD. */
   priceUsd: number
@@ -151,11 +151,11 @@ export interface FreebuffSubscriptionTier {
    * discount rather than at $8/mo.
    *
    * **This number is DISPLAY ONLY — the charge is a Stripe coupon**
-   * (`FREEBUFF_SUBSCRIPTION_INTRO_COUPON_IDS`, resolved in
+   * (`FUCKBUFF_SUBSCRIPTION_INTRO_COUPON_IDS`, resolved in
    * `web/src/server/model-subscriptions/pricing.ts`). Nothing in code can
    * reconcile the two, so changing a figure here without minting the matching
    * coupon advertises a price we do not charge. The coupon ids encode their
-   * own amount in cents (`freebuff_intro_pro_1500c`) precisely so the
+   * own amount in cents (`fuckbuff_intro_pro_1500c`) precisely so the
    * mismatch is visible in the env var.
    *
    * Charged at most once per ACCOUNT. Whichever tier a user starts on consumes
@@ -182,7 +182,7 @@ export interface FreebuffSubscriptionTier {
   dailyPremiumSessions: number
   /**
    * Whether DeepSeek models are withheld during their double-priced peak
-   * windows (common/constants/freebuff-peak-hours.ts). Surfaced to clients as
+   * windows (common/constants/fuckbuff-peak-hours.ts). Surfaced to clients as
    * a disclaimer on the plan.
    */
 }
@@ -197,7 +197,7 @@ export interface FreebuffSubscriptionTier {
  * premium allowance — their surfaces show plan-only figures and their MiMo
  * pool is metered (and displayed) separately.
  */
-export const FREEBUFF_FREE_TIER_ALLOWANCE = Object.freeze({
+export const FUCKBUFF_FREE_TIER_ALLOWANCE = Object.freeze({
   dailySessions: 4,
   weeklySessions: 14,
   monthlySessions: 40,
@@ -209,18 +209,18 @@ export const FREEBUFF_FREE_TIER_ALLOWANCE = Object.freeze({
  * intro ends together: offers quote list price and checkout attaches no intro
  * coupon from this instant on.
  */
-export const FREEBUFF_SUBSCRIPTION_INTRO_ENDS_AT = '2026-10-25T07:00:00.000Z'
-const INTRO_ENDS_AT_MS = Date.parse(FREEBUFF_SUBSCRIPTION_INTRO_ENDS_AT)
+export const FUCKBUFF_SUBSCRIPTION_INTRO_ENDS_AT = '2026-10-25T07:00:00.000Z'
+const INTRO_ENDS_AT_MS = Date.parse(FUCKBUFF_SUBSCRIPTION_INTRO_ENDS_AT)
 
 /** Whether the first-month introduction is still offered at `now`. The
  *  default reads `Date.now()`, so a test's clock spy reaches it. */
-export function freebuffSubscriptionIntroOpen(
+export function fuckbuffSubscriptionIntroOpen(
   now: Date = new Date(Date.now()),
 ): boolean {
   return now.getTime() < INTRO_ENDS_AT_MS
 }
 
-export const FREEBUFF_SUBSCRIPTION_TIERS: readonly FreebuffSubscriptionTier[] =
+export const FUCKBUFF_SUBSCRIPTION_TIERS: readonly FuckbuffSubscriptionTier[] =
   Object.freeze([
     // Retuned 2026-08-31 to the MARKETED-TOTALS model. The numbers users see
     // are per-tier TOTALS (free allowance + plan): Free 4/14/40/$20, Starter
@@ -268,14 +268,14 @@ export const FREEBUFF_SUBSCRIPTION_TIERS: readonly FreebuffSubscriptionTier[] =
       // Sub-cap lifted, like the others.
       dailyPremiumSessions: 11,
     },
-  ] satisfies FreebuffSubscriptionTier[])
+  ] satisfies FuckbuffSubscriptionTier[])
 
-const TIERS_BY_ID = new Map(FREEBUFF_SUBSCRIPTION_TIERS.map((t) => [t.id, t]))
+const TIERS_BY_ID = new Map(FUCKBUFF_SUBSCRIPTION_TIERS.map((t) => [t.id, t]))
 
-export function freebuffSubscriptionTier(
+export function fuckbuffSubscriptionTier(
   id: string | null | undefined,
-): FreebuffSubscriptionTier | undefined {
-  return id ? TIERS_BY_ID.get(id as FreebuffSubscriptionTierId) : undefined
+): FuckbuffSubscriptionTier | undefined {
+  return id ? TIERS_BY_ID.get(id as FuckbuffSubscriptionTierId) : undefined
 }
 
 /**
@@ -283,9 +283,9 @@ export function freebuffSubscriptionTier(
  * anything but `yearly` is monthly, its default for every row written before
  * annual billing, so an unknown value is never a crash or a year.
  */
-export function freebuffSubscriptionBillingInterval(
+export function fuckbuffSubscriptionBillingInterval(
   value: string,
-): FreebuffSubscriptionBillingInterval {
+): FuckbuffSubscriptionBillingInterval {
   return value === 'yearly' ? 'yearly' : 'monthly'
 }
 
@@ -295,31 +295,31 @@ export function freebuffSubscriptionBillingInterval(
  * revenue, and a tier the catalog no longer carries prices at 0 rather than a
  * guess.
  */
-export function freebuffSubscriptionMrrUsd(subscription: {
+export function fuckbuffSubscriptionMrrUsd(subscription: {
   tier: string
   billingInterval: string
   source: string
 }): number {
-  const tier = freebuffSubscriptionTier(subscription.tier)
+  const tier = fuckbuffSubscriptionTier(subscription.tier)
   if (!tier || subscription.source === 'grant') return 0
-  const interval = freebuffSubscriptionBillingInterval(
+  const interval = fuckbuffSubscriptionBillingInterval(
     subscription.billingInterval,
   )
   return interval === 'yearly' ? tier.yearlyPriceUsd / 12 : tier.priceUsd
 }
 
 /** The next tier up, or undefined at the top. Drives every upgrade CTA. */
-export function nextFreebuffSubscriptionTier(
+export function nextFuckbuffSubscriptionTier(
   id: string | null | undefined,
-): FreebuffSubscriptionTier | undefined {
-  if (!id) return FREEBUFF_SUBSCRIPTION_TIERS[0]
-  const index = FREEBUFF_SUBSCRIPTION_TIERS.findIndex((t) => t.id === id)
-  return index === -1 ? undefined : FREEBUFF_SUBSCRIPTION_TIERS[index + 1]
+): FuckbuffSubscriptionTier | undefined {
+  if (!id) return FUCKBUFF_SUBSCRIPTION_TIERS[0]
+  const index = FUCKBUFF_SUBSCRIPTION_TIERS.findIndex((t) => t.id === id)
+  return index === -1 ? undefined : FUCKBUFF_SUBSCRIPTION_TIERS[index + 1]
 }
 
 /** Rank for comparing tiers. -1 when unknown, so callers can treat it as none. */
-export function freebuffSubscriptionTierRank(id: string | null | undefined) {
-  return FREEBUFF_SUBSCRIPTION_TIERS.findIndex((t) => t.id === id)
+export function fuckbuffSubscriptionTierRank(id: string | null | undefined) {
+  return FUCKBUFF_SUBSCRIPTION_TIERS.findIndex((t) => t.id === id)
 }
 
 /**
@@ -328,8 +328,8 @@ export function freebuffSubscriptionTierRank(id: string | null | undefined) {
  * Built here rather than in each client so the CLI, the Web dropdown and the
  * settings page cannot describe the same plan three different ways.
  */
-export function freebuffSubscriptionTierDisclaimers(
-  tier: FreebuffSubscriptionTier,
+export function fuckbuffSubscriptionTierDisclaimers(
+  tier: FuckbuffSubscriptionTier,
 ): string[] {
   // Deliberately does NOT restate the day/5-day/month figures: every surface
   // that shows these also shows those three numbers, and repeating them reads
@@ -347,7 +347,7 @@ export function freebuffSubscriptionTierDisclaimers(
     // 5 -> 7 days on 2026-08-31 and only the `fiveDay*` WIRE fields were meant
     // to keep the old name, but this sentence and two account-page labels were
     // left describing a five-day rule that no longer exists.
-    `The weekly limit is a rolling ${FREEBUFF_SUBSCRIPTION_FIVE_DAY_WINDOW_DAYS}-day window — it frees up as your oldest sessions age out, rather than resetting on a fixed day`,
+    `The weekly limit is a rolling ${FUCKBUFF_SUBSCRIPTION_FIVE_DAY_WINDOW_DAYS}-day window — it frees up as your oldest sessions age out, rather than resetting on a fixed day`,
     'Daily hours reset at midnight Pacific; unused ones do not carry over',
     'Adds to your free sessions rather than replacing them',
   ]
@@ -360,18 +360,18 @@ export function freebuffSubscriptionTierDisclaimers(
  * the free pools reset on: a subscriber must not see two different "resets at"
  * times in one picker.
  */
-export const FREEBUFF_SUBSCRIPTION_RESET_TIMEZONE = 'America/Los_Angeles'
+export const FUCKBUFF_SUBSCRIPTION_RESET_TIMEZONE = 'America/Los_Angeles'
 
 /** Length of the rolling mid-window, in days. */
 // 7 since 2026-08-31 (was 5): the marketed windows are per WEEK. The name and
 // every `fiveDay*` wire field survive so released clients keep parsing; only
 // the labels changed.
-export const FREEBUFF_SUBSCRIPTION_FIVE_DAY_WINDOW_DAYS = 7
+export const FUCKBUFF_SUBSCRIPTION_FIVE_DAY_WINDOW_DAYS = 7
 
 /**
  * Models that ONLY a paid session may open — the "Pro" rows.
  *
- * Distinct from `FREEBUFF_SUBSCRIPTION_MODEL_IDS`, which lists models a plan
+ * Distinct from `FUCKBUFF_SUBSCRIPTION_MODEL_IDS`, which lists models a plan
  * meters. Those are available to everyone and the plan merely adds sessions;
  * these are available to subscribers ONLY, so a free account cannot start one
  * at all. Every id here must ALSO be in that list, or the paywall sells a row
@@ -394,28 +394,28 @@ export const FREEBUFF_SUBSCRIPTION_FIVE_DAY_WINDOW_DAYS = 7
  *
  * ## Scope
  *
- * Enforced on Freebuff Web by default (FREEBUFF_PRO_ENFORCED_SURFACES), and on
+ * Enforced on Fuckbuff Web by default (FUCKBUFF_PRO_ENFORCED_SURFACES), and on
  * the CLI and Desktop too for every row in
- * FREEBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS — Gemini 3.8 Flash and GPT-6.1
+ * FUCKBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS — Gemini 3.8 Flash and GPT-6.1
  * Sol, because they sit in the CLI/Desktop catalogs. Those pickers list it
- * LOCKED to an account without a plan (`freebuffPlanRequired`). MiMo 2.6 Pro
+ * LOCKED to an account without a plan (`fuckbuffPlanRequired`). MiMo 2.6 Pro
  * and GPT-6 Luna left this set on 2026-09-25, and Muse Spark 1.3 (with 1.2)
  * on 2026-10-09: open to every full-access account, plan-only at limited
- * access (FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS). Gemini was Web-only
+ * access (FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS). Gemini was Web-only
  * until then.
  *
  * Withdrawn history: V4 Pro was the one entry for a few hours (#2254) and left
  * on 2026-08-26 with its withdrawal from free mode — a row nothing may admit
  * cannot be sold. Nothing here is reachable without a deploy either way; the
- * `FREEBUFF_PRO_ONLY_MODEL_IDS` env list adds ids without one.
+ * `FUCKBUFF_PRO_ONLY_MODEL_IDS` env list adds ids without one.
  */
-export const FREEBUFF_SUBSCRIPTION_PRO_MODEL_IDS: readonly string[] =
-  FREEBUFF_PRO_ONLY_CATALOG_MODEL_IDS
+export const FUCKBUFF_SUBSCRIPTION_PRO_MODEL_IDS: readonly string[] =
+  FUCKBUFF_PRO_ONLY_CATALOG_MODEL_IDS
 
 /**
- * Where a Pro row is enforced BY DEFAULT: Freebuff Web.
+ * Where a Pro row is enforced BY DEFAULT: Fuckbuff Web.
  *
- * A row in FREEBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS is enforced on the CLI
+ * A row in FUCKBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS is enforced on the CLI
  * and Desktop too, which is every current row (Gemini 3.8 Flash, GPT-6.1 Sol, Gemini 4
  * Argon). A future Pro row that is Web-only needs nothing
  * more; one added to the shared CLI/Desktop catalog must join that list, or it
@@ -424,11 +424,11 @@ export const FREEBUFF_SUBSCRIPTION_PRO_MODEL_IDS: readonly string[] =
  * Luna is deliberately outside this policy: it is available from the shared
  * premium pool on every full-access surface.
  *
- * Web is identified server-side by the Freebuff Web SERVICE ACCOUNT key, never
+ * Web is identified server-side by the Fuckbuff Web SERVICE ACCOUNT key, never
  * by a client-supplied header, so a CLI cannot claim to be Web to dodge the
  * paywall — nor claim to be Desktop to reach the paid lane for free.
  */
-export const FREEBUFF_PRO_ENFORCED_SURFACES = ['freebuff-web'] as const
+export const FUCKBUFF_PRO_ENFORCED_SURFACES = ['fuckbuff-web'] as const
 
 /**
  * V4 Pro on Web is served by **DeepSeek direct**, whose card DOUBLES inside the
@@ -448,39 +448,39 @@ export const FREEBUFF_PRO_ENFORCED_SURFACES = ['freebuff-web'] as const
  * future Pro row on DeepSeek direct joins the list below; one on any other
  * provider must not.
  */
-const FREEBUFF_WEB_PEAK_CLOSED_PRO_MODEL_IDS: readonly string[] = Object.freeze(
-  [FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID],
+const FUCKBUFF_WEB_PEAK_CLOSED_PRO_MODEL_IDS: readonly string[] = Object.freeze(
+  [FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID],
 )
 
-export function isFreebuffWebProClosedNow(
+export function isFuckbuffWebProClosedNow(
   id: string,
   now: Date = new Date(),
 ): boolean {
-  if (!isFreebuffWebPeakClosedProModelId(id)) return false
+  if (!isFuckbuffWebPeakClosedProModelId(id)) return false
   return isDeepSeekExpensiveWindow(now)
 }
 
 /**
  * Whether the peak closure applies to this row AT ALL, independent of the hour.
  *
- * Separate from `isFreebuffWebProClosedNow` because a PICKER asks a different
+ * Separate from `isFuckbuffWebProClosedNow` because a PICKER asks a different
  * question than an admission gate does. Admission asks "is it shut right now";
  * the picker has to decide whether to draw an hours badge at every hour,
  * including the hours the row is open — a badge that appeared only once the
  * door was already shut would be useless for planning around.
  *
- * The picker used to derive that badge from `isFreebuffSubscriptionProModelId`,
+ * The picker used to derive that badge from `isFuckbuffSubscriptionProModelId`,
  * which was indistinguishable from this while V4 Pro was the only Pro row. It
  * stopped being true on 2026-09-04, and the result was Luna and Gemini 3.8
  * Flash both advertising `Open 3:00 AM - 5:00 PM PDT` — hours neither of them
  * has, taken from a third model's provider.
  */
-export function isFreebuffWebPeakClosedProModelId(id: string): boolean {
-  return FREEBUFF_WEB_PEAK_CLOSED_PRO_MODEL_IDS.includes(id)
+export function isFuckbuffWebPeakClosedProModelId(id: string): boolean {
+  return FUCKBUFF_WEB_PEAK_CLOSED_PRO_MODEL_IDS.includes(id)
 }
 
 /** "3:00 AM – 5:00 PM" — when the Web Pro row is open, in the reader's zone. */
-export function freebuffWebProOpenWindowLabel(
+export function fuckbuffWebProOpenWindowLabel(
   now: Date = new Date(),
   timeZone?: string,
 ): string {
@@ -489,13 +489,13 @@ export function freebuffWebProOpenWindowLabel(
 
 /** Whether `model` may only be opened on a paid session. Suffix-tolerant, like
  *  the other model predicates, so a dated provider snapshot cannot dodge it. */
-export function isFreebuffSubscriptionProModelId(
+export function isFuckbuffSubscriptionProModelId(
   model: string | null | undefined,
   /** Extra ids from the server-side env knob; ignored on the client. */
   extra: readonly string[] = [],
 ): boolean {
   if (!model) return false
-  const ids = [...FREEBUFF_SUBSCRIPTION_PRO_MODEL_IDS, ...extra]
+  const ids = [...FUCKBUFF_SUBSCRIPTION_PRO_MODEL_IDS, ...extra]
   return ids.some((id) => model === id || model.startsWith(`${id}-`))
 }
 
@@ -511,16 +511,16 @@ export function isFreebuffSubscriptionProModelId(
  * Lives here rather than beside the availability label because that module is
  * imported by this one; the reverse would be a cycle.
  */
-export function getFreebuffPlanPauseWindowLabel(
+export function getFuckbuffPlanPauseWindowLabel(
   id: string,
   now: Date = new Date(),
   timeZone?: string,
 ): string | undefined {
-  if (!FREEBUFF_SUBSCRIPTION_PEAK_PAUSED_MODEL_IDS.includes(id))
+  if (!FUCKBUFF_SUBSCRIPTION_PEAK_PAUSED_MODEL_IDS.includes(id))
     return undefined
   // A model already closed outright at peak needs no second sentence about it —
   // its availability label already names the same window.
-  if (getFreebuffWebModel(id)?.availability === 'off_peak_only')
+  if (getFuckbuffWebModel(id)?.availability === 'off_peak_only')
     return undefined
   return `Plan paused ${formatDeepSeekExpensiveWindowLocal(now, timeZone)}`
 }
@@ -533,7 +533,7 @@ export function getFreebuffPlanPauseWindowLabel(
  * client cannot invent a reason that would then have to be cleaned up in
  * reporting.
  */
-export const FREEBUFF_CANCELLATION_REASONS = [
+export const FUCKBUFF_CANCELLATION_REASONS = [
   { id: 'too_expensive', label: 'Too expensive' },
   { id: 'not_enough_usage', label: "I didn't use it enough" },
   { id: 'missing_models', label: 'Missing models or features' },
@@ -541,15 +541,15 @@ export const FREEBUFF_CANCELLATION_REASONS = [
   { id: 'other', label: 'Other' },
 ] as const
 
-export type FreebuffCancellationReasonId =
-  (typeof FREEBUFF_CANCELLATION_REASONS)[number]['id']
+export type FuckbuffCancellationReasonId =
+  (typeof FUCKBUFF_CANCELLATION_REASONS)[number]['id']
 
-export function isFreebuffCancellationReason(
+export function isFuckbuffCancellationReason(
   value: unknown,
-): value is FreebuffCancellationReasonId {
+): value is FuckbuffCancellationReasonId {
   return (
     typeof value === 'string' &&
-    FREEBUFF_CANCELLATION_REASONS.some((reason) => reason.id === value)
+    FUCKBUFF_CANCELLATION_REASONS.some((reason) => reason.id === value)
   )
 }
 
@@ -563,7 +563,7 @@ export function isFreebuffCancellationReason(
  * single source for the wording so the settings page, the cancel dialog and
  * any email cannot drift into three different promises.
  */
-export const FREEBUFF_BETA_RATE_LOCK_MULTIPLIER = 3
+export const FUCKBUFF_BETA_RATE_LOCK_MULTIPLIER = 3
 
 /**
  * Plan allowances, in HOURS.
@@ -574,12 +574,12 @@ export const FREEBUFF_BETA_RATE_LOCK_MULTIPLIER = 3
  * list, the plans page, the welcome page and the dropdown were each spelling
  * it their own way.
  */
-export function freebuffPlanHours(count: number): string {
+export function fuckbuffPlanHours(count: number): string {
   return `${count} ${count === 1 ? 'hour' : 'hours'}`
 }
 
 /** "24 hrs" — the abbreviated form for secondary lines (bullets, strips),
- *  where the full word crowds a card. Headlines keep `freebuffPlanHours`. */
-export function freebuffPlanHrs(count: number): string {
+ *  where the full word crowds a card. Headlines keep `fuckbuffPlanHours`. */
+export function fuckbuffPlanHrs(count: number): string {
   return `${count} ${count === 1 ? 'hr' : 'hrs'}`
 }

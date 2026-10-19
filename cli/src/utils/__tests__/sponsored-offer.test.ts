@@ -182,7 +182,7 @@ describe('asking', () => {
       campaignId: 'campaign-1',
     }),
     device: () => ({ os: 'macos', timezone: 'UTC', locale: 'en-US' }),
-    userAgent: () => 'Freebuff-CLI/1.2.3',
+    userAgent: () => 'Fuckbuff-CLI/1.2.3',
     ...over,
   })
   const input = {
@@ -209,7 +209,7 @@ describe('asking', () => {
       }),
     )
     expect(offered).toBe(true)
-    expect(userAgent).toBe('Freebuff-CLI/1.2.3')
+    expect(userAgent).toBe('Fuckbuff-CLI/1.2.3')
   })
 
   test('none, an invitation, a failure and no session are all "no offer"', async () => {

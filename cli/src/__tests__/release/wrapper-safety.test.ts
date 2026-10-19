@@ -82,12 +82,12 @@ const wrappers = [
     },
   },
   {
-    name: 'freebuff',
-    directory: 'freebuff/cli/release',
+    name: 'fuckbuff',
+    directory: 'fuckbuff/cli/release',
     expectedConfig: {
-      packageName: 'freebuff',
-      displayName: 'Freebuff',
-      telemetryEvent: 'cli.update_freebuff_failed',
+      packageName: 'fuckbuff',
+      displayName: 'Fuckbuff',
+      telemetryEvent: 'cli.update_fuckbuff_failed',
       deferUpdatesUntilExit: true,
     },
   },

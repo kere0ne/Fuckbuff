@@ -6,17 +6,17 @@ import { afterEach, beforeEach, describe, expect, test } from 'bun:test'
 
 import { ensureCliTestEnv } from '../../__tests__/test-utils'
 
-const OWNER_FILE = 'freebuff-instance-owner.json'
+const OWNER_FILE = 'fuckbuff-instance-owner.json'
 
 ensureCliTestEnv()
 
 const { getConfigDir } = await import('../auth')
 const {
-  isFreebuffInstanceOwnedByDeadLocalProcess,
-  recordFreebuffInstanceOwner,
-} = await import('../freebuff-instance-owner')
+  isFuckbuffInstanceOwnedByDeadLocalProcess,
+  recordFuckbuffInstanceOwner,
+} = await import('../fuckbuff-instance-owner')
 
-describe('freebuff instance owner', () => {
+describe('fuckbuff instance owner', () => {
   let originalHome: string | undefined
   let tempHome: string
 
@@ -24,7 +24,7 @@ describe('freebuff instance owner', () => {
 
   beforeEach(() => {
     originalHome = process.env.HOME
-    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-owner-'))
+    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-owner-'))
     process.env.HOME = tempHome
   })
 
@@ -38,10 +38,10 @@ describe('freebuff instance owner', () => {
   })
 
   test('does not classify the current process as dead', () => {
-    recordFreebuffInstanceOwner('inst-current')
+    recordFuckbuffInstanceOwner('inst-current')
 
     expect(
-      isFreebuffInstanceOwnedByDeadLocalProcess('inst-current'),
+      isFuckbuffInstanceOwnedByDeadLocalProcess('inst-current'),
     ).toBe(false)
   })
 
@@ -52,7 +52,7 @@ describe('freebuff instance owner', () => {
       JSON.stringify({ instanceId: 'inst-dead', pid: 2_147_483_647 }),
     )
 
-    expect(isFreebuffInstanceOwnedByDeadLocalProcess('inst-dead')).toBe(true)
+    expect(isFuckbuffInstanceOwnedByDeadLocalProcess('inst-dead')).toBe(true)
   })
 
   test('ignores a dead pid for a different instance id', () => {
@@ -63,7 +63,7 @@ describe('freebuff instance owner', () => {
     )
 
     expect(
-      isFreebuffInstanceOwnedByDeadLocalProcess('inst-current'),
+      isFuckbuffInstanceOwnedByDeadLocalProcess('inst-current'),
     ).toBe(false)
   })
 })

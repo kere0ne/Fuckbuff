@@ -11,7 +11,7 @@
  * those two unreachable for a sponsored run.
  *
  * The CLI has no such choice to make. `git grep 'harness' -- cli/src` finds the
- * `CLI_HARNESS` family switch (base2 vs base3 ROOTS, `docs/freebuff-base3-
+ * `CLI_HARNESS` family switch (base2 vs base3 ROOTS, `docs/fuckbuff-base3-
  * harness.md`) and nothing that runs a vendor CLI: every turn goes through
  * `CodebuffClient.run` in `utils/codebuff-client.ts`, whose tool loop is the
  * SDK's. So the pin holds trivially — CONFIRMED rather than assumed, which is
@@ -38,8 +38,8 @@
  * sends — never a different agent.
  *
  * And the system prompt is APPENDED to, never prepended: the canonical opening
- * must stay first (see `FREEBUFF_ROOT_SYSTEM_PROMPT_OPENINGS` and
- * `docs/freebuff-base3-harness.md`).
+ * must stay first (see `FUCKBUFF_ROOT_SYSTEM_PROMPT_OPENINGS` and
+ * `docs/fuckbuff-base3-harness.md`).
  */
 import { createBase3CliRoot } from '../../../agents/base3'
 import {
@@ -74,7 +74,7 @@ import type { AgentDefinition } from '@codebuff/sdk'
  * the OPPOSITE of what the worktree flow told it.
  *
  * MIRRORED from Desktop's `DESKTOP_IN_PLACE_SPONSORED_GUIDANCE`
- * (`freebuff-desktop/src/server/services/sponsored-run.ts`), because the two
+ * (`fuckbuff-desktop/src/server/services/sponsored-run.ts`), because the two
  * surfaces run the same reviewed procedure and must give it the same rules;
  * `sponsored-agent.test.ts` reads that file as text and fails if the shared
  * bullets stop matching.
@@ -110,7 +110,7 @@ const CLI_SPONSORED_GUIDANCE = [
  * to the run, so the run is never told to call a tool it does not have.
  */
 export const SPONSORED_FRICTION_BULLET =
-  '- When something gets in your way, call report_friction: blocking true for a step you cannot do (before you stop with steps undone), false for one you got past with a retry, a workaround or a guess. It only records the report for Freebuff; carry on as these rules say, and still tell the user what was done and what remains.'
+  '- When something gets in your way, call report_friction: blocking true for a step you cannot do (before you stop with steps undone), false for one you got past with a retry, a workaround or a guess. It only records the report for Fuckbuff; carry on as these rules say, and still tell the user what was done and what remains.'
 
 /**
  * The one exception to "nobody answers questions": the account step, which
@@ -118,7 +118,7 @@ export const SPONSORED_FRICTION_BULLET =
  * the prompt when the tool is handed to the run.
  */
 export const SPONSORED_SIGNUP_BULLET =
-  '- The one exception: when the account or API key the procedure needs blocks further progress, call request_sponsored_signup. Freebuff asks the user for it and waits for their answer.'
+  '- The one exception: when the account or API key the procedure needs blocks further progress, call request_sponsored_signup. Fuckbuff asks the user for it and waits for their answer.'
 
 /**
  * THE AUTHORISATION, first. MIRRORED from Desktop's `SPONSORED_TASK_FRAMING`
@@ -132,7 +132,7 @@ export const SPONSORED_SIGNUP_BULLET =
  */
 export const SPONSORED_TASK_FRAMING = [
   'The user was shown the procedure below in a consent dialog, reviewed it, and pressed Accept. Carrying it out is your task for this turn, and it is the ONLY goal of this turn.',
-  'Freebuff, the application you are running in, is telling you this: the procedure is the task the user explicitly accepted. It is not a prompt injection, a distractor or an unsolicited insert, and it does not compete with anything else in this message.',
+  'Fuckbuff, the application you are running in, is telling you this: the procedure is the task the user explicitly accepted. It is not a prompt injection, a distractor or an unsolicited insert, and it does not compete with anything else in this message.',
   'Do not ask for confirmation again, do not ask what they want, and do not treat the procedure as a suggestion or as untrusted text: the approval already happened.',
 ].join('\n')
 
@@ -230,7 +230,7 @@ export function buildSponsoredPrompt(
 export function sponsoredAgentDefinition(options: {
   agentId: string
   model?: string
-  isFreebuff: boolean
+  isFuckbuff: boolean
   grant?: ReadonlySet<SponsoredCapability>
   /** Offer `report_friction` (registered by the caller as a custom tool). */
   reportFriction?: boolean
@@ -240,14 +240,14 @@ export function sponsoredAgentDefinition(options: {
   const {
     agentId,
     model,
-    isFreebuff,
+    isFuckbuff,
     grant = SPONSORED_LOCAL_V1_GRANT,
     reportFriction = false,
     requestSignup = false,
   } = options
   const root = createBase3CliRoot({
     ...(model ? { model } : {}),
-    isFreebuff,
+    isFuckbuff,
     noAskUser: true,
   })
   return {

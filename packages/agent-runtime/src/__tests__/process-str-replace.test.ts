@@ -510,7 +510,7 @@ function test3() {
     expect(successResult.content).toBe('line 1\nhello $$world!\nline 2\n')
   })
 
-  // Freebuff Cloud report (2026-09-29): "str_replace treats oldString as a
+  // Fuckbuff Cloud report (2026-09-29): "str_replace treats oldString as a
   // regex (parens become groups)" and "only searches the first ~65K chars".
   // Neither is true of this function; the truncation was the hosted read
   // override (see the SDK's `fullContent`). Pin the literal semantics here.

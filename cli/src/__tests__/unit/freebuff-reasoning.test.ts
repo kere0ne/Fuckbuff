@@ -2,38 +2,38 @@ import { afterEach, describe, expect, test } from 'bun:test'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import {
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  getFreebuffModelDefaultEffort,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  getFuckbuffModelDefaultEffort,
+} from '@codebuff/common/constants/fuckbuff-models'
 import {
-  useFreebuffModelStore,
-  getFreebuffReasoningEffortForModel,
-  getEffectiveFreebuffReasoningEffort,
-} from '../../state/freebuff-model-store'
+  useFuckbuffModelStore,
+  getFuckbuffReasoningEffortForModel,
+  getEffectiveFuckbuffReasoningEffort,
+} from '../../state/fuckbuff-model-store'
 
-const previous = useFreebuffModelStore.getState().reasoningEffortByModel
+const previous = useFuckbuffModelStore.getState().reasoningEffortByModel
 afterEach(() =>
-  useFreebuffModelStore.setState({ reasoningEffortByModel: previous }),
+  useFuckbuffModelStore.setState({ reasoningEffortByModel: previous }),
 )
 
 describe('per-model reasoning', () => {
-  const model = FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
+  const model = FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
   test('uses the catalog default without sending an override', () => {
-    useFreebuffModelStore.setState({ reasoningEffortByModel: {} })
-    expect(getFreebuffReasoningEffortForModel(model)).toBeNull()
-    expect(getEffectiveFreebuffReasoningEffort(model)).toBe(
-      getFreebuffModelDefaultEffort(model),
+    useFuckbuffModelStore.setState({ reasoningEffortByModel: {} })
+    expect(getFuckbuffReasoningEffortForModel(model)).toBeNull()
+    expect(getEffectiveFuckbuffReasoningEffort(model)).toBe(
+      getFuckbuffModelDefaultEffort(model),
     )
   })
   test('uses supported overrides and ignores stale unsupported levels', () => {
-    useFreebuffModelStore.setState({
+    useFuckbuffModelStore.setState({
       reasoningEffortByModel: { [model]: 'low' },
     })
-    expect(getFreebuffReasoningEffortForModel(model)).toBe('low')
-    useFreebuffModelStore.setState({
+    expect(getFuckbuffReasoningEffortForModel(model)).toBe('low')
+    useFuckbuffModelStore.setState({
       reasoningEffortByModel: { [model]: 'xhigh' },
     })
-    expect(getFreebuffReasoningEffortForModel(model)).toBeNull()
+    expect(getFuckbuffReasoningEffortForModel(model)).toBeNull()
   })
 })
 
@@ -50,7 +50,7 @@ describe('the CLI turn carries the chosen effort', () => {
 
   test('it reaches extraCodebuffMetadata under the name the server reads', () => {
     const metadata = source.slice(source.indexOf('extraCodebuffMetadata:'))
-    expect(metadata).toContain('freebuff_reasoning_effort')
-    expect(metadata).toContain('freebuffReasoningEffort')
+    expect(metadata).toContain('fuckbuff_reasoning_effort')
+    expect(metadata).toContain('fuckbuffReasoningEffort')
   })
 })

@@ -5,14 +5,14 @@
  * stable server key for the project while keeping the local path on the
  * device. A later sponsored capability inspection only reads it.
  *
- * ## Every repository, in Freebuff (#3989's in-place flow)
+ * ## Every repository, in Fuckbuff (#3989's in-place flow)
  *
  * An in-place sponsored offer is keyed to the FOLDER, never to `owner/repo`:
  * the offer, its Accept and its undo must all mean this checkout, and two
  * clones of one repository are two places a run could edit. The offer route
- * refuses an in-place request without this id, so a Freebuff CLI writes it in
+ * refuses an in-place request without this id, so a Fuckbuff CLI writes it in
  * every Git project it opens -- the same thing Desktop has always done in
- * every project it opens (`freebuff-desktop/src/server/repo/project-db.ts`).
+ * every project it opens (`fuckbuff-desktop/src/server/repo/project-db.ts`).
  * Codebuff keeps the old rule: a marker only where no GitHub remote can key
  * the project.
  *
@@ -21,7 +21,7 @@
  * The marker's directory is added to `.git/info/exclude` -- the repository's
  * LOCAL ignore list, which is never committed or shared -- unless something
  * already ignores it. So `git status` stays clean and nothing the CLI wrote
- * can be committed by accident. A repository that already ignores `.freebuff/`
+ * can be committed by accident. A repository that already ignores `.fuckbuff/`
  * is left alone.
  */
 import { randomUUID } from 'node:crypto'
@@ -66,7 +66,7 @@ function originRemoteUrl(root: string): string | null {
   return result.status === 0 ? result.stdout.trim() : null
 }
 
-const EXCLUDE_LINE = '/.freebuff/'
+const EXCLUDE_LINE = '/.fuckbuff/'
 
 /**
  * The repository's LOCAL exclude file. Read straight off `<root>/.git` in the
@@ -90,7 +90,7 @@ function localExcludePath(root: string): string | null {
 }
 
 /**
- * Keep `.freebuff/` out of `git status` with the LOCAL exclude file. Best
+ * Keep `.fuckbuff/` out of `git status` with the LOCAL exclude file. Best
  * effort: a repository we cannot write the exclude for still gets its marker,
  * which is no worse than Desktop.
  *
@@ -100,7 +100,7 @@ function localExcludePath(root: string): string | null {
  * launch. `check-ignore` is asked only before writing, so a repository that
  * already ignores the folder some other way is not given a redundant line.
  */
-export function excludeFreebuffDirectory(root: string): void {
+export function excludeFuckbuffDirectory(root: string): void {
   const exclude = localExcludePath(root)
   if (!exclude) return
   try {
@@ -109,7 +109,7 @@ export function excludeFreebuffDirectory(root: string): void {
       return
     }
     if (
-      git(root, ['check-ignore', '-q', '.freebuff/project-id']).status === 0
+      git(root, ['check-ignore', '-q', '.fuckbuff/project-id']).status === 0
     ) {
       return
     }
@@ -117,7 +117,7 @@ export function excludeFreebuffDirectory(root: string): void {
     const separator = current === '' || current.endsWith('\n') ? '' : '\n'
     appendFileSync(
       exclude,
-      `${separator}# Freebuff's local project state\n${EXCLUDE_LINE}\n`,
+      `${separator}# Fuckbuff's local project state\n${EXCLUDE_LINE}\n`,
     )
   } catch {
     // Best effort; see above.
@@ -131,16 +131,16 @@ export function ensureSponsoredProjectIdentity(
   // A non-project directory (including a home-directory launch) never gets a
   // product marker merely because the CLI started there.
   if (!existsSync(join(root, '.git'))) return null
-  // Outside Freebuff a UUID is only a fallback: do not write into a
+  // Outside Fuckbuff a UUID is only a fallback: do not write into a
   // repository when a supported remote identity is present.
   if (!options.everyRepository && repoFullNameFromRemote(originRemoteUrl(root)))
     return null
-  const directory = join(root, '.freebuff')
+  const directory = join(root, '.fuckbuff')
   const marker = join(directory, 'project-id')
   try {
     const current = readFileSync(marker, 'utf8').trim().toLowerCase()
     if (!UUID.test(current)) return null
-    if (options.everyRepository) excludeFreebuffDirectory(root)
+    if (options.everyRepository) excludeFuckbuffDirectory(root)
     return current
   } catch (error) {
     if (
@@ -163,7 +163,7 @@ export function ensureSponsoredProjectIdentity(
       mode: 0o600,
     })
     renameSync(temporary, marker)
-    if (options.everyRepository) excludeFreebuffDirectory(root)
+    if (options.everyRepository) excludeFuckbuffDirectory(root)
     return identity
   } catch {
     return null

@@ -1,79 +1,79 @@
 import { parseAgentId } from '../util/agent-id-parsing'
 
 import {
-  FREEBUFF_GEMINI_PRO_AGENT_IDS,
-  FREEBUFF_GEMINI_THINKER_AGENT_ID,
-} from './freebuff-gemini-thinker'
+  FUCKBUFF_GEMINI_PRO_AGENT_IDS,
+  FUCKBUFF_GEMINI_THINKER_AGENT_ID,
+} from './fuckbuff-gemini-thinker'
 import {
-  FALLBACK_FREEBUFF_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-  FREEBUFF_FABLE_5_1_MODEL_ID,
-  FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
-  FREEBUFF_GEMINI_PRO_MODEL_ID,
-  FREEBUFF_GLM_V52_MODEL_ID,
-  FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
-  FREEBUFF_GPT_6_LUNA_MODEL_ID,
-  FREEBUFF_GPT_61_SOL_MODEL_ID,
-  FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V41_FLASH_MODEL_ID,
-  FREEBUFF_GLM_V53_MODEL_ID,
-  FREEBUFF_GPT_6_SOL_MODEL_ID,
-  FREEBUFF_GPT_6_SOL_PRO_MODEL_ID,
-  FREEBUFF_GPT_6_LUNA_PRO_MODEL_ID,
-  FREEBUFF_GPT_6_ASTRA_MODEL_ID,
-  FREEBUFF_GPT_6_ASTRA_PRO_MODEL_ID,
-  FREEBUFF_GPT_5_6_SOL_MODEL_ID,
-  FREEBUFF_GPT_5_6_SOL_PRO_MODEL_ID,
-  FREEBUFF_GPT_5_6_TERRA_MODEL_ID,
-  FREEBUFF_GPT_5_6_TERRA_PRO_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_PRO_MODEL_ID,
-  FREEBUFF_GPT_5_5_MODEL_ID,
-  FREEBUFF_GPT_5_5_PRO_MODEL_ID,
-  FREEBUFF_GPT_5_4_PRO_MODEL_ID,
-  FREEBUFF_O3_PRO_MODEL_ID,
-  FREEBUFF_CLAUDE_OPUS_5_5_MODEL_ID,
-  FREEBUFF_CLAUDE_OPUS_5_MODEL_ID,
-  FREEBUFF_CLAUDE_SONNET_5_MODEL_ID,
-  FREEBUFF_CLAUDE_OPUS_4_8_MODEL_ID,
-  FREEBUFF_CLAUDE_SONNET_4_6_MODEL_ID,
-  FREEBUFF_QWEN3_8_MAX_PRIME_MODEL_ID,
-  FREEBUFF_QWEN3_8_MAX_0902_MODEL_ID,
-  FREEBUFF_QWEN3_8_FLASH_MODEL_ID,
-  FREEBUFF_QWEN3_8_27B_MODEL_ID,
-  FREEBUFF_QWEN3_7_MAX_MODEL_ID,
-  FREEBUFF_QWEN3_7_PLUS_MODEL_ID,
-  FREEBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID,
-  FREEBUFF_QWEN3_6_PLUS_MODEL_ID,
-  FREEBUFF_GROK_4_7_MODEL_ID,
-  FREEBUFF_GROK_4_6_MODEL_ID,
-  FREEBUFF_GROK_4_5_MODEL_ID,
-  FREEBUFF_GROK_4_20_MODEL_ID,
-  FREEBUFF_GEMINI_3_7_FLASH_MODEL_ID,
-  FREEBUFF_GEMINI_3_6_FLASH_MODEL_ID,
-  FREEBUFF_GEMINI_3_5_FLASH_MODEL_ID,
-  FREEBUFF_KIMI_K3_MODEL_ID,
-  FREEBUFF_GLM_5_3_PRIME_MODEL_ID,
-  FREEBUFF_GLM_5_3_FLASHX_MODEL_ID,
-  FREEBUFF_GLM_5_TURBO_MODEL_ID,
-  FREEBUFF_MISTRAL_LARGE_MODEL_ID,
-  FREEBUFF_CODESTRAL_2508_MODEL_ID,
-  FREEBUFF_LLAMA_4_MAVERICK_MODEL_ID,
-  FREEBUFF_KIMI_K3_ECO_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID,
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
-  FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
-  FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
-  FREEBUFF_OX_ALPHA_MODEL_ID,
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
-  FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-  FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
-  LIMITED_FREEBUFF_MODEL_ID,
-  FREEBUFF_MIMO_V25_MODEL_ID,
-  FREEBUFF_MIMO_V26_PRO_MODEL_ID,
-} from './freebuff-models'
+  FALLBACK_FUCKBUFF_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  FUCKBUFF_FABLE_5_1_MODEL_ID,
+  FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
+  FUCKBUFF_GEMINI_PRO_MODEL_ID,
+  FUCKBUFF_GLM_V52_MODEL_ID,
+  FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_61_SOL_MODEL_ID,
+  FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V41_FLASH_MODEL_ID,
+  FUCKBUFF_GLM_V53_MODEL_ID,
+  FUCKBUFF_GPT_6_SOL_MODEL_ID,
+  FUCKBUFF_GPT_6_SOL_PRO_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_PRO_MODEL_ID,
+  FUCKBUFF_GPT_6_ASTRA_MODEL_ID,
+  FUCKBUFF_GPT_6_ASTRA_PRO_MODEL_ID,
+  FUCKBUFF_GPT_5_6_SOL_MODEL_ID,
+  FUCKBUFF_GPT_5_6_SOL_PRO_MODEL_ID,
+  FUCKBUFF_GPT_5_6_TERRA_MODEL_ID,
+  FUCKBUFF_GPT_5_6_TERRA_PRO_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_PRO_MODEL_ID,
+  FUCKBUFF_GPT_5_5_MODEL_ID,
+  FUCKBUFF_GPT_5_5_PRO_MODEL_ID,
+  FUCKBUFF_GPT_5_4_PRO_MODEL_ID,
+  FUCKBUFF_O3_PRO_MODEL_ID,
+  FUCKBUFF_CLAUDE_OPUS_5_5_MODEL_ID,
+  FUCKBUFF_CLAUDE_OPUS_5_MODEL_ID,
+  FUCKBUFF_CLAUDE_SONNET_5_MODEL_ID,
+  FUCKBUFF_CLAUDE_OPUS_4_8_MODEL_ID,
+  FUCKBUFF_CLAUDE_SONNET_4_6_MODEL_ID,
+  FUCKBUFF_QWEN3_8_MAX_PRIME_MODEL_ID,
+  FUCKBUFF_QWEN3_8_MAX_0902_MODEL_ID,
+  FUCKBUFF_QWEN3_8_FLASH_MODEL_ID,
+  FUCKBUFF_QWEN3_8_27B_MODEL_ID,
+  FUCKBUFF_QWEN3_7_MAX_MODEL_ID,
+  FUCKBUFF_QWEN3_7_PLUS_MODEL_ID,
+  FUCKBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID,
+  FUCKBUFF_QWEN3_6_PLUS_MODEL_ID,
+  FUCKBUFF_GROK_4_7_MODEL_ID,
+  FUCKBUFF_GROK_4_6_MODEL_ID,
+  FUCKBUFF_GROK_4_5_MODEL_ID,
+  FUCKBUFF_GROK_4_20_MODEL_ID,
+  FUCKBUFF_GEMINI_3_7_FLASH_MODEL_ID,
+  FUCKBUFF_GEMINI_3_6_FLASH_MODEL_ID,
+  FUCKBUFF_GEMINI_3_5_FLASH_MODEL_ID,
+  FUCKBUFF_KIMI_K3_MODEL_ID,
+  FUCKBUFF_GLM_5_3_PRIME_MODEL_ID,
+  FUCKBUFF_GLM_5_3_FLASHX_MODEL_ID,
+  FUCKBUFF_GLM_5_TURBO_MODEL_ID,
+  FUCKBUFF_MISTRAL_LARGE_MODEL_ID,
+  FUCKBUFF_CODESTRAL_2508_MODEL_ID,
+  FUCKBUFF_LLAMA_4_MAVERICK_MODEL_ID,
+  FUCKBUFF_KIMI_K3_ECO_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID,
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
+  FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+  FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+  FUCKBUFF_OX_ALPHA_MODEL_ID,
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+  FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+  LIMITED_FUCKBUFF_MODEL_ID,
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+  FUCKBUFF_MIMO_V26_PRO_MODEL_ID,
+} from './fuckbuff-models'
 import {
   GEMINI_3_1_FLASH_LITE_MODEL_ID,
   GEMINI_3_5_FLASH_LITE_MODEL_ID,
@@ -88,20 +88,20 @@ import type { CostMode } from './model-config'
 export const FREE_COST_MODE = 'free' as const
 
 /**
- * The root agent family Freebuff Desktop's hosted (codebuff) harness runs every
- * thread turn under (see freebuff-desktop thread-agent.ts). Unlike the CLI — which
+ * The root agent family Fuckbuff Desktop's hosted (codebuff) harness runs every
+ * thread turn under (see fuckbuff-desktop thread-agent.ts). Unlike the CLI — which
  * has one root id per model (`base2-free-<model>`) — the desktop root ids support
  * every picker model and vary only by execution mode. They are first-party
  * free-mode roots just like `base2-free*`, so they are listed in
- * FREEBUFF_ROOT_AGENT_IDS below and carry the "You are Buffy" CLI marker in their
- * system prompts so they pass requestHasFreebuffSystemMarker.
+ * FUCKBUFF_ROOT_AGENT_IDS below and carry the "You are Buffy" CLI marker in their
+ * system prompts so they pass requestHasFuckbuffSystemMarker.
  */
-export const FREEBUFF_DESKTOP_THREAD_AGENT_ID = 'freebuff-desktop-thread'
+export const FUCKBUFF_DESKTOP_THREAD_AGENT_ID = 'fuckbuff-desktop-thread'
 
 /**
- * The root Freebuff Desktop's AUTO-RUN decider runs under: the agent that picks
+ * The root Fuckbuff Desktop's AUTO-RUN decider runs under: the agent that picks
  * what a tab on Auto does next when a turn ends with nothing queued (see
- * freebuff-desktop/src/server/services/mission.ts). It is not the working
+ * fuckbuff-desktop/src/server/services/mission.ts). It is not the working
  * agent — it never edits files or runs commands, it only chooses the next input.
  *
  * It is a first-party free-mode ROOT for the same reason the thread agent is,
@@ -115,7 +115,7 @@ export const FREEBUFF_DESKTOP_THREAD_AGENT_ID = 'freebuff-desktop-thread'
  * model the tab's turns run on, which is also the model its free session was
  * admitted with. Anything else would 403 with `session_model_mismatch`.
  */
-export const FREEBUFF_DESKTOP_AUTORUN_AGENT_ID = 'freebuff-desktop-autorun'
+export const FUCKBUFF_DESKTOP_AUTORUN_AGENT_ID = 'fuckbuff-desktop-autorun'
 
 /**
  * The root the project-understanding agent runs under: a read-only agent that looks over
@@ -127,19 +127,19 @@ export const FREEBUFF_DESKTOP_AUTORUN_AGENT_ID = 'freebuff-desktop-autorun'
  * beside a turn, not inside one, so there is no running root for it to hang
  * off and the subagent hierarchy gate would 403 it. Unlike the decider it is
  * pinned to one cheap model, whatever the session's model is: see
- * isFreebuffHelperOnSessionModel.
+ * isFuckbuffHelperOnSessionModel.
  */
-export const FREEBUFF_PROJECT_UNDERSTANDING_AGENT_ID = 'freebuff-project-understanding'
+export const FUCKBUFF_PROJECT_UNDERSTANDING_AGENT_ID = 'fuckbuff-project-understanding'
 
 /**
  * The one model the project-understanding agent runs, on every surface: GPT-6
  * Luna with reasoning off, served through OpenRouter on OpenAI's endpoints
  * (flex, then standard). Not DeepSeek: the agent reads the user's project
  * files, and those must not go to DeepSeek's own API. Luna is also the cheaper
- * of the two (docs/freebuff-project-understanding.md).
+ * of the two (docs/fuckbuff-project-understanding.md).
  */
-export const FREEBUFF_PROJECT_UNDERSTANDING_MODEL_ID =
-  FREEBUFF_GPT_6_LUNA_MODEL_ID
+export const FUCKBUFF_PROJECT_UNDERSTANDING_MODEL_ID =
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID
 
 /**
  * Suffix for the base3 desktop roots. The single-loop agent is a different
@@ -148,15 +148,15 @@ export const FREEBUFF_PROJECT_UNDERSTANDING_MODEL_ID =
  * base3 comparison possible while both are live across a staggered client
  * rollout. Without it the two blend into one id and neither can be measured.
  */
-export const FREEBUFF_DESKTOP_THREAD_V3_SUFFIX = 'v3'
+export const FUCKBUFF_DESKTOP_THREAD_V3_SUFFIX = 'v3'
 
-export function getFreebuffDesktopThreadAgentId(
+export function getFuckbuffDesktopThreadAgentId(
   executionMode: 'local' | 'worktree',
   agentGeneration: 'base2' | 'base3' = 'base2',
 ): string {
-  const base = `${FREEBUFF_DESKTOP_THREAD_AGENT_ID}-${executionMode}`
+  const base = `${FUCKBUFF_DESKTOP_THREAD_AGENT_ID}-${executionMode}`
   return agentGeneration === 'base3'
-    ? `${base}-${FREEBUFF_DESKTOP_THREAD_V3_SUFFIX}`
+    ? `${base}-${FUCKBUFF_DESKTOP_THREAD_V3_SUFFIX}`
     : base
 }
 
@@ -165,12 +165,12 @@ export function getFreebuffDesktopThreadAgentId(
  * execution modes use distinct ids for trace and cache identity, while the
  * unsuffixed id remains accepted for older Desktop clients.
  */
-export const FREEBUFF_DESKTOP_THREAD_AGENT_IDS = [
-  FREEBUFF_DESKTOP_THREAD_AGENT_ID,
-  getFreebuffDesktopThreadAgentId('local'),
-  getFreebuffDesktopThreadAgentId('worktree'),
-  getFreebuffDesktopThreadAgentId('local', 'base3'),
-  getFreebuffDesktopThreadAgentId('worktree', 'base3'),
+export const FUCKBUFF_DESKTOP_THREAD_AGENT_IDS = [
+  FUCKBUFF_DESKTOP_THREAD_AGENT_ID,
+  getFuckbuffDesktopThreadAgentId('local'),
+  getFuckbuffDesktopThreadAgentId('worktree'),
+  getFuckbuffDesktopThreadAgentId('local', 'base3'),
+  getFuckbuffDesktopThreadAgentId('worktree', 'base3'),
 ] as const
 
 /**
@@ -183,19 +183,19 @@ export const FREEBUFF_DESKTOP_THREAD_AGENT_IDS = [
  * root — it must be, or the session gate answers session_model_mismatch — and
  * is allowlisted below like every other free-mode subagent.
  */
-export const FREEBUFF_BASE3_FAST_AGENT_ID = 'base3-fast-free-deepseek-flash'
-export const FREEBUFF_BASE3_FAST_WORKER_AGENT_ID =
+export const FUCKBUFF_BASE3_FAST_AGENT_ID = 'base3-fast-free-deepseek-flash'
+export const FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID =
   'base3-fast-worker-deepseek-flash'
 
 /**
- * The subagent a Freebuff Projects account's Desktop and Cloud threads may
- * spawn, up to FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS at once (agents/projects-subagent.ts). It runs
+ * The subagent a Fuckbuff Projects account's Desktop and Cloud threads may
+ * spawn, up to FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS at once (agents/projects-subagent.ts). It runs
  * its root's model with the root's prompt and history, has the root's coding
  * tools, and may spawn more of itself. The Projects allowlist only:
  * the completions route refuses this id for anyone else
  * (web/src/server/desktop-cloud/projects-access.ts), whatever a client sends.
  */
-export const FREEBUFF_PROJECTS_SUBAGENT_ID = 'freebuff-projects-subagent'
+export const FUCKBUFF_PROJECTS_SUBAGENT_ID = 'fuckbuff-projects-subagent'
 
 /**
  * Most Projects subagents one root run may have running at once, nested ones
@@ -203,10 +203,10 @@ export const FREEBUFF_PROJECTS_SUBAGENT_ID = 'freebuff-projects-subagent'
  * The agent runtime refuses a spawn past it (spawn-agents.ts); every
  * spawn_agents call is separately held to MAX_SPAWN_AGENTS_PER_CALL.
  */
-export const FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS = 20
+export const FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS = 20
 
 /**
- * The Freebuff Web and Cloud roots that run the base3 single-loop harness
+ * The Fuckbuff Web and Cloud roots that run the base3 single-loop harness
  * (agents/base3.ts): no subagents, no reviewer, windowed file reads, mechanical
  * compaction instead of a context-pruner spawn. One per selectable model,
  * because a bundled agent's model comes from its definition, not the request.
@@ -215,49 +215,49 @@ export const FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS = 20
  * the desktop took a `-v3` suffix: spend and run counts split by `agent_id` in
  * the DB, which is what makes a base2 vs base3 comparison possible. The base2
  * roots stay registered either way — a session admitted under one keeps
- * resolving, and the FREEBUFF_BASE3_HARNESS_DISABLED kill switch routes new
+ * resolving, and the FUCKBUFF_BASE3_HARNESS_DISABLED kill switch routes new
  * turns back to them without a deploy.
  *
  * Every key here must also be a key of the web bundle's
- * FREEBUFF_MODEL_TO_AGENT_ID (freebuff_bundled_agents.ts asserts it): a model
+ * FUCKBUFF_MODEL_TO_AGENT_ID (fuckbuff_bundled_agents.ts asserts it): a model
  * whose base3 twin is missing resolves to the FALLBACK model's root instead,
  * and that root's allowlist rejects the requested model with
  * free_mode_invalid_agent_model.
  */
-export const FREEBUFF_WEB_BASE3_AGENT_ID_BY_MODEL: Record<string, string> = {
-  [FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 'base3-free-deepseek',
-  [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 'base3-free-deepseek-flash',
+export const FUCKBUFF_WEB_BASE3_AGENT_ID_BY_MODEL: Record<string, string> = {
+  [FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 'base3-free-deepseek',
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 'base3-free-deepseek-flash',
   // Fast mode runs the base3-FAST harness (agents/base3-fast.ts): base3's
   // loop plus parallel code-searchers and prompt-cached worker
   // subagents. Registered in the base3 maps because it is the base3 family's
   // rollout shape (windowed reads, mechanical compaction, no instructions
   // prompt) with a fan-out on top; the no-subagents assertions on this map
   // exempt exactly this id, on purpose.
-  [FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]: FREEBUFF_BASE3_FAST_AGENT_ID,
-  [FREEBUFF_MIMO_V25_MODEL_ID]: 'base3-free-mimo',
-  [FREEBUFF_MIMO_V26_PRO_MODEL_ID]: 'base3-free-mimo-2-6-pro',
-  [FREEBUFF_MINIMAX_M3_MODEL_ID]: 'base3-free-minimax-m3',
-  [FREEBUFF_GPT_5_6_LUNA_MODEL_ID]: 'base3-free-luna',
-  [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 'base3-free-luna-6',
-  [FREEBUFF_GPT_61_SOL_MODEL_ID]: 'base3-free-gpt-6-1-sol',
-  [FREEBUFF_GEMINI_4_ARGON_MODEL_ID]: 'base3-free-gemini-4-argon',
-  [FREEBUFF_GLM_V52_MODEL_ID]: 'base3-free-glm',
-  [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: 'base3-free-glm-5-3-flash',
-  [FREEBUFF_KIMI_K3_ECO_MODEL_ID]: 'base3-free-kimi-k3-eco',
-  [FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID]: 'base3-free-luna-es',
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]: FUCKBUFF_BASE3_FAST_AGENT_ID,
+  [FUCKBUFF_MIMO_V25_MODEL_ID]: 'base3-free-mimo',
+  [FUCKBUFF_MIMO_V26_PRO_MODEL_ID]: 'base3-free-mimo-2-6-pro',
+  [FUCKBUFF_MINIMAX_M3_MODEL_ID]: 'base3-free-minimax-m3',
+  [FUCKBUFF_GPT_5_6_LUNA_MODEL_ID]: 'base3-free-luna',
+  [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 'base3-free-luna-6',
+  [FUCKBUFF_GPT_61_SOL_MODEL_ID]: 'base3-free-gpt-6-1-sol',
+  [FUCKBUFF_GEMINI_4_ARGON_MODEL_ID]: 'base3-free-gemini-4-argon',
+  [FUCKBUFF_GLM_V52_MODEL_ID]: 'base3-free-glm',
+  [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: 'base3-free-glm-5-3-flash',
+  [FUCKBUFF_KIMI_K3_ECO_MODEL_ID]: 'base3-free-kimi-k3-eco',
+  [FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID]: 'base3-free-luna-es',
   // 1.3 is the live row. 1.2 left every picker on 2026-09-28 and this entry
   // stays because released CLI and Desktop binaries still send it (paid-only).
-  [FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 'base3-free-muse-spark',
-  [FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 'base3-free-muse-spark-1-3',
-  [FREEBUFF_OX_ALPHA_MODEL_ID]: 'base3-free-ox-alpha',
-  [FREEBUFF_SOLAR_PRO_4_MODEL_ID]: 'base3-free-solar-pro4',
-  [FREEBUFF_SOLAR_MINI_4_MODEL_ID]: 'base3-free-solar-mini4',
-  [FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 'base3-free-space-bunny-alpha',
-  [FREEBUFF_GEMINI_38_FLASH_MODEL_ID]: 'base3-free-gemini-3-8-flash',
+  [FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 'base3-free-muse-spark',
+  [FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 'base3-free-muse-spark-1-3',
+  [FUCKBUFF_OX_ALPHA_MODEL_ID]: 'base3-free-ox-alpha',
+  [FUCKBUFF_SOLAR_PRO_4_MODEL_ID]: 'base3-free-solar-pro4',
+  [FUCKBUFF_SOLAR_MINI_4_MODEL_ID]: 'base3-free-solar-mini4',
+  [FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 'base3-free-space-bunny-alpha',
+  [FUCKBUFF_GEMINI_38_FLASH_MODEL_ID]: 'base3-free-gemini-3-8-flash',
 }
 
 /**
- * The Freebuff CLI roots that run the base3 single-loop harness (agents/
+ * The Fuckbuff CLI roots that run the base3 single-loop harness (agents/
  * base3-free-*.ts), one per model the CLI picker can select.
  *
  * Deliberately the SAME ids as the Web map above wherever the two surfaces
@@ -271,37 +271,37 @@ export const FREEBUFF_WEB_BASE3_AGENT_ID_BY_MODEL: Record<string, string> = {
  * sets genuinely differ in both directions: Web offers Kimi K3 Eco and GPT-5.6
  * Luna-ES, which no CLI build can select; the CLI offers Claude Fable 5.1 on
  * base2, which Web never surfaces. (Muse Spark was Web-only until 2026-09-04;
- * both versions are in both maps now.) `freebuff_bundled_agents.test.ts` asserts the Web
+ * both versions are in both maps now.) `fuckbuff_bundled_agents.test.ts` asserts the Web
  * map covers exactly the Web base2 models, so a CLI-only model added there
  * would fail that parity check for the wrong reason.
  */
-export const FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL: Record<string, string> = {
-  [FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 'base3-free-deepseek',
-  [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 'base3-free-deepseek-flash',
+export const FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL: Record<string, string> = {
+  [FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 'base3-free-deepseek',
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 'base3-free-deepseek-flash',
   // Fast mode: the same base3-fast root id on both surfaces (see the Web map).
-  [FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]: FREEBUFF_BASE3_FAST_AGENT_ID,
-  [FREEBUFF_MIMO_V25_MODEL_ID]: 'base3-free-mimo',
-  [FREEBUFF_MIMO_V26_PRO_MODEL_ID]: 'base3-free-mimo-2-6-pro',
-  [FREEBUFF_MINIMAX_M3_MODEL_ID]: 'base3-free-minimax-m3',
-  [FREEBUFF_GPT_5_6_LUNA_MODEL_ID]: 'base3-free-luna',
-  [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 'base3-free-luna-6',
-  [FREEBUFF_GPT_61_SOL_MODEL_ID]: 'base3-free-gpt-6-1-sol',
-  [FREEBUFF_GEMINI_4_ARGON_MODEL_ID]: 'base3-free-gemini-4-argon',
-  [FREEBUFF_GLM_V52_MODEL_ID]: 'base3-free-glm',
-  [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: 'base3-free-glm-5-3-flash',
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]: FUCKBUFF_BASE3_FAST_AGENT_ID,
+  [FUCKBUFF_MIMO_V25_MODEL_ID]: 'base3-free-mimo',
+  [FUCKBUFF_MIMO_V26_PRO_MODEL_ID]: 'base3-free-mimo-2-6-pro',
+  [FUCKBUFF_MINIMAX_M3_MODEL_ID]: 'base3-free-minimax-m3',
+  [FUCKBUFF_GPT_5_6_LUNA_MODEL_ID]: 'base3-free-luna',
+  [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 'base3-free-luna-6',
+  [FUCKBUFF_GPT_61_SOL_MODEL_ID]: 'base3-free-gpt-6-1-sol',
+  [FUCKBUFF_GEMINI_4_ARGON_MODEL_ID]: 'base3-free-gemini-4-argon',
+  [FUCKBUFF_GLM_V52_MODEL_ID]: 'base3-free-glm',
+  [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: 'base3-free-glm-5-3-flash',
   // Ox Alpha reached CLI and Desktop on 2026-08-24. The WEB map above has
   // pointed at the same root id since 2026-08-20; both surfaces share it, which
-  // is the arrangement described in docs/freebuff-base3-harness.md.
-  [FREEBUFF_OX_ALPHA_MODEL_ID]: 'base3-free-ox-alpha',
-  [FREEBUFF_SOLAR_PRO_4_MODEL_ID]: 'base3-free-solar-pro4',
-  [FREEBUFF_SOLAR_MINI_4_MODEL_ID]: 'base3-free-solar-mini4',
-  [FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 'base3-free-space-bunny-alpha',
+  // is the arrangement described in docs/fuckbuff-base3-harness.md.
+  [FUCKBUFF_OX_ALPHA_MODEL_ID]: 'base3-free-ox-alpha',
+  [FUCKBUFF_SOLAR_PRO_4_MODEL_ID]: 'base3-free-solar-pro4',
+  [FUCKBUFF_SOLAR_MINI_4_MODEL_ID]: 'base3-free-solar-mini4',
+  [FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 'base3-free-space-bunny-alpha',
   // Gemini 3.8 Flash reached every surface on 2026-09-03, sharing its root id
   // with the Web map above like every other model both surfaces offer.
-  [FREEBUFF_GEMINI_38_FLASH_MODEL_ID]: 'base3-free-gemini-3-8-flash',
+  [FUCKBUFF_GEMINI_38_FLASH_MODEL_ID]: 'base3-free-gemini-3-8-flash',
   // Muse Spark 1.3 did the same on 2026-09-04.
-  [FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 'base3-free-muse-spark',
-  [FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 'base3-free-muse-spark-1-3',
+  [FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 'base3-free-muse-spark',
+  [FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 'base3-free-muse-spark-1-3',
 }
 
 /**
@@ -311,17 +311,17 @@ export const FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL: Record<string, string> = {
  * `model` is always a catalog handle, which the server resolves; it admits no
  * plain model id at all (FREE_MODE_AGENT_MODELS lists none for it).
  */
-export const FREEBUFF_CLI_CATALOG_ROOT_AGENT_ID = 'base3-free-catalog'
+export const FUCKBUFF_CLI_CATALOG_ROOT_AGENT_ID = 'base3-free-catalog'
 
 /** Every base3 root id, whichever surface registered it. */
-export const FREEBUFF_BASE3_AGENT_IDS: ReadonlySet<string> = new Set([
-  ...Object.values(FREEBUFF_WEB_BASE3_AGENT_ID_BY_MODEL),
-  ...Object.values(FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL),
-  FREEBUFF_CLI_CATALOG_ROOT_AGENT_ID,
+export const FUCKBUFF_BASE3_AGENT_IDS: ReadonlySet<string> = new Set([
+  ...Object.values(FUCKBUFF_WEB_BASE3_AGENT_ID_BY_MODEL),
+  ...Object.values(FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL),
+  FUCKBUFF_CLI_CATALOG_ROOT_AGENT_ID,
 ])
 
 /**
- * The Freebuff Cloud custom-stack planner roots, and the models they are pinned
+ * The Fuckbuff Cloud custom-stack planner roots, and the models they are pinned
  * to. There is one variant per model because a bundled agent's model comes from
  * its definition, not from the request.
  *
@@ -330,7 +330,7 @@ export const FREEBUFF_BASE3_AGENT_IDS: ReadonlySet<string> = new Set([
  * a few hours and was moved straight off it, because being OUT of that pool is
  * the property this agent is designed around: a planner turn never touches a
  * sandbox, so a premium-pooled planner would let an ordinary user spend their
- * day's sessions without building anything. It tracks FALLBACK_FREEBUFF_MODEL_ID rather than
+ * day's sessions without building anything. It tracks FALLBACK_FUCKBUFF_MODEL_ID rather than
  * naming a model, so it cannot drift back in the next time a model is
  * re-tiered.
  *
@@ -345,18 +345,18 @@ export const FREEBUFF_BASE3_AGENT_IDS: ReadonlySet<string> = new Set([
  * different model is rejected with session_model_mismatch.
  */
 export const CLOUD_PLANNER_AGENT_ID = 'base2-free-cloud-planner'
-export const CLOUD_PLANNER_MODEL_ID = FALLBACK_FREEBUFF_MODEL_ID
+export const CLOUD_PLANNER_MODEL_ID = FALLBACK_FUCKBUFF_MODEL_ID
 export const CLOUD_PLANNER_LIMITED_AGENT_ID = 'base2-free-cloud-planner-limited'
-/** The unlimited model, not LIMITED_FREEBUFF_MODEL_ID: the planner and build
+/** The unlimited model, not LIMITED_FUCKBUFF_MODEL_ID: the planner and build
  *  are the token-heavy paths and want the cheapest row (see
- *  CLOUD_BUILD_MODEL_ID). Must be in LIMITED_FREEBUFF_MODEL_IDS, or limited
+ *  CLOUD_BUILD_MODEL_ID). Must be in LIMITED_FUCKBUFF_MODEL_IDS, or limited
  *  planner turns fail admission — a test pins that. */
-export const CLOUD_PLANNER_LIMITED_MODEL_ID = FALLBACK_FREEBUFF_MODEL_ID
+export const CLOUD_PLANNER_LIMITED_MODEL_ID = FALLBACK_FUCKBUFF_MODEL_ID
 
 /**
  * The model the build runs on after "Start building".
  *
- * The unlimited model (FALLBACK_FREEBUFF_MODEL_ID) since 2026-08-18, when V4
+ * The unlimited model (FALLBACK_FUCKBUFF_MODEL_ID) since 2026-08-18, when V4
  * Flash became premium; V4 Flash held this from 2026-08-01, and V4 Pro before
  * that. The build is where the tokens are — one build outweighs its whole
  * planning conversation by orders of magnitude — so keeping builds OUT of the
@@ -370,7 +370,7 @@ export const CLOUD_PLANNER_LIMITED_MODEL_ID = FALLBACK_FREEBUFF_MODEL_ID
  * (BlankCloudPlanControls.beginBuild), which is what a model-locked session
  * requires and remains correct whether or not the two models agree.
  */
-export const CLOUD_BUILD_MODEL_ID = FALLBACK_FREEBUFF_MODEL_ID
+export const CLOUD_BUILD_MODEL_ID = FALLBACK_FUCKBUFF_MODEL_ID
 
 /** The planner model a given access tier is permitted to run. */
 export function cloudPlannerModelForAccessTier(
@@ -408,7 +408,7 @@ export function cloudBuildModelForAccessTier(
  */
 const CLOUD_BUILD_MODEL_IDS: ReadonlySet<string> = new Set([
   CLOUD_BUILD_MODEL_ID,
-  FALLBACK_FREEBUFF_MODEL_ID,
+  FALLBACK_FUCKBUFF_MODEL_ID,
   cloudBuildModelForAccessTier('limited'),
 ])
 
@@ -454,12 +454,12 @@ export function cloudPlannerAgentIdForModel(
 }
 
 /**
- * Root-orchestrator agent IDs counted as "a freebuff session" for abuse
+ * Root-orchestrator agent IDs counted as "a fuckbuff session" for abuse
  * detection and usage auditing. Subagents (file-picker, basher, etc.) are
  * excluded — they're spawned by the root, so counting them would inflate
  * every user's apparent activity.
  */
-export const FREEBUFF_ROOT_AGENT_IDS = [
+export const FUCKBUFF_ROOT_AGENT_IDS = [
   'base2-free',
   'base2-free-deepseek',
   'base2-free-deepseek-flash',
@@ -543,7 +543,7 @@ export const FREEBUFF_ROOT_AGENT_IDS = [
   'base2-free-muse-spark-1-3',
   'base2-free-gemini-3-8-flash',
   // Ox Alpha's root. The model was WITHDRAWN on 2026-08-27 (see
-  // FREEBUFF_PAUSED_FREE_MODEL_IDS) and this entry stays on purpose, exactly
+  // FUCKBUFF_PAUSED_FREE_MODEL_IDS) and this entry stays on purpose, exactly
   // like the Fable note below it: withdrawal is enforced at ADMISSION, so a
   // session admitted before the deploy runs its full hour afterwards and its
   // subagents keep passing through this hierarchy gate. Dropping the root would
@@ -555,23 +555,23 @@ export const FREEBUFF_ROOT_AGENT_IDS = [
   // hour after the pool empties, and dropping the root would 403 its subagents
   // mid-run.
   'base2-free-fable',
-  // Freebuff Cloud custom-stack planner variants. They spawn context-pruner, so
+  // Fuckbuff Cloud custom-stack planner variants. They spawn context-pruner, so
   // omitting them here 403s that subagent with
   // free_mode_invalid_agent_hierarchy (2026-07-09 incident: trial runs failed
   // at spawn_agent_inline). EVERY root in FREE_MODE_AGENT_MODELS that can spawn
   // subagents MUST also be listed here. Their shared system prompt carries the
-  // "You are Buffy" marker so they also pass requestHasFreebuffSystemMarker.
+  // "You are Buffy" marker so they also pass requestHasFuckbuffSystemMarker.
   'base2-free-cloud-planner',
   'base2-free-cloud-planner-limited',
-  // Freebuff Web and Cloud base3 roots (single-loop harness). Listed
+  // Fuckbuff Web and Cloud base3 roots (single-loop harness). Listed
   // individually rather than spread from
-  // FREEBUFF_WEB_BASE3_AGENT_ID_BY_MODEL so the ids stay greppable; a test in
+  // FUCKBUFF_WEB_BASE3_AGENT_ID_BY_MODEL so the ids stay greppable; a test in
   // free-agents.test.ts fails if the two ever disagree. They spawn nothing —
   // that is the point of the harness — but the hierarchy gate reads this list
   // for the ROOT too, so an omission 403s the root itself.
   'base3-free-deepseek',
   'base3-free-deepseek-flash',
-  FREEBUFF_BASE3_FAST_AGENT_ID,
+  FUCKBUFF_BASE3_FAST_AGENT_ID,
   'base3-free-mimo',
   'base3-free-mimo-2-6-pro',
   'base3-free-minimax-m3',
@@ -590,97 +590,97 @@ export const FREEBUFF_ROOT_AGENT_IDS = [
   'base3-free-muse-spark-1-3',
   'base3-free-ox-alpha',
   'base3-free-gemini-3-8-flash',
-  // The CLI's catalog root (FREEBUFF_CLI_CATALOG_ROOT_AGENT_ID): ONE root for
+  // The CLI's catalog root (FUCKBUFF_CLI_CATALOG_ROOT_AGENT_ID): ONE root for
   // every model the server catalog offers, built at runtime from the catalog
   // row, so a new model needs no new root and no release.
   'base3-free-catalog',
-  ...FREEBUFF_DESKTOP_THREAD_AGENT_IDS,
+  ...FUCKBUFF_DESKTOP_THREAD_AGENT_IDS,
   // The Desktop auto-run decider. Spawns nothing, but the hierarchy gate reads
   // this list for the ROOT itself, and a decision has no parent run to hang off.
-  FREEBUFF_DESKTOP_AUTORUN_AGENT_ID,
+  FUCKBUFF_DESKTOP_AUTORUN_AGENT_ID,
   // The project-understanding agent. Spawns nothing, and like the decider it runs
   // beside a turn with no parent run to hang off.
-  FREEBUFF_PROJECT_UNDERSTANDING_AGENT_ID,
+  FUCKBUFF_PROJECT_UNDERSTANDING_AGENT_ID,
 ] as const
-const FREEBUFF_ROOT_AGENT_ID_SET: ReadonlySet<string> = new Set(
-  FREEBUFF_ROOT_AGENT_IDS,
+const FUCKBUFF_ROOT_AGENT_ID_SET: ReadonlySet<string> = new Set(
+  FUCKBUFF_ROOT_AGENT_IDS,
 )
 
-export const FREEBUFF_ROOT_AGENT_ID_BY_MODEL: Record<string, string> = {
-  [FREEBUFF_MIMO_V25_MODEL_ID]: 'base2-free-mimo',
-  [FREEBUFF_MIMO_V26_PRO_MODEL_ID]: 'base2-free-mimo-2-6-pro',
-  [FREEBUFF_MINIMAX_M3_MODEL_ID]: 'base2-free-minimax-m3',
-  [FREEBUFF_GPT_5_6_LUNA_MODEL_ID]: 'base2-free-luna',
-  [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 'base2-free-luna-6',
-  [FREEBUFF_GPT_61_SOL_MODEL_ID]: 'base2-free-gpt-6-1-sol',
-  [FREEBUFF_GEMINI_4_ARGON_MODEL_ID]: 'base2-free-gemini-4-argon',
-  [FREEBUFF_SOLAR_PRO_4_MODEL_ID]: 'base2-free-solar-pro4',
-  [FREEBUFF_SOLAR_MINI_4_MODEL_ID]: 'base2-free-solar-mini4',
-  [FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 'base2-free-space-bunny-alpha',
-  [FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 'base2-free-deepseek',
-  [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 'base2-free-deepseek-flash',
+export const FUCKBUFF_ROOT_AGENT_ID_BY_MODEL: Record<string, string> = {
+  [FUCKBUFF_MIMO_V25_MODEL_ID]: 'base2-free-mimo',
+  [FUCKBUFF_MIMO_V26_PRO_MODEL_ID]: 'base2-free-mimo-2-6-pro',
+  [FUCKBUFF_MINIMAX_M3_MODEL_ID]: 'base2-free-minimax-m3',
+  [FUCKBUFF_GPT_5_6_LUNA_MODEL_ID]: 'base2-free-luna',
+  [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 'base2-free-luna-6',
+  [FUCKBUFF_GPT_61_SOL_MODEL_ID]: 'base2-free-gpt-6-1-sol',
+  [FUCKBUFF_GEMINI_4_ARGON_MODEL_ID]: 'base2-free-gemini-4-argon',
+  [FUCKBUFF_SOLAR_PRO_4_MODEL_ID]: 'base2-free-solar-pro4',
+  [FUCKBUFF_SOLAR_MINI_4_MODEL_ID]: 'base2-free-solar-mini4',
+  [FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 'base2-free-space-bunny-alpha',
+  [FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 'base2-free-deepseek',
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 'base2-free-deepseek-flash',
   // Fast mode's base2 twin exists for the base3 kill switch and the
   // base2-first CLI fallback, like every other model's; nothing routes here
   // while base3 is on.
-  [FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]: 'base2-free-deepseek-flash-fast',
-  [FREEBUFF_GLM_V52_MODEL_ID]: 'base2-free-glm',
-  [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: 'base2-free-glm-5-3-flash',
-  [FREEBUFF_KIMI_K3_ECO_MODEL_ID]: 'base2-free-kimi-k3-eco',
-  [FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID]: 'base2-free-luna-es',
-  [FREEBUFF_FABLE_5_1_MODEL_ID]: 'base2-free-fable',
-  [FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 'base2-free-muse-spark',
-  [FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 'base2-free-muse-spark-1-3',
-  [FREEBUFF_OX_ALPHA_MODEL_ID]: 'base2-free-ox-alpha',
-  [FREEBUFF_GEMINI_38_FLASH_MODEL_ID]: 'base2-free-gemini-3-8-flash',
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]: 'base2-free-deepseek-flash-fast',
+  [FUCKBUFF_GLM_V52_MODEL_ID]: 'base2-free-glm',
+  [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: 'base2-free-glm-5-3-flash',
+  [FUCKBUFF_KIMI_K3_ECO_MODEL_ID]: 'base2-free-kimi-k3-eco',
+  [FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID]: 'base2-free-luna-es',
+  [FUCKBUFF_FABLE_5_1_MODEL_ID]: 'base2-free-fable',
+  [FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 'base2-free-muse-spark',
+  [FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 'base2-free-muse-spark-1-3',
+  [FUCKBUFF_OX_ALPHA_MODEL_ID]: 'base2-free-ox-alpha',
+  [FUCKBUFF_GEMINI_38_FLASH_MODEL_ID]: 'base2-free-gemini-3-8-flash',
   // Provisioned tiers. Resolved here so an account holding the grant starts on
-  // the tier's own root; no picker offers them (see FREEBUFF_PROVISIONED_MODELS).
-  [FREEBUFF_DEEPSEEK_V41_FLASH_MODEL_ID]: 'base2-free-deepseek-v4-1-flash',
-  [FREEBUFF_GLM_V53_MODEL_ID]: 'base2-free-glm-5-3',
-  [FREEBUFF_GPT_6_SOL_MODEL_ID]: 'base2-free-gpt-6-sol',
-  [FREEBUFF_GPT_6_SOL_PRO_MODEL_ID]: 'base2-free-gpt-6-sol-pro',
-  [FREEBUFF_GPT_6_LUNA_PRO_MODEL_ID]: 'base2-free-gpt-6-luna-pro',
-  [FREEBUFF_GPT_6_ASTRA_MODEL_ID]: 'base2-free-gpt-6-astra',
-  [FREEBUFF_GPT_6_ASTRA_PRO_MODEL_ID]: 'base2-free-gpt-6-astra-pro',
-  [FREEBUFF_GPT_5_6_SOL_MODEL_ID]: 'base2-free-gpt-5-6-sol',
-  [FREEBUFF_GPT_5_6_SOL_PRO_MODEL_ID]: 'base2-free-gpt-5-6-sol-pro',
-  [FREEBUFF_GPT_5_6_TERRA_MODEL_ID]: 'base2-free-gpt-5-6-terra',
-  [FREEBUFF_GPT_5_6_TERRA_PRO_MODEL_ID]: 'base2-free-gpt-5-6-terra-pro',
-  [FREEBUFF_GPT_5_6_LUNA_PRO_MODEL_ID]: 'base2-free-gpt-5-6-luna-pro',
-  [FREEBUFF_GPT_5_5_MODEL_ID]: 'base2-free-gpt-5-5',
-  [FREEBUFF_GPT_5_5_PRO_MODEL_ID]: 'base2-free-gpt-5-5-pro',
-  [FREEBUFF_GPT_5_4_PRO_MODEL_ID]: 'base2-free-gpt-5-4-pro',
-  [FREEBUFF_O3_PRO_MODEL_ID]: 'base2-free-o3-pro',
-  [FREEBUFF_CLAUDE_OPUS_5_5_MODEL_ID]: 'base2-free-claude-opus-5-5',
-  [FREEBUFF_CLAUDE_OPUS_5_MODEL_ID]: 'base2-free-claude-opus-5',
-  [FREEBUFF_CLAUDE_SONNET_5_MODEL_ID]: 'base2-free-claude-sonnet-5',
-  [FREEBUFF_CLAUDE_OPUS_4_8_MODEL_ID]: 'base2-free-claude-opus-4-8',
-  [FREEBUFF_CLAUDE_SONNET_4_6_MODEL_ID]: 'base2-free-claude-sonnet-4-6',
-  [FREEBUFF_QWEN3_8_MAX_PRIME_MODEL_ID]: 'base2-free-qwen3-8-max-prime',
-  [FREEBUFF_QWEN3_8_MAX_0902_MODEL_ID]: 'base2-free-qwen3-8-max-0902',
-  [FREEBUFF_QWEN3_8_FLASH_MODEL_ID]: 'base2-free-qwen3-8-flash',
-  [FREEBUFF_QWEN3_8_27B_MODEL_ID]: 'base2-free-qwen3-8-27b',
-  [FREEBUFF_QWEN3_7_MAX_MODEL_ID]: 'base2-free-qwen3-7-max',
-  [FREEBUFF_QWEN3_7_PLUS_MODEL_ID]: 'base2-free-qwen3-7-plus',
-  [FREEBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID]: 'base2-free-qwen3-6-max-preview',
-  [FREEBUFF_QWEN3_6_PLUS_MODEL_ID]: 'base2-free-qwen3-6-plus',
-  [FREEBUFF_GROK_4_7_MODEL_ID]: 'base2-free-grok-4-7',
-  [FREEBUFF_GROK_4_6_MODEL_ID]: 'base2-free-grok-4-6',
-  [FREEBUFF_GROK_4_5_MODEL_ID]: 'base2-free-grok-4-5',
-  [FREEBUFF_GROK_4_20_MODEL_ID]: 'base2-free-grok-4-20',
-  [FREEBUFF_GEMINI_3_7_FLASH_MODEL_ID]: 'base2-free-gemini-3-7-flash',
-  [FREEBUFF_GEMINI_3_6_FLASH_MODEL_ID]: 'base2-free-gemini-3-6-flash',
-  [FREEBUFF_GEMINI_3_5_FLASH_MODEL_ID]: 'base2-free-gemini-3-5-flash',
-  [FREEBUFF_KIMI_K3_MODEL_ID]: 'base2-free-kimi-k3',
-  [FREEBUFF_GLM_5_3_PRIME_MODEL_ID]: 'base2-free-glm-5-3-prime',
-  [FREEBUFF_GLM_5_3_FLASHX_MODEL_ID]: 'base2-free-glm-5-3-flashx',
-  [FREEBUFF_GLM_5_TURBO_MODEL_ID]: 'base2-free-glm-5-turbo',
-  [FREEBUFF_MISTRAL_LARGE_MODEL_ID]: 'base2-free-mistral-large',
-  [FREEBUFF_CODESTRAL_2508_MODEL_ID]: 'base2-free-codestral-2508',
-  [FREEBUFF_LLAMA_4_MAVERICK_MODEL_ID]: 'base2-free-llama-4-maverick',
+  // the tier's own root; no picker offers them (see FUCKBUFF_PROVISIONED_MODELS).
+  [FUCKBUFF_DEEPSEEK_V41_FLASH_MODEL_ID]: 'base2-free-deepseek-v4-1-flash',
+  [FUCKBUFF_GLM_V53_MODEL_ID]: 'base2-free-glm-5-3',
+  [FUCKBUFF_GPT_6_SOL_MODEL_ID]: 'base2-free-gpt-6-sol',
+  [FUCKBUFF_GPT_6_SOL_PRO_MODEL_ID]: 'base2-free-gpt-6-sol-pro',
+  [FUCKBUFF_GPT_6_LUNA_PRO_MODEL_ID]: 'base2-free-gpt-6-luna-pro',
+  [FUCKBUFF_GPT_6_ASTRA_MODEL_ID]: 'base2-free-gpt-6-astra',
+  [FUCKBUFF_GPT_6_ASTRA_PRO_MODEL_ID]: 'base2-free-gpt-6-astra-pro',
+  [FUCKBUFF_GPT_5_6_SOL_MODEL_ID]: 'base2-free-gpt-5-6-sol',
+  [FUCKBUFF_GPT_5_6_SOL_PRO_MODEL_ID]: 'base2-free-gpt-5-6-sol-pro',
+  [FUCKBUFF_GPT_5_6_TERRA_MODEL_ID]: 'base2-free-gpt-5-6-terra',
+  [FUCKBUFF_GPT_5_6_TERRA_PRO_MODEL_ID]: 'base2-free-gpt-5-6-terra-pro',
+  [FUCKBUFF_GPT_5_6_LUNA_PRO_MODEL_ID]: 'base2-free-gpt-5-6-luna-pro',
+  [FUCKBUFF_GPT_5_5_MODEL_ID]: 'base2-free-gpt-5-5',
+  [FUCKBUFF_GPT_5_5_PRO_MODEL_ID]: 'base2-free-gpt-5-5-pro',
+  [FUCKBUFF_GPT_5_4_PRO_MODEL_ID]: 'base2-free-gpt-5-4-pro',
+  [FUCKBUFF_O3_PRO_MODEL_ID]: 'base2-free-o3-pro',
+  [FUCKBUFF_CLAUDE_OPUS_5_5_MODEL_ID]: 'base2-free-claude-opus-5-5',
+  [FUCKBUFF_CLAUDE_OPUS_5_MODEL_ID]: 'base2-free-claude-opus-5',
+  [FUCKBUFF_CLAUDE_SONNET_5_MODEL_ID]: 'base2-free-claude-sonnet-5',
+  [FUCKBUFF_CLAUDE_OPUS_4_8_MODEL_ID]: 'base2-free-claude-opus-4-8',
+  [FUCKBUFF_CLAUDE_SONNET_4_6_MODEL_ID]: 'base2-free-claude-sonnet-4-6',
+  [FUCKBUFF_QWEN3_8_MAX_PRIME_MODEL_ID]: 'base2-free-qwen3-8-max-prime',
+  [FUCKBUFF_QWEN3_8_MAX_0902_MODEL_ID]: 'base2-free-qwen3-8-max-0902',
+  [FUCKBUFF_QWEN3_8_FLASH_MODEL_ID]: 'base2-free-qwen3-8-flash',
+  [FUCKBUFF_QWEN3_8_27B_MODEL_ID]: 'base2-free-qwen3-8-27b',
+  [FUCKBUFF_QWEN3_7_MAX_MODEL_ID]: 'base2-free-qwen3-7-max',
+  [FUCKBUFF_QWEN3_7_PLUS_MODEL_ID]: 'base2-free-qwen3-7-plus',
+  [FUCKBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID]: 'base2-free-qwen3-6-max-preview',
+  [FUCKBUFF_QWEN3_6_PLUS_MODEL_ID]: 'base2-free-qwen3-6-plus',
+  [FUCKBUFF_GROK_4_7_MODEL_ID]: 'base2-free-grok-4-7',
+  [FUCKBUFF_GROK_4_6_MODEL_ID]: 'base2-free-grok-4-6',
+  [FUCKBUFF_GROK_4_5_MODEL_ID]: 'base2-free-grok-4-5',
+  [FUCKBUFF_GROK_4_20_MODEL_ID]: 'base2-free-grok-4-20',
+  [FUCKBUFF_GEMINI_3_7_FLASH_MODEL_ID]: 'base2-free-gemini-3-7-flash',
+  [FUCKBUFF_GEMINI_3_6_FLASH_MODEL_ID]: 'base2-free-gemini-3-6-flash',
+  [FUCKBUFF_GEMINI_3_5_FLASH_MODEL_ID]: 'base2-free-gemini-3-5-flash',
+  [FUCKBUFF_KIMI_K3_MODEL_ID]: 'base2-free-kimi-k3',
+  [FUCKBUFF_GLM_5_3_PRIME_MODEL_ID]: 'base2-free-glm-5-3-prime',
+  [FUCKBUFF_GLM_5_3_FLASHX_MODEL_ID]: 'base2-free-glm-5-3-flashx',
+  [FUCKBUFF_GLM_5_TURBO_MODEL_ID]: 'base2-free-glm-5-turbo',
+  [FUCKBUFF_MISTRAL_LARGE_MODEL_ID]: 'base2-free-mistral-large',
+  [FUCKBUFF_CODESTRAL_2508_MODEL_ID]: 'base2-free-codestral-2508',
+  [FUCKBUFF_LLAMA_4_MAVERICK_MODEL_ID]: 'base2-free-llama-4-maverick',
 }
 
 /**
- * The reviewer each freebuff root spawns, keyed by the root's model.
+ * The reviewer each fuckbuff root spawns, keyed by the root's model.
  *
  * EVERY entry must name a reviewer that runs THE SAME model as its key, and
  * that is load-bearing rather than stylistic. The chat-completions session gate
@@ -688,67 +688,67 @@ export const FREEBUFF_ROOT_AGENT_ID_BY_MODEL: Record<string, string> = {
  * on (`session_model_mismatch`), so a cross-model reviewer 403s mid-session.
  *
  * Omitting a model is the same trap: base2 falls back to a DeepSeek Flash
- * reviewer, which is itself a freebuff session model, so the fallback 403s for
+ * reviewer, which is itself a fuckbuff session model, so the fallback 403s for
  * every root that is not DeepSeek Flash. Fable shipped without an entry and
  * silently lost code review in every session until it got one. Two tests in
  * free-agents.test.ts enforce both halves.
  */
-export const FREEBUFF_REVIEWER_AGENT_ID_BY_MODEL: Record<string, string> = {
-  [FREEBUFF_MIMO_V25_MODEL_ID]: 'code-reviewer-mimo',
-  [FREEBUFF_MIMO_V26_PRO_MODEL_ID]: 'code-reviewer-mimo-2-6-pro',
-  [FREEBUFF_MINIMAX_M3_MODEL_ID]: 'code-reviewer-minimax-m3',
-  [FREEBUFF_GPT_5_6_LUNA_MODEL_ID]: 'code-reviewer-luna',
-  [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 'code-reviewer-luna-6',
-  [FREEBUFF_GPT_61_SOL_MODEL_ID]: 'code-reviewer-gpt-6-1-sol',
-  [FREEBUFF_GEMINI_4_ARGON_MODEL_ID]: 'code-reviewer-gemini-4-argon',
-  [FREEBUFF_SOLAR_PRO_4_MODEL_ID]: 'code-reviewer-solar-pro4',
-  [FREEBUFF_SOLAR_MINI_4_MODEL_ID]: 'code-reviewer-solar-mini4',
-  [FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 'code-reviewer-space-bunny-alpha',
-  [FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 'code-reviewer-deepseek',
-  [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 'code-reviewer-deepseek-flash',
+export const FUCKBUFF_REVIEWER_AGENT_ID_BY_MODEL: Record<string, string> = {
+  [FUCKBUFF_MIMO_V25_MODEL_ID]: 'code-reviewer-mimo',
+  [FUCKBUFF_MIMO_V26_PRO_MODEL_ID]: 'code-reviewer-mimo-2-6-pro',
+  [FUCKBUFF_MINIMAX_M3_MODEL_ID]: 'code-reviewer-minimax-m3',
+  [FUCKBUFF_GPT_5_6_LUNA_MODEL_ID]: 'code-reviewer-luna',
+  [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 'code-reviewer-luna-6',
+  [FUCKBUFF_GPT_61_SOL_MODEL_ID]: 'code-reviewer-gpt-6-1-sol',
+  [FUCKBUFF_GEMINI_4_ARGON_MODEL_ID]: 'code-reviewer-gemini-4-argon',
+  [FUCKBUFF_SOLAR_PRO_4_MODEL_ID]: 'code-reviewer-solar-pro4',
+  [FUCKBUFF_SOLAR_MINI_4_MODEL_ID]: 'code-reviewer-solar-mini4',
+  [FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 'code-reviewer-space-bunny-alpha',
+  [FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 'code-reviewer-deepseek',
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 'code-reviewer-deepseek-flash',
   // Fast mode's base2 twin sets `noReview`, so nothing spawns this today; the
   // entry is what stops a base2 rollback falling through to the Flash reviewer
   // and 403ing (a Flash-pinned reviewer cannot run the fast model's session).
-  [FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]:
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]:
     'code-reviewer-deepseek-flash-fast',
-  [FREEBUFF_GLM_V52_MODEL_ID]: 'code-reviewer-glm',
-  [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: 'code-reviewer-glm-5-3-flash',
-  [FREEBUFF_FABLE_5_1_MODEL_ID]: 'code-reviewer-fable',
+  [FUCKBUFF_GLM_V52_MODEL_ID]: 'code-reviewer-glm',
+  [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: 'code-reviewer-glm-5-3-flash',
+  [FUCKBUFF_FABLE_5_1_MODEL_ID]: 'code-reviewer-fable',
   // Required the moment Ox Alpha became CLI-selectable: without its own entry
   // a base2 session falls back to the DeepSeek Flash reviewer, which that
   // session's allowlist does not permit, so the subagent is rejected mid-run.
-  [FREEBUFF_OX_ALPHA_MODEL_ID]: 'code-reviewer-ox-alpha',
+  [FUCKBUFF_OX_ALPHA_MODEL_ID]: 'code-reviewer-ox-alpha',
   // Required the moment Gemini 3.8 Flash became CLI-selectable: without its own
   // entry a base2 session falls back to the DeepSeek Flash reviewer, which that
   // session's allowlist does not permit, so the subagent is rejected mid-run.
-  [FREEBUFF_GEMINI_38_FLASH_MODEL_ID]: 'code-reviewer-gemini-3-8-flash',
+  [FUCKBUFF_GEMINI_38_FLASH_MODEL_ID]: 'code-reviewer-gemini-3-8-flash',
   // Required the moment Muse Spark became CLI-selectable, for the same reason.
   // Both of its roots set `noReview`, so nothing spawns this today — it is what
   // stops a base2 rollback falling through to the Flash reviewer and 403ing.
-  [FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 'code-reviewer-muse-spark',
-  [FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 'code-reviewer-muse-spark-1-3',
+  [FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 'code-reviewer-muse-spark',
+  [FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 'code-reviewer-muse-spark-1-3',
 }
 
-const FREEBUFF_DESKTOP_MODELS = new Set([
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
-  FREEBUFF_GPT_6_LUNA_MODEL_ID,
-  FREEBUFF_GPT_61_SOL_MODEL_ID,
-  FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
-  FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
-  FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
-  FREEBUFF_MIMO_V25_MODEL_ID,
-  FREEBUFF_MIMO_V26_PRO_MODEL_ID,
-  FREEBUFF_GLM_V52_MODEL_ID,
-  FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-  FREEBUFF_OX_ALPHA_MODEL_ID,
-  FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
-  FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
-  FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+const FUCKBUFF_DESKTOP_MODELS = new Set([
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_61_SOL_MODEL_ID,
+  FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
+  FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+  FUCKBUFF_MIMO_V26_PRO_MODEL_ID,
+  FUCKBUFF_GLM_V52_MODEL_ID,
+  FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+  FUCKBUFF_OX_ALPHA_MODEL_ID,
+  FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
+  FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+  FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
 ])
 
 /**
@@ -770,9 +770,9 @@ const GEMINI_HELPER_MODELS = new Set([
  * Web/Cloud binding, agents/researcher/researcher-web-luna.ts) at medium
  * effort. Luna is also a pickable session model, so a request from one of
  * these on Luna is helper traffic inside whatever session spawned it, not a
- * Luna session: see isFreebuffHelperOnSessionModel.
+ * Luna session: see isFuckbuffHelperOnSessionModel.
  */
-const FREEBUFF_LUNA_HELPER_AGENT_IDS: ReadonlySet<string> = new Set([
+const FUCKBUFF_LUNA_HELPER_AGENT_IDS: ReadonlySet<string> = new Set([
   'file-picker',
   'file-lister',
   'researcher-web',
@@ -787,41 +787,41 @@ const FREEBUFF_LUNA_HELPER_AGENT_IDS: ReadonlySet<string> = new Set([
  * a DeepSeek Flash session. Such a request is treated like the Gemini helpers
  * always were: it needs a live session, but not a session on its model.
  */
-export function isFreebuffHelperOnSessionModel(
+export function isFuckbuffHelperOnSessionModel(
   fullAgentId: string,
   model: string,
 ): boolean {
   const { publisherId, agentId } = parseAgentId(fullAgentId)
   if (!agentId || (publisherId && publisherId !== 'codebuff')) return false
   return (
-    (FREEBUFF_LUNA_HELPER_AGENT_IDS.has(agentId) &&
-      model === FREEBUFF_GPT_6_LUNA_MODEL_ID) ||
+    (FUCKBUFF_LUNA_HELPER_AGENT_IDS.has(agentId) &&
+      model === FUCKBUFF_GPT_6_LUNA_MODEL_ID) ||
     // The project-understanding agent is a root, but it is the same kind of
     // traffic: background work beside a session on whatever model that session
     // runs, pinned to its own model (GPT-6 Luna, like the file helpers above).
-    (agentId === FREEBUFF_PROJECT_UNDERSTANDING_AGENT_ID &&
-      model === FREEBUFF_PROJECT_UNDERSTANDING_MODEL_ID)
+    (agentId === FUCKBUFF_PROJECT_UNDERSTANDING_AGENT_ID &&
+      model === FUCKBUFF_PROJECT_UNDERSTANDING_MODEL_ID)
   )
 }
 
-export function getFreebuffRootAgentIdForModel(model: string): string {
-  return FREEBUFF_ROOT_AGENT_ID_BY_MODEL[model] ?? 'base2-free'
+export function getFuckbuffRootAgentIdForModel(model: string): string {
+  return FUCKBUFF_ROOT_AGENT_ID_BY_MODEL[model] ?? 'base2-free'
 }
 
 /**
- * The base3 root the Freebuff CLI runs for a selected model.
+ * The base3 root the Fuckbuff CLI runs for a selected model.
  *
  * Falls back to the model's own base2 root, not to some other model's base3
- * root, for the reason resolveFreebuffAgentId does the same on Web: running the
+ * root, for the reason resolveFuckbuffAgentId does the same on Web: running the
  * requested model on the older harness is a cost regression, running a
  * different model is a `session_model_mismatch` 403. Every model the picker can
  * select normally has a base3 twin. Fable 5.1 deliberately uses this fallback
  * to collect base2 orchestration traces with subagents.
  */
-export function getFreebuffBase3RootAgentIdForModel(model: string): string {
+export function getFuckbuffBase3RootAgentIdForModel(model: string): string {
   return (
-    FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL[model] ??
-    getFreebuffRootAgentIdForModel(model)
+    FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL[model] ??
+    getFuckbuffRootAgentIdForModel(model)
   )
 }
 
@@ -836,11 +836,11 @@ export function getFreebuffBase3RootAgentIdForModel(model: string): string {
 export const FREE_MODE_AGENT_MODELS: Record<string, Set<string>> = {
   // Root orchestrator
   'base2-free': new Set([
-    FREEBUFF_MINIMAX_M3_MODEL_ID,
-    FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
-    FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-    FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-    FREEBUFF_MIMO_V25_MODEL_ID,
+    FUCKBUFF_MINIMAX_M3_MODEL_ID,
+    FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+    FUCKBUFF_MIMO_V25_MODEL_ID,
   ]),
   // Kimi K2.7 Code was removed from free mode entirely on 2026-07-31. It had
   // been hidden from every client picker in 75fb0ade6 (2026-07-30) while
@@ -871,109 +871,109 @@ export const FREE_MODE_AGENT_MODELS: Record<string, Set<string>> = {
   // The CrofAI GLM 5.2 route ('base2-free-glm-crof') was removed on 2026-08-04
   // too: it reached the same upstream as 'base2-free-glm' but was metered by a
   // different pool. Keep GLM to exactly one agent and one model id.
-  'base2-free-deepseek': new Set([FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID]),
-  'base2-free-deepseek-flash': new Set([FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]),
+  'base2-free-deepseek': new Set([FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID]),
+  'base2-free-deepseek-flash': new Set([FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]),
   // Fast mode's base2 twin and its worker, each pinned to the fast row alone.
   // The worker is the one free-mode subagent that EDITS: it inherits the fast
   // root's prompt and history, so its allowlist entry is what lets the fan-out
   // bill as the session it belongs to instead of metering as a stray request.
   'base2-free-deepseek-flash-fast': new Set([
-    FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
   ]),
-  [FREEBUFF_BASE3_FAST_WORKER_AGENT_ID]: new Set([
-    FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+  [FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID]: new Set([
+    FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
   ]),
-  'base2-free-mimo': new Set([FREEBUFF_MIMO_V25_MODEL_ID]),
+  'base2-free-mimo': new Set([FUCKBUFF_MIMO_V25_MODEL_ID]),
   // Pinned to its one model like every root: a root that allowed both MiMo
   // ids would sell the 30-Freebuck Pro through the 10-Freebuck Flash session.
-  'base2-free-mimo-2-6-pro': new Set([FREEBUFF_MIMO_V26_PRO_MODEL_ID]),
-  // M3 was WITHDRAWN on 2026-08-20 (see FREEBUFF_PAUSED_FREE_MODEL_IDS), and
+  'base2-free-mimo-2-6-pro': new Set([FUCKBUFF_MIMO_V26_PRO_MODEL_ID]),
+  // M3 was WITHDRAWN on 2026-08-20 (see FUCKBUFF_PAUSED_FREE_MODEL_IDS), and
   // this entry stays on purpose. Withdrawal is enforced at ADMISSION: no new
   // session can be opened for the model. Sessions admitted before the deploy
   // are still live, and they reach this allowlist on every turn — deleting the
   // row would fail them mid-turn with free_mode_invalid_agent_model, which is
   // the same client wedge the withdrawal was shaped to avoid (#1801). Let them
   // drain; the door is already shut in front of them.
-  'base2-free-minimax-m3': new Set([FREEBUFF_MINIMAX_M3_MODEL_ID]),
-  'base2-free-luna': new Set([FREEBUFF_GPT_5_6_LUNA_MODEL_ID]),
-  'base2-free-luna-6': new Set([FREEBUFF_GPT_6_LUNA_MODEL_ID]),
-  'base2-free-gpt-6-1-sol': new Set([FREEBUFF_GPT_61_SOL_MODEL_ID]),
-  'base2-free-gemini-4-argon': new Set([FREEBUFF_GEMINI_4_ARGON_MODEL_ID]),
-  'base2-free-solar-pro4': new Set([FREEBUFF_SOLAR_PRO_4_MODEL_ID]),
-  'base2-free-solar-mini4': new Set([FREEBUFF_SOLAR_MINI_4_MODEL_ID]),
+  'base2-free-minimax-m3': new Set([FUCKBUFF_MINIMAX_M3_MODEL_ID]),
+  'base2-free-luna': new Set([FUCKBUFF_GPT_5_6_LUNA_MODEL_ID]),
+  'base2-free-luna-6': new Set([FUCKBUFF_GPT_6_LUNA_MODEL_ID]),
+  'base2-free-gpt-6-1-sol': new Set([FUCKBUFF_GPT_61_SOL_MODEL_ID]),
+  'base2-free-gemini-4-argon': new Set([FUCKBUFF_GEMINI_4_ARGON_MODEL_ID]),
+  'base2-free-solar-pro4': new Set([FUCKBUFF_SOLAR_PRO_4_MODEL_ID]),
+  'base2-free-solar-mini4': new Set([FUCKBUFF_SOLAR_MINI_4_MODEL_ID]),
   'base2-free-space-bunny-alpha': new Set([
-    FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+    FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
   ]),
-  'base2-free-glm': new Set([FREEBUFF_GLM_V52_MODEL_ID]),
+  'base2-free-glm': new Set([FUCKBUFF_GLM_V52_MODEL_ID]),
   // GLM 5.3 Flash's root, pinned to its one model like every other. Kept
   // strictly separate from 'base2-free-glm' next door even though the models
   // share a name: 5.2 is metered by the earned referral pool and 5.3 Flash by
   // the daily premium pool, so a root that allowed both would be a way to spend
   // one entitlement and receive the other. That is precisely what
   // 'base2-free-glm-crof' turned out to be.
-  'base2-free-glm-5-3-flash': new Set([FREEBUFF_GLM_V53_FLASH_MODEL_ID]),
-  'base2-free-kimi-k3-eco': new Set([FREEBUFF_KIMI_K3_ECO_MODEL_ID]),
+  'base2-free-glm-5-3-flash': new Set([FUCKBUFF_GLM_V53_FLASH_MODEL_ID]),
+  'base2-free-kimi-k3-eco': new Set([FUCKBUFF_KIMI_K3_ECO_MODEL_ID]),
   // The `-es` route. Pinned to the one model like every other root, and
   // deliberately NOT reachable from `base2-free-luna`: the two are separate
   // entitlements and must never share a root.
-  'base2-free-luna-es': new Set([FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID]),
-  'base3-free-luna-es': new Set([FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID]),
+  'base2-free-luna-es': new Set([FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID]),
+  'base3-free-luna-es': new Set([FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID]),
   // Provisioned-tier roots, pinned one model each like every
   // other root, and not in any client catalog: these are provisioned per
   // account rather than rendered from a picker.
   'base2-free-deepseek-v4-1-flash': new Set([
-    FREEBUFF_DEEPSEEK_V41_FLASH_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V41_FLASH_MODEL_ID,
   ]),
-  'base2-free-glm-5-3': new Set([FREEBUFF_GLM_V53_MODEL_ID]),
-  'base2-free-gpt-6-sol': new Set([FREEBUFF_GPT_6_SOL_MODEL_ID]),
-  'base2-free-gpt-6-sol-pro': new Set([FREEBUFF_GPT_6_SOL_PRO_MODEL_ID]),
-  'base2-free-gpt-6-luna-pro': new Set([FREEBUFF_GPT_6_LUNA_PRO_MODEL_ID]),
-  'base2-free-gpt-6-astra': new Set([FREEBUFF_GPT_6_ASTRA_MODEL_ID]),
-  'base2-free-gpt-6-astra-pro': new Set([FREEBUFF_GPT_6_ASTRA_PRO_MODEL_ID]),
-  'base2-free-gpt-5-6-sol': new Set([FREEBUFF_GPT_5_6_SOL_MODEL_ID]),
-  'base2-free-gpt-5-6-sol-pro': new Set([FREEBUFF_GPT_5_6_SOL_PRO_MODEL_ID]),
-  'base2-free-gpt-5-6-terra': new Set([FREEBUFF_GPT_5_6_TERRA_MODEL_ID]),
+  'base2-free-glm-5-3': new Set([FUCKBUFF_GLM_V53_MODEL_ID]),
+  'base2-free-gpt-6-sol': new Set([FUCKBUFF_GPT_6_SOL_MODEL_ID]),
+  'base2-free-gpt-6-sol-pro': new Set([FUCKBUFF_GPT_6_SOL_PRO_MODEL_ID]),
+  'base2-free-gpt-6-luna-pro': new Set([FUCKBUFF_GPT_6_LUNA_PRO_MODEL_ID]),
+  'base2-free-gpt-6-astra': new Set([FUCKBUFF_GPT_6_ASTRA_MODEL_ID]),
+  'base2-free-gpt-6-astra-pro': new Set([FUCKBUFF_GPT_6_ASTRA_PRO_MODEL_ID]),
+  'base2-free-gpt-5-6-sol': new Set([FUCKBUFF_GPT_5_6_SOL_MODEL_ID]),
+  'base2-free-gpt-5-6-sol-pro': new Set([FUCKBUFF_GPT_5_6_SOL_PRO_MODEL_ID]),
+  'base2-free-gpt-5-6-terra': new Set([FUCKBUFF_GPT_5_6_TERRA_MODEL_ID]),
   'base2-free-gpt-5-6-terra-pro': new Set([
-    FREEBUFF_GPT_5_6_TERRA_PRO_MODEL_ID,
+    FUCKBUFF_GPT_5_6_TERRA_PRO_MODEL_ID,
   ]),
-  'base2-free-gpt-5-6-luna-pro': new Set([FREEBUFF_GPT_5_6_LUNA_PRO_MODEL_ID]),
-  'base2-free-gpt-5-5': new Set([FREEBUFF_GPT_5_5_MODEL_ID]),
-  'base2-free-gpt-5-5-pro': new Set([FREEBUFF_GPT_5_5_PRO_MODEL_ID]),
-  'base2-free-gpt-5-4-pro': new Set([FREEBUFF_GPT_5_4_PRO_MODEL_ID]),
-  'base2-free-o3-pro': new Set([FREEBUFF_O3_PRO_MODEL_ID]),
-  'base2-free-claude-opus-5-5': new Set([FREEBUFF_CLAUDE_OPUS_5_5_MODEL_ID]),
-  'base2-free-claude-opus-5': new Set([FREEBUFF_CLAUDE_OPUS_5_MODEL_ID]),
-  'base2-free-claude-sonnet-5': new Set([FREEBUFF_CLAUDE_SONNET_5_MODEL_ID]),
-  'base2-free-claude-opus-4-8': new Set([FREEBUFF_CLAUDE_OPUS_4_8_MODEL_ID]),
+  'base2-free-gpt-5-6-luna-pro': new Set([FUCKBUFF_GPT_5_6_LUNA_PRO_MODEL_ID]),
+  'base2-free-gpt-5-5': new Set([FUCKBUFF_GPT_5_5_MODEL_ID]),
+  'base2-free-gpt-5-5-pro': new Set([FUCKBUFF_GPT_5_5_PRO_MODEL_ID]),
+  'base2-free-gpt-5-4-pro': new Set([FUCKBUFF_GPT_5_4_PRO_MODEL_ID]),
+  'base2-free-o3-pro': new Set([FUCKBUFF_O3_PRO_MODEL_ID]),
+  'base2-free-claude-opus-5-5': new Set([FUCKBUFF_CLAUDE_OPUS_5_5_MODEL_ID]),
+  'base2-free-claude-opus-5': new Set([FUCKBUFF_CLAUDE_OPUS_5_MODEL_ID]),
+  'base2-free-claude-sonnet-5': new Set([FUCKBUFF_CLAUDE_SONNET_5_MODEL_ID]),
+  'base2-free-claude-opus-4-8': new Set([FUCKBUFF_CLAUDE_OPUS_4_8_MODEL_ID]),
   'base2-free-claude-sonnet-4-6': new Set([
-    FREEBUFF_CLAUDE_SONNET_4_6_MODEL_ID,
+    FUCKBUFF_CLAUDE_SONNET_4_6_MODEL_ID,
   ]),
   'base2-free-qwen3-8-max-prime': new Set([
-    FREEBUFF_QWEN3_8_MAX_PRIME_MODEL_ID,
+    FUCKBUFF_QWEN3_8_MAX_PRIME_MODEL_ID,
   ]),
-  'base2-free-qwen3-8-max-0902': new Set([FREEBUFF_QWEN3_8_MAX_0902_MODEL_ID]),
-  'base2-free-qwen3-8-flash': new Set([FREEBUFF_QWEN3_8_FLASH_MODEL_ID]),
-  'base2-free-qwen3-8-27b': new Set([FREEBUFF_QWEN3_8_27B_MODEL_ID]),
-  'base2-free-qwen3-7-max': new Set([FREEBUFF_QWEN3_7_MAX_MODEL_ID]),
-  'base2-free-qwen3-7-plus': new Set([FREEBUFF_QWEN3_7_PLUS_MODEL_ID]),
+  'base2-free-qwen3-8-max-0902': new Set([FUCKBUFF_QWEN3_8_MAX_0902_MODEL_ID]),
+  'base2-free-qwen3-8-flash': new Set([FUCKBUFF_QWEN3_8_FLASH_MODEL_ID]),
+  'base2-free-qwen3-8-27b': new Set([FUCKBUFF_QWEN3_8_27B_MODEL_ID]),
+  'base2-free-qwen3-7-max': new Set([FUCKBUFF_QWEN3_7_MAX_MODEL_ID]),
+  'base2-free-qwen3-7-plus': new Set([FUCKBUFF_QWEN3_7_PLUS_MODEL_ID]),
   'base2-free-qwen3-6-max-preview': new Set([
-    FREEBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID,
+    FUCKBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID,
   ]),
-  'base2-free-qwen3-6-plus': new Set([FREEBUFF_QWEN3_6_PLUS_MODEL_ID]),
-  'base2-free-grok-4-7': new Set([FREEBUFF_GROK_4_7_MODEL_ID]),
-  'base2-free-grok-4-6': new Set([FREEBUFF_GROK_4_6_MODEL_ID]),
-  'base2-free-grok-4-5': new Set([FREEBUFF_GROK_4_5_MODEL_ID]),
-  'base2-free-grok-4-20': new Set([FREEBUFF_GROK_4_20_MODEL_ID]),
-  'base2-free-gemini-3-7-flash': new Set([FREEBUFF_GEMINI_3_7_FLASH_MODEL_ID]),
-  'base2-free-gemini-3-6-flash': new Set([FREEBUFF_GEMINI_3_6_FLASH_MODEL_ID]),
-  'base2-free-gemini-3-5-flash': new Set([FREEBUFF_GEMINI_3_5_FLASH_MODEL_ID]),
-  'base2-free-kimi-k3': new Set([FREEBUFF_KIMI_K3_MODEL_ID]),
-  'base2-free-glm-5-3-prime': new Set([FREEBUFF_GLM_5_3_PRIME_MODEL_ID]),
-  'base2-free-glm-5-3-flashx': new Set([FREEBUFF_GLM_5_3_FLASHX_MODEL_ID]),
-  'base2-free-glm-5-turbo': new Set([FREEBUFF_GLM_5_TURBO_MODEL_ID]),
-  'base2-free-mistral-large': new Set([FREEBUFF_MISTRAL_LARGE_MODEL_ID]),
-  'base2-free-codestral-2508': new Set([FREEBUFF_CODESTRAL_2508_MODEL_ID]),
-  'base2-free-llama-4-maverick': new Set([FREEBUFF_LLAMA_4_MAVERICK_MODEL_ID]),
+  'base2-free-qwen3-6-plus': new Set([FUCKBUFF_QWEN3_6_PLUS_MODEL_ID]),
+  'base2-free-grok-4-7': new Set([FUCKBUFF_GROK_4_7_MODEL_ID]),
+  'base2-free-grok-4-6': new Set([FUCKBUFF_GROK_4_6_MODEL_ID]),
+  'base2-free-grok-4-5': new Set([FUCKBUFF_GROK_4_5_MODEL_ID]),
+  'base2-free-grok-4-20': new Set([FUCKBUFF_GROK_4_20_MODEL_ID]),
+  'base2-free-gemini-3-7-flash': new Set([FUCKBUFF_GEMINI_3_7_FLASH_MODEL_ID]),
+  'base2-free-gemini-3-6-flash': new Set([FUCKBUFF_GEMINI_3_6_FLASH_MODEL_ID]),
+  'base2-free-gemini-3-5-flash': new Set([FUCKBUFF_GEMINI_3_5_FLASH_MODEL_ID]),
+  'base2-free-kimi-k3': new Set([FUCKBUFF_KIMI_K3_MODEL_ID]),
+  'base2-free-glm-5-3-prime': new Set([FUCKBUFF_GLM_5_3_PRIME_MODEL_ID]),
+  'base2-free-glm-5-3-flashx': new Set([FUCKBUFF_GLM_5_3_FLASHX_MODEL_ID]),
+  'base2-free-glm-5-turbo': new Set([FUCKBUFF_GLM_5_TURBO_MODEL_ID]),
+  'base2-free-mistral-large': new Set([FUCKBUFF_MISTRAL_LARGE_MODEL_ID]),
+  'base2-free-codestral-2508': new Set([FUCKBUFF_CODESTRAL_2508_MODEL_ID]),
+  'base2-free-llama-4-maverick': new Set([FUCKBUFF_LLAMA_4_MAVERICK_MODEL_ID]),
   // Muse Spark 1.2's root — on every surface since 2026-09-07, when 1.3 was
   // withdrawn and 1.2 took its place; out of every picker again since
   // 2026-09-28, kept for released binaries. Exactly one model, like every
@@ -981,37 +981,37 @@ export const FREE_MODE_AGENT_MODELS: Record<string, Set<string>> = {
   // the rate-limit queue accounts by model, so a root that could also run
   // something else would let a turn escape the queue's bookkeeping.
   'base2-free-muse-spark': new Set([
-    FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+    FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
   ]),
   // 1.3's root, pinned to its one model for the same reason. NOT a superset
   // of 1.2's: the two draw on one rate-limit bucket but are different models,
   // and a root allowed both would let a request on the retired id escape the
   // retirement one turn at a time.
   'base2-free-muse-spark-1-3': new Set([
-    FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+    FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
   ]),
   // Gemini 3.8 Flash's root, pinned to its one model like every other. The
   // pinning matters more than usual here: `google/gemini-3.1-pro-preview` is a
   // premium route bound to the gemini-thinker subagents, and a root that
   // allowed both `google/` models would be a door onto Pro from an ordinary
   // picker session.
-  'base2-free-gemini-3-8-flash': new Set([FREEBUFF_GEMINI_38_FLASH_MODEL_ID]),
+  'base2-free-gemini-3-8-flash': new Set([FUCKBUFF_GEMINI_38_FLASH_MODEL_ID]),
   // Ox Alpha's root, pinned to its one model like every other. The pinning
   // matters even now that the model is withdrawn: a root allowed more than one
   // model grants everything it allows.
   //
-  // WITHDRAWN 2026-08-27 (FREEBUFF_PAUSED_FREE_MODEL_IDS), and this entry stays
+  // WITHDRAWN 2026-08-27 (FUCKBUFF_PAUSED_FREE_MODEL_IDS), and this entry stays
   // for the same reason M3's above does. Withdrawal is enforced at ADMISSION;
   // live sessions reach this allowlist on every turn, and deleting the row
   // would fail them mid-turn with free_mode_invalid_agent_model — the client
   // wedge the withdrawal was shaped to avoid (#1801). Let them drain; the door
   // is already shut in front of them.
-  'base2-free-ox-alpha': new Set([FREEBUFF_OX_ALPHA_MODEL_ID]),
+  'base2-free-ox-alpha': new Set([FUCKBUFF_OX_ALPHA_MODEL_ID]),
   // Limited-offer trial root. Only this agent may run Fable for free, and only
   // on Fable — the pool accounting keys off the model, so a root that could
   // also run something else would let a session escape it.
-  'base2-free-fable': new Set([FREEBUFF_FABLE_5_1_MODEL_ID]),
-  // Freebuff Cloud custom-stack planner (freebuff_bundled_agents.ts). One
+  'base2-free-fable': new Set([FUCKBUFF_FABLE_5_1_MODEL_ID]),
+  // Fuckbuff Cloud custom-stack planner (fuckbuff_bundled_agents.ts). One
   // variant per model, each allowed exactly the model its definition pins.
   'base2-free-cloud-planner': new Set([CLOUD_PLANNER_MODEL_ID]),
   'base2-free-cloud-planner-limited': new Set([CLOUD_PLANNER_LIMITED_MODEL_ID]),
@@ -1022,52 +1022,52 @@ export const FREE_MODE_AGENT_MODELS: Record<string, Set<string>> = {
   // maps agree on every id they share, so the merge order does not matter.
   ...Object.fromEntries(
     [
-      ...Object.entries(FREEBUFF_WEB_BASE3_AGENT_ID_BY_MODEL),
-      ...Object.entries(FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL),
+      ...Object.entries(FUCKBUFF_WEB_BASE3_AGENT_ID_BY_MODEL),
+      ...Object.entries(FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL),
     ].map(([model, agentId]) => [agentId, new Set([model])]),
   ),
 
-  // Every Freebuff Desktop hosted root variant allows the full desktop picker
+  // Every Fuckbuff Desktop hosted root variant allows the full desktop picker
   // set (the user picks the model per tab). The free-session admission gate still
   // caps premium-bucket models (incl. MiniMax M3) to one active
   // session per user (premium_slot_taken), so "one premium model at a time" in
   // full access holds regardless of this allowlist.
   // No plain id is admissible on the catalog root: its requests carry a
   // catalog handle, which the completions route resolves and admits there.
-  [FREEBUFF_CLI_CATALOG_ROOT_AGENT_ID]: new Set<string>(),
-  [FREEBUFF_DESKTOP_THREAD_AGENT_ID]: FREEBUFF_DESKTOP_MODELS,
-  [getFreebuffDesktopThreadAgentId('local')]: FREEBUFF_DESKTOP_MODELS,
-  [getFreebuffDesktopThreadAgentId('worktree')]: FREEBUFF_DESKTOP_MODELS,
-  [getFreebuffDesktopThreadAgentId('local', 'base3')]: FREEBUFF_DESKTOP_MODELS,
-  [getFreebuffDesktopThreadAgentId('worktree', 'base3')]:
-    FREEBUFF_DESKTOP_MODELS,
+  [FUCKBUFF_CLI_CATALOG_ROOT_AGENT_ID]: new Set<string>(),
+  [FUCKBUFF_DESKTOP_THREAD_AGENT_ID]: FUCKBUFF_DESKTOP_MODELS,
+  [getFuckbuffDesktopThreadAgentId('local')]: FUCKBUFF_DESKTOP_MODELS,
+  [getFuckbuffDesktopThreadAgentId('worktree')]: FUCKBUFF_DESKTOP_MODELS,
+  [getFuckbuffDesktopThreadAgentId('local', 'base3')]: FUCKBUFF_DESKTOP_MODELS,
+  [getFuckbuffDesktopThreadAgentId('worktree', 'base3')]:
+    FUCKBUFF_DESKTOP_MODELS,
   // The auto-run decider reads the same set for the same reason: it decides on
   // the tab's own model, which is the one that tab's session was admitted with.
   // Pinning it to a single model instead would 403 every tab on any other one.
-  [FREEBUFF_DESKTOP_AUTORUN_AGENT_ID]: FREEBUFF_DESKTOP_MODELS,
+  [FUCKBUFF_DESKTOP_AUTORUN_AGENT_ID]: FUCKBUFF_DESKTOP_MODELS,
   // The project-understanding agent runs one model on every surface (GPT-6
   // Luna). Its requests must also look like the project-understanding agent
   // (the completions route's helper check), so the id is not a free route onto
   // Luna, a premium model, for any other prompt.
-  [FREEBUFF_PROJECT_UNDERSTANDING_AGENT_ID]: new Set([
-    FREEBUFF_PROJECT_UNDERSTANDING_MODEL_ID,
+  [FUCKBUFF_PROJECT_UNDERSTANDING_AGENT_ID]: new Set([
+    FUCKBUFF_PROJECT_UNDERSTANDING_MODEL_ID,
   ]),
   // A Projects thread's subagent runs its root's model, so it allows the
   // root's set. This entry only lets it bill as the session it belongs to;
   // who may run it at all is the completions route's Projects check.
-  [FREEBUFF_PROJECTS_SUBAGENT_ID]: FREEBUFF_DESKTOP_MODELS,
+  [FUCKBUFF_PROJECTS_SUBAGENT_ID]: FUCKBUFF_DESKTOP_MODELS,
 
   // File exploration agents. file-picker and file-lister run GPT-6 Luna since
   // 2026-10-05; their Gemini models stay for released clients, which ship
   // their own agent definitions.
   'file-picker': new Set([
     'google/gemini-2.5-flash-lite',
-    FREEBUFF_GPT_6_LUNA_MODEL_ID,
+    FUCKBUFF_GPT_6_LUNA_MODEL_ID,
   ]),
   'file-picker-max': GEMINI_HELPER_MODELS,
   'file-lister': new Set([
     ...GEMINI_HELPER_MODELS,
-    FREEBUFF_GPT_6_LUNA_MODEL_ID,
+    FUCKBUFF_GPT_6_LUNA_MODEL_ID,
   ]),
 
   // Research agents. researcher-web runs GPT-6 Luna from Desktop and
@@ -1075,7 +1075,7 @@ export const FREE_MODE_AGENT_MODELS: Record<string, Set<string>> = {
   // definition stays on Gemini.
   'researcher-web': new Set([
     ...GEMINI_HELPER_MODELS,
-    FREEBUFF_GPT_6_LUNA_MODEL_ID,
+    FUCKBUFF_GPT_6_LUNA_MODEL_ID,
   ]),
   'researcher-docs': GEMINI_HELPER_MODELS,
 
@@ -1084,66 +1084,66 @@ export const FREE_MODE_AGENT_MODELS: Record<string, Set<string>> = {
 
   // Command execution
   basher: GEMINI_HELPER_MODELS,
-  'tmux-cli': new Set([FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]),
-  'tmux-cli-fable': new Set([FREEBUFF_FABLE_5_1_MODEL_ID]),
+  'tmux-cli': new Set([FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]),
+  'tmux-cli-fable': new Set([FUCKBUFF_FABLE_5_1_MODEL_ID]),
 
   // Code reviewer for free mode
-  'code-reviewer-minimax-m3': new Set([FREEBUFF_MINIMAX_M3_MODEL_ID]),
-  'code-reviewer-luna': new Set([FREEBUFF_GPT_5_6_LUNA_MODEL_ID]),
-  'code-reviewer-luna-6': new Set([FREEBUFF_GPT_6_LUNA_MODEL_ID]),
-  'code-reviewer-gpt-6-1-sol': new Set([FREEBUFF_GPT_61_SOL_MODEL_ID]),
-  'code-reviewer-gemini-4-argon': new Set([FREEBUFF_GEMINI_4_ARGON_MODEL_ID]),
-  'code-reviewer-solar-pro4': new Set([FREEBUFF_SOLAR_PRO_4_MODEL_ID]),
-  'code-reviewer-solar-mini4': new Set([FREEBUFF_SOLAR_MINI_4_MODEL_ID]),
+  'code-reviewer-minimax-m3': new Set([FUCKBUFF_MINIMAX_M3_MODEL_ID]),
+  'code-reviewer-luna': new Set([FUCKBUFF_GPT_5_6_LUNA_MODEL_ID]),
+  'code-reviewer-luna-6': new Set([FUCKBUFF_GPT_6_LUNA_MODEL_ID]),
+  'code-reviewer-gpt-6-1-sol': new Set([FUCKBUFF_GPT_61_SOL_MODEL_ID]),
+  'code-reviewer-gemini-4-argon': new Set([FUCKBUFF_GEMINI_4_ARGON_MODEL_ID]),
+  'code-reviewer-solar-pro4': new Set([FUCKBUFF_SOLAR_PRO_4_MODEL_ID]),
+  'code-reviewer-solar-mini4': new Set([FUCKBUFF_SOLAR_MINI_4_MODEL_ID]),
   'code-reviewer-space-bunny-alpha': new Set([
-    FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+    FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
   ]),
-  'code-reviewer-ox-alpha': new Set([FREEBUFF_OX_ALPHA_MODEL_ID]),
-  'code-reviewer-deepseek': new Set([FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID]),
+  'code-reviewer-ox-alpha': new Set([FUCKBUFF_OX_ALPHA_MODEL_ID]),
+  'code-reviewer-deepseek': new Set([FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID]),
   'code-reviewer-deepseek-flash': new Set([
-    FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
   ]),
   'code-reviewer-deepseek-flash-fast': new Set([
-    FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
   ]),
-  'code-reviewer-mimo': new Set([FREEBUFF_MIMO_V25_MODEL_ID]),
-  'code-reviewer-mimo-2-6-pro': new Set([FREEBUFF_MIMO_V26_PRO_MODEL_ID]),
-  'code-reviewer-glm': new Set([FREEBUFF_GLM_V52_MODEL_ID]),
-  'code-reviewer-glm-5-3-flash': new Set([FREEBUFF_GLM_V53_FLASH_MODEL_ID]),
-  'code-reviewer-fable': new Set([FREEBUFF_FABLE_5_1_MODEL_ID]),
+  'code-reviewer-mimo': new Set([FUCKBUFF_MIMO_V25_MODEL_ID]),
+  'code-reviewer-mimo-2-6-pro': new Set([FUCKBUFF_MIMO_V26_PRO_MODEL_ID]),
+  'code-reviewer-glm': new Set([FUCKBUFF_GLM_V52_MODEL_ID]),
+  'code-reviewer-glm-5-3-flash': new Set([FUCKBUFF_GLM_V53_FLASH_MODEL_ID]),
+  'code-reviewer-fable': new Set([FUCKBUFF_FABLE_5_1_MODEL_ID]),
   'code-reviewer-gemini-3-8-flash': new Set([
-    FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
+    FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
   ]),
   'code-reviewer-muse-spark': new Set([
-    FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+    FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
   ]),
   'code-reviewer-muse-spark-1-3': new Set([
-    FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+    FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
   ]),
-  // Wire compatibility only — NOT a freebuff agent. `code-reviewer-lite` now
-  // belongs to Codebuff's paid lite mode and is spawned by no freebuff root and
-  // shipped in no freebuff bundle. Released clients from before the
+  // Wire compatibility only — NOT a fuckbuff agent. `code-reviewer-lite` now
+  // belongs to Codebuff's paid lite mode and is spawned by no fuckbuff root and
+  // shipped in no fuckbuff bundle. Released clients from before the
   // provider-specific reviewer IDs existed still spawn the id with one of the
   // free models below pinned in their own definitions, and this entry is what
   // keeps those sessions working.
   //
-  // Never add lite's model (GPT-5.6 Luna) here. Freebuff now offers that model
+  // Never add lite's model (GPT-5.6 Luna) here. Fuckbuff now offers that model
   // too, but it reaches it through its OWN agents — base2-free-luna and
-  // code-reviewer-luna — which carry Freebuff's pinned OpenAI routing and
+  // code-reviewer-luna — which carry Fuckbuff's pinned OpenAI routing and
   // effort. This entry exists only for pre-provider-reviewer clients; widening
   // it would let a free session run the PAID product's reviewer.
   'code-reviewer-lite': new Set([
-    FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-    FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-    FREEBUFF_MIMO_V25_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+    FUCKBUFF_MIMO_V25_MODEL_ID,
   ]),
 
   // Legacy: kept for the standalone gemini thinker agent if invoked directly.
-  [FREEBUFF_GEMINI_THINKER_AGENT_ID]: new Set([FREEBUFF_GEMINI_PRO_MODEL_ID]),
+  [FUCKBUFF_GEMINI_THINKER_AGENT_ID]: new Set([FUCKBUFF_GEMINI_PRO_MODEL_ID]),
 }
 
 const LUNA_AND_GEMINI_HELPER_MODELS: ReadonlySet<string> = new Set([
-  FREEBUFF_GPT_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID,
   ...GEMINI_HELPER_MODELS,
 ])
 
@@ -1185,27 +1185,27 @@ export function isFreeMode(costMode: CostMode | string | undefined): boolean {
   return costMode === FREE_COST_MODE
 }
 
-export function isFreebuffRootAgent(fullAgentId: string): boolean {
+export function isFuckbuffRootAgent(fullAgentId: string): boolean {
   const { publisherId, agentId } = parseAgentId(fullAgentId)
   if (!agentId) return false
   if (publisherId && publisherId !== 'codebuff') return false
-  return FREEBUFF_ROOT_AGENT_ID_SET.has(agentId)
+  return FUCKBUFF_ROOT_AGENT_ID_SET.has(agentId)
 }
 
 /**
- * The opening sentence of every first-party freebuff root system prompt, one
+ * The opening sentence of every first-party fuckbuff root system prompt, one
  * per prompt family. A free-mode root request must open with one of these
- * verbatim (see hasFreebuffRootSystemPromptOpening).
+ * verbatim (see hasFuckbuffRootSystemPromptOpening).
  *
  * These are copies, not imports: the definitions live in three packages the web
  * API cannot pull in (agents/base2/base2.ts,
- * freebuff/web/convex/.../freebuff_bundled_agents.ts,
- * freebuff-desktop/.../thread-agent.ts). `free-agents.test.ts` reads those
+ * fuckbuff/web/convex/.../fuckbuff_bundled_agents.ts,
+ * fuckbuff-desktop/.../thread-agent.ts). `free-agents.test.ts` reads those
  * sources and fails if any of them stops opening with the string below, so a
  * prompt edit breaks CI rather than 403ing every free user in prod. If that
  * test fails, update BOTH the prompt and this list in the same change.
  */
-export const FREEBUFF_ROOT_SYSTEM_PROMPT_OPENINGS = [
+export const FUCKBUFF_ROOT_SYSTEM_PROMPT_OPENINGS = [
   // agents/base2/base2.ts createBase2('free', …) — every `base2-free-*` CLI
   // root.
   'You are Buffy, the strategic coding assistant.',
@@ -1213,41 +1213,41 @@ export const FREEBUFF_ROOT_SYSTEM_PROMPT_OPENINGS = [
   // `base3-free-*` Web/Cloud roots both compose their prompt onto it, so it
   // stays at position 0 for all of them.
   'You are Buffy, the coding agent behind Codebuff.',
-  // freebuff_bundled_agents.ts CLOUD_PLANNER_SYSTEM_PROMPT — planner roots.
-  'You are Buffy, the Freebuff Cloud project planner.',
-  // freebuff-desktop/.../services/mission.ts — the Desktop mission decider.
+  // fuckbuff_bundled_agents.ts CLOUD_PLANNER_SYSTEM_PROMPT — planner roots.
+  'You are Buffy, the Fuckbuff Cloud project planner.',
+  // fuckbuff-desktop/.../services/mission.ts — the Desktop mission decider.
   // Its own opening rather than base3's: that prompt tells the model it is the
   // coding agent, and this one spends its length establishing the opposite
   // ("you never edit files or run commands"). Position 0 is the worst place to
   // say the wrong thing about who is reading.
-  'You are Buffy, the auto-run agent behind Freebuff Desktop.',
+  'You are Buffy, the auto-run agent behind Fuckbuff Desktop.',
   // common/src/project-understanding/agent.ts — the project-understanding agent.
-  'You are Buffy, the project-understanding agent behind Freebuff.',
+  'You are Buffy, the project-understanding agent behind Fuckbuff.',
   // LEGACY — base2's opening before 92371caa8 (2026-07-07), for installs that
   // have not updated since.
   'You are Buffy, a strategic assistant that orchestrates complex coding tasks through specialized sub-agents.',
 ] as const
 
 /**
- * True when `text` opens with one of the canonical freebuff root prompts.
+ * True when `text` opens with one of the canonical fuckbuff root prompts.
  *
  * A byte-exact prefix test rather than a substring search.
  *
  * Leading whitespace is tolerated because template literals in the agent
  * definitions are `.trim()`ed at slightly different points; nothing else is.
  */
-export function hasFreebuffRootSystemPromptOpening(text: string): boolean {
+export function hasFuckbuffRootSystemPromptOpening(text: string): boolean {
   const trimmed = text.trimStart()
-  return FREEBUFF_ROOT_SYSTEM_PROMPT_OPENINGS.some((opening) =>
+  return FUCKBUFF_ROOT_SYSTEM_PROMPT_OPENINGS.some((opening) =>
     trimmed.startsWith(opening),
   )
 }
 
-export function isFreebuffGeminiThinkerAgent(fullAgentId: string): boolean {
+export function isFuckbuffGeminiThinkerAgent(fullAgentId: string): boolean {
   const { publisherId, agentId } = parseAgentId(fullAgentId)
   if (!agentId) return false
   if (publisherId && publisherId !== 'codebuff') return false
-  return agentId === FREEBUFF_GEMINI_THINKER_AGENT_ID
+  return agentId === FUCKBUFF_GEMINI_THINKER_AGENT_ID
 }
 
 /**
@@ -1256,11 +1256,11 @@ export function isFreebuffGeminiThinkerAgent(fullAgentId: string): boolean {
  * chat `thinker-gemini`). Publisher-spoof-safe like the other gates: a
  * non-codebuff publisher never matches.
  */
-export function isFreebuffGeminiProAgent(fullAgentId: string): boolean {
+export function isFuckbuffGeminiProAgent(fullAgentId: string): boolean {
   const { publisherId, agentId } = parseAgentId(fullAgentId)
   if (!agentId) return false
   if (publisherId && publisherId !== 'codebuff') return false
-  return FREEBUFF_GEMINI_PRO_AGENT_IDS.has(agentId)
+  return FUCKBUFF_GEMINI_PRO_AGENT_IDS.has(agentId)
 }
 
 /**
@@ -1350,8 +1350,8 @@ export function isLimitedTierSubstitutedModel(
   model: string,
 ): boolean {
   if (
-    model !== LIMITED_FREEBUFF_MODEL_ID &&
-    model !== FALLBACK_FREEBUFF_MODEL_ID
+    model !== LIMITED_FUCKBUFF_MODEL_ID &&
+    model !== FALLBACK_FUCKBUFF_MODEL_ID
   ) {
     return false
   }

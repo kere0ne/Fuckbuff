@@ -32,15 +32,15 @@ if (!fromVersion || !toVersion || !target || !supportedTargets.has(target)) {
   process.exit(2)
 }
 
-const testRoot = mkdtempSync(join(tmpdir(), 'freebuff-self-update-'))
+const testRoot = mkdtempSync(join(tmpdir(), 'fuckbuff-self-update-'))
 const homeDir = join(testRoot, 'home')
 const npmPrefix = join(testRoot, 'npm')
 const projectDir = join(testRoot, 'project')
 const configDir = join(homeDir, '.config', 'manicode')
-const binaryName = process.platform === 'win32' ? 'freebuff.exe' : 'freebuff'
+const binaryName = process.platform === 'win32' ? 'fuckbuff.exe' : 'fuckbuff'
 const binaryPath = join(configDir, binaryName)
-const metadataPath = join(configDir, 'freebuff-metadata.json')
-const archivePath = join(testRoot, `freebuff-${fromVersion}.tar.gz`)
+const metadataPath = join(configDir, 'fuckbuff-metadata.json')
+const archivePath = join(testRoot, `fuckbuff-${fromVersion}.tar.gz`)
 const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm'
 const nodeCommand = process.platform === 'win32' ? 'node.exe' : 'node'
 const tarCommand =
@@ -52,7 +52,7 @@ const testEnv = {
   HOME: homeDir,
   USERPROFILE: homeDir,
   npm_config_prefix: npmPrefix,
-  FREEBUFF_BINARY_TARGET: target,
+  FUCKBUFF_BINARY_TARGET: target,
   NO_COLOR: '1',
   TERM: 'dumb',
 }
@@ -98,17 +98,17 @@ function stopProcessTree(pid: number) {
 }
 
 async function main() {
-  console.log(`Installing npm launcher freebuff@${fromVersion}...`)
+  console.log(`Installing npm launcher fuckbuff@${fromVersion}...`)
   run(npmCommand, [
     'install',
     '--global',
-    `freebuff@${fromVersion}`,
+    `fuckbuff@${fromVersion}`,
     '--no-audit',
     '--no-fund',
   ])
 
   const globalRoot = run(npmCommand, ['root', '--global']).trim()
-  const packageDir = join(globalRoot, 'freebuff')
+  const packageDir = join(globalRoot, 'fuckbuff')
   const packageVersion = JSON.parse(
     readFileSync(join(packageDir, 'package.json'), 'utf8'),
   ).version
@@ -118,8 +118,8 @@ async function main() {
     )
   }
 
-  const assetName = `freebuff-${target}.tar.gz`
-  const assetUrl = `https://github.com/CodebuffAI/codebuff-community/releases/download/freebuff-v${fromVersion}/${assetName}`
+  const assetName = `fuckbuff-${target}.tar.gz`
+  const assetUrl = `https://github.com/CodebuffAI/codebuff-community/releases/download/fuckbuff-v${fromVersion}/${assetName}`
   console.log(`Seeding ${assetName} from ${assetUrl}...`)
   const response = await fetch(assetUrl)
   if (!response.ok) {
@@ -248,7 +248,7 @@ async function main() {
     }
     if (
       !output.includes(
-        `Updated Freebuff to ${toVersion}. Ready for your next launch.`,
+        `Updated Fuckbuff to ${toVersion}. Ready for your next launch.`,
       )
     ) {
       throw new Error(
@@ -273,7 +273,7 @@ async function main() {
         `Missing update handoff message\n${output.slice(-16_000)}`,
       )
     }
-    if (!output.includes('Download complete! Starting Freebuff')) {
+    if (!output.includes('Download complete! Starting Fuckbuff')) {
       throw new Error(
         `Missing successful relaunch message\n${output.slice(-16_000)}`,
       )

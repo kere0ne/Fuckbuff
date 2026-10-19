@@ -3,7 +3,7 @@ import { describe, expect, it } from 'bun:test'
 import {
   evaluateOnboardingRequirement,
   parseOnboardingEnabled,
-} from '../freebuff-onboarding-gate'
+} from '../fuckbuff-onboarding-gate'
 
 describe('evaluateOnboardingRequirement', () => {
   it('asks nobody while the switch is off', () => {

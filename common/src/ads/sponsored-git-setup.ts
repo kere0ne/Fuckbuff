@@ -32,7 +32,7 @@ export type SponsoredGitSetupFileExclusion =
   | 'generated'
   | 'dependency'
   | 'git_metadata'
-  | 'freebuff_metadata'
+  | 'fuckbuff_metadata'
   | 'ignored'
   | 'symlink'
   | 'unsupported'
@@ -62,7 +62,7 @@ export type SponsoredGitSetupPreview =
       /**
        * Prefill for the one approval: the user's effective Git identity
        * (global, then system config) when it has one, else a neutral local
-       * default. Never the Freebuff account email. Always editable, and only
+       * default. Never the Fuckbuff account email. Always editable, and only
        * ever applied to the setup commit -- no Git config is written.
        */
       identity: SponsoredGitSetupSuggestedIdentity
@@ -78,8 +78,8 @@ export type SponsoredGitSetupSuggestedIdentity = SponsoredGitSetupIdentity & {
 
 /** Neutral identity for a machine with no Git identity configured. */
 export const SPONSORED_GIT_SETUP_DEFAULT_IDENTITY: SponsoredGitSetupIdentity = {
-  name: 'Freebuff User',
-  email: 'freebuff@users.noreply.local',
+  name: 'Fuckbuff User',
+  email: 'fuckbuff@users.noreply.local',
 }
 
 export type SponsoredGitSetupApproval =

@@ -1,4 +1,4 @@
-import { PLACEMENT_SLOTS } from '../constants/freebuff-placements'
+import { PLACEMENT_SLOTS } from '../constants/fuckbuff-placements'
 
 /** Available canonical waiting-room inventory, in catalog order. */
 export const WAITING_ROOM_PLACEMENT_IDS = PLACEMENT_SLOTS.filter(

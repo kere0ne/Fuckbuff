@@ -116,7 +116,7 @@ export type SponsoredCapability = z.infer<typeof sponsoredCapabilitySchema>
 
 /**
  * The browser workspace's worktree facts on the offer route: a v2 capability
- * with NO `execution`. A Freebuff Web run's surface (`cloud_linux`) is
+ * with NO `execution`. A Fuckbuff Web run's surface (`cloud_linux`) is
  * server-assigned, never claimed on the wire (`SPONSORED_CLOUD_EXECUTION_SURFACE`),
  * so the route adds it itself, and only for a request it proved came from the
  * workspace server (`cloudSponsoredCapability` in `./web-agentic-offer`).

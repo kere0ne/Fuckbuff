@@ -1,7 +1,7 @@
 
 import { describe, test, expect } from 'bun:test'
 
-import { FREEBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import fileLister from '../file-explorer/file-lister'
 import fileListerMax from '../file-explorer/file-lister-max'
@@ -57,9 +57,9 @@ describe('file-picker agent', () => {
   describe('createFilePicker - default mode', () => {
     test('uses GPT-6 Luna, as its lister does', () => {
       expect(createFilePicker('default').model).toBe(
-        FREEBUFF_GPT_6_LUNA_MODEL_ID,
+        FUCKBUFF_GPT_6_LUNA_MODEL_ID,
       )
-      expect(fileLister.model).toBe(FREEBUFF_GPT_6_LUNA_MODEL_ID)
+      expect(fileLister.model).toBe(FUCKBUFF_GPT_6_LUNA_MODEL_ID)
     })
 
     test('spawns single file-lister', () => {
@@ -89,8 +89,8 @@ describe('file-picker agent', () => {
 
   describe('createFilePicker - max mode', () => {
     test('uses GPT-6 Luna, as its lister does', () => {
-      expect(createFilePicker('max').model).toBe(FREEBUFF_GPT_6_LUNA_MODEL_ID)
-      expect(fileListerMax.model).toBe(FREEBUFF_GPT_6_LUNA_MODEL_ID)
+      expect(createFilePicker('max').model).toBe(FUCKBUFF_GPT_6_LUNA_MODEL_ID)
+      expect(fileListerMax.model).toBe(FUCKBUFF_GPT_6_LUNA_MODEL_ID)
     })
 
     test('spawns single file-lister-max', () => {

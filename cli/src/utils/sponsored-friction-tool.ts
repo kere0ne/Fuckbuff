@@ -13,7 +13,7 @@ import type { CustomToolDefinition } from '@codebuff/sdk'
 
 /**
  * `report_friction` for a CLI sponsored run, the same tool Desktop
- * registers (`freebuff-desktop/src/server/harness/sponsored-friction-tool.ts`):
+ * registers (`fuckbuff-desktop/src/server/harness/sponsored-friction-tool.ts`):
  * a blocker or friction the agent hit. It answers at once and `onReport`
  * posts in the background, so the run never waits on telemetry. One tool per
  * run, so its own count is the run's cap.

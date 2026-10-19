@@ -96,9 +96,9 @@ export type CliEnv = BaseEnv & {
   // Set to 1/true to load repository `.agents` files and mcp.json without the
   // interactive trust prompt (CI opt-in; see utils/agent-dir-trust.ts).
   CODEBUFF_TRUST_AGENT_DIRS?: string
-  FREEBUFF_MODE?: string
+  FUCKBUFF_MODE?: string
   /** Absolute per-process override for isolated CLI settings and transcripts. */
-  FREEBUFF_CONFIG_DIR?: string
+  FUCKBUFF_CONFIG_DIR?: string
   /** Local agentic-ads harness only (`scripts/local-agentic-ads`). */
   TEST_AGENTIC_ADS?: string
   TEST_AGENTIC_ADS_CAMPAIGN?: string

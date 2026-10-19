@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, test } from 'bun:test'
 
 import {
-  FREEBUFF_EVENT_ID_HEADER,
-  FREEBUFF_RENDER_DELAY_HEADER,
+  FUCKBUFF_EVENT_ID_HEADER,
+  FUCKBUFF_RENDER_DELAY_HEADER,
 } from './ad-event-hygiene'
 import {
   acknowledgeFirstPartyView,
@@ -174,7 +174,7 @@ describe('acknowledgeFirstPartyView', () => {
         fetch: async () =>
           new Response(null, {
             status: 204,
-            headers: { 'X-Freebuff-Ack-Outcome': 'deduped' },
+            headers: { 'X-Fuckbuff-Ack-Outcome': 'deduped' },
           }),
         onAttempt: ({ outcome }) => {
           outcomes.push(outcome)
@@ -216,7 +216,7 @@ describe('acknowledgeFirstPartyView', () => {
   // COD-365: one id per LOGICAL event, so the server can tell a retry that
   // lost a race from a fresh acknowledgement. Captured once with the rest of
   // the request, so every attempt carries the same value for free.
-  test('sends one X-Freebuff-Event-Id on every attempt and reports it', async () => {
+  test('sends one X-Fuckbuff-Event-Id on every attempt and reports it', async () => {
     const seen: string[] = []
     const observations: { client_event_id?: string; sample_rate?: number }[] =
       []
@@ -234,9 +234,9 @@ describe('acknowledgeFirstPartyView', () => {
         sleep: async () => {},
         fetch: async (_url, init) => {
           const headers = new Headers(init?.headers)
-          seen.push(headers.get(FREEBUFF_EVENT_ID_HEADER)!)
+          seen.push(headers.get(FUCKBUFF_EVENT_ID_HEADER)!)
           expect(headers.get('authorization')).toBe('Bearer t')
-          expect(headers.get(FREEBUFF_RENDER_DELAY_HEADER)).toBe('1234')
+          expect(headers.get(FUCKBUFF_RENDER_DELAY_HEADER)).toBe('1234')
           count++
           return count < 3
             ? new Response(null, { status: 503 })
@@ -263,8 +263,8 @@ describe('acknowledgeFirstPartyView', () => {
         },
       }),
     )
-    expect(headers!.get(FREEBUFF_EVENT_ID_HEADER)).toBe('caller-minted-id')
-    expect(headers!.has(FREEBUFF_RENDER_DELAY_HEADER)).toBe(false)
+    expect(headers!.get(FUCKBUFF_EVENT_ID_HEADER)).toBe('caller-minted-id')
+    expect(headers!.has(FUCKBUFF_RENDER_DELAY_HEADER)).toBe(false)
   })
 })
 

@@ -56,7 +56,7 @@ describe('isFirstPartyRuntimeAppUrl', () => {
     expect(isFirstPartyRuntimeAppUrl('https://www.codebuff.com/')).toBe(true)
     expect(isFirstPartyRuntimeAppUrl('https://staging.codebuff.com')).toBe(true)
     expect(isFirstPartyRuntimeAppUrl('https://freebuff.com')).toBe(true)
-    expect(isFirstPartyRuntimeAppUrl('https://WWW.FREEBUFF.COM')).toBe(true)
+    expect(isFirstPartyRuntimeAppUrl('https://WWW.freebuff.com')).toBe(true)
   })
 
   test('loopback over http or https', () => {

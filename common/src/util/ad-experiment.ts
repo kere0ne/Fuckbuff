@@ -142,7 +142,7 @@ export function fnv1a(input: string): number {
 }
 
 /**
- * Sticky destination split for the Freebuff house-subscription promotion.
+ * Sticky destination split for the Fuckbuff house-subscription promotion.
  *
  * Its own dated salt keeps this acquisition experiment independent from ad
  * routing and creative-selection experiments. Changing the salt starts a new

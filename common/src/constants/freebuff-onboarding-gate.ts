@@ -23,7 +23,7 @@
  */
 
 export type OnboardingRequirementInput = {
-  /** Parsed `FREEBUFF_ONBOARDING_ENABLED`. */
+  /** Parsed `FUCKBUFF_ONBOARDING_ENABLED`. */
   enabled: boolean
   /** Whether the user has answered every question. */
   complete: boolean

@@ -91,9 +91,9 @@ describe('sponsoredCliCapability', () => {
 
   test('uses an existing UUID marker for a no-remote project without creating one', async () => {
     const root = project({ dependencies: { vite: '6.0.0', react: '19.0.0' } })
-    mkdirSync(join(root, '.freebuff'))
+    mkdirSync(join(root, '.fuckbuff'))
     writeFileSync(
-      join(root, '.freebuff', 'project-id'),
+      join(root, '.fuckbuff', 'project-id'),
       '00000000-0000-4000-8000-000000000000\n',
     )
     const result = await sponsoredCliCapability(root, git(), 'linux', linux)

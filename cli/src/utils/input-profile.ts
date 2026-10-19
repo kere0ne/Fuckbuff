@@ -16,7 +16,7 @@
  * submitted text and starts a fresh count, and the run that sends that text
  * takes them.
  */
-import { FREEBUFF_CLIENT_DESCRIPTOR_VERSION } from '@codebuff/common/constants/freebuff-client-descriptor'
+import { FUCKBUFF_CLIENT_DESCRIPTOR_VERSION } from '@codebuff/common/constants/fuckbuff-client-descriptor'
 
 export type InputProfile = {
   typedChars: number
@@ -108,7 +108,7 @@ export function encodeInputProfile(profile: InputProfile): string {
     ['cps', profile.maxTypedCharsPerSecond],
   ]
   return [
-    FREEBUFF_CLIENT_DESCRIPTOR_VERSION,
+    FUCKBUFF_CLIENT_DESCRIPTOR_VERSION,
     ...fields.flatMap(([k, v]) => (v === null ? [] : [`${k}=${v}`])),
   ].join(';')
 }

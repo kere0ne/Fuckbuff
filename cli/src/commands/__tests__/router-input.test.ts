@@ -287,7 +287,7 @@ describe('command-registry', () => {
     })
 
     test('the ChatGPT connect command is gone from both products', () => {
-      // It was freebuff-only while it existed; the integration has since been
+      // It was fuckbuff-only while it existed; the integration has since been
       // removed, so neither the slash menu nor the router knows the name.
       expect(SLASH_COMMANDS.some((cmd) => cmd.id === 'connect')).toBe(false)
       expect(findCommand('connect')).toBeUndefined()

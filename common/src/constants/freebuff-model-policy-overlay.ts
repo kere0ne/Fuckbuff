@@ -5,7 +5,7 @@
  * catalog does not know at all.
  *
  * The compiled policy functions (freebucksSessionPrice,
- * getFreebuffModelEfforts, isFreebuffSessionModelAllowedForAccessTier, ...)
+ * getFuckbuffModelEfforts, isFuckbuffSessionModelAllowedForAccessTier, ...)
  * consult the registered overlay first and fall back to their compiled
  * answer when it has none. Only the web API registers one (from the stored
  * catalog, web/src/server/model-catalog/). Clients never do, so in a client
@@ -14,15 +14,15 @@
  * Every method returns `undefined` for "no override" — never a default — so a
  * model the catalog leaves alone keeps its compiled behaviour.
  */
-import type { FreebuffModelOption } from './freebuff-models'
+import type { FuckbuffModelOption } from './fuckbuff-models'
 import type { ReasoningEffort } from './reasoning-effort'
 
 /** How a tier sees a model: selectable, listed-but-paywalled, or absent. */
-export type FreebuffTierAccess = 'open' | 'locked' | 'hidden'
+export type FuckbuffTierAccess = 'open' | 'locked' | 'hidden'
 
-export interface FreebuffModelPolicyOverlay {
+export interface FuckbuffModelPolicyOverlay {
   /** A model option for an id only the catalog knows (catalog-only model). */
-  model?(modelId: string): FreebuffModelOption | undefined
+  model?(modelId: string): FuckbuffModelOption | undefined
   /** Every enabled catalog model id (compiled and catalog-only), for callers
    *  that enumerate — a price map, a lock list. */
   catalogModelIds?(): readonly string[]
@@ -42,21 +42,21 @@ export interface FreebuffModelPolicyOverlay {
   tierAccess?(
     modelId: string,
     tier: 'full' | 'limited',
-  ): FreebuffTierAccess | undefined
+  ): FuckbuffTierAccess | undefined
   /** A `locked` model opens free for a viewer resolved to the US. */
   usOpen?(modelId: string): boolean | undefined
   /** `null` = explicitly no limit. */
   dailySessionLimit?(modelId: string): number | null | undefined
 }
 
-let overlay: FreebuffModelPolicyOverlay | null = null
+let overlay: FuckbuffModelPolicyOverlay | null = null
 
-export function setFreebuffModelPolicyOverlay(
-  next: FreebuffModelPolicyOverlay | null,
+export function setFuckbuffModelPolicyOverlay(
+  next: FuckbuffModelPolicyOverlay | null,
 ): void {
   overlay = next
 }
 
-export function getFreebuffModelPolicyOverlay(): FreebuffModelPolicyOverlay | null {
+export function getFuckbuffModelPolicyOverlay(): FuckbuffModelPolicyOverlay | null {
   return overlay
 }

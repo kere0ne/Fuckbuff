@@ -507,7 +507,7 @@ describe('sponsored rooted filesystem: a swap after the path check', () => {
  * sandbox bounded this; now `/proc/self/fd` (Linux) and `/.vol` (macOS) do.
  *
  * Skipped on Windows, where Node exposes no handle-relative open; see
- * `docs/freebuff-sponsored-local-execution.md`, "The file layer without a
+ * `docs/fuckbuff-sponsored-local-execution.md`, "The file layer without a
  * shell (COD-642)".
  */
 describe('sponsored rooted filesystem: a swap after the directory is pinned', () => {

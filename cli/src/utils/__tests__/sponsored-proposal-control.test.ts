@@ -123,7 +123,7 @@ describe('the caller keeps the card live when nothing was saved', () => {
 })
 
 describe('the transport resolves its host through the login constant', () => {
-  // Reading `process.env.NEXT_PUBLIC_FREEBUFF_APP_URL` raw skipped both halves
+  // Reading `process.env.NEXT_PUBLIC_FUCKBUFF_APP_URL` raw skipped both halves
   // of that constant: the @codebuff/common/env schema, and the IS_DEV
   // localhost branch — so a developer's proposal traffic left their laptop for
   // production while every other CLI call stayed on :3002, writing real prefs
@@ -137,9 +137,9 @@ describe('the transport resolves its host through the login constant', () => {
   // an explanation must not fail the assertion it explains.
   const code = api.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '')
 
-  test('imports FREEBUFF_WEB_URL and reads no env var of its own', () => {
+  test('imports FUCKBUFF_WEB_URL and reads no env var of its own', () => {
     expect(api).toContain(
-      "import { FREEBUFF_WEB_URL } from '../login/constants'",
+      "import { FUCKBUFF_WEB_URL } from '../login/constants'",
     )
     expect(code).not.toContain('process.env')
   })

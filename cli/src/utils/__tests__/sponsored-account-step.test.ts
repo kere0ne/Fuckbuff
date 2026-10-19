@@ -135,7 +135,7 @@ describe('a credential-only campaign', () => {
     await tick()
     h.step.answer({ kind: 'credentials', values: { ACME_API_KEY: KEY } })
     expect((await result).note).toContain(
-      'Freebuff did NOT save the value to an env file',
+      'Fuckbuff did NOT save the value to an env file',
     )
   })
 })

@@ -14,7 +14,7 @@ import {
   sponsorBreakArmKey,
 } from '../ad-experiment'
 
-import { PLACEMENT_SLOTS } from '../../constants/freebuff-placements'
+import { PLACEMENT_SLOTS } from '../../constants/fuckbuff-placements'
 
 import type { SponsorBreakArm } from '../ad-experiment'
 

@@ -18,7 +18,7 @@ import { useSheenAnimation } from '../hooks/use-sheen-animation'
 import { useTheme } from '../hooks/use-theme'
 import { formatUrl, calculateResponsiveLayout } from '../login/utils'
 import { useLoginStore } from '../state/login-store'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { copyTextToClipboard, isRemoteSession } from '../utils/clipboard'
 import { getFingerprintId } from '../utils/fingerprint'
 import { logger } from '../utils/logger'
@@ -467,7 +467,7 @@ export const LoginModal = ({
                   <span fg={theme.secondary}>
                     Tip: Can't copy? Exit and run{' '}
                   </span>
-                  <span fg={theme.primary}>{IS_FREEBUFF ? 'freebuff' : 'codebuff'} login</span>
+                  <span fg={theme.primary}>{IS_FUCKBUFF ? 'fuckbuff' : 'codebuff'} login</span>
                   <span fg={theme.secondary}>
                     {' '}instead.
                   </span>

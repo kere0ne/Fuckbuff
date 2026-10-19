@@ -7,7 +7,7 @@ import {
   afterEach,
   spyOn,
 } from 'bun:test'
-import { FREEBUFF_PROVIDER_USAGE_MESSAGE } from '@codebuff/common/constants/freebuff-errors'
+import { FUCKBUFF_PROVIDER_USAGE_MESSAGE } from '@codebuff/common/constants/fuckbuff-errors'
 
 import type { ChatMessage } from '../../../types/chat'
 import type { SendMessageTimerController } from '../../../utils/send-message-timer'
@@ -36,7 +36,7 @@ const ensureEnv = () => {
 ensureEnv()
 
 const { useChatStore } = await import('../../../state/chat-store')
-const { IS_FREEBUFF } = await import('../../../utils/constants')
+const { IS_FUCKBUFF } = await import('../../../utils/constants')
 const { createStreamController } = await import('../../stream-state')
 const {
   setupStreamingContext,
@@ -47,8 +47,8 @@ const {
 } = await import('../send-message')
 const { createBatchedMessageUpdater } =
   await import('../../../utils/message-updater')
-const freebuffSession = await import('../../use-freebuff-session')
-const { FREEBUFF_MODEL_UNAVAILABLE_MESSAGE, FREEBUFF_REFUNDED_START_HINT } =
+const fuckbuffSession = await import('../../use-fuckbuff-session')
+const { FUCKBUFF_MODEL_UNAVAILABLE_MESSAGE, FUCKBUFF_REFUNDED_START_HINT } =
   await import('../../../utils/error-handling')
 import { createPaymentRequiredError } from '@codebuff/sdk'
 import type { RunState } from '@codebuff/sdk'
@@ -483,7 +483,7 @@ describe('handleRunCompletion', () => {
     })
   })
 
-  test('provider credit wording follows the Freebuff client policy', () => {
+  test('provider credit wording follows the Fuckbuff client policy', () => {
     let messages = createBaseMessages()
     const timerController = createMockTimerController()
     const updater = createBatchedMessageUpdater('ai-1', (fn: any) => {
@@ -513,7 +513,7 @@ describe('handleRunCompletion', () => {
     })
 
     expect(messages[0]?.userError).toBe(
-      IS_FREEBUFF ? FREEBUFF_PROVIDER_USAGE_MESSAGE : 'Not Enough Credits',
+      IS_FUCKBUFF ? FUCKBUFF_PROVIDER_USAGE_MESSAGE : 'Not Enough Credits',
     )
   })
 
@@ -554,7 +554,7 @@ describe('handleRunCompletion', () => {
         setHasReceivedPlanResponse: () => {},
       })
 
-      if (IS_FREEBUFF) {
+      if (IS_FUCKBUFF) {
         expect(setInputModeMock).not.toHaveBeenCalled()
       } else {
         expect(setInputModeMock).toHaveBeenCalledWith('outOfCredits')
@@ -1025,7 +1025,7 @@ describe('handleRunError', () => {
     expect(messages[0]?.userError).toBe('Provider rate limit exceeded')
   })
 
-  test('BYOK thrown 401 preserves the provider key guidance instead of Freebuff billing text', () => {
+  test('BYOK thrown 401 preserves the provider key guidance instead of Fuckbuff billing text', () => {
     let messages = createBaseMessages()
     const updater = createBatchedMessageUpdater('ai-1', (fn: any) => {
       messages = fn(messages)
@@ -1050,7 +1050,7 @@ describe('handleRunError', () => {
     })
 
     expect(messages[0]?.userError).toContain('Check or replace the key')
-    expect(messages[0]?.userError).not.toBe(FREEBUFF_PROVIDER_USAGE_MESSAGE)
+    expect(messages[0]?.userError).not.toBe(FUCKBUFF_PROVIDER_USAGE_MESSAGE)
     expect(setInputModeMock).not.toHaveBeenCalled()
   })
 
@@ -1132,7 +1132,7 @@ describe('handleRunError', () => {
       isByokRun: false,
     })
 
-    if (IS_FREEBUFF) {
+    if (IS_FUCKBUFF) {
       expect(setInputModeMock).not.toHaveBeenCalled()
     } else {
       expect(setInputModeMock).toHaveBeenCalledWith('outOfCredits')
@@ -1180,7 +1180,7 @@ describe('handleRunError', () => {
     // Content is preserved, error is stored in userError field
     expect(aiMessage!.content).toBe('Partial streamed content')
     expect(aiMessage!.userError).toContain(
-      IS_FREEBUFF ? FREEBUFF_PROVIDER_USAGE_MESSAGE : 'Out of credits',
+      IS_FUCKBUFF ? FUCKBUFF_PROVIDER_USAGE_MESSAGE : 'Out of credits',
     )
 
     // Blocks should be preserved for debugging context
@@ -1189,7 +1189,7 @@ describe('handleRunError', () => {
     // Message should be marked complete
     expect(aiMessage!.isComplete).toBe(true)
 
-    if (IS_FREEBUFF) {
+    if (IS_FUCKBUFF) {
       expect(setInputModeMock).not.toHaveBeenCalled()
     } else {
       expect(setInputModeMock).toHaveBeenCalledWith('outOfCredits')
@@ -1981,7 +1981,7 @@ describe('resetEarlyReturnState', () => {
   })
 })
 
-describe('freebuff gate errors', () => {
+describe('fuckbuff gate errors', () => {
   const makeUpdater = (messages: ChatMessage[]) => {
     const updater = createBatchedMessageUpdater('ai-1', (fn: any) => {
       const next = fn(messages)
@@ -2036,7 +2036,7 @@ describe('freebuff gate errors', () => {
       updateChainInProgress: () => {},
     })
     updater.flush()
-    // Chat-first Freebuff has no session-ended banner: without this line the
+    // Chat-first Fuckbuff has no session-ended banner: without this line the
     // turn (e.g. one resumed by an ask_user answer) just stopped silently.
     expect(messages[0].userError).toBe(
       'Your free session ended, so the agent stopped here. Send a message to start a new session and continue.',
@@ -2162,9 +2162,9 @@ describe('freebuff gate errors', () => {
     let sessionSpies: Array<ReturnType<typeof spyOn>> = []
     beforeEach(() => {
       sessionSpies = [
-        spyOn(freebuffSession, 'markFreebuffSessionEnded'),
-        spyOn(freebuffSession, 'markFreebuffSessionSuperseded'),
-        spyOn(freebuffSession, 'refreshFreebuffSession').mockResolvedValue(
+        spyOn(fuckbuffSession, 'markFuckbuffSessionEnded'),
+        spyOn(fuckbuffSession, 'markFuckbuffSessionSuperseded'),
+        spyOn(fuckbuffSession, 'refreshFuckbuffSession').mockResolvedValue(
           undefined,
         ),
       ]
@@ -2175,7 +2175,7 @@ describe('freebuff gate errors', () => {
 
     test('handleRunCompletion shows the server message and keeps the session', () => {
       const serverMessage =
-        'DeepSeek V4 Pro has been withdrawn from Freebuff. Switch to GLM 5.3 Flash to continue.'
+        'DeepSeek V4 Pro has been withdrawn from Fuckbuff. Switch to GLM 5.3 Flash to continue.'
       const messages = runCompletionWith({
         type: 'error',
         message: serverMessage,
@@ -2213,7 +2213,7 @@ describe('freebuff gate errors', () => {
         updateChainInProgress: () => {},
       })
       updater.flush()
-      expect(messages[0].userError).toBe(FREEBUFF_MODEL_UNAVAILABLE_MESSAGE)
+      expect(messages[0].userError).toBe(FUCKBUFF_MODEL_UNAVAILABLE_MESSAGE)
       for (const spy of sessionSpies) expect(spy).not.toHaveBeenCalled()
     })
   })
@@ -2224,8 +2224,8 @@ describe('freebuff gate errors', () => {
     let ended: ReturnType<typeof spyOn>
     let superseded: ReturnType<typeof spyOn>
     beforeEach(() => {
-      ended = spyOn(freebuffSession, 'markFreebuffSessionEnded')
-      superseded = spyOn(freebuffSession, 'markFreebuffSessionSuperseded')
+      ended = spyOn(fuckbuffSession, 'markFuckbuffSessionEnded')
+      superseded = spyOn(fuckbuffSession, 'markFuckbuffSessionSuperseded')
     })
     afterEach(() => {
       ended.mockRestore()
@@ -2244,11 +2244,11 @@ describe('freebuff gate errors', () => {
         statusCode: 409,
       })
       expect(messages[0].userError).toBe(
-        `${serverMessage} ${FREEBUFF_REFUNDED_START_HINT}`,
+        `${serverMessage} ${FUCKBUFF_REFUNDED_START_HINT}`,
       )
       expect(messages[0].userError).toContain('/model')
       expect(messages[0].userError).not.toContain('taken over')
-      expect(messages[0].userError).not.toContain('Restart Freebuff')
+      expect(messages[0].userError).not.toContain('Restart Fuckbuff')
       expect(messages[0].isComplete).toBe(true)
       // `ended`, not the terminal `superseded`: the next send admits anew.
       expect(ended).toHaveBeenCalledTimes(1)
@@ -2275,7 +2275,7 @@ describe('freebuff gate errors', () => {
       const messages = runCompletionWith({
         type: 'error',
         message:
-          'Another instance of freebuff has taken over this session. Only one instance per account is allowed.',
+          'Another instance of fuckbuff has taken over this session. Only one instance per account is allowed.',
         error: 'session_superseded',
         statusCode: 409,
       })

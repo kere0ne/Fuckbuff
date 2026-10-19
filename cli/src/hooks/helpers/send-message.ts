@@ -1,29 +1,29 @@
-import { FREEBUFF_PROVIDER_USAGE_MESSAGE } from '@codebuff/common/constants/freebuff-errors'
+import { FUCKBUFF_PROVIDER_USAGE_MESSAGE } from '@codebuff/common/constants/fuckbuff-errors'
 import { getErrorObject } from '@codebuff/common/util/error'
 
 import {
-  markFreebuffSessionCountryBlocked,
-  markFreebuffSessionEnded,
-  markFreebuffSessionSuperseded,
-  refreshFreebuffSession,
-} from '../use-freebuff-session'
+  markFuckbuffSessionCountryBlocked,
+  markFuckbuffSessionEnded,
+  markFuckbuffSessionSuperseded,
+  refreshFuckbuffSession,
+} from '../use-fuckbuff-session'
 import { noteAdTurnFailure } from '../../ads/ad-signals'
 import { getProjectRoot } from '../../project-files'
 import { useChatStore } from '../../state/chat-store'
-import { IS_FREEBUFF } from '../../utils/constants'
+import { IS_FUCKBUFF } from '../../utils/constants'
 import { processBashContext } from '../../utils/bash-context-processor'
 import { markRunningAgentsAsCancelled } from '../../utils/block-operations'
 import {
   getCountryBlockFromFreeModeError,
   getFreeModeUnavailableErrorMessage,
-  getFreebuffGateErrorKind,
-  getFreebuffRateLimitErrorMessage,
-  getFreebuffSupersededReason,
+  getFuckbuffGateErrorKind,
+  getFuckbuffRateLimitErrorMessage,
+  getFuckbuffSupersededReason,
   isOutOfCreditsError,
-  isFreebuffProviderUsageError,
+  isFuckbuffProviderUsageError,
   isFreeModeUnavailableError,
-  FREEBUFF_MODEL_UNAVAILABLE_MESSAGE,
-  FREEBUFF_REFUNDED_START_HINT,
+  FUCKBUFF_MODEL_UNAVAILABLE_MESSAGE,
+  FUCKBUFF_REFUNDED_START_HINT,
   OUT_OF_CREDITS_MESSAGE,
 } from '../../utils/error-handling'
 import { formatElapsedTime } from '../../utils/format-elapsed-time'
@@ -48,7 +48,7 @@ import type {
 } from '../../types/store'
 import type { ChatMessage } from '../../types/chat'
 import type { AgentMode } from '../../utils/constants'
-import type { FreebuffGateErrorKind } from '../../utils/error-handling'
+import type { FuckbuffGateErrorKind } from '../../utils/error-handling'
 import type { SendMessageTimerController } from '../../utils/send-message-timer'
 import type { StreamController } from '../stream-state'
 import type { StreamStatus } from '../use-message-queue'
@@ -348,7 +348,7 @@ export const handleRunCompletion = (params: {
   wasAbortedByUser: boolean
   /** Immutable inference source captured when this run started. */
   isByokRun?: boolean
-  /** Whether the run streamed any content before finishing. A freebuff gate
+  /** Whether the run streamed any content before finishing. A fuckbuff gate
    *  rejection with no content means the prompt was consumed unprocessed —
    *  surfaced as an inline error instead of silently looking sent. */
   hasReceivedContent?: boolean
@@ -408,8 +408,8 @@ export const handleRunCompletion = (params: {
   if (output.type === 'error') {
     // COD-757: the failure's class and time only, never its text.
     noteAdTurnFailure(output.message)
-    if (IS_FREEBUFF && !isByokRun && isFreebuffProviderUsageError(output)) {
-      updater.setError(FREEBUFF_PROVIDER_USAGE_MESSAGE)
+    if (IS_FUCKBUFF && !isByokRun && isFuckbuffProviderUsageError(output)) {
+      updater.setError(FUCKBUFF_PROVIDER_USAGE_MESSAGE)
       finalizeAfterError()
       return
     }
@@ -424,8 +424,8 @@ export const handleRunCompletion = (params: {
 
     if (!isByokRun && isFreeModeUnavailableError(output)) {
       updater.setError(getFreeModeUnavailableErrorMessage(output))
-      if (IS_FREEBUFF) {
-        markFreebuffSessionCountryBlocked(
+      if (IS_FUCKBUFF) {
+        markFuckbuffSessionCountryBlocked(
           getCountryBlockFromFreeModeError(output) ?? {
             countryCode: 'UNKNOWN',
           },
@@ -435,9 +435,9 @@ export const handleRunCompletion = (params: {
       return
     }
 
-    const gateKind = getFreebuffGateErrorKind(output)
+    const gateKind = getFuckbuffGateErrorKind(output)
     if (!isByokRun && gateKind) {
-      handleFreebuffGateError(gateKind, updater, {
+      handleFuckbuffGateError(gateKind, updater, {
         messageWasDropped: params.hasReceivedContent === false,
         serverMessage: output.message,
       })
@@ -445,11 +445,11 @@ export const handleRunCompletion = (params: {
       return
     }
 
-    const freebuffRateLimitMessage = IS_FREEBUFF && !isByokRun
-      ? getFreebuffRateLimitErrorMessage(output)
+    const fuckbuffRateLimitMessage = IS_FUCKBUFF && !isByokRun
+      ? getFuckbuffRateLimitErrorMessage(output)
       : null
-    if (freebuffRateLimitMessage) {
-      updater.setError(freebuffRateLimitMessage)
+    if (fuckbuffRateLimitMessage) {
+      updater.setError(fuckbuffRateLimitMessage)
       finalizeAfterError()
       return
     }
@@ -539,8 +539,8 @@ export const handleRunError = (params: {
   })
   timerController.stop('error')
 
-  if (IS_FREEBUFF && !isByokRun && isFreebuffProviderUsageError(error)) {
-    updater.setError(FREEBUFF_PROVIDER_USAGE_MESSAGE)
+  if (IS_FUCKBUFF && !isByokRun && isFuckbuffProviderUsageError(error)) {
+    updater.setError(FUCKBUFF_PROVIDER_USAGE_MESSAGE)
     return
   }
 
@@ -553,8 +553,8 @@ export const handleRunError = (params: {
 
   if (!isByokRun && isFreeModeUnavailableError(error)) {
     updater.setError(getFreeModeUnavailableErrorMessage(error))
-    if (IS_FREEBUFF) {
-      markFreebuffSessionCountryBlocked(
+    if (IS_FUCKBUFF) {
+      markFuckbuffSessionCountryBlocked(
         getCountryBlockFromFreeModeError(error) ?? {
           countryCode: 'UNKNOWN',
         },
@@ -563,20 +563,20 @@ export const handleRunError = (params: {
     return
   }
 
-  const gateKind = getFreebuffGateErrorKind(error)
+  const gateKind = getFuckbuffGateErrorKind(error)
   if (!isByokRun && gateKind) {
-    handleFreebuffGateError(gateKind, updater, {
+    handleFuckbuffGateError(gateKind, updater, {
       messageWasDropped: hasReceivedContent === false,
       serverMessage: errorInfo.message,
     })
     return
   }
 
-  const freebuffRateLimitMessage = IS_FREEBUFF && !isByokRun
-    ? getFreebuffRateLimitErrorMessage(error)
+  const fuckbuffRateLimitMessage = IS_FUCKBUFF && !isByokRun
+    ? getFuckbuffRateLimitErrorMessage(error)
     : null
-  if (freebuffRateLimitMessage) {
-    updater.setError(freebuffRateLimitMessage)
+  if (fuckbuffRateLimitMessage) {
+    updater.setError(fuckbuffRateLimitMessage)
     return
   }
 
@@ -590,8 +590,8 @@ export const handleRunError = (params: {
  * the request because our session is no longer valid; update local state so
  * the UI reflects reality and we stop sending requests until we re-admit.
  */
-function handleFreebuffGateError(
-  kind: FreebuffGateErrorKind,
+function handleFuckbuffGateError(
+  kind: FuckbuffGateErrorKind,
   updater: BatchedMessageUpdater,
   opts: { messageWasDropped?: boolean; serverMessage?: string } = {},
 ) {
@@ -605,7 +605,7 @@ function handleFreebuffGateError(
       // agent is still working. Also disposes the batched-updater flush
       // interval.
       updater.markComplete()
-      // Always say why the turn stopped. Chat-first Freebuff has no
+      // Always say why the turn stopped. Chat-first Fuckbuff has no
       // session-ended banner, so a run that got partway (say, right after the
       // user answered an ask_user question) otherwise just stops, and the
       // next send's admission prompt reads as the CLI refusing it. A prompt
@@ -617,8 +617,8 @@ function handleFreebuffGateError(
       )
       // Flip to `ended` instead of auto re-queuing: in-flight agent work can
       // finish under the server-side grace period, and the next send admits a
-      // new session (use-freebuff-chat-admission.ts).
-      markFreebuffSessionEnded()
+      // new session (use-fuckbuff-chat-admission.ts).
+      markFuckbuffSessionEnded()
       return
     case 'waiting_room_queued':
       // Legacy error code: sessions are admitted immediately now, so this is
@@ -628,13 +628,13 @@ function handleFreebuffGateError(
       )
       // Re-sync without resetting chat — this is a "we'll wait", not a
       // "let's start fresh".
-      refreshFreebuffSession().catch(() => {})
+      refreshFuckbuffSession().catch(() => {})
       return
     case 'session_superseded': {
-      const reason = getFreebuffSupersededReason(opts.serverMessage)
+      const reason = getFuckbuffSupersededReason(opts.serverMessage)
       if (reason !== 'taken_over') {
         // A refunded start or an already-closed hour, not another instance:
-        // nothing is fighting us for the seat, and restarting Freebuff would
+        // nothing is fighting us for the seat, and restarting Fuckbuff would
         // not help. Say what the server said and end the session, so the next
         // send admits a new one (possibly on another model). Both readings
         // come from the message, so it is never empty here.
@@ -642,18 +642,18 @@ function handleFreebuffGateError(
         const serverMessage = (opts.serverMessage ?? '').trim()
         updater.setError(
           reason === 'refunded_start'
-            ? `${serverMessage} ${FREEBUFF_REFUNDED_START_HINT}`
+            ? `${serverMessage} ${FUCKBUFF_REFUNDED_START_HINT}`
             : serverMessage,
         )
-        markFreebuffSessionEnded()
+        markFuckbuffSessionEnded()
         return
       }
       updater.setError(
-        'This Freebuff session was released or taken over by another instance. Restart Freebuff to start another session.',
+        'This Fuckbuff session was released or taken over by another instance. Restart Fuckbuff to start another session.',
       )
       // Terminal state: stop polling and flip UI to a "please restart" screen
       // so we don't silently fight the other instance for the seat.
-      markFreebuffSessionSuperseded()
+      markFuckbuffSessionSuperseded()
       return
     }
     case 'model_unavailable':
@@ -662,7 +662,7 @@ function handleFreebuffGateError(
       // nor re-admit — that is the re-admission loop the code exists to avoid.
       // The server's message names the replacement model.
       updater.setError(
-        opts.serverMessage?.trim() || FREEBUFF_MODEL_UNAVAILABLE_MESSAGE,
+        opts.serverMessage?.trim() || FUCKBUFF_MODEL_UNAVAILABLE_MESSAGE,
       )
       return
     default: {
@@ -670,9 +670,9 @@ function handleFreebuffGateError(
       const unhandled: never = kind
       updater.setError(
         opts.serverMessage?.trim() ||
-          'Freebuff could not run this turn on your free session.',
+          'Fuckbuff could not run this turn on your free session.',
       )
-      logger.warn({ kind: unhandled }, 'Unhandled freebuff gate error kind')
+      logger.warn({ kind: unhandled }, 'Unhandled fuckbuff gate error kind')
       return
     }
   }

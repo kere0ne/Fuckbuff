@@ -16,7 +16,7 @@ function tempPathFor(filePath: string): string {
  * A successful fsync leaves no trace in the resulting file: the only way to
  * tell a durable write from a non-durable one, short of cutting the machine's
  * power, is the sequence of syscalls it makes. Tests substitute a recording
- * delegate here to assert that sequence. Modelled on freebuff-desktop's
+ * delegate here to assert that sequence. Modelled on fuckbuff-desktop's
  * `JournalStore` (server/repo/session-journal.ts), which exists for the same
  * reason.
  */
@@ -95,7 +95,7 @@ async function syncDirectoryAsync(directory: string): Promise<void> {
  * before publishing the new name, or a power loss can leave a correctly-sized
  * file of NUL bytes — which is what a user whose machine was hard-crashed
  * mid-session got, in place of their whole transcript. Same reasoning, same
- * discipline, as freebuff-desktop's session journal and state file.
+ * discipline, as fuckbuff-desktop's session journal and state file.
  *
  * The cost is deliberate. Every caller writes session state a user cannot
  * reproduce, at human rates — a few writes per turn, plus a checkpoint drain

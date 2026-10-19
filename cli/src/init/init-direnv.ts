@@ -123,7 +123,7 @@ export function getDirenvExport(envrcDir: string): Record<string, string | null>
  */
 export const STEERING_ENV_VAR_PATTERNS: readonly RegExp[] = [
   /^CODEBUFF_/,
-  /^FREEBUFF_/,
+  /^FUCKBUFF_/,
   /^NEXT_PUBLIC_/,
   /^OVERRIDE_(TARGET|PLATFORM|ARCH)$/,
   /^NODE_OPTIONS$/,

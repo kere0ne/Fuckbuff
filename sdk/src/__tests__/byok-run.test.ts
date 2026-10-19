@@ -70,7 +70,7 @@ describe('direct BYOK SDK runs', () => {
   })
 
   test('runs a real local write-file tool loop without any Codebuff request', async () => {
-    const cwd = await mkdtemp(path.join(tmpdir(), 'freebuff-byok-'))
+    const cwd = await mkdtemp(path.join(tmpdir(), 'fuckbuff-byok-'))
     await writeFile(path.join(cwd, 'input.txt'), 'source value')
     const seen: Array<{ url: string; auth: string; body: string }> = []
     let completion = 0
@@ -244,7 +244,7 @@ describe('direct BYOK SDK runs', () => {
     expect(requests.at(-1)!.body).toContain('violet-otter')
 
     const hosted = new CodebuffClient({ apiKey: 'hosted-recovery-canary', agentDefinitions: [agent] })
-    const returned = await hosted.run({ agent: agent.id, prompt: 'Continue with Freebuff.', previousRun: rotated, allowInferenceSourceChange: true })
+    const returned = await hosted.run({ agent: agent.id, prompt: 'Continue with Fuckbuff.', previousRun: rotated, allowInferenceSourceChange: true })
     expect(returned.output.type).not.toBe('error')
     expect(returned.inference).toEqual({ source: 'codebuff' })
     expect(requests.at(-1)).toMatchObject({ url: new URL('/api/v1/chat/completions', getWebsiteUrl()).toString(), auth: 'Bearer hosted-recovery-canary' })
@@ -288,9 +288,9 @@ describe('direct BYOK SDK runs', () => {
 
   test.each([
     ['changed', 'BYOK connection changed; select its current revision to continue'],
-    ['removed', 'BYOK connection was removed; select another provider or a Freebuff model to continue'],
+    ['removed', 'BYOK connection was removed; select another provider or a Fuckbuff model to continue'],
     ['corrupt', 'BYOK connection metadata is corrupt; restore it before continuing'],
-    ['locked', 'BYOK settings are locked. Close other Freebuff processes and retry.'],
+    ['locked', 'BYOK settings are locked. Close other Fuckbuff processes and retry.'],
     ['unknown', 'Could not verify the saved BYOK connection. Reselect the provider and retry.'],
   ])('reports a %s local connection failure without provider dispatch', async (failure, expected) => {
     let requests = 0

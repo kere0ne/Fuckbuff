@@ -1544,7 +1544,7 @@ export function sponsoredSkillConsentView(
 }
 
 /**
- * Why a browser-workspace (Freebuff Web) run of `skill` could only fail, or
+ * Why a browser-workspace (Fuckbuff Web) run of `skill` could only fail, or
  * null when it can run there. A web run executes in a bare Linux VM whose
  * commands may install only the skill's pinned npm packages, so a skill that
  * does not declare `linux`, or needs a vendor CLI already on PATH (`path`
@@ -1563,7 +1563,7 @@ export function sponsoredSkillWebRefusal(
 
 /**
  * The link Desktop's sidebar sign-up opens and attributes
- * (`freebuff-desktop/src/shared/sponsored-signup.ts`) in a procedure TEXT:
+ * (`fuckbuff-desktop/src/shared/sponsored-signup.ts`) in a procedure TEXT:
  * the FIRST `https://` URL whose `bfcid` parameter is the `{bfcid}` slot (or
  * its URL-encoded form). Null means a run of this text converts with no
  * attribution: `{{advertiserLink}}` alone does not count, because it is text
@@ -1617,4 +1617,4 @@ export function sponsoredProcedureTrackedLinkError(
 
 /** The authoring error for a skill with no tracked link, or null. */
 export const SPONSORED_SKILL_TRACKED_LINK_ERROR =
-  'needs a tracked link: the first sign-up or credential link (a user step’s credential getUrl, or a URL in its instructions) must be https://… with `bfcid={bfcid}` in its query, e.g. https://example.com/signup?utm_source=freebuff&utm_medium=paid&utm_campaign=<campaign>&bfcid={bfcid}. Desktop opens that link in the sidebar and swaps in the signed click id; without it the conversion has no attribution. `{{advertiserLink}}` does not count.'
+  'needs a tracked link: the first sign-up or credential link (a user step’s credential getUrl, or a URL in its instructions) must be https://… with `bfcid={bfcid}` in its query, e.g. https://example.com/signup?utm_source=fuckbuff&utm_medium=paid&utm_campaign=<campaign>&bfcid={bfcid}. Desktop opens that link in the sidebar and swaps in the signed click id; without it the conversion has no attribution. `{{advertiserLink}}` does not count.'

@@ -1,4 +1,4 @@
-import { FREEBUFF_DEFAULT_MODEL_MIGRATION_ID } from '../constants/freebuff-models'
+import { FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID } from '../constants/fuckbuff-models'
 
 /** Wherever a surface keeps its remembered model and the migration stamp:
  *  a settings file, a localStorage key, a set of database rows. */
@@ -20,8 +20,8 @@ export function migrateSavedDefaultModel(
   models: { previous: string; current: string },
 ): string | null | undefined {
   const pick = store.readPick()
-  if (store.readStamp() === FREEBUFF_DEFAULT_MODEL_MIGRATION_ID) return pick
-  store.writeStamp(FREEBUFF_DEFAULT_MODEL_MIGRATION_ID)
+  if (store.readStamp() === FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID) return pick
+  store.writeStamp(FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID)
   if (pick !== models.previous) return pick
   store.writePick(models.current)
   return models.current

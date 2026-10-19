@@ -1,17 +1,17 @@
-import type { FreebuffAccessTier } from '../constants/freebuff-models'
-import type { FreebuffDesktopConcurrency } from '../constants/freebuff-model-entitlements'
-import type { FreebuffStandingInfo } from '../constants/freebuff-standing'
-import { applyFreebucksPriceChanges } from '../util/freebuff-price-changes'
+import type { FuckbuffAccessTier } from '../constants/fuckbuff-models'
+import type { FuckbuffDesktopConcurrency } from '../constants/fuckbuff-model-entitlements'
+import type { FuckbuffStandingInfo } from '../constants/fuckbuff-standing'
+import { applyFreebucksPriceChanges } from '../util/fuckbuff-price-changes'
 
 /** Confirmed Freebucks returned to each original funding source. */
-export interface FreebuffFreebucksRefundSources {
+export interface FuckbuffFreebucksRefundSources {
   daily: number
   wallet: number
 }
 
 /** A settled session refund: the unused part of a purchased hour, returned
  *  when the hour ended. `id` is stable, so a client can tell a new one. */
-export interface FreebuffFreebucksRefund extends FreebuffFreebucksRefundSources {
+export interface FuckbuffFreebucksRefund extends FuckbuffFreebucksRefundSources {
   id: string
 }
 
@@ -26,11 +26,11 @@ export interface FreebuffFreebucksRefund extends FreebuffFreebucksRefundSources 
 /**
  * Usage counter surfaced to the CLI so the UI can render
  * "N of M sessions used" alongside active state. Present when the
- * joined model consumes Freebuff sessions. `recentCount` is usage since the
+ * joined model consumes Fuckbuff sessions. `recentCount` is usage since the
  * current quota period began: fractional units normally, or session starts
  * when `countsAdmissions` is set.
  */
-export interface FreebuffSessionEntitlementBreakdown {
+export interface FuckbuffSessionEntitlementBreakdown {
   /** Sessions included without earning a referral or streak reward. */
   base: number
   /** Sessions earned from the referral program for this quota period. */
@@ -44,7 +44,7 @@ export interface FreebuffSessionEntitlementBreakdown {
   promo?: number
   /**
    * Sessions added by the account's earned LEVEL
-   * (retired; `docs/freebuff-levels.md`). Omitted at level 0, which is
+   * (retired; `docs/fuckbuff-levels.md`). Omitted at level 0, which is
    * where every account starts, so the field is absent for most callers and an
    * older client that never reads it still sums to the right `limit` — the
    * server always sends the total.
@@ -56,7 +56,7 @@ export interface FreebuffSessionEntitlementBreakdown {
   level?: number
   /**
    * Sessions included by the account's PAID subscription tier
-   * (`common/constants/freebuff-subscriptions.ts`).
+   * (`common/constants/fuckbuff-subscriptions.ts`).
    *
    * An ADDITION to `base`, not a replacement for it — since 2026-08-26, when
    * the plan started topping the free pools up rather than replacing them.
@@ -76,10 +76,10 @@ export interface FreebuffSessionEntitlementBreakdown {
 /**
  * A purchasable tier, as advertised to a client.
  *
- * Mirrors the catalog in `constants/freebuff-subscriptions.ts` so a client can
+ * Mirrors the catalog in `constants/fuckbuff-subscriptions.ts` so a client can
  * render plan cards and the paywall without its own copy of the numbers.
  */
-export interface FreebuffSubscriptionTierOffer {
+export interface FuckbuffSubscriptionTierOffer {
   id: string
   displayName: string
   priceUsd: number
@@ -123,7 +123,7 @@ export interface FreebuffSubscriptionTierOffer {
  * client never has to compute a ring from a partial picture or issue a second
  * request to draw one.
  */
-export interface FreebuffSubscriptionUsage {
+export interface FuckbuffSubscriptionUsage {
   dayUsed: number
   dayLimit: number
   fiveDayUsed: number
@@ -167,7 +167,7 @@ export interface FreebuffSubscriptionUsage {
  * account has no subscriptions surface" rather than "no data".
  */
 /** The daily Freebucks pool, as the client should render it. */
-export interface FreebuffFreebucksWindow {
+export interface FuckbuffFreebucksWindow {
   /** Freebucks granted for the account's day: the access tier's free pool, or
    *  the plan's daily pool for a subscriber (the plan REPLACES the free
    *  figure rather than stacking on it), plus `streakBonus`. */
@@ -205,7 +205,7 @@ export interface FreebuffFreebucksWindow {
  * is spent, so a session costing more than what is left in the pool takes the
  * remainder from here.
  */
-export interface FreebuffFreebucksWallet {
+export interface FuckbuffFreebucksWallet {
   /** Spendable wallet balance right now. */
   balance: number
   /** Freebucks the plan credits here once per billing period (0 on free). */
@@ -229,7 +229,7 @@ export interface FreebuffFreebucksWallet {
  * carries no running total — computing one cost an extra spend aggregate on
  * every session response for a number nothing draws.
  */
-export interface FreebuffFreebucksSpendCeiling {
+export interface FuckbuffFreebucksSpendCeiling {
   /** Settled provider spend since midnight Pacific at which fresh sessions
    *  stop being admitted, for this account's tier and access tier. */
   limitUsd: number
@@ -254,7 +254,7 @@ export interface FreebuffFreebucksSpendCeiling {
  * SUM over that table on every session response is the shape of the
  * 2026-08-17 saturation. For a monthly bound an hour of lag is noise.
  */
-export interface FreebuffFreebucksMonthlyAllowance {
+export interface FuckbuffFreebucksMonthlyAllowance {
   /** Provider spend for the period at which fresh sessions stop. */
   limitUsd: number
   /** Settled spend so far this period, from the hourly rollup. */
@@ -282,22 +282,22 @@ export interface FreebuffFreebucksMonthlyAllowance {
  */
 // A session response carries null when this block cannot refresh. Clients
 // must clear the old balance; undefined still means no meter was supplied.
-export interface FreebuffFreebucksInfo {
+export interface FuckbuffFreebucksInfo {
   /** Server-authorized quota exemption: new sessions remain usable at zero balance. */
   quotaExempt?: boolean
   /** Spendable right now: `daily.remaining + wallet.balance`. */
   balance: number
   /** Eligible earned grants admission may convert; excluded from spendable balances. */
   claimableGrantFreebucks?: number
-  daily: FreebuffFreebucksWindow
-  wallet: FreebuffFreebucksWallet
+  daily: FuckbuffFreebucksWindow
+  wallet: FuckbuffFreebucksWallet
   /** @deprecated Provider-spend caps are no longer enforced or displayed. */
-  spend?: FreebuffFreebucksSpendCeiling
+  spend?: FuckbuffFreebucksSpendCeiling
   /** @deprecated Legacy cap field; new servers omit it and clients ignore it. */
-  monthly?: FreebuffFreebucksMonthlyAllowance
+  monthly?: FuckbuffFreebucksMonthlyAllowance
   /** The account's most recent session refund from the last day. Clients
    *  announce an id they have not seen before; the first snapshot is history. */
-  lastRefund?: FreebuffFreebucksRefund
+  lastRefund?: FuckbuffFreebucksRefund
   /**
    * The server's verdict that this viewer is never asked before an hour is
    * bought (full access, 2026-10-16: the meter should feel unlimited). Pickers
@@ -326,7 +326,7 @@ export interface FreebuffFreebucksInfo {
    *
    * On the wire for the reason `upgrade` is: the decision turns on the
    * access tier this request resolved to (limited access also locks
-   * FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS; until 2026-09-25 it turned on
+   * FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS; until 2026-09-25 it turned on
    * the COUNTRY, US or paid). A client deciding this for itself would be
    * reading its own belief.
    *
@@ -343,13 +343,13 @@ export interface FreebuffFreebucksInfo {
   priceNotices?: Record<string, string>
   /** @deprecated Legacy peak surcharge. Current Flash offers use priceNotices
    *  and priceChanges; retained for older server responses. */
-  peak?: FreebuffFreebucksPeak
+  peak?: FuckbuffFreebucksPeak
   /** Server-owned recurring prices for new sessions. Clients project this policy
    *  into `prices` even when refreshes fail.
    *  A fresh response replaces the policy; admitted charges never change. */
-  offPeak?: Record<string, FreebuffOffPeakPrice>
+  offPeak?: Record<string, FuckbuffOffPeakPrice>
   /** Scheduled changes announced by the server; do not reprice admitted sessions. */
-  priceChanges?: readonly FreebuffPriceChange[]
+  priceChanges?: readonly FuckbuffPriceChange[]
   /**
    * The upgrade prompt the SERVER computed for this account, when one applies.
    *
@@ -360,10 +360,10 @@ export interface FreebuffFreebucksInfo {
    * nothing": a subscriber, an account outside the plans audience, or a server
    * that predates the field.
    */
-  upgrade?: FreebuffFreebucksUpgrade
+  upgrade?: FuckbuffFreebucksUpgrade
 }
 
-export interface FreebuffFreebucksUpgrade {
+export interface FuckbuffFreebucksUpgrade {
   /** `limited_offer` is the DeepSeek discount for an unpaid limited account;
    *  `upgrade` is the plain prompt for an unpaid full-access account. */
   kind: 'limited_offer' | 'upgrade'
@@ -376,7 +376,7 @@ export interface FreebuffFreebucksUpgrade {
   modelId?: string
 }
 
-export interface FreebuffFreebucksPeak {
+export interface FuckbuffFreebucksPeak {
   /** Model ids priced at base + `surcharge` at the moment of the response. */
   modelIds: string[]
   /** Freebucks added to each of those rows' session price. */
@@ -385,7 +385,7 @@ export interface FreebuffFreebucksPeak {
   endsAt: string
 }
 
-export interface FreebuffOffPeakPrice {
+export interface FuckbuffOffPeakPrice {
   /** UTC hours, daily [start, end); end may be on the next day. */
   startHourUtc: number
   endHourUtc: number
@@ -395,19 +395,19 @@ export interface FreebuffOffPeakPrice {
   weekendsOffPeak?: boolean
   price: number
   regularPrice: number
-  /** Why the price moves, as a clause after the hours: "when Freebuff is
+  /** Why the price moves, as a clause after the hours: "when Fuckbuff is
    *  quiet". Absent on older servers; the copy then gives hours alone. */
   reason?: string
 }
 
-export interface FreebuffPriceChange {
+export interface FuckbuffPriceChange {
   at: string
   modelId: string
   price: number
   tagline: string
 }
 
-export interface FreebuffSubscriptionInfo {
+export interface FuckbuffSubscriptionInfo {
   /** The caller's tier id, or null when they have no live subscription. */
   tierId: string | null
   /**
@@ -433,7 +433,7 @@ export interface FreebuffSubscriptionInfo {
     | { status: 'unavailable' }
     | null
   /** Present only while subscribed. */
-  usage?: FreebuffSubscriptionUsage
+  usage?: FuckbuffSubscriptionUsage
   /** Raw Stripe status of the live plan. */
   status?: string
   /**
@@ -449,7 +449,7 @@ export interface FreebuffSubscriptionInfo {
    *  Absent in the ordinary case — every subscription not mid-downgrade. */
   pendingTierId?: string
   /** The full catalog, current tier flagged. Drives every upgrade CTA. */
-  tiers: FreebuffSubscriptionTierOffer[]
+  tiers: FuckbuffSubscriptionTierOffer[]
   /**
    * Which limit the caller is currently up against, if any. What turns the
    * dropdown into a paywall rather than a usage display.
@@ -472,7 +472,7 @@ export interface FreebuffSubscriptionInfo {
  *
  * `today` is the live premium pool — the same number the picker's daily ring
  * has always drawn, base + level + referral bonus. `week` and `month` are the
- * MARKETED free allowance (`FREEBUFF_FREE_TIER_ALLOWANCE`) with the account's
+ * MARKETED free allowance (`FUCKBUFF_FREE_TIER_ALLOWANCE`) with the account's
  * real usage against them, so free users see the same three rings a
  * subscriber sees. `weekUsed` can exceed `weekLimit`; clients must render
  * that without assuming the two are clamped.
@@ -481,7 +481,7 @@ export interface FreebuffSubscriptionInfo {
  * (whose one regional pool is already the picker's ring), and from servers
  * older than this field.
  */
-export interface FreebuffFreeWindowsInfo {
+export interface FuckbuffFreeWindowsInfo {
   dayUsed: number
   dayLimit: number
   weekUsed: number
@@ -504,12 +504,12 @@ export interface FreebuffFreeWindowsInfo {
  *
  * `url` is absolute so a terminal can print something clickable.
  */
-export interface FreebuffUpgradeHint {
+export interface FuckbuffUpgradeHint {
   url: string
   message: string
 }
 
-export interface FreebuffSessionRateLimit {
+export interface FuckbuffSessionRateLimit {
   model: string
   /**
    * Which quota POOL this row draws on, and what to call it.
@@ -534,7 +534,7 @@ export interface FreebuffSessionRateLimit {
   countsAdmissions?: true
   /** Additive detail for `limit`; omitted by older servers. New servers emit it
    * for session quotas with `limit = base + referral + streak + promo`. */
-  entitlementBreakdown?: FreebuffSessionEntitlementBreakdown
+  entitlementBreakdown?: FuckbuffSessionEntitlementBreakdown
   limit: number
   /** 'pacific_day' for the daily pools (premium/limited, and the reward
    *  referral pool since 2026-07-29). 'pacific_week' is kept for wire compat
@@ -544,7 +544,7 @@ export interface FreebuffSessionRateLimit {
    *  CLIENT renders an unrecognised value as "today" (`period === 'pacific_week'
    *  ? 'this week' : 'today'`), which is wrong copy rather than a crash — it
    *  invites a user to retry in the morning for an allowance that returns on
-   *  the 1st. Harmless today because only Freebuff Web is on the meter and its
+   *  the 1st. Harmless today because only Fuckbuff Web is on the meter and its
    *  copy is updated in step; a widening of the Freebucks audience has to
    *  carry a client release with it, or accept that wording. `resetAt` is
    *  correct on every client either way, so anything reading THAT is safe. */
@@ -557,23 +557,23 @@ export interface FreebuffSessionRateLimit {
   recentCount: number
 }
 
-export type FreebuffSessionRateLimitByModel = Record<
+export type FuckbuffSessionRateLimitByModel = Record<
   string,
-  FreebuffSessionRateLimit
+  FuckbuffSessionRateLimit
 >
 
 /** Timing needed by multi-session clients to show the active session window. */
-export interface FreebuffActiveSessionInfo {
+export interface FuckbuffActiveSessionInfo {
   instanceId?: string
   model: string
   admittedAt: string
   expiresAt: string
 }
 
-/** Live per-user Freebuff Desktop sessions, counted server-side across every
+/** Live per-user Fuckbuff Desktop sessions, counted server-side across every
  * Desktop process. Holder identities stay client-local; these totals make the
  * picker honest when another project or device is using capacity. */
-export interface FreebuffDesktopSessionCounts {
+export interface FuckbuffDesktopSessionCounts {
   premium: number
   unlimited: number
   /** Earliest capacity-release time. Premium rows include their drain grace;
@@ -596,17 +596,17 @@ export interface FreebuffDesktopSessionCounts {
  * `accessTier` to pick the right copy; both variants share the share code,
  * inviter name, and GitHub-linked flag.
  */
-export interface FreebuffReferralInfo {
+export interface FuckbuffReferralInfo {
   /** The user's referral code (`user.referral_code`), used to build the share
    *  link. */
   code: string
   /** The inviter's display name (`user.name`), used to personalize the invite
-   *  landing page ("X invited you to try Freebuff!"). Null when the user has no
+   *  landing page ("X invited you to try Fuckbuff!"). Null when the user has no
    *  name set. */
   referrerName: string | null
   /** Qualified-referral count for the tier's reward, ALREADY CAPPED on both
    *  branches: full tier = extra premium sessions per day, clamped to
-   *  FREEBUFF_REWARD_MAX_DAILY_SESSIONS (uncapped between 2026-07-30 and
+   *  FUCKBUFF_REWARD_MAX_DAILY_SESSIONS (uncapped between 2026-07-30 and
    *  2026-08-25); limited tier = daily-session bonus earned, capped at
    *  REFERRAL_CLI_DAILY_SESSION_BONUS_CAP. The CLI knows both constants
    *  locally and renders "(N/cap)" progress copy off them, so a value that
@@ -635,7 +635,7 @@ export interface FreebuffReferralInfo {
  * means every surface renders exactly what it rendered before promos existed,
  * which is what makes closing one an env change rather than a release.
  */
-export interface FreebuffGlmPromo {
+export interface FuckbuffGlmPromo {
   /** Sessions per Pacific day an earned user may run while this runs. */
   dailySessions: number
   /** ISO timestamp the promo closes. Surfaces count down to it rather than
@@ -647,31 +647,31 @@ export interface FreebuffGlmPromo {
  *  parameter type as `getReferralInfo`, for the same reason. */
 export const getGlmPromo = (
   session: { status: string } | null | undefined,
-): FreebuffGlmPromo | undefined =>
+): FuckbuffGlmPromo | undefined =>
   session && 'glmPromo' in session
-    ? ((session as { glmPromo?: FreebuffGlmPromo }).glmPromo ?? undefined)
+    ? ((session as { glmPromo?: FuckbuffGlmPromo }).glmPromo ?? undefined)
     : undefined
 
 /** Pull the referral block off whichever session status carries it. Loose
  *  parameter type for the same reason as `getRateLimitsByModel`. */
 export const getReferralInfo = (
   session: { status: string } | null | undefined,
-): FreebuffReferralInfo | undefined =>
+): FuckbuffReferralInfo | undefined =>
   session && 'referral' in session
-    ? (session as { referral?: FreebuffReferralInfo }).referral
+    ? (session as { referral?: FuckbuffReferralInfo }).referral
     : undefined
 
 /** Pull the per-model shared session-quota snapshot off whichever statuses
  *  carry it (active, ended, none). Returns undefined for terminal /
  *  pre-join states that have no quota field. The parameter is intentionally
- *  loose so the CLI can pass its `FreebuffSessionResponse` (which adds the
+ *  loose so the CLI can pass its `FuckbuffSessionResponse` (which adds the
  *  client-only `takeover_prompt` variant) without a discriminated-union
  *  ceremony at every call site. */
 export const getRateLimitsByModel = (
   session: { status: string } | null | undefined,
-): FreebuffSessionRateLimitByModel | undefined =>
+): FuckbuffSessionRateLimitByModel | undefined =>
   session && 'rateLimitsByModel' in session
-    ? (session as { rateLimitsByModel?: FreebuffSessionRateLimitByModel })
+    ? (session as { rateLimitsByModel?: FuckbuffSessionRateLimitByModel })
         .rateLimitsByModel
     : undefined
 
@@ -679,10 +679,10 @@ export const getRateLimitsByModel = (
  * undefined means no meter supplied. Never synthesize a balance for either. */
 export const getFreebucksInfo = (
   session: { status: string } | null | undefined,
-): FreebuffFreebucksInfo | null | undefined => {
+): FuckbuffFreebucksInfo | null | undefined => {
   const info =
     session && 'freebucks' in session
-      ? (session as { freebucks?: FreebuffFreebucksInfo | null }).freebucks
+      ? (session as { freebucks?: FuckbuffFreebucksInfo | null }).freebucks
       : undefined
   return info ? applyFreebucksPriceChanges(info) : info
 }
@@ -701,11 +701,11 @@ export const getFreebucksInfo = (
  * Undefined on the variants that do not carry it, so callers fall back rather
  * than assert.
  */
-export const getFreebuffServerAccessTier = (
+export const getFuckbuffServerAccessTier = (
   session: { status: string } | null | undefined,
-): FreebuffAccessTier | undefined =>
+): FuckbuffAccessTier | undefined =>
   session && 'accessTier' in session
-    ? (session as { accessTier?: FreebuffAccessTier }).accessTier
+    ? (session as { accessTier?: FuckbuffAccessTier }).accessTier
     : undefined
 
 /** The free tier's windows off whichever statuses carry them; undefined from
@@ -713,16 +713,16 @@ export const getFreebuffServerAccessTier = (
  *  limited access — callers render the daily ring alone in every such case. */
 export const getFreeWindowsInfo = (
   session: { status: string } | null | undefined,
-): FreebuffFreeWindowsInfo | undefined =>
+): FuckbuffFreeWindowsInfo | undefined =>
   session && 'freeWindows' in session
-    ? (session as { freeWindows?: FreebuffFreeWindowsInfo }).freeWindows
+    ? (session as { freeWindows?: FuckbuffFreeWindowsInfo }).freeWindows
     : undefined
 
 export const getSubscriptionInfo = (
   session: { status: string } | null | undefined,
-): FreebuffSubscriptionInfo | undefined =>
+): FuckbuffSubscriptionInfo | undefined =>
   session && 'subscription' in session
-    ? (session as { subscription?: FreebuffSubscriptionInfo }).subscription
+    ? (session as { subscription?: FuckbuffSubscriptionInfo }).subscription
     : undefined
 
 /**
@@ -742,12 +742,12 @@ export const getSubscriptionInfo = (
  * session. Campaign offers have no daily reset.
  *
  * The ceiling itself is not on the wire: it is fixed by construction
- * (FREEBUFF_LIMITED_OFFER_SESSION_LIMIT, which no streak or referral can
+ * (FUCKBUFF_LIMITED_OFFER_SESSION_LIMIT, which no streak or referral can
  * raise), so a client that ever needs "N of M used" reads the shared constant
  * rather than a field the server has to keep consistent.
  */
-export interface FreebuffLimitedModelOffer {
-  /** Model id; always a member of SUPPORTED_FREEBUFF_MODELS, so the client can
+export interface FuckbuffLimitedModelOffer {
+  /** Model id; always a member of SUPPORTED_FUCKBUFF_MODELS, so the client can
    *  resolve its display name from the shared catalog. */
   model: string
   /** Sessions left in the shared global pool for the current wave. Always > 0
@@ -766,13 +766,13 @@ export interface FreebuffLimitedModelOffer {
  *  returns an array so callers can map without a presence check. */
 export const getLimitedModelOffers = (
   session: { status: string } | null | undefined,
-): FreebuffLimitedModelOffer[] =>
+): FuckbuffLimitedModelOffer[] =>
   session && 'limitedModelOffers' in session
-    ? ((session as { limitedModelOffers?: FreebuffLimitedModelOffer[] })
+    ? ((session as { limitedModelOffers?: FuckbuffLimitedModelOffer[] })
         .limitedModelOffers ?? [])
     : []
 
-export type FreebuffCountryBlockReason =
+export type FuckbuffCountryBlockReason =
   | 'country_not_allowed'
   /** The request's own network passed, but the ACCOUNT was seen from a
    *  not-allowed country within the access-floor window, so it keeps that
@@ -785,7 +785,7 @@ export type FreebuffCountryBlockReason =
   | 'unresolved_client_ip'
   | 'ip_privacy_lookup_failed'
 
-export type FreebuffIpPrivacySignal =
+export type FuckbuffIpPrivacySignal =
   | 'anonymous'
   | 'vpn'
   | 'proxy'
@@ -795,35 +795,35 @@ export type FreebuffIpPrivacySignal =
   | 'hosting'
   | 'service'
 
-export interface FreebuffLimitedModeReason {
+export interface FuckbuffLimitedModeReason {
   /** Present for limited access so the model picker can explain why the
    *  reduced model set is shown without re-running geo/IP logic locally. */
   countryCode?: string | null
-  countryBlockReason?: FreebuffCountryBlockReason | null
-  ipPrivacySignals?: FreebuffIpPrivacySignal[] | null
+  countryBlockReason?: FuckbuffCountryBlockReason | null
+  ipPrivacySignals?: FuckbuffIpPrivacySignal[] | null
 }
 
-export type FreebuffSessionAdmissionResponse = (
+export type FuckbuffSessionAdmissionResponse = (
   | ({
       /** User has no session row. CLI must POST to start a session. Also
        *  returned when `getSessionState` notices the user has been swept past
        *  the grace window. */
       status: 'none'
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
       message?: string
       /** Current quota snapshots for free models, keyed by model id. Lets
        *  the picker show today's session usage before the user commits
        *  to a model. */
-      rateLimitsByModel?: FreebuffSessionRateLimitByModel
+      rateLimitsByModel?: FuckbuffSessionRateLimitByModel
       /** Referral status for the "invite friends" banner. Full tier advertises
        *  an extra premium session; limited tier advertises a daily
        *  free-session bonus. */
-      referral?: FreebuffReferralInfo
+      referral?: FuckbuffReferralInfo
       /** Capacity-limited models the picker may additionally offer right now.
        *  Only sent on the pre-join response, which is the only state that
        *  renders a picker. Absent whenever the pool is spent or the offer is
-       *  off — see FreebuffLimitedModelOffer. */
-      limitedModelOffers?: FreebuffLimitedModelOffer[]
+       *  off — see FuckbuffLimitedModelOffer. */
+      limitedModelOffers?: FuckbuffLimitedModelOffer[]
       /**
        * The account's Access Level and the limits it currently selects.
        *
@@ -832,7 +832,7 @@ export type FreebuffSessionAdmissionResponse = (
        * next to the models they apply to. Absent when the feature is off, so
        * a client renders it only when there is something true to render.
        */
-      standing?: FreebuffStandingInfo
+      standing?: FuckbuffStandingInfo
       /**
        * Purchasable per-model subscriptions and the caller's state on each.
        *
@@ -840,17 +840,17 @@ export type FreebuffSessionAdmissionResponse = (
        * picker, and the picker is where "subscribe" belongs. Absent when the
        * catalog is empty or the server predates subscriptions.
        */
-      subscription?: FreebuffSubscriptionInfo
-      /** See FreebuffFreeWindowsInfo. */
-      freeWindows?: FreebuffFreeWindowsInfo
+      subscription?: FuckbuffSubscriptionInfo
+      /** See FuckbuffFreeWindowsInfo. */
+      freeWindows?: FuckbuffFreeWindowsInfo
       /** Spendable Freebucks and the per-model session prices. Rides
        *  every state for the same reason `subscription` does: the
        *  balance is shown in the picker, mid-session and after it. */
-      freebucks?: FreebuffFreebucksInfo | null
-    } & FreebuffLimitedModeReason)
+      freebucks?: FuckbuffFreebucksInfo | null
+    } & FuckbuffLimitedModeReason)
   | ({
       status: 'active'
-      accessTier: FreebuffAccessTier
+      accessTier: FuckbuffAccessTier
       instanceId: string
       /** Model the active session is bound to — cannot change mid-session. */
       model: string
@@ -858,20 +858,20 @@ export type FreebuffSessionAdmissionResponse = (
       expiresAt: string
       remainingMs: number
       /** Shared free-session quota for this model. */
-      rateLimit?: FreebuffSessionRateLimit
-      rateLimitsByModel?: FreebuffSessionRateLimitByModel
+      rateLimit?: FuckbuffSessionRateLimit
+      rateLimitsByModel?: FuckbuffSessionRateLimitByModel
       /** Included for Web/Cloud picker reads that request full quota details. */
-      referral?: FreebuffReferralInfo
+      referral?: FuckbuffReferralInfo
       /** Subscription offers and state, so an in-session picker can still
        *  render "subscribed" badges and an upgrade CTA. */
-      subscription?: FreebuffSubscriptionInfo
-      /** See FreebuffFreeWindowsInfo. */
-      freeWindows?: FreebuffFreeWindowsInfo
+      subscription?: FuckbuffSubscriptionInfo
+      /** See FuckbuffFreeWindowsInfo. */
+      freeWindows?: FuckbuffFreeWindowsInfo
       /** Spendable Freebucks and the per-model session prices. Rides
        *  every state for the same reason `subscription` does: the
        *  balance is shown in the picker, mid-session and after it. */
-      freebucks?: FreebuffFreebucksInfo | null
-    } & FreebuffLimitedModeReason)
+      freebucks?: FuckbuffFreebucksInfo | null
+    } & FuckbuffLimitedModeReason)
   | ({
       /** Session is over. While `instanceId` is present we're inside the
        *  server-side grace window — chat requests still go through so the
@@ -887,10 +887,10 @@ export type FreebuffSessionAdmissionResponse = (
        *  An end keeps the hour, so this is 0 unless the purchase already settled. */
       freebucksRefund?: number
       /** The original funding sources restored by the confirmed refund. */
-      freebucksRefundSources?: FreebuffFreebucksRefundSources
+      freebucksRefundSources?: FuckbuffFreebucksRefundSources
       /** Settlement is outstanding; replay DELETE with the same instance for its receipt. */
       freebucksRefundPending?: boolean
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
       instanceId?: string
       admittedAt?: string
       expiresAt?: string
@@ -899,19 +899,19 @@ export type FreebuffSessionAdmissionResponse = (
       /** Snapshot of the user's free-session quota at the moment the
        *  session ended. Lets the post-session banner show "N of M sessions
        *  used today" without an extra round-trip. */
-      rateLimitsByModel?: FreebuffSessionRateLimitByModel
+      rateLimitsByModel?: FuckbuffSessionRateLimitByModel
       /** Included for Web/Cloud picker reads that request full quota details. */
-      referral?: FreebuffReferralInfo
+      referral?: FuckbuffReferralInfo
       /** Carried like `rateLimitsByModel`: the post-session banner and picker
        *  keep the plan rings without a round-trip. */
-      subscription?: FreebuffSubscriptionInfo
-      /** See FreebuffFreeWindowsInfo. */
-      freeWindows?: FreebuffFreeWindowsInfo
+      subscription?: FuckbuffSubscriptionInfo
+      /** See FuckbuffFreeWindowsInfo. */
+      freeWindows?: FuckbuffFreeWindowsInfo
       /** Spendable Freebucks and the per-model session prices. Rides
        *  every state for the same reason `subscription` does: the
        *  balance is shown in the picker, mid-session and after it. */
-      freebucks?: FreebuffFreebucksInfo | null
-    } & FreebuffLimitedModeReason)
+      freebucks?: FuckbuffFreebucksInfo | null
+    } & FuckbuffLimitedModeReason)
   | {
       /** Request originated outside the free-mode allowlist, or from an
        *  unknown/anonymized location that cannot be trusted for free mode.
@@ -922,8 +922,8 @@ export type FreebuffSessionAdmissionResponse = (
       status: 'country_blocked'
       message?: string
       countryCode: string
-      countryBlockReason?: FreebuffCountryBlockReason
-      ipPrivacySignals?: FreebuffIpPrivacySignal[]
+      countryBlockReason?: FuckbuffCountryBlockReason
+      ipPrivacySignals?: FuckbuffIpPrivacySignal[]
     }
   | {
       /** User has an active session bound to a different model. Returned
@@ -932,14 +932,14 @@ export type FreebuffSessionAdmissionResponse = (
        *  your active DeepSeek session to switch?" → on confirm, DELETE then
        *  re-POST with the new model. */
       status: 'model_locked'
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
       currentModel: string
       requestedModel: string
     }
   | {
       /** Requested model is valid but not selectable right now. */
       status: 'model_unavailable'
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
       requestedModel: string
       /** A used personal trial cannot be replenished by waiting or upgrading. */
       limitedOfferReason?: 'used' | 'closed' | 'exhausted'
@@ -967,7 +967,7 @@ export type FreebuffSessionAdmissionResponse = (
        */
       requiresSubscription?: boolean
       /**
-       * The model is WITHDRAWN from free mode (FREEBUFF_PAUSED_FREE_MODEL_IDS)
+       * The model is WITHDRAWN from free mode (FUCKBUFF_PAUSED_FREE_MODEL_IDS)
        * rather than merely closed for the hour — permanent, so retrying later
        * is not the advice. Set at ADMISSION, so no row is minted and no session
        * unit is spent on a pick that cannot run a turn.
@@ -989,13 +989,13 @@ export type FreebuffSessionAdmissionResponse = (
        * Older clients ignore it and still render `availableHours`, which is
        * worded so the sentence they build around it does not blame the model.
        * The refusal it replaces read "<model> isn't available right now
-       * (Update Freebuff Desktop …)", which sent a user off the model that was
+       * (Update Fuckbuff Desktop …)", which sent a user off the model that was
        * working onto whatever was not.
        */
       updateRequired?: boolean
       /**
        * The MODEL is fine; minting NEW purchased Desktop sessions is paused
-       * server-side (FREEBUFF_DESKTOP_PURCHASE_ADMISSION), so an up-to-date
+       * server-side (FUCKBUFF_DESKTOP_PURCHASE_ADMISSION), so an up-to-date
        * build that needs a fresh purchase is refused rather than charged for
        * an hour it could not be issued. Not an update problem and not a
        * model problem: the pick works again as soon as the pause lifts, on
@@ -1010,7 +1010,7 @@ export type FreebuffSessionAdmissionResponse = (
        */
       purchasesPaused?: boolean
       /**
-       * The model's daily session limit is spent (FREEBUFF_DAILY_SESSION_LIMITS:
+       * The model's daily session limit is spent (FUCKBUFF_DAILY_SESSION_LIMITS:
        * GPT-6.1 Sol and Gemini 4 Argon, one a day). A STOP, never a fallback: the user asked for
        * this model, was quoted its price, and must be told it is used up rather
        * than be moved onto a different model (2026-09-30, a CLI user quoted
@@ -1033,11 +1033,11 @@ export type FreebuffSessionAdmissionResponse = (
        *  older CLIs that don't know the status still back off rather than
        *  tight-poll a 200 they can't parse. */
       status: 'ip_capped'
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
       model: string
       /** Distinct users currently active on the IP (excluding the caller). */
       activeUsersForIp: number
-      /** The configured ceiling (FREEBUFF_IP_USER_CAP). */
+      /** The configured ceiling (FUCKBUFF_IP_USER_CAP). */
       limit: number
       retryAfterMs: number
     }
@@ -1047,15 +1047,15 @@ export type FreebuffSessionAdmissionResponse = (
        * started. `retryAfterMs` is the time until that period resets. Terminal
        * for the CLI's current poll session; the user can exit and return later. */
       status: 'rate_limited'
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
       /** The way out of this refusal, when there is one to sell. */
-      upgrade?: FreebuffUpgradeHint
+      upgrade?: FuckbuffUpgradeHint
       /** Not sent by the server on a refusal; a client may CARRY the block it
        *  was holding so the refusal is still rendered in the meter's words. */
-      freebucks?: FreebuffFreebucksInfo | null
-      /** The freebuff model the user tried to join. */
+      freebucks?: FuckbuffFreebucksInfo | null
+      /** The fuckbuff model the user tried to join. */
       model: string
-      /** The pool that refused, as on `FreebuffSessionRateLimit` — opaque. */
+      /** The pool that refused, as on `FuckbuffSessionRateLimit` — opaque. */
       pool?: string
       poolLabel?: string
       /**
@@ -1070,7 +1070,7 @@ export type FreebuffSessionAdmissionResponse = (
        * limited access, the reward balance plus streak entitlement). */
       limit: number
       /** Additive detail for `limit`; absent on older servers. */
-      entitlementBreakdown?: FreebuffSessionEntitlementBreakdown
+      entitlementBreakdown?: FuckbuffSessionEntitlementBreakdown
       period: 'pacific_day' | 'pacific_week' | 'pacific_month'
       resetTimeZone: string
       resetAt: string
@@ -1082,18 +1082,18 @@ export type FreebuffSessionAdmissionResponse = (
       retryAfterMs: number
     }
   | {
-      /** The user has reached today's cross-model Freebuff provider-spend
+      /** The user has reached today's cross-model Fuckbuff provider-spend
        *  budget. This only blocks a fresh session admission: sessions already
        *  running, including a reconnect to the same live session, continue. */
       status: 'spend_limited'
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
       /** See `rate_limited`: carried by the client, never sent. */
-      freebucks?: FreebuffFreebucksInfo | null
+      freebucks?: FuckbuffFreebucksInfo | null
       message: string
       resetAt: string
       retryAfterMs: number
       /** The way out of this refusal, when there is one to sell. */
-      upgrade?: FreebuffUpgradeHint
+      upgrade?: FuckbuffUpgradeHint
       /** Not a budget: the account must verify something before it can start
        *  a session (`upgrade.url` is where). Rides on `spend_limited`
        *  because every shipped client already renders that shape; clients
@@ -1103,8 +1103,8 @@ export type FreebuffSessionAdmissionResponse = (
        * WHICH verification the refusal asks for, for a client that labels its
        * own button rather than rendering `message`. Two different gates set
        * `verificationRequired`: the phone gate asks for an SMS code
-       * (docs/freebuff-phone-gate.md) and the identity gate asks for an ID
-       * and a selfie (docs/freebuff-id-verification.md). Absent on an older
+       * (docs/fuckbuff-phone-gate.md) and the identity gate asks for an ID
+       * and a selfie (docs/fuckbuff-id-verification.md). Absent on an older
        * server, so a client must not assume either.
        */
       verificationKind?: 'phone' | 'identity'
@@ -1112,20 +1112,20 @@ export type FreebuffSessionAdmissionResponse = (
   | {
       /** Retired single-use Desktop claim; persist a new id before retrying. */
       status: 'purchase_claim_released'
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
     }
   | {
       status: 'purchase_in_use' | 'purchase_capacity'
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
       requestedModel: string
       currentInstanceId: string
       /** Capacity refusals carry the exact admission bucket and entitlement-derived
        * limit. Older servers omit these; clients must not guess the limit. */
-      concurrency?: FreebuffDesktopConcurrency
+      concurrency?: FuckbuffDesktopConcurrency
       slotLimit?: number
     }
   | {
-      /** Freebuff Desktop only: every slot-bound session is occupied. Free
+      /** Fuckbuff Desktop only: every slot-bound session is occupied. Free
        *  accounts get one slot-bound and three multi-tab sessions; subscribers
        *  get three and eight. Limited free access makes every model slot-bound.
        *
@@ -1133,7 +1133,7 @@ export type FreebuffSessionAdmissionResponse = (
        *  model (or closes the holding tab). Never returned to CLI/web, which
        *  run one session per user. */
       status: 'premium_slot_taken'
-      accessTier?: FreebuffAccessTier
+      accessTier?: FuckbuffAccessTier
       /** Model this tab tried to start. */
       requestedModel: string
       /** Model of the premium-bucket session already running. */
@@ -1154,26 +1154,26 @@ export type FreebuffSessionAdmissionResponse = (
    *  "verify country" prompt then. Absent from an older server: show it. */
   verificationCanChangeAccess?: boolean
   /** Why `verificationCanChangeAccess` is what it is. */
-  verificationReason?: FreebuffCountryVerificationReason
+  verificationReason?: FuckbuffCountryVerificationReason
   /** Present only when verifying cannot help (`limited_region` /
    *  `region_locked`) and a paid plan above the account's own exists: the
    *  "unlock more with a plan" offer, numbers from the server's catalog. */
-  countryUpsell?: FreebuffPlanUpsell
+  countryUpsell?: FuckbuffPlanUpsell
   /** Unexpired Desktop purchases, including occupied hours. Picker metadata;
    * admission still checks ownership, liveness, and capacity atomically. */
-  desktopPurchases?: FreebuffDesktopPurchaseInfo[]
-  desktopRefunds?: FreebuffDesktopRefundInfo[]
+  desktopPurchases?: FuckbuffDesktopPurchaseInfo[]
+  desktopRefunds?: FuckbuffDesktopRefundInfo[]
   /** Multi-session Desktop responses only. Counts live, unexpired rows across
    * all Desktop processes for this user. */
-  desktopSessionCounts?: FreebuffDesktopSessionCounts
+  desktopSessionCounts?: FuckbuffDesktopSessionCounts
   /** Desktop responses only: the server lifts this account's tab cap through
-   *  Freebuff Projects' allowlist (COD-878), the only thing that lifts it. */
+   *  Fuckbuff Projects' allowlist (COD-878), the only thing that lifts it. */
   desktopTabCapExempt?: true
 }
 
 /**
  * Why a country verification can or cannot change an account's access
- * (docs/freebuff-access-floor.md § Declare first):
+ * (docs/fuckbuff-access-floor.md § Declare first):
  * - `limited_region`: the account is in (or declared) a limited-access
  *   country; verifying it grants nothing.
  * - `region_locked`: the account's region is set to limited access, and no
@@ -1181,18 +1181,18 @@ export type FreebuffSessionAdmissionResponse = (
  * - `eligible`: verifying from a direct connection in a full-access country
  *   can change it.
  */
-export type FreebuffCountryVerificationReason =
+export type FuckbuffCountryVerificationReason =
   | 'limited_region'
   | 'region_locked'
   | 'eligible'
 
 /**
  * A paid-plan offer for a limited-access account, built on the server from
- * the plan catalog (`freebuffLimitedAccessUpsell`) so every surface renders
+ * the plan catalog (`fuckbuffLimitedAccessUpsell`) so every surface renders
  * the same figures. Daily Freebucks are at LIMITED access, which is what the
  * account would actually get.
  */
-export type FreebuffPlanUpsell = {
+export type FuckbuffPlanUpsell = {
   /** The plan the headline names: the best plan for an account without one,
    *  the next plan up for a subscriber. */
   planId: string
@@ -1214,8 +1214,8 @@ export type FreebuffPlanUpsell = {
   plansUrl: string
 }
 
-export type FreebuffSessionServerResponse =
-  | FreebuffSessionAdmissionResponse
+export type FuckbuffSessionServerResponse =
+  | FuckbuffSessionAdmissionResponse
   | {
       /** Another CLI on the same account rotated our instance id. Polling
        *  stops and the UI shows a "close the other CLI" screen. The server
@@ -1224,14 +1224,14 @@ export type FreebuffSessionServerResponse =
        *  surfaces it as a 409 for fast in-flight feedback. */
       status: 'superseded'
       pickerCountryCode?: string | null
-      desktopSessionCounts?: FreebuffDesktopSessionCounts
+      desktopSessionCounts?: FuckbuffDesktopSessionCounts
       desktopTabCapExempt?: true
-      desktopPurchases?: FreebuffDesktopPurchaseInfo[]
-      desktopRefunds?: FreebuffDesktopRefundInfo[]
+      desktopPurchases?: FuckbuffDesktopPurchaseInfo[]
+      desktopRefunds?: FuckbuffDesktopRefundInfo[]
     }
 
 /** Emitted only after the reversal ledger entry and purchase marker commit. */
-export interface FreebuffDesktopRefundInfo {
+export interface FuckbuffDesktopRefundInfo {
   /** Durable execution claims belonging to this purchase; omitted by older APIs. */
   claimInstanceIds?: string[]
   purchaseId: string
@@ -1248,7 +1248,7 @@ export interface FreebuffDesktopRefundInfo {
   poolLocalDate?: string
 }
 
-export interface FreebuffDesktopPurchaseInfo {
+export interface FuckbuffDesktopPurchaseInfo {
   model: string
   expiresAt: string
   holderInstanceId?: string
@@ -1272,9 +1272,9 @@ export interface FreebuffDesktopPurchaseInfo {
  * Lives here because three surfaces need it and it drifted into three copies:
  * the server that emits it (chat/completions), the CLI that matches it, and
  * Desktop, which classifies it out of the SDK's relayed `AgentOutput`. See
- * docs/freebuff-session-admission.md.
+ * docs/fuckbuff-session-admission.md.
  */
-export const FREEBUFF_GATE_CODES = {
+export const FUCKBUFF_GATE_CODES = {
   waiting_room_required: { status: 428, endsTheSession: true },
   session_expired: { status: 410, endsTheSession: true },
   session_superseded: { status: 409, endsTheSession: true },
@@ -1299,7 +1299,7 @@ export const FREEBUFF_GATE_CODES = {
   model_unavailable: { status: 410, endsTheSession: false },
 } as const satisfies Record<string, { status: number; endsTheSession: boolean }>
 
-export type FreebuffGateCode = keyof typeof FREEBUFF_GATE_CODES
+export type FuckbuffGateCode = keyof typeof FUCKBUFF_GATE_CODES
 
 /** The gate rejection this error output describes, or null for anything else.
  *  `output` is any shape carrying the relayed `error`/`statusCode` pair.
@@ -1309,12 +1309,12 @@ export type FreebuffGateCode = keyof typeof FREEBUFF_GATE_CODES
  *  and since their `.status` is undefined, an output carrying no `statusCode`
  *  would then satisfy the status check too and be classified as a gate
  *  rejection. */
-export function getFreebuffGateCode(output: {
+export function getFuckbuffGateCode(output: {
   error?: string | undefined
   statusCode?: number | undefined
-}): FreebuffGateCode | null {
+}): FuckbuffGateCode | null {
   const code = output.error
-  if (!code || !Object.hasOwn(FREEBUFF_GATE_CODES, code)) return null
-  const gate = FREEBUFF_GATE_CODES[code as FreebuffGateCode]
-  return gate.status === output.statusCode ? (code as FreebuffGateCode) : null
+  if (!code || !Object.hasOwn(FUCKBUFF_GATE_CODES, code)) return null
+  const gate = FUCKBUFF_GATE_CODES[code as FuckbuffGateCode]
+  return gate.status === output.statusCode ? (code as FuckbuffGateCode) : null
 }

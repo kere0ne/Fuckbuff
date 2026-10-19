@@ -1,56 +1,56 @@
 import { create } from 'zustand'
 
 import { getAuthTokenDetails } from '../utils/auth'
-import { freebuffCliAttemptId } from '../utils/freebuff-session-identity'
+import { fuckbuffCliAttemptId } from '../utils/fuckbuff-session-identity'
 import {
-  forgetLiveFreebuffSession,
-  saveFreebuffSessionForRelaunch,
-} from '../utils/freebuff-session-relaunch'
+  forgetLiveFuckbuffSession,
+  saveFuckbuffSessionForRelaunch,
+} from '../utils/fuckbuff-session-relaunch'
 import {
-  callFreebuffSession,
-  holdsLiveFreebuffSlot,
-  FreebuffSessionRequestError,
-} from '../utils/freebuff-session-api'
+  callFuckbuffSession,
+  holdsLiveFuckbuffSlot,
+  FuckbuffSessionRequestError,
+} from '../utils/fuckbuff-session-api'
 
-import type { FreebuffSessionResponse } from '../types/freebuff-session'
+import type { FuckbuffSessionResponse } from '../types/fuckbuff-session'
 
-export interface FreebuffSessionRetry {
+export interface FuckbuffSessionRetry {
   /** One-based number of the request that will be made next. */
   attempt: number
   /** Absolute client timestamp when the poll loop will retry. */
   retryAtMs: number
 }
 
-interface FreebuffSessionFailureBase {
+interface FuckbuffSessionFailureBase {
   message: string
-  retry: FreebuffSessionRetry | null
+  retry: FuckbuffSessionRetry | null
   /** The server may have committed a mutating request before its result was lost. */
   outcomeUnknown: boolean
 }
 
-export type FreebuffSessionFailure =
-  | (FreebuffSessionFailureBase & {
+export type FuckbuffSessionFailure =
+  | (FuckbuffSessionFailureBase & {
       type: 'http'
       statusCode: number
     })
-  | (FreebuffSessionFailureBase & {
+  | (FuckbuffSessionFailureBase & {
       type: 'timeout' | 'other'
     })
 
 /**
- * Shared state for the freebuff free session.
+ * Shared state for the fuckbuff free session.
  *
- * The hook in `use-freebuff-session.ts` owns the poll loop and writes into
+ * The hook in `use-fuckbuff-session.ts` owns the poll loop and writes into
  * this store; React components subscribe via selectors, and non-React code
- * reads via `useFreebuffSessionStore.getState()`.
+ * reads via `useFuckbuffSessionStore.getState()`.
  *
  * Navigation controls (force re-POST, mark superseded/ended) live on
- * the module exports of `use-freebuff-session.ts` rather than on this store —
+ * the module exports of `use-fuckbuff-session.ts` rather than on this store —
  * that way callers don't need to null-check a "driver" slot whose lifetime
  * is tied to the React tree.
  */
-interface FreebuffSessionStore {
-  session: FreebuffSessionResponse | null
+interface FuckbuffSessionStore {
+  session: FuckbuffSessionResponse | null
   /** A POST may commit without a reply. Exit must cancel that exact attempt. */
   pendingAdmission: { instanceId: string; token: string } | null
   setPendingAdmission: (
@@ -60,7 +60,7 @@ interface FreebuffSessionStore {
   pendingRefund: { instanceId: string; token: string } | null
   refreshRefund: () => Promise<void>
   releaseSlot: (
-    session?: FreebuffSessionResponse,
+    session?: FuckbuffSessionResponse,
     signal?: AbortSignal,
   ) => Promise<void>
   /**
@@ -86,19 +86,19 @@ interface FreebuffSessionStore {
    */
   keepSlotForResume: () => void
   slotKeptForRelaunch: boolean
-  failure: FreebuffSessionFailure | null
+  failure: FuckbuffSessionFailure | null
 
-  setSession: (session: FreebuffSessionResponse | null) => void
-  setFailure: (failure: FreebuffSessionFailure | null) => void
+  setSession: (session: FuckbuffSessionResponse | null) => void
+  setFailure: (failure: FuckbuffSessionFailure | null) => void
 }
 
 function instanceOf(
-  session: FreebuffSessionResponse | null | undefined,
+  session: FuckbuffSessionResponse | null | undefined,
 ): string | undefined {
   return session && 'instanceId' in session ? session.instanceId : undefined
 }
 
-export const useFreebuffSessionStore = create<FreebuffSessionStore>(
+export const useFuckbuffSessionStore = create<FuckbuffSessionStore>(
   (set, get) => {
     // Coalesce exit, unmount and explicit end for the same authenticated instance.
     const releases = new Map<string, Promise<void>>()
@@ -111,7 +111,7 @@ export const useFreebuffSessionStore = create<FreebuffSessionStore>(
       refreshRefund: async () => {
         const pending = get().pendingRefund
         if (!pending || getAuthTokenDetails().token !== pending.token) return
-        const receipt = await callFreebuffSession('DELETE', pending.token, {
+        const receipt = await callFuckbuffSession('DELETE', pending.token, {
           instanceId: pending.instanceId,
         })
         if (
@@ -131,7 +131,7 @@ export const useFreebuffSessionStore = create<FreebuffSessionStore>(
       keepSlotForRelaunch: () => {
         const session = get().session
         if (
-          freebuffCliAttemptId(
+          fuckbuffCliAttemptId(
             instanceOf(session) ?? get().pendingAdmission?.instanceId,
           )
         ) {
@@ -139,7 +139,7 @@ export const useFreebuffSessionStore = create<FreebuffSessionStore>(
           if (
             session?.status !== 'active' ||
             !token ||
-            !saveFreebuffSessionForRelaunch(
+            !saveFuckbuffSessionForRelaunch(
               {
                 instanceId: session.instanceId,
                 model: session.model,
@@ -158,9 +158,9 @@ export const useFreebuffSessionStore = create<FreebuffSessionStore>(
       releaseSlot: (target = get().session ?? undefined, signal) => {
         if (get().slotKeptForRelaunch) return Promise.resolve()
         // Released on purpose: nothing is left for a later launch to resume.
-        forgetLiveFreebuffSession()
+        forgetLiveFuckbuffSession()
         const pending = get().pendingAdmission
-        const instanceId = holdsLiveFreebuffSlot(target ?? null)
+        const instanceId = holdsLiveFuckbuffSlot(target ?? null)
           ? instanceOf(target)
           : pending?.instanceId
         if (!instanceId) return Promise.resolve()
@@ -186,7 +186,7 @@ export const useFreebuffSessionStore = create<FreebuffSessionStore>(
           getAuthTokenDetails().token === token
         const release = (async () => {
           try {
-            const result = await callFreebuffSession('DELETE', token, {
+            const result = await callFuckbuffSession('DELETE', token, {
               instanceId,
               signal,
             })
@@ -214,7 +214,7 @@ export const useFreebuffSessionStore = create<FreebuffSessionStore>(
                     error instanceof Error ? error.message : String(error),
                   retry: null,
                   outcomeUnknown:
-                    !(error instanceof FreebuffSessionRequestError) ||
+                    !(error instanceof FuckbuffSessionRequestError) ||
                     error.statusCode >= 500,
                 },
               })

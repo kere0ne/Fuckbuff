@@ -600,7 +600,7 @@ describe('wave 2 fields', () => {
     ['a full locale', { ui: { language: 'en-US' } }],
     ['a language list', { ui: { language: 'en,fr' } }],
     ['a runtime with a patch version', { app: { runtime: 'bun-1.3.2' } }],
-    ['a free-text runtime', { app: { runtime: 'electron /Applications/Freebuff.app' } }],
+    ['a free-text runtime', { app: { runtime: 'electron /Applications/Fuckbuff.app' } }],
     ['a referrer URL', { web: { referrer: 'https://www.google.com/search?q=supabase' } }],
     ['a raw utm_source', { web: { utm: 'my-newsletter-42' } }],
     ['a raw error message', { work: { lastError: 'Cannot find module ./secret' } }],
@@ -621,7 +621,7 @@ describe('wave 2 fields', () => {
       parseAdClientContext({
         v: 1,
         sys: { cores: '5-8', cpuModel: 'Apple M3 Max', homedir: '/Users/x' },
-        app: { channel: 'beta', execPath: '/opt/homebrew/bin/freebuff' },
+        app: { channel: 'beta', execPath: '/opt/homebrew/bin/fuckbuff' },
         ui: { language: 'en', languages: ['en-US', 'fr-FR'] },
         work: { tool: 'read', lastErrorText: 'ENOENT /Users/x/repo' },
         web: { referrer: 'search', referrerUrl: 'https://google.com/?q=x' },

@@ -1,5 +1,5 @@
 /**
- * Which store answers the god admin panel's reads (`freebuff/web/convex/admin.ts`:
+ * Which store answers the god admin panel's reads (`fuckbuff/web/convex/admin.ts`:
  * user and project lookups, pause status, members, platform statistics):
  * the checked-in switch for moving them off platform Convex (COD-742,
  * "Admin, stats, tickets and email"). The data is the identity and project

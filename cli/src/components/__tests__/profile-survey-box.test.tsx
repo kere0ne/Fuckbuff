@@ -6,7 +6,7 @@ import React from 'react'
 import {
   profileSurveyQuestion,
   profileSurveyVersion,
-} from '@codebuff/common/constants/freebuff-profile-survey'
+} from '@codebuff/common/constants/fuckbuff-profile-survey'
 
 import { initializeThemeStore } from '../../hooks/use-theme'
 import {
@@ -19,7 +19,7 @@ import {
   ProfileSurveyBoxView,
 } from '../profile-survey-box'
 
-import type { ProfileSurveyQuestion } from '@codebuff/common/constants/freebuff-profile-survey'
+import type { ProfileSurveyQuestion } from '@codebuff/common/constants/fuckbuff-profile-survey'
 import type { ProfileSurveyState } from '../../utils/profile-survey-machine'
 import { sponsoredOfferToSurveyState } from '../../utils/sponsored-survey-api'
 

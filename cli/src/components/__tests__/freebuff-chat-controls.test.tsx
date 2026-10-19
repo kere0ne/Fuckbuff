@@ -1,34 +1,34 @@
-import { IS_FREEBUFF } from '../../utils/constants'
+import { IS_FUCKBUFF } from '../../utils/constants'
 import { useByokSelectionStore } from '../../utils/byok'
 import { afterEach, beforeAll, expect, test } from 'bun:test'
 import { createTestRenderer } from '@opentui/core/testing'
 import { createRoot, flushSync } from '@opentui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-import { useFreebuffChatAdmission } from '../../hooks/use-freebuff-chat-admission'
-import { FreebuffChatControls } from '../freebuff-chat-controls'
+import { useFuckbuffChatAdmission } from '../../hooks/use-fuckbuff-chat-admission'
+import { FuckbuffChatControls } from '../fuckbuff-chat-controls'
 import {
   ChatRuntimeProvider,
   useChatRuntime,
 } from '../../contexts/chat-runtime-context'
 import {
-  openFreebuffReasoningPicker,
-  useFreebuffChatStore,
-} from '../../state/freebuff-chat-store'
-import { useFreebuffModelStore } from '../../state/freebuff-model-store'
-import { useFreebuffSessionStore } from '../../state/freebuff-session-store'
+  openFuckbuffReasoningPicker,
+  useFuckbuffChatStore,
+} from '../../state/fuckbuff-chat-store'
+import { useFuckbuffModelStore } from '../../state/fuckbuff-model-store'
+import { useFuckbuffSessionStore } from '../../state/fuckbuff-session-store'
 import { useChatStore } from '../../state/chat-store'
 import { initializeThemeStore } from '../../hooks/use-theme'
-import { DEFAULT_FREEBUFF_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { DEFAULT_FUCKBUFF_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 import type { PendingAttachment } from '../../types/store'
 
-if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
-  test('chat admission controls (isolated Freebuff build)', async () => {
+if (process.env.FUCKBUFF_CHAT_CONTROLS_TEST !== '1') {
+  test('chat admission controls (isolated Fuckbuff build)', async () => {
     const child = Bun.spawn([process.execPath, 'test', import.meta.path], {
       env: {
         ...process.env,
-        FREEBUFF_MODE: 'true',
-        FREEBUFF_CHAT_CONTROLS_TEST: '1',
+        FUCKBUFF_MODE: 'true',
+        FUCKBUFF_CHAT_CONTROLS_TEST: '1',
       },
       stdout: 'pipe',
       stderr: 'pipe',
@@ -50,13 +50,13 @@ if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
     cleanup?.()
     cleanup = undefined
     useChatStore.getState().reset()
-    useFreebuffChatStore.setState({
+    useFuckbuffChatStore.setState({
       admission: null,
       pickerOpen: false,
       pickerInitialView: 'model',
       nextModel: null,
     })
-    useFreebuffSessionStore.getState().setSession(null)
+    useFuckbuffSessionStore.getState().setSession(null)
   })
 
   const attachment: PendingAttachment = {
@@ -68,7 +68,7 @@ if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
   }
 
   async function mount() {
-    expect(IS_FREEBUFF).toBe(true)
+    expect(IS_FUCKBUFF).toBe(true)
     useByokSelectionStore.setState({ selected: undefined, setupOpen: false })
     const setup = await createTestRenderer({
       width: 90,
@@ -81,9 +81,9 @@ if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
     })
     let runtime: ReturnType<typeof useChatRuntime> | undefined
     function Seed() {
-      useFreebuffChatAdmission(true)
+      useFuckbuffChatAdmission(true)
       runtime = useChatRuntime()
-      return <FreebuffChatControls />
+      return <FuckbuffChatControls />
     }
     cleanup = () => {
       flushSync(() => root.unmount())
@@ -117,14 +117,14 @@ if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
   }
 
   test('reasoning shortcut opens the next model at its saved effort and cancels without admission', async () => {
-    const previous = useFreebuffModelStore.getState()
+    const previous = useFuckbuffModelStore.getState()
     const model = 'z-ai/glm-5.3-flash'
-    useFreebuffModelStore.setState({
+    useFuckbuffModelStore.setState({
       selectedModel: 'mimo/mimo-v2.5',
       reasoningEffortByModel: { [model]: 'low' },
     })
-    useFreebuffChatStore.setState({ nextModel: model })
-    openFreebuffReasoningPicker()
+    useFuckbuffChatStore.setState({ nextModel: model })
+    openFuckbuffReasoningPicker()
     try {
       const setup = await mount()
       expect(setup.captureCharFrame()).toContain('GLM 5.3 Flash • Reasoning')
@@ -133,16 +133,16 @@ if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
       await setup.renderOnce()
       expect(setup.captureCharFrame()).not.toContain('Enter save')
       flushSync(() => setup.mockInput.pressKey('ESCAPE'))
-      expect(useFreebuffChatStore.getState().pickerOpen).toBe(false)
-      expect(useFreebuffChatStore.getState().admission).toBeNull()
-      expect(useFreebuffChatStore.getState().nextModel).toBe(model)
-      expect(useFreebuffModelStore.getState().selectedModel).toBe('mimo/mimo-v2.5')
-      expect(useFreebuffModelStore.getState().reasoningEffortByModel).toEqual({
+      expect(useFuckbuffChatStore.getState().pickerOpen).toBe(false)
+      expect(useFuckbuffChatStore.getState().admission).toBeNull()
+      expect(useFuckbuffChatStore.getState().nextModel).toBe(model)
+      expect(useFuckbuffModelStore.getState().selectedModel).toBe('mimo/mimo-v2.5')
+      expect(useFuckbuffModelStore.getState().reasoningEffortByModel).toEqual({
         [model]: 'low',
       })
-      expect(useFreebuffSessionStore.getState().session).toBeNull()
+      expect(useFuckbuffSessionStore.getState().session).toBeNull()
     } finally {
-      useFreebuffModelStore.setState(previous)
+      useFuckbuffModelStore.setState(previous)
     }
   })
 
@@ -150,7 +150,7 @@ if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
     const expiresAt = new Date(Date.now() + 3_600_000).toISOString()
     const glm = 'z-ai/glm-5.3-flash'
     const luna = 'openai/gpt-6-luna'
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'active',
       accessTier: 'full',
       model: glm,
@@ -173,33 +173,33 @@ if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
         prices: { [glm]: 5, [luna]: 20 },
       },
     })
-    useFreebuffChatStore.setState({
+    useFuckbuffChatStore.setState({
       admission: { phase: 'requested', model: luna, metadataChecked: true },
     })
-    useFreebuffModelStore.setState({ hasExplicitPick: true }) // Luna was picked
+    useFuckbuffModelStore.setState({ hasExplicitPick: true }) // Luna was picked
     const setup = await mount()
-    expect(useFreebuffChatStore.getState().admission?.phase).toBe('confirm')
+    expect(useFuckbuffChatStore.getState().admission?.phase).toBe('confirm')
     expect(setup.captureCharFrame()).toContain('4 hours')
-    expect(useFreebuffChatStore.getState().admission?.message).toContain(
+    expect(useFuckbuffChatStore.getState().admission?.message).toContain(
       'takes 4 hours from your balance',
     )
     await setup.mockInput.pressKey('ESCAPE')
-    expect(useFreebuffSessionStore.getState().session?.status).toBe('active')
+    expect(useFuckbuffSessionStore.getState().session?.status).toBe('active')
     expect(useChatStore.getState().inputValue).toBe('Keep this first message')
   })
 
   test('cancelling consent restores the first message and attachments to the draft', async () => {
-    useFreebuffChatStore.setState({
+    useFuckbuffChatStore.setState({
       admission: {
         phase: 'confirm',
-        model: DEFAULT_FREEBUFF_MODEL_ID,
+        model: DEFAULT_FUCKBUFF_MODEL_ID,
         message: 'Spend 5 from your wallet?',
       },
     })
     const setup = await mount()
     expect(setup.captureCharFrame()).toContain('Spend 5 from your wallet?')
     await setup.mockInput.pressKey('ESCAPE')
-    expect(useFreebuffChatStore.getState().admission).toBeNull()
+    expect(useFuckbuffChatStore.getState().admission).toBeNull()
     expect(useChatStore.getState().inputValue).toBe('Keep this first message')
     expect(useChatStore.getState().pendingAttachments).toEqual([attachment])
   })
@@ -208,18 +208,18 @@ if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
     const session = {
       status: 'active' as const,
       accessTier: 'full' as const,
-      model: DEFAULT_FREEBUFF_MODEL_ID,
+      model: DEFAULT_FUCKBUFF_MODEL_ID,
       instanceId: 'cli:held',
       admittedAt: new Date().toISOString(),
       expiresAt: new Date(Date.now() + 3_600_000).toISOString(),
       remainingMs: 3_600_000,
     }
-    useFreebuffSessionStore.getState().setSession(session)
+    useFuckbuffSessionStore.getState().setSession(session)
     // Successful admissions retain this cancellation identity too.
-    useFreebuffSessionStore
+    useFuckbuffSessionStore
       .getState()
       .setPendingAdmission({ instanceId: session.instanceId, token: 'fixture' })
-    useFreebuffChatStore.setState({
+    useFuckbuffChatStore.setState({
       admission: {
         phase: 'confirm',
         model: 'mimo/mimo-v2.5',
@@ -229,8 +229,8 @@ if (process.env.FREEBUFF_CHAT_CONTROLS_TEST !== '1') {
     })
     const setup = await mount()
     await setup.mockInput.pressKey('ESCAPE')
-    expect(useFreebuffSessionStore.getState().session).toBe(session)
+    expect(useFuckbuffSessionStore.getState().session).toBe(session)
     expect(useChatStore.getState().inputValue).toBe('Keep this first message')
-    expect(useFreebuffChatStore.getState().admission).toBeNull()
+    expect(useFuckbuffChatStore.getState().admission).toBeNull()
   })
 }

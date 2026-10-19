@@ -1,6 +1,6 @@
-import { formatHours, formatHoursShort } from './freebuff-hours'
+import { formatHours, formatHoursShort } from './fuckbuff-hours'
 
-import type { FreebuffSessionLedgerEntry } from '../types/freebuff-usage'
+import type { FuckbuffSessionLedgerEntry } from '../types/fuckbuff-usage'
 
 /**
  * The two lines a per-session charge reads as, so the hub, the CLI and Desktop
@@ -13,8 +13,8 @@ import type { FreebuffSessionLedgerEntry } from '../types/freebuff-usage'
  */
 
 /** Where the session's charge was drawn from, for the row's own line. */
-export function freebuffChargeSourceText(
-  entry: Pick<FreebuffSessionLedgerEntry, 'charged' | 'chargedFromWallet'>,
+export function fuckbuffChargeSourceText(
+  entry: Pick<FuckbuffSessionLedgerEntry, 'charged' | 'chargedFromWallet'>,
 ): string | null {
   if (entry.chargedFromWallet <= 0) return null
   return entry.chargedFromWallet >= entry.charged
@@ -27,8 +27,8 @@ export function freebuffChargeSourceText(
  * return something — the caller says when it settles, in the reader's own
  * clock, which is the question behind every "my refund was 0" report.
  */
-export function freebuffChargeReturnText(
-  entry: Pick<FreebuffSessionLedgerEntry, 'returned' | 'settlesAt'>,
+export function fuckbuffChargeReturnText(
+  entry: Pick<FuckbuffSessionLedgerEntry, 'returned' | 'settlesAt'>,
   now: Date = new Date(),
 ): string | null {
   if (entry.settlesAt && new Date(entry.settlesAt).getTime() > now.getTime())
@@ -41,8 +41,8 @@ export function freebuffChargeReturnText(
 }
 
 /** What the session took when it started: always a whole number of hours. */
-export function freebuffChargeChargedText(
-  entry: Pick<FreebuffSessionLedgerEntry, 'charged'>,
+export function fuckbuffChargeChargedText(
+  entry: Pick<FuckbuffSessionLedgerEntry, 'charged'>,
 ): string {
   return formatHoursShort(entry.charged)
 }

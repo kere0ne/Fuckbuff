@@ -7,7 +7,7 @@ import { useLoginStore } from '../state/login-store'
 import { identifyUser, trackEvent } from '../utils/analytics'
 import { getUserCredentials } from '../utils/auth'
 import { resetCodebuffClient } from '../utils/codebuff-client'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { loggerContext } from '../utils/logger'
 
 import type { MultilineInputHandle } from '../components/multiline-input'
@@ -16,7 +16,7 @@ import type { User } from '../utils/auth'
 const setAuthLoggerContext = (params: { userId: string; email: string }) => {
   loggerContext.userId = params.userId
   loggerContext.userEmail = params.email
-  identifyUser(params.userId, { email: params.email, freebuff: IS_FREEBUFF })
+  identifyUser(params.userId, { email: params.email, fuckbuff: IS_FUCKBUFF })
 }
 
 const clearAuthLoggerContext = () => {
@@ -119,7 +119,7 @@ export const useAuthState = ({
       resetChatStore()
       // After the reset, which clears banners: a fresh sign-in is the moment
       // to invite someone to the community. Restored sessions never get here.
-      if (IS_FREEBUFF) useChatStore.getState().setActiveTopBanner('discord')
+      if (IS_FUCKBUFF) useChatStore.getState().setActiveTopBanner('discord')
       resetLoginState()
       setInputFocused(true)
       setUser(loggedInUser)

@@ -6,7 +6,7 @@
  * into `profile_survey_event` (#6278).
  *
  * Same origin, auth and User-Agent as `profile-survey-api.ts`. The batching
- * and the event rules are `@codebuff/common/constants/freebuff-survey-events-client`;
+ * and the event rules are `@codebuff/common/constants/fuckbuff-survey-events-client`;
  * this file is the CLI's transport plus `observeSponsoredSurvey`, which reads
  * the survey store's state changes (the CLI has no card component to hook) and
  * drives one tracker per sponsored survey. Fire and forget: a failed send is logged at
@@ -22,9 +22,9 @@ import {
   type SurveyCardTracker,
   type SurveyEventSender,
   type SurveyEventSink,
-} from '@codebuff/common/constants/freebuff-survey-events-client'
+} from '@codebuff/common/constants/fuckbuff-survey-events-client'
 
-import { FREEBUFF_WEB_URL } from '../login/constants'
+import { FUCKBUFF_WEB_URL } from '../login/constants'
 
 import { getCliAdRequestUserAgent } from './ad-client-identity'
 import { getAuthToken } from './auth'
@@ -41,7 +41,7 @@ export function createCliSurveyEventSender(
     fetchImpl?: typeof fetch
   } = {},
 ): SurveyEventSender {
-  const base = (deps.baseUrl ?? FREEBUFF_WEB_URL).replace(/\/+$/, '')
+  const base = (deps.baseUrl ?? FUCKBUFF_WEB_URL).replace(/\/+$/, '')
   const getToken = deps.getToken ?? getAuthToken
   const fetchImpl = deps.fetchImpl ?? fetch
   return async (batch) => {

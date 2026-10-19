@@ -14,7 +14,7 @@ Every package must therefore have a `bunfig.toml` preloading `sdk/test/setup-env
 
 The unit-test matrix therefore never loads Infisical, and neither does `flake-hunt.yml`, which runs the same suites in the same job environment. This is a correctness boundary, not merely a secrets optimization: production rollout switches are mutable operational state, so importing them makes unrelated commits fail as soon as an operator changes a flag. Tests for non-default modes must set the specific variable in the test or inject the mode explicitly. Secret-bearing integration jobs remain separate.
 
-The shared preload deletes `FREEBUFF_ADS_SLACK_WEBHOOK_URL`, including when
+The shared preload deletes `FUCKBUFF_ADS_SLACK_WEBHOOK_URL`, including when
 integration CI or a local shell supplies it. Campaign fixtures otherwise send
 real review notifications to `#ads-notifs` on every suite run and retry. The
 Slack sender also refuses its default transport whenever `NODE_ENV`, `BUN_ENV`
@@ -25,9 +25,9 @@ The same rule covers generated inputs. `cli/src/agents/bundled-agents.generated.
 
 Tests that need a **service** rather than a variable should skip cleanly and say why, but never in CI. `@codebuff/internal/testing/test-db` probes Postgres once, skips the DB suites locally with the docker command to fix it, and throws when `CODEBUFF_GITHUB_ACTIONS=true` — otherwise a broken CI service container would read as a pass. Gate on **reachability**, never on `!process.env.DATABASE_URL`: the fixtures supply a placeholder URL, so presence stopped meaning availability.
 
-A unit test that leaks a database call gets the same answer locally as in CI. `test/setup-db-leak-guard.ts`, the first preload in the bunfig of every package whose tests can reach Postgres (the root, `web`, `freebuff/web`, `packages/{internal,billing,auth,jobs}`, and `scripts`, which preloads nothing else), answers CI's `must-not-reach-a-database` URLs with an instant Postgres error that names the leak. When none of `DATABASE_URL`, `DIRECT_DATABASE_URL` and `SCRIPTS_DATABASE_URL` is set, it supplies that URL itself. Without it, a local run fell through to `setup-env.ts`'s localhost placeholder, where postgres-js's reconnect backoff let a swallowed leak time out some later test (2026-10-13). It must stay ahead of `setup-env.ts` in those lists, and `scripts/__tests__/db-leak-guard.test.ts` fails if it does not. Set any of the three, as an integration run does, and it leaves them all alone. `probeTestDb` reports the sentinel as unreachable without connecting, so integration files skip without tripping the guard.
+A unit test that leaks a database call gets the same answer locally as in CI. `test/setup-db-leak-guard.ts`, the first preload in the bunfig of every package whose tests can reach Postgres (the root, `web`, `fuckbuff/web`, `packages/{internal,billing,auth,jobs}`, and `scripts`, which preloads nothing else), answers CI's `must-not-reach-a-database` URLs with an instant Postgres error that names the leak. When none of `DATABASE_URL`, `DIRECT_DATABASE_URL` and `SCRIPTS_DATABASE_URL` is set, it supplies that URL itself. Without it, a local run fell through to `setup-env.ts`'s localhost placeholder, where postgres-js's reconnect backoff let a swallowed leak time out some later test (2026-10-13). It must stay ahead of `setup-env.ts` in those lists, and `scripts/__tests__/db-leak-guard.test.ts` fails if it does not. Set any of the three, as an integration run does, and it leaves them all alone. `probeTestDb` reports the sentinel as unreachable without connecting, so integration files skip without tripping the guard.
 
-Tests that spawn a server child should race readiness against `proc.exited` and report the child's captured output (see `freebuff-desktop/test/launch-bootstrap.smoke.test.ts`). Polling a dead port surfaces only as "a hook timed out", which names neither the cause nor the process that failed.
+Tests that spawn a server child should race readiness against `proc.exited` and report the child's captured output (see `fuckbuff-desktop/test/launch-bootstrap.smoke.test.ts`). Polling a dead port surfaces only as "a hook timed out", which names neither the cause nor the process that failed.
 
 ### The CI guard against disappearing tests
 
@@ -38,7 +38,7 @@ CI does not run `bun test` directly — it goes through `scripts/ci/test-with-gu
 
 Growth never fails the build, so adding tests needs no baseline change; the guard just notes the baseline is stale. Deleting tests on purpose means re-recording: re-run the job's command with `--update`.
 
-**Refresh the baselines periodically, and act on the "stale" line.** Because growth never fails, a baseline nobody touches quietly becomes a floor far below reality — which is a guard that no longer guards. When this rot was first measured, `freebuff-desktop` was recorded at 971 tests while actually running 1278, so **307 tests could have stopped running and CI would have stayed green** (393 across all suites). Re-record from a real CI run, not locally.
+**Refresh the baselines periodically, and act on the "stale" line.** Because growth never fails, a baseline nobody touches quietly becomes a floor far below reality — which is a guard that no longer guards. When this rot was first measured, `fuckbuff-desktop` was recorded at 971 tests while actually running 1278, so **307 tests could have stopped running and CI would have stayed green** (393 across all suites). Re-record from a real CI run, not locally.
 
 Expect to do it more than once. Desktop moved 1278 → 1282 → 1339 over the two days it took to land that refresh, so on an active package the floor starts sliding immediately. That is fine — a floor 50 tests low still catches the failure this exists for, which is a suite losing *hundreds* at once. It is a floor 300 low that is worthless. Treat the "stale" line as a nudge, not an emergency.
 
@@ -111,11 +111,11 @@ it refuses any other host):
 cd web && DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/testdb bun run smoke:prod
 ```
 
-`build-freebuff-web` has the same gate for the builder app,
-`freebuff/web/scripts/prod-smoke.ts`, and it matters more there: `freebuff-web`
+`build-fuckbuff-web` has the same gate for the builder app,
+`fuckbuff/web/scripts/prod-smoke.ts`, and it matters more there: `fuckbuff-web`
 auto-deploys from `main`. Two differences. The pin is that service's own
-`freebuff/web/.node-version`, not the repo root's, because Render applies the
-root file to every service and a root pin meant for `web` moved freebuff-web
+`fuckbuff/web/.node-version`, not the repo root's, because Render applies the
+root file to every service and a root pin meant for `web` moved fuckbuff-web
 from 22.x to 20.15.1 on 2026-09-13, breaking its build on a Node 20 flag while
 CI stayed green; the job now installs that Node _before_ the compile, since the
 app's build script runs `node` itself. And the journey is a chat turn behind a
@@ -133,7 +133,7 @@ fire on Node 20 under this app — a Node downgrade is caught by building and
 smoking on the pinned version, not by that check.
 
 ```bash
-cd freebuff/web && DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/testdb bun run smoke:prod
+cd fuckbuff/web && DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/testdb bun run smoke:prod
 ```
 
 ## What CI actually spends its time on
@@ -169,13 +169,13 @@ restore, SDK build) costs far more than the tests in almost every job.
 
 ### Typecheck runs in lanes
 
-`bun --filter='*' run typecheck` scheduled `@codebuff/freebuff-web` last: it did
+`bun --filter='*' run typecheck` scheduled `@codebuff/fuckbuff-web` last: it did
 not start until 114s into a 227s step, then ran ~113s alone while all 17 other
 packages had finished and the runner idled on one tsc. So the typecheck job is a
-matrix over *lanes* — `freebuff-web` gets its own runner, `rest` takes the other
+matrix over *lanes* — `fuckbuff-web` gets its own runner, `rest` takes the other
 17 — defined in `scripts/ci/typecheck-lanes.ts`.
 
-The `freebuff/web` typecheck allows an 8 GiB Node heap. A cold check measured
+The `fuckbuff/web` typecheck allows an 8 GiB Node heap. A cold check measured
 6,239,321 KiB after the October 2026 Desktop/Web changes; the previous 6 GiB
 limit exhausted the heap on both `main` and PR runners. Its dedicated
 `ubicloud-standard-4` runner has 16 GiB RAM, leaving room for Node and the
@@ -185,7 +185,7 @@ the work when the prior build info is usable.
 Membership lives in that script rather than in `ci.yml` because both obvious
 ways to write it in YAML fail silently:
 
-- **`--filter='*' --filter='!@codebuff/freebuff-web'` does not exclude
+- **`--filter='*' --filter='!@codebuff/fuckbuff-web'` does not exclude
   anything.** bun 1.3.14 ignores the negation and runs all 18 packages
   (verified), so the `rest` lane would re-run the package it exists to hand off
   and the split would buy nothing while looking correct.
@@ -217,7 +217,7 @@ check nothing loud. Each of these **exits 0** on its own:
   lane.
 
 **Beware retry-inflated numbers when you profile this.** The first pass at the
-table above recorded `freebuff-desktop` at 130s, which was wrong: the job had
+table above recorded `fuckbuff-desktop` at 130s, which was wrong: the job had
 silently failed once (`Boundary result-checkpointed was not reached`, 69.55s)
 and passed on attempt 2 (48.78s), and `nick-fields/retry` reported success. Read
 bun's own `Ran N tests across M files [Xs]` line, not the step duration, and
@@ -233,7 +233,7 @@ container. Retrying infrastructure is what a retry is for; retrying test logic
 just moves the bill to whoever hits it next. Unit suites therefore used to keep
 three attempts only to fail a pass-on-retry as "flaky", which meant a red unit
 suite ran three times and could never come back green: on 2026-10-07 failing
-`test-freebuff/web` jobs took 736s against 275s green. Since then a flaky unit
+`test-fuckbuff/web` jobs took 736s against 275s green. Since then a flaky unit
 case fails on its first attempt like any other failure, and its `(fail)` line is
 the last in the log. Tell "flaky" from "broken" locally with
 `scripts/flake-hunt.ts`.
@@ -247,12 +247,12 @@ purpose: a prefix match would hand back a dist built from different sources and
 every downstream test would silently run against a stale SDK. A miss just costs
 the ~18s build.
 
-`freebuff/web`'s `prepare:workspace` shells out to that same SDK build, and it
-was the tail of the typecheck job — freebuff/web finishes last, and spent its
+`fuckbuff/web`'s `prepare:workspace` shells out to that same SDK build, and it
+was the tail of the typecheck job — fuckbuff/web finishes last, and spent its
 first ~65s rebuilding what the job had already restored. It now honours
 `SDK_ALREADY_BUILT`, which **only** CI's typecheck job sets, immediately after
 `build-sdk` has run. Unset everywhere else, so local runs and Render deploys
-still build normally. If you add a job that runs `freebuff/web`'s typecheck or
+still build normally. If you add a job that runs `fuckbuff/web`'s typecheck or
 build, either let it rebuild or set the flag *after* `build-sdk` — never before.
 
 ### Small suites share a runner
@@ -268,7 +268,7 @@ reads the packages from the lanes. In the database lane, each package after
 the first gets an empty database of its own (`scripts/ci/fresh-test-database.ts`).
 
 Give a suite its own lane when its runtime is a real fraction of the critical
-path (the big four: `freebuff/web`, `freebuff-desktop`, `web`, `cli`), and add
+path (the big four: `fuckbuff/web`, `fuckbuff-desktop`, `web`, `cli`), and add
 it to `small` otherwise. The three Windows areas are one `test-windows` job
 for the same reason: setup was 75–95% of each.
 
@@ -277,8 +277,8 @@ for the same reason: setup was 75–95% of each.
 The opposite case: a suite too slow for one runner gets several lanes, one per
 `shard: i/n`, each naming the same single package. `test-with-guard --shard i/n`
 runs the files `scripts/ci/test-shard.ts` assigns to that shard and guards them
-under the key `<key>#i/n`. Today that is the `freebuff/web` and
-`freebuff-desktop` unit suites and `web`'s DB integration suite, two shards
+under the key `<key>#i/n`. Today that is the `fuckbuff/web` and
+`fuckbuff-desktop` unit suites and `web`'s DB integration suite, two shards
 each.
 
 - **Assignment is a hash of the file's path** (FNV-1a over the path
@@ -304,7 +304,7 @@ each.
   directory between them, as in an unsharded run, it passes. Add a group only
   for a cross-file hazard you have reproduced, and fix the hazard where you can.
 - **A new file order surfaces leaks.** Sharding's first CI run found two
-  freebuff/web tests leaving a fake `window` behind (a later server render then
+  fuckbuff/web tests leaving a fake `window` behind (a later server render then
   threw on `window.location.href`) and a process-group test that read `/proc`
   before the killed process had finished exiting. Fix the leaking test; do
   not move files between shards to hide it.
@@ -313,17 +313,17 @@ each.
   would quietly stop matching (and stop starting its Redis service).
 
 Measured before sharding (8 green main runs, 2026-10-07; median job time):
-`test-integration-web` 282s and `test-freebuff/web` 276s were the two slowest
+`test-integration-web` 282s and `test-fuckbuff/web` 276s were the two slowest
 jobs, with ~200s and ~225s of `bun test`. Per-file times from three of those
 logs (the gap between consecutive file headers) split 102s/104s for
-freebuff/web and, with desktop-cloud kept together, 78s/125s for web; web's
+fuckbuff/web and, with desktop-cloud kept together, 78s/125s for web; web's
 two slowest DB files (~33s and ~22s) land in different shards. With those two
-split, `test-freebuff-desktop` (164–267s of tests on its pinned Bun, 255s
+split, `test-fuckbuff-desktop` (164–267s of tests on its pinned Bun, 255s
 median job, 330s in the PR's run) was the slowest job, so it is split too,
 96s/98s by per-file time.
 
 Two shards each, not three: the jobs behind them sit at 220–265s
-(`test-windows`, `build-freebuff-web`, `typecheck-freebuff-web`,
+(`test-windows`, `build-fuckbuff-web`, `typecheck-fuckbuff-web`,
 `typecheck-rest`), so a third shard would buy no wall clock for another ~70s of
 setup. Shard a suite only when it is clearly the long pole. Each extra shard
 costs a full job's setup (~50–70s of runner time), and on this pool runner
@@ -362,13 +362,13 @@ the backstop for an edge the scanner misses.
 What is left on the critical path is not test time. `test-windows` used to
 spend ~130s of its ~264s restoring the whole monorepo's `node_modules`; it now
 installs only the workspaces its suites load (see "Windows installs" below).
-`typecheck-freebuff-web` and `typecheck-rest` are one `tsc` each
+`typecheck-fuckbuff-web` and `typecheck-rest` are one `tsc` each
 (160–220s) behind ~45s of setup; the lever there is incremental `tsc` or a
-larger runner, and both need their own measurement. `build-freebuff-web`'s
+larger runner, and both need their own measurement. `build-fuckbuff-web`'s
 ~110s Turbopack compile now starts from the previous run's persistent cache
 (next section).
 
-Measure test time on CI, not locally. freebuff-desktop's
+Measure test time on CI, not locally. fuckbuff-desktop's
 `src/app/thread-engine.test.ts` once took ~101s on an M-series Mac against
 ~54s for the entire desktop suite on a runner, so local timings will send you
 after the wrong thing.
@@ -413,7 +413,7 @@ change) is the 647s row.
 
 Keep the caches whose transfer cost is materially smaller than the work they
 avoid. `sdk/dist` is a roughly 17 MB restore instead of an ~18s build.
-`build-freebuff-web` keeps Turbopack's persistent build cache
+`build-fuckbuff-web` keeps Turbopack's persistent build cache
 (`turbopackFileSystemCacheForBuild`, on in CI and off on Render, where the
 download cost more than the compile it saved): `scripts/render-next-cache.mjs` stashes `.next/cache` in `$RUNNER_TEMP`
 on GitHub Actions instead of letting the postbuild prune delete it, and main's
@@ -485,13 +485,13 @@ compete for the cores — and names every test that fails.
 ```bash
 # The default hunt: 3 rounds x 2 overlapping runs of the desktop suite, on the
 # Bun that suite is tested on (see below).
-bunx bun@$(cat freebuff-desktop/.bun-version) scripts/flake-hunt.ts
+bunx bun@$(cat fuckbuff-desktop/.bun-version) scripts/flake-hunt.ts
 
 # Harder, and on a different package.
 bun scripts/flake-hunt.ts --dir cli --rounds 5 --concurrency 3 --hogs 8
 
 # Interrogate one suspect file: cheap enough to run 10 times.
-bunx bun@$(cat freebuff-desktop/.bun-version) scripts/flake-hunt.ts \
+bunx bun@$(cat fuckbuff-desktop/.bun-version) scripts/flake-hunt.ts \
   --cmd "bun test test/launch-bootstrap.smoke.test.ts" --rounds 10
 ```
 
@@ -500,8 +500,8 @@ per round, and writes each run's full output to a log it names for you. If your
 shell lacks the repo env (a worktree without direnv), pass it through the
 command: `--cmd "bun --env-file=../.env.local test"`.
 
-**freebuff-desktop is hunted on its own Bun.** CI tests it on the Bun the app
-ships with (`freebuff-desktop/.bun-version`), not on the monorepo toolchain
+**fuckbuff-desktop is hunted on its own Bun.** CI tests it on the Bun the app
+ships with (`fuckbuff-desktop/.bun-version`), not on the monorepo toolchain
 (`.bun-version`) that `bun` on your PATH is, and the two are not
 interchangeable. On 2026-09-26 a desktop hunt on the toolchain Bun (1.3.14)
 failed `mcp-consent-bridge.test.ts` › "an asker that gives up closes its
@@ -519,7 +519,7 @@ and ci.yml's retry-flake annotation both follow the pin.
 
 The hunter is a magnifier, not an oracle, and one open flake is proof of that.
 `useProjectSkills` failed on **three separate PRs, on three different cases**,
-none of which touched `freebuff-desktop` — and never once under 24 hunted runs
+none of which touched `fuckbuff-desktop` — and never once under 24 hunted runs
 at load 11-16, nor under 12 concurrent runs with CPU hogs, on the fixed and
 unfixed versions alike.
 
@@ -673,7 +673,7 @@ it. And a test of the form "sleep 20ms, then assert nothing has happened yet"
 can only pass *vacuously* under load, so this harness will never flag it; those
 need rewriting to assert ordering rather than absence.
 
-The weekly `flake-hunt.yml` workflow runs this against `freebuff-desktop` — on
+The weekly `flake-hunt.yml` workflow runs this against `fuckbuff-desktop` — on
 its pin, over the package's own `test:files` as ci.yml runs it — and reports
 failures without blocking any PR.
 
@@ -718,7 +718,7 @@ first — and bun does **not** load files in the order the command line lists th
 to it, the full suite passes 3573/3573 on a laptop, and CI still fails with a
 different set of tests every run.
 
-What it looked like: `test-freebuff-desktop` red on four `main` commits in a row,
+What it looked like: `test-fuckbuff-desktop` red on four `main` commits in a row,
 once on a commit with no file changes at all, naming ~20 tests across
 `Tab.rename`, `ContextBar.menu`, `AccountMenu.menu`, `AgentPicker.menu` and
 `QuotaBadge` (since deleted) — five files with nothing in common except that they were the only
@@ -775,12 +775,12 @@ which is exactly "some earlier file did this", and running the affected files:
 
 ```bash
 echo ';(globalThis as any).requestAnimationFrame = () => 0' > /tmp/leak.ts
-cd freebuff-desktop && bun test \
+cd fuckbuff-desktop && bun test \
   --preload ../test/setup-scm-loader.ts --preload ../sdk/test/setup-env.ts --preload /tmp/leak.ts \
   src/ui/shell/Tab.rename.test.tsx src/ui/agent/AgentPicker.menu.test.tsx
 ```
 
-Our own components do it too. Freebuff Web's survey cards show once per page load
+Our own components do it too. Fuckbuff Web's survey cards show once per page load
 and keep that in module state behind a reset seam (`resetWorkspaceProfileSurveySession`,
 `resetWorkspaceOnboardingSurveySession`). Any file that renders `WorkspaceApp` can
 spend it. So a test that needs the card resets it in `beforeEach`, not only
@@ -841,14 +841,14 @@ and raising the timeout would only have hidden it.
 
 Both packages now preload a hook that prints any jsdom node as its `outerHTML`
 (capped at 500 chars) and a window or document as its URL:
-`freebuff/web/test/support/jsdom-inspect.ts` (#5694) and its port
-`freebuff-desktop/test/support/jsdom-inspect.ts`. With it, that failed
+`fuckbuff/web/test/support/jsdom-inspect.ts` (#5694) and its port
+`fuckbuff-desktop/test/support/jsdom-inspect.ts`. With it, that failed
 `expect(node).toBeNull()` is a one-line message built in about a millisecond.
 A test run without the package's `bunfig.toml` (from another directory) has no
 hook and still prints the whole Window, and the helpers' messages read better,
 so the rule stands: **inside `waitFor` (or any retry), prefer
 `expectFocused(el)` / `expectAbsent(query, what)` from
-`freebuff-desktop/test/support/dom-expect.ts`** over a DOM node in a matcher. To
+`fuckbuff-desktop/test/support/dom-expect.ts`** over a DOM node in a matcher. To
 spot the shape, time the case with `bun test --reporter=junit
 --reporter-outfile=…`: a mounted-React case taking over a second with no real
 I/O is almost always this.

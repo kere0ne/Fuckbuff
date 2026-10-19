@@ -5,12 +5,12 @@ import { cyan, green, red, yellow, bold } from 'picocolors'
 import { LOGIN_WEBSITE_URL } from './constants'
 import {
   DISCORD_AFTER_LOGIN_TEXT,
-  FREEBUFF_DISCORD_INVITE_URL,
+  FUCKBUFF_DISCORD_INVITE_URL,
 } from './discord-invite'
 import { generateLoginUrl, pollLoginStatus } from './login-flow'
 import { flushAnalytics, identifyUser, trackEvent } from '../utils/analytics'
 import { saveUserCredentials } from '../utils/auth'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { getFingerprintId } from '../utils/fingerprint'
 import { logger } from '../utils/logger'
 
@@ -28,7 +28,7 @@ export async function runPlainLogin(): Promise<void> {
   const fingerprintId = await getFingerprintId()
 
   console.log()
-  console.log(bold(IS_FREEBUFF ? 'Freebuff Login' : 'Codebuff Login'))
+  console.log(bold(IS_FUCKBUFF ? 'Fuckbuff Login' : 'Codebuff Login'))
   console.log()
   console.log('Generating login URL...')
 
@@ -40,7 +40,7 @@ export async function runPlainLogin(): Promise<void> {
         baseUrl: LOGIN_WEBSITE_URL,
         fingerprintId,
         via: 'plain_command',
-        cliFlowId: IS_FREEBUFF ? randomUUID() : undefined,
+        cliFlowId: IS_FUCKBUFF ? randomUUID() : undefined,
       },
     )
   } catch (error) {
@@ -88,7 +88,7 @@ export async function runPlainLogin(): Promise<void> {
     // logins aren't missing from the funnel, then flush before exiting since
     // process.exit would otherwise drop the buffered PostHog events.
     if (user.id) {
-      identifyUser(user.id, { email: user.email, freebuff: IS_FREEBUFF })
+      identifyUser(user.id, { email: user.email, fuckbuff: IS_FUCKBUFF })
       trackEvent(AnalyticsEvent.LOGIN, {
         userId: user.id,
         via: 'plain_command',
@@ -107,11 +107,11 @@ export async function runPlainLogin(): Promise<void> {
       ),
     )
     console.log()
-    const cliName = IS_FREEBUFF ? 'freebuff' : 'codebuff'
+    const cliName = IS_FUCKBUFF ? 'fuckbuff' : 'codebuff'
     console.log('You can now run ' + cyan(cliName) + ' to start.')
-    if (IS_FREEBUFF) {
+    if (IS_FUCKBUFF) {
       console.log(
-        DISCORD_AFTER_LOGIN_TEXT + ' ' + cyan(FREEBUFF_DISCORD_INVITE_URL),
+        DISCORD_AFTER_LOGIN_TEXT + ' ' + cyan(FUCKBUFF_DISCORD_INVITE_URL),
       )
     }
     process.exit(0)

@@ -70,7 +70,7 @@ export type FileReadWindows = Record<string, FileReadWindow[]>
  * call, if any. Absent for every other agent, and that absence is what keeps
  * the legacy whole-file behavior.
  *
- * Hosted surfaces (Freebuff Web/Cloud on Daytona, and the browser runtime) run
+ * Hosted surfaces (Fuckbuff Web/Cloud on Daytona, and the browser runtime) run
  * read_files through their own override rather than the SDK's local reader, so
  * each has to pick the windows out of the tool input itself.
  */

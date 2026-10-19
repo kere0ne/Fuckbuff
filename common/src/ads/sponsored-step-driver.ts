@@ -378,7 +378,7 @@ export async function runSponsoredStepLoop<State>(
         : 'other',
       detail: `Step check: step ${step.number} still failed its checks after ${step.fixes} fix${
         step.fixes === 1 ? '' : 'es'
-      } by the agent, so Freebuff marked it blocked.`,
+      } by the agent, so Fuckbuff marked it blocked.`,
       step: step.number,
     })
   }
@@ -600,7 +600,7 @@ export function sponsoredStepFixPrompt(
   maxAttempts: number,
 ): string {
   return [
-    `Freebuff checked step ${number} of ${total} with code, and it is not done yet.`,
+    `Fuckbuff checked step ${number} of ${total} with code, and it is not done yet.`,
     '',
     `Step ${number}: ${step.title}`,
     ...(step.instructions.trim() ? [step.instructions.trim()] : []),
@@ -627,7 +627,7 @@ export function sponsoredStepReportPrompt(
   result: SponsoredStepDriveResult,
 ): string {
   return [
-    'Freebuff has now checked every step of the procedure with code:',
+    'Fuckbuff has now checked every step of the procedure with code:',
     ...result.steps.map(
       (step) => `- Step ${step.number}: ${STATUS_LINE[step.status]}`,
     ),

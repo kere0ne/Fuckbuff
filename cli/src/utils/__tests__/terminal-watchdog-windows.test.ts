@@ -38,7 +38,7 @@ describe('Windows watchdog scripts', () => {
     const { watchdogScript } = scripts()
     expect(watchdogScript).toContain('Get-Process -Id 4242')
     expect(watchdogScript).toContain(
-      '$o.StartTime.ToFileTimeUtc() - __FREEBUFF_OWNER_START__',
+      '$o.StartTime.ToFileTimeUtc() - __FUCKBUFF_OWNER_START__',
     )
     // The only wait is on the identity-checked handle...
     expect(watchdogScript).toContain('if ($w) { try { $w.WaitForExit() }')
@@ -70,7 +70,7 @@ describe('Windows watchdog scripts', () => {
       '$t = (Get-Process -Id 4242 -ErrorAction Stop).StartTime.ToFileTimeUtc(); ',
     )
     expect(bootstrapScript).toContain(
-      ".Replace('__FREEBUFF_OWNER_START__', [string]$t)",
+      ".Replace('__FUCKBUFF_OWNER_START__', [string]$t)",
     )
   })
 

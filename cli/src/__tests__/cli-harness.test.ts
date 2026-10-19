@@ -1,19 +1,19 @@
 import { describe, expect, test } from 'bun:test'
-import { FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import {
   AGENT_MODE_TO_ID,
   AGENT_MODES,
   CLI_HARNESS,
-  IS_FREEBUFF,
+  IS_FUCKBUFF,
 } from '../utils/constants'
-import { getFreebuffCliAgentIdForModel } from '../utils/freebuff-agent-selection'
+import { getFuckbuffCliAgentIdForModel } from '../utils/fuckbuff-agent-selection'
 
 /**
  * Which harness real CLI turns run.
  *
- * `CLI_HARNESS` routes Codebuff DEFAULT and LITE plus every Freebuff picker
- * model to base3 (docs/freebuff-base3-harness.md).
+ * `CLI_HARNESS` routes Codebuff DEFAULT and LITE plus every Fuckbuff picker
+ * model to base3 (docs/fuckbuff-base3-harness.md).
  *
  * The values below are written out rather than derived from `CLI_HARNESS`, and
  * that is the entire point: an expectation computed from the constant would
@@ -21,18 +21,18 @@ import { getFreebuffCliAgentIdForModel } from '../utils/freebuff-agent-selection
  * updated deliberately, with the benchmark that justifies it.
  */
 describe('CLI harness routing', () => {
-  test('DEFAULT, LITE, and Freebuff turns run base3', () => {
+  test('DEFAULT, LITE, and Fuckbuff turns run base3', () => {
     expect(CLI_HARNESS).toBe('base3')
     expect(AGENT_MODE_TO_ID.DEFAULT).toBe('base3')
-    // Freebuff overrides LITE per selected model at send time
+    // Fuckbuff overrides LITE per selected model at send time
     // (getAgentIdForMode); this constant is the non-runtime fallback, so it is
     // the paid Codebuff value that tracks the harness.
-    // IS_FREEBUFF is a build flag, not the harness — deriving from it is fine.
+    // IS_FUCKBUFF is a build flag, not the harness — deriving from it is fine.
     expect(AGENT_MODE_TO_ID.LITE).toBe(
-      IS_FREEBUFF ? 'base2-free' : 'base3-lite',
+      IS_FUCKBUFF ? 'base2-free' : 'base3-lite',
     )
     expect(
-      getFreebuffCliAgentIdForModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID),
+      getFuckbuffCliAgentIdForModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID),
     ).toBe('base3-free-deepseek-flash')
   })
 

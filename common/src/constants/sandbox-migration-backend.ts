@@ -2,7 +2,7 @@
  * Whether Postgres keeps a mirror of the Convex `daytona_migration` sidecar
  * (each project's Daytona server and sandbox migration state; Postgres table
  * of the same name). COD-742 sandboxes; runbook in
- * docs/freebuff-sandbox-errors-postgres.md, "Migration sidecar".
+ * docs/fuckbuff-sandbox-errors-postgres.md, "Migration sidecar".
  *
  * - `convex`  nothing reads or writes the Postgres table, and the
  *            `sandbox_migration.projection` chain ends at its next link.

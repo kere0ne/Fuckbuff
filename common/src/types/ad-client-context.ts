@@ -260,7 +260,7 @@ export const CARD_DIMENSION_BUCKETS = ['<120', '120-300', '300-600', '600+'] as 
 
 // Android. Only values the app reads without a runtime permission, and never one that names the device: no
 // advertising id, installed-app list, usage stats, location, sensors or accessibility state
-// (docs/freebuff-android.md, "Ad signals").
+// (docs/fuckbuff-android.md, "Ad signals").
 export const BATTERY_BUCKETS = ['<15', '15-50', '50-80', '80+'] as const
 export const ORIENTATIONS = ['portrait', 'landscape'] as const
 /** Material window size class of the app window, by width */
@@ -269,7 +269,7 @@ export const WINDOW_CLASSES = ['compact', 'medium', 'expanded'] as const
 export const ANDROID_ENTRIES = ['launcher', 'notification', 'share', 'deep_link', 'recents', 'other'] as const
 /** who installed the app (`PackageManager.getInstallSourceInfo`), classified; never the raw package name */
 export const INSTALL_SOURCES = ['play', 'other_store', 'sideload', 'unknown'] as const
-/** `UsageStatsManager.getAppStandbyBucket()` for our own app: how engaged the OS thinks the user is with Freebuff */
+/** `UsageStatsManager.getAppStandbyBucket()` for our own app: how engaged the OS thinks the user is with Fuckbuff */
 export const STANDBY_BUCKETS = ['active', 'working_set', 'frequent', 'rare', 'restricted', 'other'] as const
 export const FONT_SCALE_BUCKETS = ['<1', '1', '1-1.3', '1.3+'] as const
 

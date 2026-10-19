@@ -1,5 +1,5 @@
 import React from 'react'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 
 import { PendingAttachmentsBanner } from './pending-attachments-banner'
 import { SubscriptionLimitBanner } from './subscription-limit-banner'
@@ -21,8 +21,8 @@ const BANNER_REGISTRY: Record<
 > = {
   default: () => <PendingAttachmentsBanner />,
   image: () => <PendingAttachmentsBanner />,
-  ...(IS_FREEBUFF ? {} : { usage: ({ showTime }: { showTime: number }) => <UsageBanner showTime={showTime} /> }),
-  ...(IS_FREEBUFF ? {} : { subscriptionLimit: () => <SubscriptionLimitBanner /> }),
+  ...(IS_FUCKBUFF ? {} : { usage: ({ showTime }: { showTime: number }) => <UsageBanner showTime={showTime} /> }),
+  ...(IS_FUCKBUFF ? {} : { subscriptionLimit: () => <SubscriptionLimitBanner /> }),
 }
 
 /**

@@ -10,11 +10,11 @@
  * refusal. Sol (250 since 2026-10-13, 100 at launch) is no longer labelled a
  * promotion (product, 2026-10-15); its tagline names the limit instead.
  *
- * A leaf module, like freebuff-solar-promo.ts, because the Freebucks price
+ * A leaf module, like fuckbuff-solar-promo.ts, because the Freebucks price
  * map, the model catalog and the admission debit all read it and none may
  * import the others.
  */
-import { getFreebuffModelPolicyOverlay } from './freebuff-model-policy-overlay'
+import { getFuckbuffModelPolicyOverlay } from './fuckbuff-model-policy-overlay'
 
 export const GPT_61_SOL_MODEL_ID = 'openai/gpt-6.1-sol'
 export const GEMINI_4_ARGON_MODEL_ID = 'google/gemini-4-argon'
@@ -41,7 +41,7 @@ export const GEMINI_4_ARGON_PROMOTIONAL = {
  * Re-entering an hour already paid for never debits, so it is not a second
  * session; a Desktop renewal of a tab's next hour is.
  */
-export const FREEBUFF_DAILY_SESSION_LIMITS: Readonly<Record<string, number>> =
+export const FUCKBUFF_DAILY_SESSION_LIMITS: Readonly<Record<string, number>> =
   Object.freeze({
     [GPT_61_SOL_MODEL_ID]: 1,
     [GEMINI_4_ARGON_MODEL_ID]: 1,
@@ -52,9 +52,9 @@ export const FREEBUFF_DAILY_SESSION_LIMITS: Readonly<Record<string, number>> =
  * none. The server catalog's value wins (`null` there means "no limit", even
  * for a model with a compiled one).
  */
-export function freebuffDailySessionLimit(modelId: string): number | undefined {
-  const override = getFreebuffModelPolicyOverlay()?.dailySessionLimit?.(modelId)
+export function fuckbuffDailySessionLimit(modelId: string): number | undefined {
+  const override = getFuckbuffModelPolicyOverlay()?.dailySessionLimit?.(modelId)
   if (override === null) return undefined
   if (override !== undefined) return override
-  return FREEBUFF_DAILY_SESSION_LIMITS[modelId]
+  return FUCKBUFF_DAILY_SESSION_LIMITS[modelId]
 }

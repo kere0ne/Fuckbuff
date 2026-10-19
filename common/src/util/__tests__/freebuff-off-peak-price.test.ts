@@ -1,5 +1,5 @@
 import { expect, spyOn, test } from 'bun:test'
-import { freebucksOffPeakCopy } from '../freebuff-off-peak-price'
+import { freebucksOffPeakCopy } from '../fuckbuff-off-peak-price'
 
 const quote = {
   prices: { flash: 10 },
@@ -138,14 +138,14 @@ test("appends the server's reason after the hours", () => {
     {
       prices: quote.prices,
       offPeak: {
-        flash: { ...quote.offPeak.flash, reason: 'when Freebuff is quiet' },
+        flash: { ...quote.offPeak.flash, reason: 'when Fuckbuff is quiet' },
       },
     },
     'flash',
     { now: Date.parse('2026-09-17T23:00:00Z'), timeZone: 'America/Los_Angeles' },
   )!
   expect(copy.tooltip).toBe(
-    'Off-peak: 2x 3 PM–11 PM PDT, when Freebuff is quiet. 3x otherwise.',
+    'Off-peak: 2x 3 PM–11 PM PDT, when Fuckbuff is quiet. 3x otherwise.',
   )
 })
 

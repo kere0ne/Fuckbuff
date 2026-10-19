@@ -8,7 +8,7 @@ import {
   withDefaultAdLinkUtm,
 } from './ad-link-utm'
 
-const TAGS = 'utm_source=freebuff&utm_medium=paid&utm_campaign=secrets'
+const TAGS = 'utm_source=fuckbuff&utm_medium=paid&utm_campaign=secrets'
 const DEFAULT_TAGS = adLinkUtmTags({ id: 'c1', name: 'Secrets' })
 
 describe('withDefaultAdLinkUtm', () => {
@@ -41,10 +41,10 @@ describe('adLinkUtmTags', () => {
         id: 'c1',
         name: 'Secrets Management',
         landingUrl:
-          'https://get.acme.example/lp/?utm_source=freebuff&utm_medium=cpc&utm_campaign=secrets_management&utm_content=text-ad',
+          'https://get.acme.example/lp/?utm_source=fuckbuff&utm_medium=cpc&utm_campaign=secrets_management&utm_content=text-ad',
       }),
     ).toEqual([
-      ['utm_source', 'freebuff'],
+      ['utm_source', 'fuckbuff'],
       ['utm_medium', 'cpc'],
       ['utm_campaign', 'secrets_management'],
     ])
@@ -58,7 +58,7 @@ describe('adLinkUtmTags', () => {
         landingUrl: 'https://acme.example/?utm_campaign=orphan',
       }),
     ).toEqual([
-      ['utm_source', 'freebuff'],
+      ['utm_source', 'fuckbuff'],
       ['utm_medium', 'paid'],
       ['utm_campaign', 'secrets-management'],
     ])

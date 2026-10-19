@@ -1,4 +1,4 @@
-import { FREEBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase3CliRoot } from './base3'
 
@@ -10,8 +10,8 @@ import { createBase3CliRoot } from './base3'
  */
 const definition = {
   ...createBase3CliRoot({
-    model: FREEBUFF_GPT_6_LUNA_MODEL_ID,
-    isFreebuff: true,
+    model: FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+    isFuckbuff: true,
   }),
   id: 'base3-free-luna-6',
   displayName: 'Buffy on GPT-6 Luna',

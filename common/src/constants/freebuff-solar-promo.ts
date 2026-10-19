@@ -1,7 +1,7 @@
 import {
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
-  FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-} from './freebuff-model-entitlements'
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+} from './fuckbuff-model-entitlements'
 
 // Historical offer; use solarOfferAt() for the current price.
 export const SOLAR_REGULAR_OFFER = {
@@ -36,71 +36,71 @@ export const SOLAR_PROMOTIONAL = {
 export const SOLAR_PRICE_CHANGES = [
   {
     at: '2026-09-05T00:00:00-07:00',
-    modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
     price: 0,
     tagline: 'Free · Labor Day weekend (through Sep 7 PT)',
   },
   {
     at: '2026-09-08T00:00:00-07:00',
-    modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
     ...SOLAR_REGULAR_OFFER,
   },
   {
     at: '2026-09-09T15:49:00Z',
-    modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
     price: 0,
     tagline: 'Free',
   },
   {
     // Metered again. Takes effect as each server deploys it.
     at: '2026-09-13T05:00:00Z',
-    modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
     ...SOLAR_REGULAR_OFFER,
   },
   {
     at: '2026-09-14T03:46:00Z',
-    modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
     price: 10,
     tagline: SOLAR_REGULAR_OFFER.tagline,
   },
   {
     at: '2026-09-23T19:18:47Z',
-    modelId: FREEBUFF_SOLAR_MINI_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
     ...SOLAR_MINI_4_OFFER,
   },
   {
     // Back in every picker beside Solar Mini 4 (retired from them 2026-09-23),
     // at the same 10. Only the copy changes: it is no longer a trial.
     at: '2026-09-25T19:00:00Z',
-    modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
     ...SOLAR_PRO_4_OFFER,
   },
   {
     // Free through Sunday Pacific. Extend it by moving the next transition.
     at: '2026-10-02T18:00:00Z',
-    modelId: FREEBUFF_SOLAR_MINI_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
     price: 0,
     tagline: 'Free through Sunday, Oct 4 PT',
   },
   {
     at: '2026-10-05T00:00:00-07:00',
-    modelId: FREEBUFF_SOLAR_MINI_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
     ...SOLAR_MINI_4_OFFER,
   },
   {
     // A promotion with no end date yet. End it by appending a transition back
     // to SOLAR_PRO_4_OFFER, dropping the catalog row's `promotional` and moving
-    // it out of Unlimited (freebuff-picker-sections.ts); the free window
+    // it out of Unlimited (fuckbuff-picker-sections.ts); the free window
     // closes at that transition.
     at: '2026-10-05T07:15:00Z',
-    modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
     price: 0,
     tagline: SOLAR_PROMOTIONAL.short,
   },
   {
     // Mini 4 joins it; end it the same way, back to SOLAR_MINI_4_OFFER.
     at: '2026-10-08T21:30:00Z',
-    modelId: FREEBUFF_SOLAR_MINI_4_MODEL_ID,
+    modelId: FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
     price: 0,
     tagline: SOLAR_PROMOTIONAL.short,
   },
@@ -108,7 +108,7 @@ export const SOLAR_PRICE_CHANGES = [
 
 export function solarOfferAt(
   now: number = Date.now(),
-  modelId: string = FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+  modelId: string = FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
 ) {
   return (
     [...SOLAR_PRICE_CHANGES]

@@ -58,7 +58,7 @@ export function formatHoursShort(freebucks: number): string {
  * for 15, "0.4x" for 2. Null for a free row (the Unlimited section), which
  * carries no label, and for an unpriced one.
  */
-export function freebuffModelMultiplierLabel(
+export function fuckbuffModelMultiplierLabel(
   priceFreebucks: number | null | undefined,
 ): string | null {
   if (
@@ -74,12 +74,12 @@ export function freebuffModelMultiplierLabel(
 
 /**
  * A price as multiplier text for sentences, where an empty label would leave
- * a hole: `freebuffModelMultiplierLabel`, else "1x" for a 1x row and "free"
+ * a hole: `fuckbuffModelMultiplierLabel`, else "1x" for a 1x row and "free"
  * for a free one.
  */
-export function freebuffMultiplierText(priceFreebucks: number): string {
+export function fuckbuffMultiplierText(priceFreebucks: number): string {
   return (
-    freebuffModelMultiplierLabel(priceFreebucks) ??
+    fuckbuffModelMultiplierLabel(priceFreebucks) ??
     (priceFreebucks > 0 ? '1x' : 'free')
   )
 }

@@ -8,15 +8,15 @@ import path from 'path'
 import { BYOK_OPENROUTER_HEADER } from '@codebuff/common/constants/byok'
 import { isFreeMode } from '@codebuff/common/constants/free-agents'
 import {
-  FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
-  FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
-} from '@codebuff/common/constants/freebuff-errors'
-import { FREEBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
+  FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
+} from '@codebuff/common/constants/fuckbuff-errors'
+import { FUCKBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/fuckbuff-models'
 import {
-  FREEBUFF_SSE_GZIP_RECOVERY_HEADER,
-  FREEBUFF_SSE_GZIP_RECOVERY_VALUE,
+  FUCKBUFF_SSE_GZIP_RECOVERY_HEADER,
+  FUCKBUFF_SSE_GZIP_RECOVERY_VALUE,
 } from '@codebuff/common/constants/sse-compression'
-import { FREEBUFF_GATE_CODES } from '@codebuff/common/types/freebuff-session'
+import { FUCKBUFF_GATE_CODES } from '@codebuff/common/types/fuckbuff-session'
 import { isAbortError, isFetchIdleTimeoutError, isTransientNetworkError } from '@codebuff/common/util/error'
 import {
   OpenAICompatibleChatLanguageModel,
@@ -57,7 +57,7 @@ export interface ModelRequestParams {
   apiKey: string
   /** Model ID (OpenRouter format, e.g., "anthropic/claude-sonnet-4") */
   model: string
-  /** Freebuff requests use platform credentials, never an inherited provider key. */
+  /** Fuckbuff requests use platform credentials, never an inherited provider key. */
   costMode?: string
   /** End user represented by a trusted service-account request. */
   userId?: string
@@ -74,8 +74,8 @@ export interface ModelRequestParams {
  * the provider is asked again for every retry. Never consulted for a BYOK run,
  * whose requests go to the user's own provider.
  *
- * Returning nothing (or throwing) adds no headers. Freebuff's catalog clients
- * use it for their catalog headers (docs/freebuff-model-catalog.md).
+ * Returning nothing (or throwing) adds no headers. Fuckbuff's catalog clients
+ * use it for their catalog headers (docs/fuckbuff-model-catalog.md).
  */
 export type CodebuffRequestHeadersProvider = (request: {
   method: string
@@ -285,7 +285,7 @@ export function getByokProviderErrorMessage(
   }
   if (status === 401)
     return detail.credentialVariable
-      ? `BYOK provider rejected the API key in ${detail.credentialVariable} (HTTP 401). ${detail.credentialVariable} is set in this Freebuff process; check that it holds the key this endpoint expects, then restart Freebuff from that terminal.`
+      ? `BYOK provider rejected the API key in ${detail.credentialVariable} (HTTP 401). ${detail.credentialVariable} is set in this Fuckbuff process; check that it holds the key this endpoint expects, then restart Fuckbuff from that terminal.`
       : 'BYOK provider rejected the API key (HTTP 401). Check or replace the key.'
   if (status === 403)
     return 'BYOK API key cannot access this model or account (HTTP 403). Choose an allowed model or use another key.'
@@ -337,14 +337,14 @@ const FINAL_REFUSALS: readonly {
 }[] = [
   {
     status: 429,
-    error: FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
-    fallbackMessage: FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
+    error: FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
+    fallbackMessage: FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
   },
   {
-    status: FREEBUFF_GATE_CODES.session_superseded.status,
+    status: FUCKBUFF_GATE_CODES.session_superseded.status,
     error: 'session_superseded',
     fallbackMessage:
-      'This Freebuff session has ended. Start a new session to try again.',
+      'This Fuckbuff session has ended. Start a new session to try again.',
   },
   {
     status: 503,
@@ -486,7 +486,7 @@ export function getModelForRequest({
       url: () => byokCompletionUrl(byok),
       headers: () => ({
         Authorization: `Bearer ${byok.apiKey}`,
-        'user-agent': `ai-sdk/openai-compatible/${VERSION}/freebuff-byok`,
+        'user-agent': `ai-sdk/openai-compatible/${VERSION}/fuckbuff-byok`,
       }),
       // Check the durable revision before every provider attempt. The AI SDK
       // invokes this again on retries and later tool-loop steps, so removing
@@ -501,7 +501,7 @@ export function getModelForRequest({
           throw new Error(
             error instanceof ByokConnectionStateError
               ? error.message
-              : 'Could not verify the saved BYOK connection. Reselect the provider and retry. If the problem persists, fully quit and restart Freebuff.',
+              : 'Could not verify the saved BYOK connection. Reselect the provider and retry. If the problem persists, fully quit and restart Fuckbuff.',
           )
         }
         try {
@@ -601,8 +601,8 @@ export function getModelForRequest({
       'user-agent': `ai-sdk/openai-compatible/${VERSION}/codebuff`,
       // This build continues a turn whose gzip stream is cut mid-body, so the
       // backend may gzip it (common/src/constants/sse-compression.ts).
-      [FREEBUFF_SSE_GZIP_RECOVERY_HEADER]: FREEBUFF_SSE_GZIP_RECOVERY_VALUE,
-      ...(userId ? { [FREEBUFF_ACTING_USER_HEADER]: userId } : {}),
+      [FUCKBUFF_SSE_GZIP_RECOVERY_HEADER]: FUCKBUFF_SSE_GZIP_RECOVERY_VALUE,
+      ...(userId ? { [FUCKBUFF_ACTING_USER_HEADER]: userId } : {}),
       ...(openrouterApiKey && { [BYOK_OPENROUTER_HEADER]: openrouterApiKey }),
     }),
     metadataExtractor: {
@@ -669,7 +669,7 @@ export function getChatGptErrorMessage(
   const model = detail.model.slice(0, MAX_MODEL_ID_IN_MESSAGE)
   if (status === 401) return CHATGPT_SIGN_IN_AGAIN
   if (status === 429 || /usage_limit|rate_limit/i.test(detail.body))
-    return 'You have reached your ChatGPT plan’s usage limit. Wait for it to reset, or choose a Freebuff model to continue.'
+    return 'You have reached your ChatGPT plan’s usage limit. Wait for it to reset, or choose a Fuckbuff model to continue.'
   if (status === 403)
     return `Your ChatGPT plan cannot use "${model}" (HTTP 403). Choose another model or check your plan.`
   if (
@@ -698,7 +698,7 @@ function chatGptModel(byok: ResolvedByokConnection): LanguageModel {
     transformRequestBody: transform,
     url: () => CHATGPT_CODEX_RESPONSES_URL,
     headers: () => ({
-      'user-agent': `ai-sdk/openai-compatible/${VERSION}/freebuff-chatgpt`,
+      'user-agent': `ai-sdk/openai-compatible/${VERSION}/fuckbuff-chatgpt`,
     }),
     fetch: (async (...args: Parameters<typeof globalThis.fetch>) => {
       const init = args[1] ?? {}
@@ -733,7 +733,7 @@ function chatGptModel(byok: ResolvedByokConnection): LanguageModel {
             authorization: `Bearer ${token}`,
             originator: CHATGPT_ORIGINATOR,
             'openai-beta': 'responses=experimental',
-            'user-agent': `ai-sdk/openai-compatible/${VERSION}/freebuff-chatgpt`,
+            'user-agent': `ai-sdk/openai-compatible/${VERSION}/fuckbuff-chatgpt`,
             ...(accountId ? { 'chatgpt-account-id': accountId } : {}),
           },
           body: JSON.stringify(chatGptResponsesBody(body)),

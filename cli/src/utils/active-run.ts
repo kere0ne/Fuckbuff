@@ -49,7 +49,7 @@ export function applyActiveRunQueuePolicy(
     return
   }
   if (policy === 'preserve-and-block') {
-    // Freebuff exit can spend up to a second releasing the session seat. Keep
+    // Fuckbuff exit can spend up to a second releasing the session seat. Keep
     // queued prompts in memory, but do not let abort cleanup dequeue a new run
     // during that window.
     controls.setCanProcessQueue(false)

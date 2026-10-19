@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 
-import { normalizeUrlInput, platformForUrl } from './freebuff-ads'
+import { normalizeUrlInput, platformForUrl } from './fuckbuff-ads'
 
 // ---------------------------------------------------------------------------
 // A pasted link, with the scheme people do not type

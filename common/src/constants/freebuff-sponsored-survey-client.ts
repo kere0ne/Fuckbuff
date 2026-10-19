@@ -7,7 +7,7 @@
  * A sponsored survey is shown only where the profile survey card would be and
  * only when the profile survey is not showing; the server enforces that (it
  * offers one only to users who completed or stopped the profile survey) and
- * at most one per Pacific day. See docs/freebuff-sponsored-surveys.md.
+ * at most one per Pacific day. See docs/fuckbuff-sponsored-surveys.md.
  */
 import {
   isValidSponsoredSurveyAnswer,
@@ -15,8 +15,8 @@ import {
   type SponsoredSurveyOption,
   type SponsoredSurveyQuestionKind,
   type SponsoredSurveySurface,
-} from './freebuff-sponsored-survey'
-import { formatHoursWithUnit } from '../util/freebuff-hours'
+} from './fuckbuff-sponsored-survey'
+import { formatHoursWithUnit } from '../util/fuckbuff-hours'
 
 export const SPONSORED_SURVEY_PATH = '/api/sponsored-survey'
 

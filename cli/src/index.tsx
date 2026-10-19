@@ -49,7 +49,7 @@ import {
 } from './utils/auth'
 import { resetCodebuffClient } from './utils/codebuff-client'
 import { setApiClientAuthToken } from './utils/codebuff-api'
-import { IS_FREEBUFF } from './utils/constants'
+import { IS_FUCKBUFF } from './utils/constants'
 import { getCliEnv } from './utils/env'
 import { getConfigDir } from './utils/config-dir'
 import {
@@ -246,7 +246,7 @@ async function main(): Promise<void> {
     }
   }
 
-  // The Freebuff auth token lives in the OS keychain (auth-token-store.ts):
+  // The Fuckbuff auth token lives in the OS keychain (auth-token-store.ts):
   // load it before anything reads the credentials. Bounded and never throws.
   await loadStoredAuthToken()
 
@@ -292,7 +292,7 @@ async function main(): Promise<void> {
     hasAgentOverride: hasAgentOverride,
     continueChat,
     initialMode: initialMode ?? 'DEFAULT',
-    isFreeBuff: IS_FREEBUFF,
+    isFuckBuff: IS_FUCKBUFF,
     // The npm wrapper's version, null when not started by one. Wrappers never
     // update themselves, and only newer ones adopt an update the terminal
     // closed on, so this splits "pinned build" by install path.
@@ -314,7 +314,7 @@ async function main(): Promise<void> {
   // armed. If endpoint security terminates this process during that spawn, the
   // next --continue launch still has a prior row for the health dashboard's
   // rapid-resume and interruption joins.
-  if (IS_FREEBUFF && process.platform === 'win32') {
+  if (IS_FUCKBUFF && process.platform === 'win32') {
     void drainClientLogs()
   }
 
@@ -490,7 +490,7 @@ async function main(): Promise<void> {
   // see in Task Manager, which nothing server-side can observe.
   startWindowsMachineProcessCensus()
   // Background, one-time; the descriptor reads `unknown` until it resolves.
-  if (IS_FREEBUFF) void startClientEnvironmentProbe()
+  if (IS_FUCKBUFF) void startClientEnvironmentProbe()
 
   // The SDK defaults to process.emitWarning(), which bypasses OpenTUI's
   // console capture and overwrites whichever terminal rows were last drawn.
@@ -553,9 +553,9 @@ async function main(): Promise<void> {
 
   // Start the engaged-time heartbeat only once the interactive TUI is actually
   // live — reaching renderer creation means this is a real session (the
-  // login/publish/smoke-test commands all exit earlier). Freebuff-only, matching
+  // login/publish/smoke-test commands all exit earlier). Fuckbuff-only, matching
   // the MESSAGE_SENT DAU signal. Stopped in exitCliCleanly().
-  if (IS_FREEBUFF) {
+  if (IS_FUCKBUFF) {
     startEngagementTracking()
   }
 

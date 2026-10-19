@@ -1,15 +1,15 @@
 import { describe, expect, it, test, spyOn } from 'bun:test'
-import { freebucksFixture } from '../../testing/freebuff'
+import { freebucksFixture } from '../../testing/fuckbuff'
 import {
   SOLAR_PRICE_CHANGES,
   SOLAR_PROMOTIONAL,
   SOLAR_REGULAR_OFFER,
-} from '../../constants/freebuff-solar-promo'
+} from '../../constants/fuckbuff-solar-promo'
 import {
   applyFreebucksPriceChanges,
   nextFreebucksPriceChange,
   watchFreebucksPriceChanges,
-} from '../freebuff-price-changes'
+} from '../fuckbuff-price-changes'
 
 const solar = 'upstage/solar-pro4'
 const start = Date.parse('2026-09-05T07:00:00Z')

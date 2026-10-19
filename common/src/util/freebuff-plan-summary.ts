@@ -7,22 +7,22 @@
  * two surfaces end up naming different resets for the same refusal.
  */
 import type {
-  FreebuffFreeWindowsInfo,
-  FreebuffSubscriptionInfo,
-} from '../types/freebuff-session'
+  FuckbuffFreeWindowsInfo,
+  FuckbuffSubscriptionInfo,
+} from '../types/fuckbuff-session'
 
-export interface FreebuffPlanWindow {
+export interface FuckbuffPlanWindow {
   /** 'today' | 'week' | 'month' — short, surface-agnostic label. */
   label: string
   used: number
   limit: number
 }
 
-export interface FreebuffPlanSummary {
+export interface FuckbuffPlanSummary {
   /** The tier's display name ("Starter"), falling back to the raw id. */
   tierName: string
   /** Day, week and month windows, in that order. */
-  windows: FreebuffPlanWindow[]
+  windows: FuckbuffPlanWindow[]
   /**
    * Set when a limit is currently blocking, with the human name of THAT limit
    * and the instant it lifts (absent for the rolling 5-day window, which has
@@ -43,14 +43,14 @@ export function formatPlanUnits(units: number): string {
 }
 
 /** "today 1 of 2 · week 3 of 10 · month 11 of 30" — the compact one-liner. */
-export function formatPlanWindows(summary: FreebuffPlanSummary): string {
+export function formatPlanWindows(summary: FuckbuffPlanSummary): string {
   return summary.windows
     .map((w) => `${w.label} ${formatPlanUnits(w.used)} of ${w.limit}`)
     .join(' · ')
 }
 
 const BLOCKED_LABELS: Record<
-  Exclude<NonNullable<FreebuffSubscriptionInfo['blockedBy']>, 'monthly_spend'>,
+  Exclude<NonNullable<FuckbuffSubscriptionInfo['blockedBy']>, 'monthly_spend'>,
   string
 > = {
   daily: "today's plan sessions are used",
@@ -65,9 +65,9 @@ const BLOCKED_LABELS: Record<
  * usage block). Callers render nothing on undefined — an empty plan line is
  * worse than no line.
  */
-export function freebuffPlanSummary(
-  info: FreebuffSubscriptionInfo | null | undefined,
-): FreebuffPlanSummary | undefined {
+export function fuckbuffPlanSummary(
+  info: FuckbuffSubscriptionInfo | null | undefined,
+): FuckbuffPlanSummary | undefined {
   if (!info?.tierId) return undefined
   const usage = info.usage
   if (!usage) return undefined
@@ -108,9 +108,9 @@ export function freebuffPlanSummary(
  * numbers. Undefined when the server sent no block (quota-exempt, limited
  * access, or an older server) — callers fall back to the daily ring alone.
  */
-export function freebuffFreeWindowsSummary(
-  info: FreebuffFreeWindowsInfo | null | undefined,
-): Pick<FreebuffPlanSummary, 'windows' | 'dayResetAt'> | undefined {
+export function fuckbuffFreeWindowsSummary(
+  info: FuckbuffFreeWindowsInfo | null | undefined,
+): Pick<FuckbuffPlanSummary, 'windows' | 'dayResetAt'> | undefined {
   if (!info) return undefined
   return {
     windows: [

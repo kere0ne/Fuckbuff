@@ -14,14 +14,14 @@
  * other should be told the same thing.
  */
 
-import { FREE_MODE_ALLOWED_COUNTRIES } from '../constants/freebuff-countries'
+import { FREE_MODE_ALLOWED_COUNTRIES } from '../constants/fuckbuff-countries'
 
 import type {
-  FreebuffIpPrivacySignal,
-  FreebuffLimitedModeReason,
-} from '../types/freebuff-session'
+  FuckbuffIpPrivacySignal,
+  FuckbuffLimitedModeReason,
+} from '../types/fuckbuff-session'
 
-const PRIVACY_SIGNAL_LABELS: Partial<Record<FreebuffIpPrivacySignal, string>> =
+const PRIVACY_SIGNAL_LABELS: Partial<Record<FuckbuffIpPrivacySignal, string>> =
   {
     anonymous: 'anonymized network',
     proxy: 'proxy',
@@ -34,7 +34,7 @@ const PRIVACY_SIGNAL_LABELS: Partial<Record<FreebuffIpPrivacySignal, string>> =
   }
 
 function isResidentialProxyOnly(
-  signals: readonly FreebuffIpPrivacySignal[] | null | undefined,
+  signals: readonly FuckbuffIpPrivacySignal[] | null | undefined,
 ): boolean {
   return (
     !!signals?.includes('res_proxy') &&
@@ -42,8 +42,8 @@ function isResidentialProxyOnly(
   )
 }
 
-export function formatFreebuffPrivacySignalList(
-  signals: readonly FreebuffIpPrivacySignal[] | null | undefined,
+export function formatFuckbuffPrivacySignalList(
+  signals: readonly FuckbuffIpPrivacySignal[] | null | undefined,
 ): string {
   const labels = Array.from(
     new Set(
@@ -63,7 +63,7 @@ export function formatFreebuffPrivacySignalList(
 
 /** "BR" → "Brazil". Falls back to the raw code when the runtime can't
  *  resolve it (malformed code, missing ICU data). */
-export function formatFreebuffCountryName(countryCode: string): string {
+export function formatFuckbuffCountryName(countryCode: string): string {
   try {
     return (
       new Intl.DisplayNames(['en'], { type: 'region' }).of(countryCode) ??
@@ -84,8 +84,8 @@ export function formatFreebuffCountryName(countryCode: string): string {
  */
 const COUNTRY_PAGE = 'freebuff.com/account?tab=country'
 
-export function getFreebuffModelAvailabilityNotice(
-  reason: FreebuffLimitedModeReason | null | undefined,
+export function getFuckbuffModelAvailabilityNotice(
+  reason: FuckbuffLimitedModeReason | null | undefined,
 ): string {
   const generic = "Some models aren't available on this connection"
   if (!reason) return generic
@@ -106,7 +106,7 @@ export function getFreebuffModelAvailabilityNotice(
       // take. Name the likely cause instead.
       // In a full-access country, someone who is not on a VPN (or cannot
       // turn off what flags the line) can confirm the country with a phone
-      // and an ID on Account → Country (docs/freebuff-access-floor.md § Phone
+      // and an ID on Account → Country (docs/fuckbuff-access-floor.md § Phone
       // and ID attestation). Elsewhere there is nothing to confirm.
       const confirm =
         countryCode && FREE_MODE_ALLOWED_COUNTRIES.has(countryCode)
@@ -117,12 +117,12 @@ export function getFreebuffModelAvailabilityNotice(
           confirm ? `. Confirm your country at ${COUNTRY_PAGE}` : ''
         }`
       }
-      return `Using a ${formatFreebuffPrivacySignalList(
+      return `Using a ${formatFuckbuffPrivacySignalList(
         reason.ipPrivacySignals,
       )}? We lose money on every VPN user, so more models and hours are available on a direct connection${confirm}`
     case 'country_not_allowed':
       return `Some models aren't available in ${
-        countryCode ? formatFreebuffCountryName(countryCode) : 'your region'
+        countryCode ? formatFuckbuffCountryName(countryCode) : 'your region'
       } yet`
     case 'recent_limited_country':
       return "This account was recently used from a region where some models aren't available yet, so those limits still apply for a while. Moved? Verify your country at freebuff.com/account?tab=country"

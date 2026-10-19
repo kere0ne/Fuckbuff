@@ -1,11 +1,11 @@
 /**
  * Device-bound request signing for catalog clients (the CLI and Desktop), the
- * client half of the contract in `common/src/types/freebuff-model-catalog.ts`
- * (`FREEBUFF_DEVICE_*`, `freebuffDeviceSignaturePayload`).
+ * client half of the contract in `common/src/types/fuckbuff-model-catalog.ts`
+ * (`FUCKBUFF_DEVICE_*`, `fuckbuffDeviceSignaturePayload`).
  *
  * One Ed25519 key pair per install, generated with WebCrypto. The public key
  * is registered once per (account, API host) with
- * `POST FREEBUFF_DEVICE_KEYS_PATH`, and the returned `keyId` is remembered
+ * `POST FUCKBUFF_DEVICE_KEYS_PATH`, and the returned `keyId` is remembered
  * beside the key. Every catalog, session and completions request a catalog
  * client makes then carries the key id, a timestamp and a signature over the
  * exact body bytes it sends.
@@ -14,23 +14,23 @@
  * `waitMs`; how the server treats a request without a signature is its own
  * policy.
  *
- * Where the key lives is the host's business (`FreebuffDeviceKeyStore`): the
+ * Where the key lives is the host's business (`FuckbuffDeviceKeyStore`): the
  * CLI keeps an owner-only file in its config dir, Desktop keeps it encrypted
  * beside its sign-in. Public code: a device's private key is its own secret,
  * and nothing here is one.
  */
 import {
-  FREEBUFF_DEVICE_KEY_HEADER,
-  FREEBUFF_DEVICE_KEYS_PATH,
-  FREEBUFF_DEVICE_SIGNATURE_HEADER,
-  FREEBUFF_DEVICE_TIMESTAMP_HEADER,
-  freebuffDeviceSignaturePayload,
-} from '../types/freebuff-model-catalog'
+  FUCKBUFF_DEVICE_KEY_HEADER,
+  FUCKBUFF_DEVICE_KEYS_PATH,
+  FUCKBUFF_DEVICE_SIGNATURE_HEADER,
+  FUCKBUFF_DEVICE_TIMESTAMP_HEADER,
+  fuckbuffDeviceSignaturePayload,
+} from '../types/fuckbuff-model-catalog'
 
-export type FreebuffDeviceClient = 'cli' | 'desktop'
+export type FuckbuffDeviceClient = 'cli' | 'desktop'
 
 /** What an install stores. The private key never leaves it. */
-export interface FreebuffDeviceKeyRecord {
+export interface FuckbuffDeviceKeyRecord {
   version: 1
   /** base64url of the raw 32-byte Ed25519 public key: what registration sends. */
   publicKey: string
@@ -40,16 +40,16 @@ export interface FreebuffDeviceKeyRecord {
   registrations: Record<string, string>
 }
 
-export interface FreebuffDeviceKeyStore {
+export interface FuckbuffDeviceKeyStore {
   /** The stored record, or null when there is none (a new one is generated).
    *  Throws when one exists but cannot be read right now: signing is then off
    *  for this process rather than the stored key being replaced. */
-  load(): Promise<FreebuffDeviceKeyRecord | null>
-  save(record: FreebuffDeviceKeyRecord): Promise<void>
+  load(): Promise<FuckbuffDeviceKeyRecord | null>
+  save(record: FuckbuffDeviceKeyRecord): Promise<void>
 }
 
 /** Who a request is made as: one registration per account and API host. */
-export interface FreebuffDeviceAccount {
+export interface FuckbuffDeviceAccount {
   token: string
   /** The account's user id when the client knows it; otherwise the account is
    *  identified by a digest of its token (a new login registers again). */
@@ -58,13 +58,13 @@ export interface FreebuffDeviceAccount {
   apiHost: string
 }
 
-export interface FreebuffDeviceRequest {
+export interface FuckbuffDeviceRequest {
   method: string
   /** Absolute URL; only its path is signed. */
   url: string
   /** The exact body sent; absent for a body-less request. */
   body?: string | Uint8Array | null
-  /** The catalog fetch id sent with this request (FREEBUFF_CATALOG_FETCH_HEADER), if any. */
+  /** The catalog fetch id sent with this request (FUCKBUFF_CATALOG_FETCH_HEADER), if any. */
   fetchId?: string | null
 }
 
@@ -106,7 +106,7 @@ function hex(bytes: Uint8Array): string {
 }
 
 /** Lowercase hex SHA-256 of the body bytes as sent ('' for none). */
-export async function freebuffBodySha256(
+export async function fuckbuffBodySha256(
   body: string | Uint8Array | null | undefined,
   subtle: SubtleCrypto = globalThis.crypto.subtle,
 ): Promise<string> {
@@ -122,9 +122,9 @@ function defaultSubtle(): SubtleCrypto | null {
 }
 
 /** A new key pair, or null where this runtime has no WebCrypto Ed25519. */
-export async function generateFreebuffDeviceKey(
+export async function generateFuckbuffDeviceKey(
   subtle: SubtleCrypto | null = defaultSubtle(),
-): Promise<FreebuffDeviceKeyRecord | null> {
+): Promise<FuckbuffDeviceKeyRecord | null> {
   if (!subtle) return null
   try {
     const pair = (await subtle.generateKey(ED25519, true, [
@@ -149,9 +149,9 @@ export async function generateFreebuffDeviceKey(
 }
 
 /** A stored record, validated; null for anything this build did not write. */
-export function parseFreebuffDeviceKeyRecord(
+export function parseFuckbuffDeviceKeyRecord(
   value: unknown,
-): FreebuffDeviceKeyRecord | null {
+): FuckbuffDeviceKeyRecord | null {
   if (!value || typeof value !== 'object') return null
   const record = value as Record<string, unknown>
   if (
@@ -175,8 +175,8 @@ export function parseFreebuffDeviceKeyRecord(
   }
 }
 
-export async function importFreebuffDeviceSigningKey(
-  record: FreebuffDeviceKeyRecord,
+export async function importFuckbuffDeviceSigningKey(
+  record: FuckbuffDeviceKeyRecord,
   subtle: SubtleCrypto | null = defaultSubtle(),
 ): Promise<CryptoKey | null> {
   if (!subtle) return null
@@ -194,19 +194,19 @@ export async function importFreebuffDeviceSigningKey(
 }
 
 /** The three device headers for one request, signed with `privateKey`. */
-export async function signFreebuffDeviceRequest(params: {
+export async function signFuckbuffDeviceRequest(params: {
   privateKey: CryptoKey
   keyId: string
-  request: FreebuffDeviceRequest
+  request: FuckbuffDeviceRequest
   timestampMs: number
   subtle?: SubtleCrypto
 }): Promise<Record<string, string>> {
   const subtle = params.subtle ?? globalThis.crypto.subtle
-  const payload = freebuffDeviceSignaturePayload({
+  const payload = fuckbuffDeviceSignaturePayload({
     method: params.request.method,
     path: new URL(params.request.url).pathname,
     timestampMs: params.timestampMs,
-    bodySha256: await freebuffBodySha256(params.request.body, subtle),
+    bodySha256: await fuckbuffBodySha256(params.request.body, subtle),
     fetchId: params.request.fetchId,
   })
   const signature = new Uint8Array(
@@ -217,9 +217,9 @@ export async function signFreebuffDeviceRequest(params: {
     ),
   )
   return {
-    [FREEBUFF_DEVICE_KEY_HEADER]: params.keyId,
-    [FREEBUFF_DEVICE_TIMESTAMP_HEADER]: String(params.timestampMs),
-    [FREEBUFF_DEVICE_SIGNATURE_HEADER]: base64UrlEncode(signature),
+    [FUCKBUFF_DEVICE_KEY_HEADER]: params.keyId,
+    [FUCKBUFF_DEVICE_TIMESTAMP_HEADER]: String(params.timestampMs),
+    [FUCKBUFF_DEVICE_SIGNATURE_HEADER]: base64UrlEncode(signature),
   }
 }
 
@@ -229,7 +229,7 @@ export async function signFreebuffDeviceRequest(params: {
  * forgets the key id it holds and registers again. Matched loosely, on the
  * code alone: `device_key` plus unknown / not found / invalid.
  */
-export function isFreebuffDeviceKeyUnknownError(
+export function isFuckbuffDeviceKeyUnknownError(
   code: string | null | undefined,
 ): boolean {
   return (
@@ -242,11 +242,11 @@ export function isFreebuffDeviceKeyUnknownError(
 // --- The signer --------------------------------------------------------------
 
 interface LoadedKey {
-  record: FreebuffDeviceKeyRecord
+  record: FuckbuffDeviceKeyRecord
   privateKey: CryptoKey
 }
 
-export class FreebuffDeviceSigner {
+export class FuckbuffDeviceSigner {
   /** The stored key only (never generates one). */
   private stored: Promise<LoadedKey | null> | null = null
   /** The stored key, else a newly generated one. */
@@ -259,8 +259,8 @@ export class FreebuffDeviceSigner {
 
   constructor(
     private readonly options: {
-      store: FreebuffDeviceKeyStore
-      client: FreebuffDeviceClient
+      store: FuckbuffDeviceKeyStore
+      client: FuckbuffDeviceClient
       fetch?: typeof fetch
       now?: () => number
       /** How long a request waits for the key and its registration. */
@@ -278,8 +278,8 @@ export class FreebuffDeviceSigner {
    * stopped waiting, so the next one is signed.
    */
   async headers(
-    account: FreebuffDeviceAccount,
-    request: FreebuffDeviceRequest,
+    account: FuckbuffDeviceAccount,
+    request: FuckbuffDeviceRequest,
     options: {
       /** false: sign only with a key id already registered, never register
        *  (and never wait) for this request. A client that has not yet seen
@@ -294,7 +294,7 @@ export class FreebuffDeviceSigner {
         this.options.waitMs ?? DEFAULT_WAIT_MS,
       )
       if (!ready) return {}
-      return await signFreebuffDeviceRequest({
+      return await signFuckbuffDeviceRequest({
         privateKey: ready.key.privateKey,
         keyId: ready.keyId,
         request,
@@ -308,7 +308,7 @@ export class FreebuffDeviceSigner {
   }
 
   /** The server does not know the key id this account sent: register again. */
-  forgetRegistration(account: FreebuffDeviceAccount): void {
+  forgetRegistration(account: FuckbuffDeviceAccount): void {
     void (async () => {
       const loaded = await (this.loading ?? this.stored)
       const scope = await this.scopeFor(account)
@@ -325,7 +325,7 @@ export class FreebuffDeviceSigner {
   }
 
   private async prepare(
-    account: FreebuffDeviceAccount,
+    account: FuckbuffDeviceAccount,
     register: boolean,
   ): Promise<{ key: LoadedKey; keyId: string } | null> {
     // Not registering, nothing is generated either: a client that has not
@@ -346,7 +346,7 @@ export class FreebuffDeviceSigner {
       if (!subtle) return null
       const stored = await this.options.store.load()
       if (!stored) return null
-      const privateKey = await importFreebuffDeviceSigningKey(stored, subtle)
+      const privateKey = await importFuckbuffDeviceSigningKey(stored, subtle)
       if (privateKey) return { record: stored, privateKey }
       this.log('the stored device key could not be read; a new one replaces it')
       return null
@@ -363,9 +363,9 @@ export class FreebuffDeviceSigner {
       const stored = await this.loadStoredKey()
       if (stored || this.unavailable) return stored
       const subtle = this.subtle()
-      const record = await generateFreebuffDeviceKey(subtle)
+      const record = await generateFuckbuffDeviceKey(subtle)
       if (!record) return null
-      const privateKey = await importFreebuffDeviceSigningKey(record, subtle)
+      const privateKey = await importFuckbuffDeviceSigningKey(record, subtle)
       if (!privateKey) return null
       await this.persist(record)
       return { record, privateKey }
@@ -377,7 +377,7 @@ export class FreebuffDeviceSigner {
   }
 
   private async keyIdFor(
-    account: FreebuffDeviceAccount,
+    account: FuckbuffDeviceAccount,
     key: LoadedKey,
   ): Promise<string | null> {
     const scope = await this.scopeFor(account)
@@ -395,7 +395,7 @@ export class FreebuffDeviceSigner {
   }
 
   private async register(
-    account: FreebuffDeviceAccount,
+    account: FuckbuffDeviceAccount,
     scope: string,
     key: LoadedKey,
   ): Promise<string | null> {
@@ -407,7 +407,7 @@ export class FreebuffDeviceSigner {
     let res: Response
     try {
       res = await (this.options.fetch ?? fetch)(
-        `${account.apiHost.replace(/\/$/, '')}${FREEBUFF_DEVICE_KEYS_PATH}`,
+        `${account.apiHost.replace(/\/$/, '')}${FUCKBUFF_DEVICE_KEYS_PATH}`,
         {
           method: 'POST',
           headers: {
@@ -444,8 +444,8 @@ export class FreebuffDeviceSigner {
     return keyId
   }
 
-  private persist(record: FreebuffDeviceKeyRecord): Promise<void> {
-    const snapshot: FreebuffDeviceKeyRecord = {
+  private persist(record: FuckbuffDeviceKeyRecord): Promise<void> {
+    const snapshot: FuckbuffDeviceKeyRecord = {
       ...record,
       registrations: { ...record.registrations },
     }
@@ -457,11 +457,11 @@ export class FreebuffDeviceSigner {
     return this.saving
   }
 
-  private async scopeFor(account: FreebuffDeviceAccount): Promise<string> {
+  private async scopeFor(account: FuckbuffDeviceAccount): Promise<string> {
     const host = account.apiHost.replace(/\/$/, '')
     if (account.accountId) return `${host} user:${account.accountId}`
     const subtle = this.subtle() ?? globalThis.crypto.subtle
-    const digest = (await freebuffBodySha256(account.token, subtle)).slice(0, 32)
+    const digest = (await fuckbuffBodySha256(account.token, subtle)).slice(0, 32)
     return `${host} token:${digest}`
   }
 

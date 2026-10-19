@@ -21,7 +21,7 @@
  *
  * This file is deliberately dependency-free so the Postgres schema
  * (`packages/internal/src/db/schema.ts`), the ad-serving rail, and Convex
- * modules (`freebuff/web/convex/ads/*`) can all import the same closed set.
+ * modules (`fuckbuff/web/convex/ads/*`) can all import the same closed set.
  */
 
 export const AGENTIC_FUNNEL_EVENT_TYPES = [
@@ -98,7 +98,7 @@ export const AGENTIC_FUNNEL_EVENT_TYPES = [
   /**
    * An IN-PLACE run left its work in the user's working copy and stopped
    * there (the 2026-09-24 amendment in
-   * `freebuff-sponsored-local-execution.md`). The same buying stage as
+   * `fuckbuff-sponsored-local-execution.md`). The same buying stage as
    * `run_committed` -- the work was done -- on a surface where there is no
    * branch to commit it to, so it is a SEPARATE stage rather than a reuse:
    * `run_committed` is read as "a commit exists that a pull request could be

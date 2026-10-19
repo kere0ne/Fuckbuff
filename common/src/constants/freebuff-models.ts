@@ -11,50 +11,50 @@ import {
   formatDeepSeekOffPeakWindowLocal,
   formatWindowTimeZoneLabel,
   isDeepSeekExpensiveWindow,
-} from './freebuff-peak-hours'
+} from './fuckbuff-peak-hours'
 import { mimoModels } from './model-config'
-import { SOLAR_PRO_4_OFFER, SOLAR_PROMOTIONAL } from './freebuff-solar-promo'
-import { GEMINI_4_ARGON_PROMOTIONAL } from './freebuff-sol-promo'
+import { SOLAR_PRO_4_OFFER, SOLAR_PROMOTIONAL } from './fuckbuff-solar-promo'
+import { GEMINI_4_ARGON_PROMOTIONAL } from './fuckbuff-sol-promo'
 import {
-  FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
-} from './freebuff-model-ids'
+  FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
+} from './fuckbuff-model-ids'
 import {
-  FREEBUFF_AI_TRAINING_NOTICE,
-  type FreebuffModelDataUse,
-} from './freebuff-data-use'
+  FUCKBUFF_AI_TRAINING_NOTICE,
+  type FuckbuffModelDataUse,
+} from './fuckbuff-data-use'
 import {
-  FREEBUFF_SOLAR_MINI_4_ENTITLEMENT,
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
-  FREEBUFF_SOLAR_PRO_4_ENTITLEMENT,
-  FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-  type FreebuffAccessTier,
-} from './freebuff-model-entitlements'
-import { getFreebuffModelPolicyOverlay } from './freebuff-model-policy-overlay'
+  FUCKBUFF_SOLAR_MINI_4_ENTITLEMENT,
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_SOLAR_PRO_4_ENTITLEMENT,
+  FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+  type FuckbuffAccessTier,
+} from './fuckbuff-model-entitlements'
+import { getFuckbuffModelPolicyOverlay } from './fuckbuff-model-policy-overlay'
 import { clampReasoningEffort, type ReasoningEffort } from './reasoning-effort'
 
 export {
-  FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
-} from './freebuff-model-ids'
+  FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
+} from './fuckbuff-model-ids'
 export {
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
-  FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-  type FreebuffAccessTier,
-} from './freebuff-model-entitlements'
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+  type FuckbuffAccessTier,
+} from './fuckbuff-model-entitlements'
 
 /**
- * Models a freebuff user can pick between in the waiting-room model selector.
+ * Models a fuckbuff user can pick between in the waiting-room model selector.
  *
  * Each model has its own queue (server keys queue position by `model`), so the
  * list here is effectively the set of separate waiting lines. Order is the
  * order shown in the UI.
  */
-export interface FreebuffModelOption {
+export interface FuckbuffModelOption {
   /** Stable ID used in the wire protocol and DB. Matches the model id passed
    *  to the chat-completions endpoint. */
   id: string
@@ -67,7 +67,7 @@ export interface FreebuffModelOption {
   /**
    * Where a pick lands while THIS model is closed by `availability`.
    *
-   * Without it an unavailable pick falls to FALLBACK_FREEBUFF_MODEL_ID, which
+   * Without it an unavailable pick falls to FALLBACK_FUCKBUFF_MODEL_ID, which
    * is the unlimited row — correct when a model is gone, wrong when it is
    * merely asleep and a better substitute is awake. V4 Flash closes at peak
    * precisely so its traffic lands on V4 Pro, and a silent detour to MiMo would
@@ -83,15 +83,15 @@ export interface FreebuffModelOption {
   warning?: string
   /** Machine-readable data-use policy. Never infer storage or training
    *  behavior from the human-readable warning text. */
-  dataUse: FreebuffModelDataUse
+  dataUse: FuckbuffModelDataUse
   /** Whether full access meters this model through the shared premium pool. */
   premium: boolean
   /** Whether the model accepts image input. Drives whether uploaded images
    *  are forwarded as real multimodal content vs. dropped/inlined as text. */
   multimodal: boolean
-  /** Reasoning effort Freebuff turns run this model at. Not advisory: the
+  /** Reasoning effort Fuckbuff turns run this model at. Not advisory: the
    *  completions layer sends it whenever the caller names no reasoning of its
-   *  own (applyFreebuffReasoningDefaults in web/src/llm-api/openrouter.ts),
+   *  own (applyFuckbuffReasoningDefaults in web/src/llm-api/openrouter.ts),
    *  and the Desktop and CLI pickers display the same field — one source, so
    *  on those surfaces what users see and what the server sends cannot drift.
    *  Omit where the model has no effort levels (MiniMax) or the provider
@@ -113,7 +113,7 @@ export interface FreebuffModelOption {
    * model offers no choice and shows no control — the default for every row.
    *
    * Same field name and shape as Desktop's `ModelOption.efforts`
-   * (freebuff-desktop/src/shared/models.ts), deliberately: Desktop already had
+   * (fuckbuff-desktop/src/shared/models.ts), deliberately: Desktop already had
    * per-model effort lists driving its Claude/Codex picker, and one pattern
    * across surfaces beats two that must be kept in step.
    *
@@ -182,16 +182,16 @@ export interface FreebuffModelOption {
 
 /** Server-facing fallback copy for APIs and provider errors that can't know
  *  the caller's local timezone. The CLI should render
- *  `getFreebuffDeploymentAvailabilityLabel()` instead. */
-export const FREEBUFF_DEPLOYMENT_HOURS_LABEL = '9am ET-5pm PT every day'
-export const FREEBUFF_GEMINI_PRO_MODEL_ID = 'google/gemini-3.1-pro-preview'
+ *  `getFuckbuffDeploymentAvailabilityLabel()` instead. */
+export const FUCKBUFF_DEPLOYMENT_HOURS_LABEL = '9am ET-5pm PT every day'
+export const FUCKBUFF_GEMINI_PRO_MODEL_ID = 'google/gemini-3.1-pro-preview'
 /** Legacy wire id emitted by older freebuff.com/chat deployments. The shared
  *  completions API keeps accepting it, but routes it to DeepSeek direct. New
- *  chat code must use FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID instead. */
-export const FREEBUFF_DEEPSEEK_V4_FLASH_FIREWORKS_MODEL_ID =
+ *  chat code must use FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID instead. */
+export const FUCKBUFF_DEEPSEEK_V4_FLASH_FIREWORKS_MODEL_ID =
   'fireworks/deepseek-v4-flash'
 // HY3 IS GONE, on every surface and every route (removed 2026-08-07). It left
-// Freebuff on 2026-08-04 but its wire ids lived on for paid/BYOK callers via
+// Fuckbuff on 2026-08-04 but its wire ids lived on for paid/BYOK callers via
 // web/src/llm-api/hy3-fallback.ts; that file, the Atlas Cloud adapter that was
 // its paid lane, and the `tencent/hy3*` model-config entries have all been
 // deleted. Nothing routes these slugs now — a request for one falls through to
@@ -202,12 +202,12 @@ export const FREEBUFF_DEEPSEEK_V4_FLASH_FIREWORKS_MODEL_ID =
  *  pick, allowlist, fallback and the limited catalog already names this one,
  *  and a new id would strand all of them on a row that no longer exists. The
  *  upstream name is chosen in web/src/llm-api/mimo-request-body.ts. */
-export const FREEBUFF_MIMO_V25_MODEL_ID = mimoModels.mimoV25
+export const FUCKBUFF_MIMO_V25_MODEL_ID = mimoModels.mimoV25
 /** MiMo 2.6 Pro (2026-09-21), paid-only on every surface, 25 Freebucks. Unlike the MiMo
  *  row above it has its own id: it is a different, dearer model, and one wire
  *  id per entitlement is the rule (a Pro served under the Flash id would be a
  *  25-Freebuck model sold at 10). */
-export const FREEBUFF_MIMO_V26_PRO_MODEL_ID = mimoModels.mimoV26Pro
+export const FUCKBUFF_MIMO_V26_PRO_MODEL_ID = mimoModels.mimoV26Pro
 /** GLM 5.2, served by CrofAI's direct OpenAI-compatible API (moved off
  *  Fireworks serverless 2026-07-29, at ~4x less than Fireworks' list price).
  *  The `z-ai/` prefix is a wire id inherited from the Fireworks era — nothing
@@ -224,7 +224,7 @@ export const FREEBUFF_MIMO_V26_PRO_MODEL_ID = mimoModels.mimoV26Pro
  *  and deleted outright 2026-08-04. Never reintroduce a second wire id for an
  *  entitlement-gated model — the quota pool is chosen by model id, so an extra
  *  id is an extra door. */
-export const FREEBUFF_GLM_V52_MODEL_ID = 'z-ai/glm-5.2'
+export const FUCKBUFF_GLM_V52_MODEL_ID = 'z-ai/glm-5.2'
 /**
  * GLM 5.3 Flash, served through OpenRouter. The id is OpenRouter's own slug, so
  * it falls through to the default OpenRouter route with no provider-specific
@@ -233,7 +233,7 @@ export const FREEBUFF_GLM_V52_MODEL_ID = 'z-ai/glm-5.2'
  * NOT a second door onto GLM 5.2. The name and the `z-ai/` prefix are shared,
  * but this is a different model on a different lane and a different pool, and
  * that distinction is load-bearing: 5.2 is the REFERRAL reward metered by
- * FREEBUFF_REWARD_MODEL_IDS, and the whole reason `crof/glm-5.2` had to be
+ * FUCKBUFF_REWARD_MODEL_IDS, and the whole reason `crof/glm-5.2` had to be
  * deleted (see above) is that a second id for an earned model is a second free
  * entitlement. Every GLM predicate in this file is written against an explicit
  * id list for that reason — none of them prefix-match `z-ai/glm`, and none of
@@ -247,12 +247,12 @@ export const FREEBUFF_GLM_V52_MODEL_ID = 'z-ai/glm-5.2'
  * output, and cheaper on the cache reads that dominate an agent turn.
  *
  * Three of the six listed endpoints charge exactly 2x the other three, so the
- * route carries FREEBUFF_GLM_V53_FLASH_MAX_PRICE. Without it OpenRouter is free
+ * route carries FUCKBUFF_GLM_V53_FLASH_MAX_PRICE. Without it OpenRouter is free
  * to land a session on a double-priced host and nothing anywhere would say so —
  * the shape of bill this repo has already paid twice (the retired OpenRouter
  * DeepSeek lane; the Kimi/Infron unit-price doubling).
  */
-export const FREEBUFF_GLM_V53_FLASH_MODEL_ID = 'z-ai/glm-5.3-flash'
+export const FUCKBUFF_GLM_V53_FLASH_MODEL_ID = 'z-ai/glm-5.3-flash'
 /**
  * The price ceiling GLM 5.3 Flash routes under, in dollars per MILLION tokens
  * (OpenRouter's `provider.max_price` unit).
@@ -266,7 +266,7 @@ export const FREEBUFF_GLM_V53_FLASH_MODEL_ID = 'z-ai/glm-5.3-flash'
  *   - Strictly ABOVE the cheap band. OpenRouter compares strictly, which is not
  *     a guess: shipping Luna's exact list price 404'd every request with "No
  *     endpoints found that satisfy the max price" (see
- *     FREEBUFF_GPT_5_6_LUNA_MAX_PRICE, verified against the live API). A
+ *     FUCKBUFF_GPT_5_6_LUNA_MAX_PRICE, verified against the live API). A
  *     ceiling equal to list is an outage waiting on a rounding change.
  *   - Strictly BELOW the dear band, which is the whole reason the fence exists.
  *
@@ -310,7 +310,7 @@ export const FREEBUFF_GLM_V53_FLASH_MODEL_ID = 'z-ai/glm-5.3-flash'
  * emptied order on GLM_V53_FLASH_OPENROUTER_UPSTREAM_ORDER, which is what
  * stopped all three being funnelled into whichever one was listed first.
  */
-export const FREEBUFF_GLM_V53_FLASH_MAX_PRICE = {
+export const FUCKBUFF_GLM_V53_FLASH_MAX_PRICE = {
   prompt: 0.14,
   completion: 0.45,
 } as const
@@ -319,12 +319,12 @@ export const FREEBUFF_GLM_V53_FLASH_MAX_PRICE = {
  *  provider-specific handler (same as Ling 3.0 Flash).
  *
  *  Two things about this model are enforced server-side rather than left to the
- *  agent definitions, so they hold for every Freebuff surface, every subagent,
+ *  agent definitions, so they hold for every Fuckbuff surface, every subagent,
  *  and BYOK callers alike (see applyOpenRouterProviderRouting and
- *  applyFreebuffReasoningDefaults in web/src/llm-api/openrouter.ts):
+ *  applyFuckbuffReasoningDefaults in web/src/llm-api/openrouter.ts):
  *
  *   - Routing PREFERS OpenAI's own endpoint ($0.10/$0.60 per M) via `order`,
- *     with fallbacks allowed and cost bounded by FREEBUFF_GPT_5_6_LUNA_MAX_PRICE
+ *     with fallbacks allowed and cost bounded by FUCKBUFF_GPT_5_6_LUNA_MAX_PRICE
  *     rather than by the pin. A hard pin (allow_fallbacks:false) held until
  *     2026-08-16, when OpenAI's endpoint stopped serving our requests and the
  *     pin turned that into a total Luna outage while four usable endpoints sat
@@ -332,10 +332,10 @@ export const FREEBUFF_GLM_V53_FLASH_MAX_PRICE = {
  *   - Reasoning effort is `high`. Luna is cheap enough per token that the
  *     quality is worth more than the reasoning tokens.
  *
- *  Both are scoped to FREEBUFF traffic on purpose: `LITE_MODEL`
+ *  Both are scoped to FUCKBUFF traffic on purpose: `LITE_MODEL`
  *  (agents/constants.ts) is this same model id, so keying either off the model
  *  alone would change Codebuff's paid lite mode as a side effect. */
-export const FREEBUFF_GPT_5_6_LUNA_MODEL_ID = 'openai/gpt-5.6-luna'
+export const FUCKBUFF_GPT_5_6_LUNA_MODEL_ID = 'openai/gpt-5.6-luna'
 /**
  * The Novita `-es` route. GOD-ONLY, and NOT a cheaper GPT-5.6 Luna.
  *
@@ -352,9 +352,9 @@ export const FREEBUFF_GPT_5_6_LUNA_MODEL_ID = 'openai/gpt-5.6-luna'
  * one id per distinct model, kept apart precisely so neither can be mistaken
  * for the other. It is god-only, so it opens no pool.
  */
-export const FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID = 'openai/gpt-5.6-luna-es'
+export const FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID = 'openai/gpt-5.6-luna-es'
 /** OpenRouter provider slug Luna prefers (first in `provider.order`). */
-export const FREEBUFF_GPT_5_6_LUNA_PROVIDER_ROUTE = 'openai'
+export const FUCKBUFF_GPT_5_6_LUNA_PROVIDER_ROUTE = 'openai'
 /** Price ceiling for Luna, USD per million tokens. Sent as OpenRouter's
  *  `provider.max_price`, which REFUSES to route above it rather than serving
  *  and billing, so a provider re-pricing surfaces as a loud error instead of a
@@ -377,12 +377,12 @@ export const FREEBUFF_GPT_5_6_LUNA_PROVIDER_ROUTE = 'openai'
  *  The headroom covers OpenAI's own tiers (list $0.10/$0.60, priority
  *  $0.20/$1.20, flex $0.05/$0.30) and ordinary price drift, while still failing
  *  closed well before a 10x endpoint could serve a request. */
-export const FREEBUFF_GPT_5_6_LUNA_MAX_PRICE = {
+export const FUCKBUFF_GPT_5_6_LUNA_MAX_PRICE = {
   prompt: 0.5,
   completion: 3.0,
 } as const
 /** Reasoning effort every Luna turn runs at. */
-export const FREEBUFF_GPT_5_6_LUNA_REASONING_EFFORT = 'high' as const
+export const FUCKBUFF_GPT_5_6_LUNA_REASONING_EFFORT = 'high' as const
 
 /**
  * GPT-6 Luna (OpenAI), served through OpenRouter. Replaces GPT-5.6 Luna on
@@ -391,14 +391,14 @@ export const FREEBUFF_GPT_5_6_LUNA_REASONING_EFFORT = 'high' as const
  * Its own wire id, not a swap under 5.6's: this is a different model on a
  * different rate card. 5.6 kept serving the sessions already admitted on it
  * until it was withdrawn from free mode on 2026-09-24
- * (FREEBUFF_PAUSED_FREE_MODEL_IDS).
+ * (FUCKBUFF_PAUSED_FREE_MODEL_IDS).
  *
  * NOTE the lane change that comes with it. 5.6 runs Cheaper Inference ->
  * Novita -> OpenRouter; NEITHER of the cheap lanes carries a gpt-6 slug
  * (probed 2026-09-22: CI, Novita, Infron, Merge, Luminal and CrofAI all stop
  * at 5.6), so this row is OpenRouter-only and the cascade does not apply.
  */
-export const FREEBUFF_GPT_6_LUNA_MODEL_ID = 'openai/gpt-6-luna'
+export const FUCKBUFF_GPT_6_LUNA_MODEL_ID = 'openai/gpt-6-luna'
 /**
  * Endpoint order for GPT-6 Luna: OpenAI's FLEX tier first, standard behind it.
  *
@@ -407,7 +407,7 @@ export const FREEBUFF_GPT_6_LUNA_MODEL_ID = 'openai/gpt-6-luna'
  * meaningfully slower: TTFT under sustained and burst load was within noise of
  * standard with no errors on either, and flex was faster on a very long prompt
  * and on output throughput. Prompt caching works on flex and is what makes the
- * row cheap. (measured figures: freebuff-models.knowledge.md)
+ * row cheap. (measured figures: fuckbuff-models.knowledge.md)
  *
  * Standard is the backup rather than the primary because OpenAI documents flex
  * as best-effort capacity (429 `resource_unavailable`, more 408s). None
@@ -416,7 +416,7 @@ export const FREEBUFF_GPT_6_LUNA_MODEL_ID = 'openai/gpt-6-luna'
  * COST REGRESSION when used — standard is 2x flex on every term — so a
  * sustained rise in standard-tier share is a signal, not noise.
  */
-export const FREEBUFF_GPT_6_LUNA_UPSTREAM_ORDER = [
+export const FUCKBUFF_GPT_6_LUNA_UPSTREAM_ORDER = [
   'openai/flex',
   'openai',
 ] as const
@@ -429,18 +429,18 @@ export const FREEBUFF_GPT_6_LUNA_UPSTREAM_ORDER = [
  * ($0.11/$0.55), which stays reachable as a third rung, and strictly below
  * OpenAI's `fast` tier ($0.20/$1.00), which is the band this fences out. It
  * must stay ABOVE list on both terms: a ceiling equal to list 404s every
- * request (verified on 5.6 — see FREEBUFF_GPT_5_6_LUNA_MAX_PRICE).
+ * request (verified on 5.6 — see FUCKBUFF_GPT_5_6_LUNA_MAX_PRICE).
  */
-export const FREEBUFF_GPT_6_LUNA_MAX_PRICE = {
+export const FUCKBUFF_GPT_6_LUNA_MAX_PRICE = {
   prompt: 0.15,
   completion: 0.75,
 } as const
 /** Reasoning effort every GPT-6 Luna turn runs at, as on 5.6. */
-export const FREEBUFF_GPT_6_LUNA_REASONING_EFFORT = 'high' as const
+export const FUCKBUFF_GPT_6_LUNA_REASONING_EFFORT = 'high' as const
 /**
  * GPT-6.1 Sol (OpenAI), served through OpenRouter, on every surface from
  * 2026-09-29: FREE TO US VIEWERS and paywalled for everyone else
- * (FREEBUFF_US_OR_PAID_MODEL_IDS over the paid-only lists), at 250 Freebucks
+ * (FUCKBUFF_US_OR_PAID_MODEL_IDS over the paid-only lists), at 250 Freebucks
  * since 2026-10-13 (a PROMOTIONAL 100 until then) — the most expensive row we
  * have offered outside the Fable campaign.
  *
@@ -451,17 +451,17 @@ export const FREEBUFF_GPT_6_LUNA_REASONING_EFFORT = 'high' as const
  * per M — 20x GPT-6 Luna flex on fresh input and output, 10x on cached input.
  * It reasons far less than Luna on the same tasks, which offsets some of
  * that. The 250 Freebucks price is a product decision.
- * (measured figures: freebuff-models.knowledge.md)
+ * (measured figures: fuckbuff-models.knowledge.md)
  */
-export const FREEBUFF_GPT_61_SOL_MODEL_ID = 'openai/gpt-6.1-sol'
+export const FUCKBUFF_GPT_61_SOL_MODEL_ID = 'openai/gpt-6.1-sol'
 /**
  * Endpoint order for GPT-6.1 Sol: OpenAI flex first, standard behind it — the
- * GPT-6 Luna arrangement (FREEBUFF_GPT_6_LUNA_UPSTREAM_ORDER), for the same
+ * GPT-6 Luna arrangement (FUCKBUFF_GPT_6_LUNA_UPSTREAM_ORDER), for the same
  * reasons. Standard is 2x flex on every term, so a sustained rise in its share
  * doubles this row's bill; it is there so a flex capacity refusal is not a
  * dead turn.
  */
-export const FREEBUFF_GPT_61_SOL_UPSTREAM_ORDER = [
+export const FUCKBUFF_GPT_61_SOL_UPSTREAM_ORDER = [
   'openai/flex',
   'openai',
 ] as const
@@ -470,18 +470,18 @@ export const FREEBUFF_GPT_61_SOL_UPSTREAM_ORDER = [
  * Azure US ($2.20/$11), which stay reachable, and below OpenAI's `fast` tier
  * ($4/$20), which is the band this fences out.
  */
-export const FREEBUFF_GPT_61_SOL_MAX_PRICE = {
+export const FUCKBUFF_GPT_61_SOL_MAX_PRICE = {
   prompt: 2.5,
   completion: 12.5,
 } as const
 /** Reasoning effort a GPT-6.1 Sol turn runs at unless the user picks one.
  *  `medium`, not Luna's `high`: reasoning bills as output at $5/M here, and
  *  the row's cost measurement was taken at the model's default. */
-export const FREEBUFF_GPT_61_SOL_REASONING_EFFORT = 'medium' as const
+export const FUCKBUFF_GPT_61_SOL_REASONING_EFFORT = 'medium' as const
 /**
  * Gemini 4 Argon (Google), served through OpenRouter, on every surface from
  * 2026-10-13 on GPT-6.1 Sol's launch terms: FREE TO US VIEWERS and paywalled
- * for everyone else (FREEBUFF_US_OR_PAID_MODEL_IDS over the paid-only lists),
+ * for everyone else (FUCKBUFF_US_OR_PAID_MODEL_IDS over the paid-only lists),
  * at a PROMOTIONAL 100 Freebucks, one session a day.
  *
  * PRICE: OpenRouter lists three bands, read off the live API 2026-10-13 —
@@ -495,9 +495,9 @@ export const FREEBUFF_GPT_61_SOL_REASONING_EFFORT = 'medium' as const
  * `discount` on the standard list price, so it can end without notice.
  * Vertex is reached through our own Google credentials (BYOK) and invoices at
  * full list whatever OpenRouter lists — the Gemini 3.8 Flash lesson — so
- * routing names AI Studio only (FREEBUFF_GEMINI_4_ARGON_UPSTREAM_ORDER).
+ * routing names AI Studio only (FUCKBUFF_GEMINI_4_ARGON_UPSTREAM_ORDER).
  */
-export const FREEBUFF_GEMINI_4_ARGON_MODEL_ID = 'google/gemini-4-argon'
+export const FUCKBUFF_GEMINI_4_ARGON_MODEL_ID = 'google/gemini-4-argon'
 /**
  * Endpoint order for Gemini 4 Argon: AI Studio flex first, AI Studio standard
  * (2x) behind it so a flex capacity refusal or delisting is not a dead turn —
@@ -505,7 +505,7 @@ export const FREEBUFF_GEMINI_4_ARGON_MODEL_ID = 'google/gemini-4-argon'
  * with `allow_fallbacks: false` so the BYOK Vertex endpoints never serve. A
  * sustained rise in standard's share doubles this row's bill.
  */
-export const FREEBUFF_GEMINI_4_ARGON_UPSTREAM_ORDER = [
+export const FUCKBUFF_GEMINI_4_ARGON_UPSTREAM_ORDER = [
   'google-ai-studio/flex',
   'google-ai-studio',
 ] as const
@@ -513,15 +513,15 @@ export const FREEBUFF_GEMINI_4_ARGON_UPSTREAM_ORDER = [
  * Price ceiling for Gemini 4 Argon, USD per million: above standard
  * ($2/$10), which stays reachable, and below priority ($3.60/$18), which is
  * the band this fences out. Strictly above list: a ceiling equal to list
- * 404s (FREEBUFF_GEMINI_38_FLASH_MAX_PRICE).
+ * 404s (FUCKBUFF_GEMINI_38_FLASH_MAX_PRICE).
  */
-export const FREEBUFF_GEMINI_4_ARGON_MAX_PRICE = {
+export const FUCKBUFF_GEMINI_4_ARGON_MAX_PRICE = {
   prompt: 2.5,
   completion: 12.5,
 } as const
 /** Reasoning effort a Gemini 4 Argon turn runs at unless the user picks one:
  *  `medium`, as on Sol, because reasoning bills as output at $5/M. */
-export const FREEBUFF_GEMINI_4_ARGON_REASONING_EFFORT = 'medium' as const
+export const FUCKBUFF_GEMINI_4_ARGON_REASONING_EFFORT = 'medium' as const
 /** Solar Pro 4 (Upstage), served through OpenRouter and constrained to Upstage
  *  by `applyOpenRouterProviderRouting`. Context 524,288, text in / text out,
  *  using Upstage's non-ZDR endpoint for provider-side debugging.
@@ -535,7 +535,7 @@ export const FREEBUFF_GEMINI_4_ARGON_REASONING_EFFORT = 'medium' as const
  *  OpenRouter lane therefore reprices this model from tokens
  *  (web/src/llm-api/openrouter-price-overrides.ts); keep that entry in step
  *  with Upstage's invoice. The Freebucks price is a separate, operator-set
- *  decision (freebuff-solar-promo.ts). */
+ *  decision (fuckbuff-solar-promo.ts). */
 /** Upstage's requested non-ZDR route for debugging. Pair with
  *  `allow_fallbacks: false` in applyOpenRouterProviderRouting. */
 export const SOLAR_PRO_4_OPENROUTER_ENDPOINT = 'upstage'
@@ -560,7 +560,7 @@ export const SOLAR_PRO_4_OPENROUTER_ENDPOINT = 'upstage'
  *
  * Flex is the target, and reaching it takes BOTH halves of this row's routing
  * — which is unusual and is the thing to understand before changing either.
- * FREEBUFF_GEMINI_38_FLASH_MAX_PRICE fences the dear bands out;
+ * FUCKBUFF_GEMINI_38_FLASH_MAX_PRICE fences the dear bands out;
  * GEMINI_38_FLASH_OPENROUTER_UPSTREAM_ORDER is what puts the cheap band in
  * range at all. Measured 2026-09-03: an UNPINNED request does not land on flex
  * and cannot be made to by a ceiling alone — our account's tier filtering cuts
@@ -588,7 +588,7 @@ export const SOLAR_PRO_4_OPENROUTER_ENDPOINT = 'upstage'
  *    at the flex price and invoiced at twice it, and `max_price` cannot see the
  *    difference: THE CEILING BOUNDS THE LISTED PRICE, NOT THE BYOK INVOICE.
  *    That is why routing PREFERS AI Studio (see
- *    FREEBUFF_GEMINI_38_FLASH_UPSTREAM_ORDER) rather than treating the two flex
+ *    FUCKBUFF_GEMINI_38_FLASH_UPSTREAM_ORDER) rather than treating the two flex
  *    endpoints as interchangeable. The ledger stays honest either way —
  *    `extractUsageAndCost` records `max(cost, upstream_inference_cost)` — so a
  *    drift onto Vertex shows up as a doubled $/msg on the spend dashboard
@@ -597,9 +597,9 @@ export const SOLAR_PRO_4_OPENROUTER_ENDPOINT = 'upstage'
  * The row is PREMIUM. At the flex rate it is well above DeepSeek V4 Flash and
  * GLM 5.3 Flash per message; its cache-read rate is the dearest in the
  * catalog, and cache reads are most of an agent turn's tokens. Figures and the
- * sensitivity to the hit rate are in ./freebuff-costs.knowledge.md.
+ * sensitivity to the hit rate are in ./fuckbuff-costs.knowledge.md.
  */
-export const FREEBUFF_GEMINI_38_FLASH_MODEL_ID = 'google/gemini-3.8-flash'
+export const FUCKBUFF_GEMINI_38_FLASH_MODEL_ID = 'google/gemini-3.8-flash'
 
 /**
  * The price ceiling Gemini 3.8 Flash routes under, in dollars per MILLION
@@ -620,7 +620,7 @@ export const FREEBUFF_GEMINI_38_FLASH_MODEL_ID = 'google/gemini-3.8-flash'
  *     against the live API 2026-09-03, `max_price` of exactly
  *     {0.375, 1.875} answers `404 No endpoints found that satisfy the max
  *     price`, with `failed_routing_step: "Filter by Max Price"`. This is the
- *     same comparison that bit FREEBUFF_GPT_5_6_LUNA_MAX_PRICE.
+ *     same comparison that bit FUCKBUFF_GPT_5_6_LUNA_MAX_PRICE.
  *   - Strictly BELOW standard, which is the entire reason the fence exists —
  *     four of the six endpoints are 2x or 3.6x the flex band.
  *
@@ -629,12 +629,12 @@ export const FREEBUFF_GEMINI_38_FLASH_MODEL_ID = 'google/gemini-3.8-flash'
  * than serving above the ceiling, and the fix for that 404 is never to raise
  * this number.
  */
-export const FREEBUFF_GEMINI_38_FLASH_MAX_PRICE = {
+export const FUCKBUFF_GEMINI_38_FLASH_MAX_PRICE = {
   prompt: 0.8,
   completion: 4.0,
 } as const
 /**
- * Kimi K3 (Eco), served by CrofAI. God-only on Freebuff Web, for testing.
+ * Kimi K3 (Eco), served by CrofAI. God-only on Fuckbuff Web, for testing.
  *
  * The `crof/` prefix names the only place this exists — unlike the retired
  * `crof/glm-5.2`, which was a SECOND id for a model already offered under
@@ -649,76 +649,76 @@ export const FREEBUFF_GEMINI_38_FLASH_MAX_PRICE = {
  * the exact build or a future `kimi-k3` row would collide with it. The picker
  * label is plain "Kimi K3" by request; see KIMI_K3_ECO_MODEL.
  */
-export const FREEBUFF_KIMI_K3_ECO_MODEL_ID = 'crof/kimi-k3-eco'
+export const FUCKBUFF_KIMI_K3_ECO_MODEL_ID = 'crof/kimi-k3-eco'
 /**
  * Early-access tiers, provisioned per-account: wire ids only, absent from
- * FREEBUFF_MODELS and every quota list, and carried directly on the request by
+ * FUCKBUFF_MODELS and every quota list, and carried directly on the request by
  * accounts that hold the grant, so none of them needs its own quota or price
  * entry here.
  */
-export const FREEBUFF_DEEPSEEK_V41_FLASH_MODEL_ID =
+export const FUCKBUFF_DEEPSEEK_V41_FLASH_MODEL_ID =
   'deepseek/deepseek-v4.1-flash'
-export const FREEBUFF_GLM_V53_MODEL_ID = 'z-ai/glm-5.3'
+export const FUCKBUFF_GLM_V53_MODEL_ID = 'z-ai/glm-5.3'
 
 /**
  * Further provisioned routes, on the same terms as the early-access tiers
- * above: granted per account, absent from FREEBUFF_MODELS and every quota
+ * above: granted per account, absent from FUCKBUFF_MODELS and every quota
  * list, carried directly on the request by accounts that hold the grant. See
- * FREEBUFF_PROVISIONED_MODELS for the rows.
+ * FUCKBUFF_PROVISIONED_MODELS for the rows.
  */
-export const FREEBUFF_GPT_6_SOL_MODEL_ID = 'openai/gpt-6-sol'
-export const FREEBUFF_GPT_6_SOL_PRO_MODEL_ID = 'openai/gpt-6-sol-pro'
-export const FREEBUFF_GPT_6_LUNA_PRO_MODEL_ID = 'openai/gpt-6-luna-pro'
-export const FREEBUFF_GPT_6_ASTRA_MODEL_ID = 'openai/gpt-6-astra'
-export const FREEBUFF_GPT_6_ASTRA_PRO_MODEL_ID = 'openai/gpt-6-astra-pro'
-export const FREEBUFF_GPT_5_6_SOL_MODEL_ID = 'openai/gpt-5.6-sol'
-export const FREEBUFF_GPT_5_6_SOL_PRO_MODEL_ID = 'openai/gpt-5.6-sol-pro'
-export const FREEBUFF_GPT_5_6_TERRA_MODEL_ID = 'openai/gpt-5.6-terra'
-export const FREEBUFF_GPT_5_6_TERRA_PRO_MODEL_ID = 'openai/gpt-5.6-terra-pro'
-export const FREEBUFF_GPT_5_6_LUNA_PRO_MODEL_ID = 'openai/gpt-5.6-luna-pro'
-export const FREEBUFF_GPT_5_5_MODEL_ID = 'openai/gpt-5.5'
-export const FREEBUFF_GPT_5_5_PRO_MODEL_ID = 'openai/gpt-5.5-pro'
-export const FREEBUFF_GPT_5_4_PRO_MODEL_ID = 'openai/gpt-5.4-pro'
-export const FREEBUFF_O3_PRO_MODEL_ID = 'openai/o3-pro'
-export const FREEBUFF_CLAUDE_OPUS_5_5_MODEL_ID = 'anthropic/claude-opus-5.5'
-export const FREEBUFF_CLAUDE_OPUS_5_MODEL_ID = 'anthropic/claude-opus-5'
-export const FREEBUFF_CLAUDE_SONNET_5_MODEL_ID = 'anthropic/claude-sonnet-5'
-export const FREEBUFF_CLAUDE_OPUS_4_8_MODEL_ID = 'anthropic/claude-opus-4.8'
-export const FREEBUFF_CLAUDE_SONNET_4_6_MODEL_ID = 'anthropic/claude-sonnet-4.6'
-export const FREEBUFF_QWEN3_8_MAX_PRIME_MODEL_ID = 'qwen/qwen3.8-max-prime'
-export const FREEBUFF_QWEN3_8_MAX_0902_MODEL_ID = 'qwen/qwen3.8-max-0902'
-export const FREEBUFF_QWEN3_8_FLASH_MODEL_ID = 'qwen/qwen3.8-flash'
-export const FREEBUFF_QWEN3_8_27B_MODEL_ID = 'qwen/qwen3.8-27b'
-export const FREEBUFF_QWEN3_7_MAX_MODEL_ID = 'qwen/qwen3.7-max'
-export const FREEBUFF_QWEN3_7_PLUS_MODEL_ID = 'qwen/qwen3.7-plus'
-export const FREEBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID = 'qwen/qwen3.6-max-preview'
-export const FREEBUFF_QWEN3_6_PLUS_MODEL_ID = 'qwen/qwen3.6-plus'
-export const FREEBUFF_GROK_4_7_MODEL_ID = 'x-ai/grok-4.7'
-export const FREEBUFF_GROK_4_6_MODEL_ID = 'x-ai/grok-4.6'
-export const FREEBUFF_GROK_4_5_MODEL_ID = 'x-ai/grok-4.5'
-export const FREEBUFF_GROK_4_20_MODEL_ID = 'x-ai/grok-4.20'
-export const FREEBUFF_GEMINI_3_7_FLASH_MODEL_ID = 'google/gemini-3.7-flash'
-export const FREEBUFF_GEMINI_3_6_FLASH_MODEL_ID = 'google/gemini-3.6-flash'
-export const FREEBUFF_GEMINI_3_5_FLASH_MODEL_ID = 'google/gemini-3.5-flash'
-export const FREEBUFF_KIMI_K3_MODEL_ID = 'moonshotai/kimi-k3'
-export const FREEBUFF_GLM_5_3_PRIME_MODEL_ID = 'z-ai/glm-5.3-prime'
-export const FREEBUFF_GLM_5_3_FLASHX_MODEL_ID = 'z-ai/glm-5.3-flashx'
-export const FREEBUFF_GLM_5_TURBO_MODEL_ID = 'z-ai/glm-5-turbo'
-export const FREEBUFF_MISTRAL_LARGE_MODEL_ID = 'mistralai/mistral-large'
-export const FREEBUFF_CODESTRAL_2508_MODEL_ID = 'mistralai/codestral-2508'
-export const FREEBUFF_LLAMA_4_MAVERICK_MODEL_ID = 'meta-llama/llama-4-maverick'
+export const FUCKBUFF_GPT_6_SOL_MODEL_ID = 'openai/gpt-6-sol'
+export const FUCKBUFF_GPT_6_SOL_PRO_MODEL_ID = 'openai/gpt-6-sol-pro'
+export const FUCKBUFF_GPT_6_LUNA_PRO_MODEL_ID = 'openai/gpt-6-luna-pro'
+export const FUCKBUFF_GPT_6_ASTRA_MODEL_ID = 'openai/gpt-6-astra'
+export const FUCKBUFF_GPT_6_ASTRA_PRO_MODEL_ID = 'openai/gpt-6-astra-pro'
+export const FUCKBUFF_GPT_5_6_SOL_MODEL_ID = 'openai/gpt-5.6-sol'
+export const FUCKBUFF_GPT_5_6_SOL_PRO_MODEL_ID = 'openai/gpt-5.6-sol-pro'
+export const FUCKBUFF_GPT_5_6_TERRA_MODEL_ID = 'openai/gpt-5.6-terra'
+export const FUCKBUFF_GPT_5_6_TERRA_PRO_MODEL_ID = 'openai/gpt-5.6-terra-pro'
+export const FUCKBUFF_GPT_5_6_LUNA_PRO_MODEL_ID = 'openai/gpt-5.6-luna-pro'
+export const FUCKBUFF_GPT_5_5_MODEL_ID = 'openai/gpt-5.5'
+export const FUCKBUFF_GPT_5_5_PRO_MODEL_ID = 'openai/gpt-5.5-pro'
+export const FUCKBUFF_GPT_5_4_PRO_MODEL_ID = 'openai/gpt-5.4-pro'
+export const FUCKBUFF_O3_PRO_MODEL_ID = 'openai/o3-pro'
+export const FUCKBUFF_CLAUDE_OPUS_5_5_MODEL_ID = 'anthropic/claude-opus-5.5'
+export const FUCKBUFF_CLAUDE_OPUS_5_MODEL_ID = 'anthropic/claude-opus-5'
+export const FUCKBUFF_CLAUDE_SONNET_5_MODEL_ID = 'anthropic/claude-sonnet-5'
+export const FUCKBUFF_CLAUDE_OPUS_4_8_MODEL_ID = 'anthropic/claude-opus-4.8'
+export const FUCKBUFF_CLAUDE_SONNET_4_6_MODEL_ID = 'anthropic/claude-sonnet-4.6'
+export const FUCKBUFF_QWEN3_8_MAX_PRIME_MODEL_ID = 'qwen/qwen3.8-max-prime'
+export const FUCKBUFF_QWEN3_8_MAX_0902_MODEL_ID = 'qwen/qwen3.8-max-0902'
+export const FUCKBUFF_QWEN3_8_FLASH_MODEL_ID = 'qwen/qwen3.8-flash'
+export const FUCKBUFF_QWEN3_8_27B_MODEL_ID = 'qwen/qwen3.8-27b'
+export const FUCKBUFF_QWEN3_7_MAX_MODEL_ID = 'qwen/qwen3.7-max'
+export const FUCKBUFF_QWEN3_7_PLUS_MODEL_ID = 'qwen/qwen3.7-plus'
+export const FUCKBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID = 'qwen/qwen3.6-max-preview'
+export const FUCKBUFF_QWEN3_6_PLUS_MODEL_ID = 'qwen/qwen3.6-plus'
+export const FUCKBUFF_GROK_4_7_MODEL_ID = 'x-ai/grok-4.7'
+export const FUCKBUFF_GROK_4_6_MODEL_ID = 'x-ai/grok-4.6'
+export const FUCKBUFF_GROK_4_5_MODEL_ID = 'x-ai/grok-4.5'
+export const FUCKBUFF_GROK_4_20_MODEL_ID = 'x-ai/grok-4.20'
+export const FUCKBUFF_GEMINI_3_7_FLASH_MODEL_ID = 'google/gemini-3.7-flash'
+export const FUCKBUFF_GEMINI_3_6_FLASH_MODEL_ID = 'google/gemini-3.6-flash'
+export const FUCKBUFF_GEMINI_3_5_FLASH_MODEL_ID = 'google/gemini-3.5-flash'
+export const FUCKBUFF_KIMI_K3_MODEL_ID = 'moonshotai/kimi-k3'
+export const FUCKBUFF_GLM_5_3_PRIME_MODEL_ID = 'z-ai/glm-5.3-prime'
+export const FUCKBUFF_GLM_5_3_FLASHX_MODEL_ID = 'z-ai/glm-5.3-flashx'
+export const FUCKBUFF_GLM_5_TURBO_MODEL_ID = 'z-ai/glm-5-turbo'
+export const FUCKBUFF_MISTRAL_LARGE_MODEL_ID = 'mistralai/mistral-large'
+export const FUCKBUFF_CODESTRAL_2508_MODEL_ID = 'mistralai/codestral-2508'
+export const FUCKBUFF_LLAMA_4_MAVERICK_MODEL_ID = 'meta-llama/llama-4-maverick'
 
 /**
  * Claude Fable 5.1 — Anthropic's frontier model, offered to free CLI users as a
  * capacity-limited trial rather than as a standing picker model.
  *
- * It is deliberately NOT in FREEBUFF_MODELS: no client may render it from its
+ * It is deliberately NOT in FUCKBUFF_MODELS: no client may render it from its
  * own catalog. The server decides, per request, whether the shared pool still
  * has sessions left and says so in the session response
  * (`limitedModelOffers`); a client that receives nothing renders exactly what
- * it rendered before the offer existed. See FREEBUFF_LIMITED_OFFER_MODEL_IDS.
+ * it rendered before the offer existed. See FUCKBUFF_LIMITED_OFFER_MODEL_IDS.
  */
-export const FREEBUFF_FABLE_5_1_MODEL_ID = 'anthropic/claude-fable-5.1'
+export const FUCKBUFF_FABLE_5_1_MODEL_ID = 'anthropic/claude-fable-5.1'
 
 /**
  * Meta Muse Spark 1.2 (Contributor tier), served by Meta's own developer API
@@ -727,19 +727,19 @@ export const FREEBUFF_FABLE_5_1_MODEL_ID = 'anthropic/claude-fable-5.1'
  * cannot become a second entitlement the way `crof/glm-5.2` did.
  *
  * OUT OF EVERY PICKER SINCE 2026-09-28, when
- * FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID below took its slot. It is not
- * in FREEBUFF_MODELS or FREEBUFF_WEB_MODELS, but it stays in
- * SUPPORTED_FREEBUFF_MODELS and is still served, full-access only and, since
+ * FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID below took its slot. It is not
+ * in FUCKBUFF_MODELS or FUCKBUFF_WEB_MODELS, but it stays in
+ * SUPPORTED_FUCKBUFF_MODELS and is still served, full-access only and, since
  * 2026-10-09, with no plan needed (it follows 1.3's entitlement: one Muse
  * Spark budget, one rule), and since 2026-10-10 outside the premium pool like
  * 1.3: released CLI and
- * Desktop binaries still list it and serve it until they update. It is not a picker-retired id (FREEBUFF_WEB_RETIRED_PICKER_MODEL_IDS
+ * Desktop binaries still list it and serve it until they update. It is not a picker-retired id (FUCKBUFF_WEB_RETIRED_PICKER_MODEL_IDS
  * is empty). A saved 1.2 pick is rewritten to 1.3 by `supersededBy`. Its roots
  * and allowlist entries stay for as long as released binaries can send it.
  *
- * It was Freebuff Web only until 2026-09-07: the Contributor tier is rate
+ * It was Fuckbuff Web only until 2026-09-07: the Contributor tier is rate
  * limited per TEAM, and the only surface that could render the
- * resulting wait was the browser (docs/freebuff-muse-spark.md). What changed
+ * resulting wait was the browser (docs/fuckbuff-muse-spark.md). What changed
  * that for 1.3 is below.
  *
  * Contributor pricing (a small fraction of Standard's published per-M rates;
@@ -747,7 +747,7 @@ export const FREEBUFF_FABLE_5_1_MODEL_ID = 'anthropic/claude-fable-5.1'
  * training rights over prompts and completions, which is why this is
  * `dataUse: 'training'` and carries the AI-training warning.
  */
-export const FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID =
+export const FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID =
   'meta/muse-spark-1.2-contributor'
 /** Meta's own model id for the wire id above — what api.meta.ai receives. */
 export const MUSE_SPARK_12_CONTRIBUTOR_UPSTREAM_MODEL_ID =
@@ -773,7 +773,7 @@ export const MUSE_SPARK_12_CONTRIBUTOR_UPSTREAM_MODEL_ID =
  * rarer, with a rate-limited request walking the pool before it waits at all.
  *
  * The row therefore ships to the CLI and Desktop catalogs, and
- * FREEBUFF_SERVICE_ONLY_MODEL_IDS — which refused it to anything but the Web
+ * FUCKBUFF_SERVICE_ONLY_MODEL_IDS — which refused it to anything but the Web
  * runner's own service account — necessarily goes with it. Those two are
  * mutually exclusive by construction: the fence names a service account no
  * released binary can authenticate as, so leaving it would 403 every CLI and
@@ -793,7 +793,7 @@ export const MUSE_SPARK_12_CONTRIBUTOR_UPSTREAM_MODEL_ID =
  * once. Meta lifted that ceiling, so the row is metered like DeepSeek V4 Flash:
  * by its Freebucks price, in as many tabs as an account will pay for.
  */
-export const FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID =
+export const FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID =
   'meta/muse-spark-1.3-contributor'
 /** Meta's own model id for the wire id above — what api.meta.ai receives. */
 export const MUSE_SPARK_13_CONTRIBUTOR_UPSTREAM_MODEL_ID =
@@ -802,12 +802,12 @@ export const MUSE_SPARK_13_CONTRIBUTOR_UPSTREAM_MODEL_ID =
  *  every entry is metered the same way: a second id for the SAME upstream
  *  model would be the `crof/glm-5.2` second-entitlement shape, which this list is
  *  not — 1.2 and 1.3 are different models on one shared rate-limit bucket. */
-export const FREEBUFF_MUSE_SPARK_MODEL_IDS = [
-  FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
-  FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+export const FUCKBUFF_MUSE_SPARK_MODEL_IDS = [
+  FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+  FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
 ] as const
 /**
- * Muse Spark's OpenRouter lane (FREEBUFF_MUSE_SPARK_LANE=openrouter, the
+ * Muse Spark's OpenRouter lane (FUCKBUFF_MUSE_SPARK_LANE=openrouter, the
  * default since 2026-09-29): the endpoint it is pinned to and the ceiling that
  * keeps it there.
  *
@@ -825,7 +825,7 @@ export const FREEBUFF_MUSE_SPARK_MODEL_IDS = [
 export const MUSE_SPARK_OPENROUTER_UPSTREAM_ORDER = ['meta'] as const
 /** Strictly ABOVE the $0.10/$0.20 card on both terms — a ceiling equal to
  *  list 404s every request (measured on GPT-5.6 Luna, see
- *  FREEBUFF_GPT_5_6_LUNA_MAX_PRICE) — and far below Standard Muse Spark's
+ *  FUCKBUFF_GPT_5_6_LUNA_MAX_PRICE) — and far below Standard Muse Spark's
  *  $1.25/$4.25, the band a mislabelled or repriced host would sit in. */
 export const MUSE_SPARK_OPENROUTER_MAX_PRICE = {
   prompt: 0.15,
@@ -857,7 +857,7 @@ export const MUSE_SPARK_OPENROUTER_MAX_PRICE = {
 // low/medium/high and this default moved down from `xhigh` with it. Per the
 // measurement above, the top rung bought ~8% more reasoning for ~26% more
 // latency.
-export const FREEBUFF_MUSE_SPARK_REASONING_EFFORT = 'high' as const
+export const FUCKBUFF_MUSE_SPARK_REASONING_EFFORT = 'high' as const
 
 /**
  * Ox Alpha — an anonymous ("stealth") frontier coding model, served through
@@ -865,22 +865,22 @@ export const FREEBUFF_MUSE_SPARK_REASONING_EFFORT = 'high' as const
  *
  * WITHDRAWN FROM FREE MODE ON 2026-08-27. The host ended the free promotion,
  * so the model is not served to us any more at any price. The id is PAUSED
- * (FREEBUFF_PAUSED_FREE_MODEL_IDS) rather than deleted, and the row below stays
- * in SUPPORTED_FREEBUFF_MODELS, so the released CLI and Desktop binaries that
+ * (FUCKBUFF_PAUSED_FREE_MODEL_IDS) rather than deleted, and the row below stays
+ * in SUPPORTED_FUCKBUFF_MODELS, so the released CLI and Desktop binaries that
  * still list it get a coercion instead of a refusal — see the pause list for
  * why that distinction is worth a whole row of dead catalog.
  *
  * It reached Web and Cloud on 2026-08-20 and CLI, Desktop and the limited tier
  * on 2026-08-24. Everything below records what was true while it ran; keep it
  * until the id is removed outright, because restoring the row means answering
- * these points again. docs/freebuff-ox-alpha.md has the withdrawal order.
+ * these points again. docs/fuckbuff-ox-alpha.md has the withdrawal order.
  *
  * The id is OpenRouter's own slug, so it falls through to the default
  * OpenRouter route with no provider-specific handler (same as Luna). Three
  * things about it are not like the other rows served that way:
  *
  *  - IT IS FREE, AND THAT IS FENCED RATHER THAN TRUSTED — see
- *    FREEBUFF_OX_ALPHA_MAX_PRICE. A stealth model's price is whatever an
+ *    FUCKBUFF_OX_ALPHA_MAX_PRICE. A stealth model's price is whatever an
  *    anonymous host decides tomorrow, and this row sits in no session pool at
  *    all, so an unnoticed repricing would be unmetered spend.
  *  - REASONING IS MANDATORY (the endpoint reports `reasoning.mandatory`), and
@@ -894,12 +894,12 @@ export const FREEBUFF_MUSE_SPARK_REASONING_EFFORT = 'high' as const
  *    stealth-model terms, not used for training. That is neither case
  *    `dataUse` was written for; see the row for how it is labelled.
  */
-export const FREEBUFF_OX_ALPHA_MODEL_ID = 'stealth/ox-alpha'
+export const FUCKBUFF_OX_ALPHA_MODEL_ID = 'stealth/ox-alpha'
 /**
  * Price ceiling for Ox Alpha, USD per million tokens — ZERO, sent as
  * OpenRouter's `provider.max_price`.
  *
- * Same mechanism as FREEBUFF_GPT_5_6_LUNA_MAX_PRICE and deliberately the
+ * Same mechanism as FUCKBUFF_GPT_5_6_LUNA_MAX_PRICE and deliberately the
  * opposite ceiling. Luna's sits ABOVE list to leave routing headroom; this one
  * sits exactly AT a list price of zero, so the first endpoint that charges
  * anything stops being routable at all.
@@ -916,7 +916,7 @@ export const FREEBUFF_OX_ALPHA_MODEL_ID = 'stealth/ox-alpha'
  * it to "just a little headroom" without giving the row a pool in the same
  * change: the two are one decision.
  */
-export const FREEBUFF_OX_ALPHA_MAX_PRICE = {
+export const FUCKBUFF_OX_ALPHA_MAX_PRICE = {
   prompt: 0,
   completion: 0,
 } as const
@@ -925,13 +925,13 @@ export const FREEBUFF_OX_ALPHA_MAX_PRICE = {
  * Space Bunny Alpha — a stealth model, joined every surface on 2026-09-23 as a
  * BETA row; it launched at 10 Freebucks and has been priced 0 since that day
  * (FREEBUCKS_SESSION_PRICES). Withdrawn on 2026-10-06
- * (FREEBUFF_PAUSED_FREE_MODEL_IDS).
+ * (FUCKBUFF_PAUSED_FREE_MODEL_IDS).
  *
  * SERVED BY OPENCODE ZEN since OpenRouter withdrew every endpoint for it on
  * 2026-10-05: the id is aliased to Zen's free `space-bunny-free`
  * (web/src/llm-api/opencode-zen.ts), behind a fleet-wide queue. The id is
  * still OpenRouter's own slug, and the OpenRouter route with the same
- * zero-price fence as Ox Alpha (FREEBUFF_SPACE_BUNNY_ALPHA_MAX_PRICE) remains
+ * zero-price fence as Ox Alpha (FUCKBUFF_SPACE_BUNNY_ALPHA_MAX_PRICE) remains
  * in code. The measurements below are of the OpenRouter endpoint, measured
  * again rather than inherited from Ox Alpha (2026-09-23, prod key):
  *
@@ -955,15 +955,15 @@ export const FREEBUFF_OX_ALPHA_MAX_PRICE = {
  *  - Prompts and completions are retained by the anonymous host, per
  *    OpenRouter's stealth terms — the row warns about it.
  */
-export const FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID = 'stealth/space-bunny-alpha'
+export const FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID = 'stealth/space-bunny-alpha'
 /**
  * Price ceiling for Space Bunny Alpha — ZERO, for the reason given on
- * FREEBUFF_OX_ALPHA_MAX_PRICE: a stealth host may reprice or swap the model
+ * FUCKBUFF_OX_ALPHA_MAX_PRICE: a stealth host may reprice or swap the model
  * behind the slug without notice, and a zero `max_price` turns that into a
  * loud 404 before the first billed token rather than an invoice. The row is
  * metered by its Freebucks price, not by what the host charges.
  */
-export const FREEBUFF_SPACE_BUNNY_ALPHA_MAX_PRICE = {
+export const FUCKBUFF_SPACE_BUNNY_ALPHA_MAX_PRICE = {
   prompt: 0,
   completion: 0,
 } as const
@@ -1055,7 +1055,7 @@ const OX_ALPHA_REASONING_EFFORTS = ['low', 'high', 'max'] as const
  *
  * UNSET IS DEEPER THAN `max`. Unset is what this row sent on every untouched
  * turn from launch until 2026-08-31 — no `reasoningEffort` meant
- * `applyFreebuffReasoningDefaults` sent no effort at all — so the looping
+ * `applyFuckbuffReasoningDefaults` sent no effort at all — so the looping
  * setting was ALSO the default one, and the majority of turns never went near
  * the picker. Deleting the rung while leaving the wire default unset would have
  * taken the control away from the few users who could already see the problem
@@ -1079,7 +1079,7 @@ const OX_ALPHA_REASONING_EFFORTS = ['low', 'high', 'max'] as const
  * NOT a change to what BYOK and direct-API callers may send. MERGE_EFFORT_ALIASES
  * still maps OpenRouter's wider enum onto the gateway's declared three, `max`
  * included: a caller paying their own bill keeps the rung. This list governs
- * what Freebuff itself picks and offers.
+ * what Fuckbuff itself picks and offers.
  *
  * `max` IS BACK (2026-09-01, evening), and it is the ONLY rung on which this
  * model thinks at all. Measured with agent tools in the body, thinking
@@ -1105,7 +1105,7 @@ const OX_ALPHA_REASONING_EFFORTS = ['low', 'high', 'max'] as const
  *
  * `max` REMOVED AGAIN (2026-10-07, product): the ladder stops at `high`, and
  * `high` is the default. A `max` or `xhigh` from any client or agent is
- * clamped to `high` server-side (applyFreebuffReasoningDefaults). The trade
+ * clamped to `high` server-side (applyFuckbuffReasoningDefaults). The trade
  * is the 2026-09-01 table above taken the other way: shallow thinking on
  * every turn in exchange for no looping at `max`.
  */
@@ -1117,7 +1117,7 @@ const GLM_V53_FLASH_REASONING_EFFORTS = ['low', 'high'] as const
  * It travels twice in the same 429 — as `error.code`, and inside
  * `error.message` — because only the message survives the whole path from
  * `web/src/llm-api/meta.ts` through the AI SDK to the runner's error handling.
- * The runner matches on it (see docs/freebuff-muse-spark.md); if it ever stops
+ * The runner matches on it (see docs/fuckbuff-muse-spark.md); if it ever stops
  * matching, rate limits degrade to plain errors with no queue and no notice,
  * which is exactly the failure this constant exists to make greppable.
  */
@@ -1139,19 +1139,19 @@ export const MUSE_SPARK_RATE_LIMITED_ERROR_CODE = 'muse_spark_rate_limited'
  *    anything unearned. The direction that would is a referral-EARNED row, and
  *    the invariant test guards that explicitly.
  *  - It should be the model we would recommend anyway, since the user never
- *    chose it. Flash held DEFAULT_FREEBUFF_WEB_MODEL_ID when this was written;
+ *    chose it. Flash held DEFAULT_FUCKBUFF_WEB_MODEL_ID when this was written;
  *    that is Pro now, so the two no longer coincide. Flash stays the right
  *    reroute on the stronger ground that it costs the user nothing.
  *
  * Both bullets are why this had to move with the pause rather than after it: a
  * fallback pointing at a paused model turns a queue overflow into a refusal.
  *
- * Being text-only costs this nothing: images reaching a Freebuff model that
+ * Being text-only costs this nothing: images reaching a Fuckbuff model that
  * cannot see pixels are converted to vision-model descriptions at the
- * completions layer (getFreebuffModelImageSupport gates it), so a rerouted turn
+ * completions layer (getFuckbuffModelImageSupport gates it), so a rerouted turn
  * carrying an image still reads it.
  */
-export const MUSE_SPARK_FALLBACK_MODEL_ID = FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
+export const MUSE_SPARK_FALLBACK_MODEL_ID = FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
 
 /**
  * How long a caller may be asked to wait before the request is rerouted.
@@ -1188,35 +1188,35 @@ export const MUSE_SPARK_FALLBACK_NOTICE =
   "When it's busy, DeepSeek V4.1 Flash answers instead."
 
 /** UI-only rollout switch. Backend support and free-mode allowlists remain
- *  wired even when these models are hidden from the Freebuff picker. */
-export const FREEBUFF_ENABLE_MIMO_MODELS_IN_UI = true
+ *  wired even when these models are hidden from the Fuckbuff picker. */
+export const FUCKBUFF_ENABLE_MIMO_MODELS_IN_UI = true
 /** UI-only rollout switch for the DeepSeek Flash FAST MODE row
  *  (`deepseek/deepseek-v4-flash-fast`). On since 2026-10-04: open at full
  *  access, plan-only at limited access. Off: no picker on
  *  any surface lists the row (the CLI, Web and Desktop pickers read
- *  FREEBUFF_MODELS; the iOS and Android catalogs list it by hand), and it
+ *  FUCKBUFF_MODELS; the iOS and Android catalogs list it by hand), and it
  *  leaves both plan sets, while everything behind it stays wired — the id is
  *  SUPPORTED and admitted at full access, priced on DeepSeek's clock, routed
  *  to DeepSeek direct alone, and runs the base3-fast harness. The tests that
  *  count picker rows follow this switch. */
-export const FREEBUFF_ENABLE_FAST_MODE_IN_UI = true
+export const FUCKBUFF_ENABLE_FAST_MODE_IN_UI = true
 /** SERVER switch for the fast mode row: held on 2026-10-05 until the CLI and
  *  Desktop releases that carry it, served since. Off: the server's model
  *  catalog (what CLI and Desktop list), the Freebucks pricing payload and the
  *  Web picker all leave the row out, while client builds keep it compiled in
- *  (FREEBUFF_ENABLE_FAST_MODE_IN_UI) and admission still accepts the id at
- *  full access. Takes effect when web and freebuff-web deploy. */
-export const FREEBUFF_SERVE_FAST_MODE = true
+ *  (FUCKBUFF_ENABLE_FAST_MODE_IN_UI) and admission still accepts the id at
+ *  full access. Takes effect when web and fuckbuff-web deploy. */
+export const FUCKBUFF_SERVE_FAST_MODE = true
 /** UI-only rollout switch for the streak indicator in the waiting room. */
-export const FREEBUFF_ENABLE_STREAK_IN_UI = true
+export const FUCKBUFF_ENABLE_STREAK_IN_UI = true
 /** Local/debug switch: force the localhost free-mode country bypass into
- *  limited access so the limited Freebuff UX can be exercised without an env
+ *  limited access so the limited Fuckbuff UX can be exercised without an env
  *  var. */
-export const FREEBUFF_FORCE_LIMITED_MODE = false
+export const FUCKBUFF_FORCE_LIMITED_MODE = false
 /**
  * Base premium sessions per Pacific day, before anything is earned.
  *
- * 5 → 4 when Levels shipped (`freebuff-levels.ts`), and the small size of that
+ * 5 → 4 when Levels shipped (`fuckbuff-levels.ts`), and the small size of that
  * cut is the design. A free tier whose floor already hands out everything has
  * nothing left to reward with — but a floor that COLLAPSES is a regression
  * every existing user feels on the same afternoon, and no amount of "you can
@@ -1232,7 +1232,7 @@ export const FREEBUFF_FORCE_LIMITED_MODE = false
 // a reduced base is the pure takeaway the switch below was built to prevent.
 // Moot for a metered account (Freebucks is the meter and these pools are not
 // consulted), so this is the rollback-safety value, not a live limit.
-export const FREEBUFF_PREMIUM_SESSION_LIMIT = 5
+export const FUCKBUFF_PREMIUM_SESSION_LIMIT = 5
 /**
  * Limited-region base sessions per Pacific day.
  *
@@ -1240,33 +1240,33 @@ export const FREEBUFF_PREMIUM_SESSION_LIMIT = 5
  * switch went on: this pool meters MiMo, the ONLY model a limited-access
  * account can use without a plan, and MiMo is not a premium model — halving
  * the one thing those users have is not what the premium retune (5 → 4) was
- * for. See `docs/freebuff-trust-levels.md`. Levels still take it to 7.
+ * for. See `docs/fuckbuff-trust-levels.md`. Levels still take it to 7.
  */
-export const FREEBUFF_LIMITED_SESSION_LIMIT = 6
+export const FUCKBUFF_LIMITED_SESSION_LIMIT = 6
 
 /**
  * There is no standard-model session limit, on any surface.
  *
- * `FREEBUFF_WEB_STANDARD_SESSION_LIMIT` used to live here at 6, capping fresh
+ * `FUCKBUFF_WEB_STANDARD_SESSION_LIMIT` used to live here at 6, capping fresh
  * standard sessions on browser surfaces only — unlimited in CLI and Desktop,
  * six a day in Web and Cloud. Removed on 2026-08-18, because a product whose
- * central promise is "Freebuff is free" cannot have that promise be true on
+ * central promise is "Fuckbuff is free" cannot have that promise be true on
  * one surface and not another, with no way for a user to discover the
  * difference except by hitting it.
  *
- * It was also close to redundant. `docs/freebuff-trust-levels.md` argues at
+ * It was also close to redundant. `docs/fuckbuff-trust-levels.md` argues at
  * length that session COUNT is the wrong thing to meter — starting a session
  * costs nothing and an idle session costs nothing, while the traffic inside it
  * is bounded four separate ways (`messagesPerDay`, `messagesPer5Hours`,
  * `userMessagesPerDay`). The churn it was aimed
  * at is project creation, which has its own gate
- * (`docs/freebuff-web-creation-gate.md`).
+ * (`docs/fuckbuff-web-creation-gate.md`).
  *
  * Levels therefore scale only the two pools that are genuinely scarce: premium
- * and the limited region. See `docs/freebuff-levels.md` (retired).
+ * and the limited region. See `docs/fuckbuff-levels.md` (retired).
  */
-export const FREEBUFF_PREMIUM_SESSION_RESET_TIMEZONE = 'America/Los_Angeles'
-export const FREEBUFF_PREMIUM_SESSION_PERIOD = 'pacific_day'
+export const FUCKBUFF_PREMIUM_SESSION_RESET_TIMEZONE = 'America/Los_Angeles'
+export const FUCKBUFF_PREMIUM_SESSION_PERIOD = 'pacific_day'
 /** The earned-reward session pool — referrals, streak bonus, operator grants
  *  and the bounty bank, all in one balance. Distinct from the shared premium
  *  daily pool: it resets daily (Pacific; weekly until 2026-07-29) and its
@@ -1278,10 +1278,10 @@ export const FREEBUFF_PREMIUM_SESSION_PERIOD = 'pacific_day'
  *  LIMITED access, and adds an extra session to the premium pool at FULL
  *  access. Both halves read these window constants, so the two tiers' rewards
  *  refill together and a user who changes tier does not gain a reset. */
-export const FREEBUFF_REWARD_SESSION_PERIOD = FREEBUFF_PREMIUM_SESSION_PERIOD
-export const FREEBUFF_REWARD_SESSION_RESET_TIMEZONE =
-  FREEBUFF_PREMIUM_SESSION_RESET_TIMEZONE
-export const FREEBUFF_REWARD_SESSION_WINDOW_HOURS = 24
+export const FUCKBUFF_REWARD_SESSION_PERIOD = FUCKBUFF_PREMIUM_SESSION_PERIOD
+export const FUCKBUFF_REWARD_SESSION_RESET_TIMEZONE =
+  FUCKBUFF_PREMIUM_SESSION_RESET_TIMEZONE
+export const FUCKBUFF_REWARD_SESSION_WINDOW_HOURS = 24
 /**
  * Hard ceiling on EARNED reward sessions per user per day, applied to the WHOLE
  * pool — referrals, streak bonus, operator grants and bounty bank together.
@@ -1293,12 +1293,12 @@ export const FREEBUFF_REWARD_SESSION_WINDOW_HOURS = 24
  * it twice by being classified differently on two requests.
  *
  * Restored on 2026-08-25. Between 2026-07-30 and that date the pool was
- * effectively unbounded: the old `FREEBUFF_GLM_V52_REFERRAL_CAP = 10` was
+ * effectively unbounded: the old `FUCKBUFF_GLM_V52_REFERRAL_CAP = 10` was
  * removed, so entitlement scaled 1:1 with qualified referrals.
  *
  * IT IS A CEILING ON THE SUM, NOT ON THE REFERRAL TERM. Capping only the
  * referral component would leave a 28-day streak (up to
- * FREEBUFF_STREAK_REWARD_BONUS_MAX_MULTIPLIER) stacking on top of it, so "one a
+ * FUCKBUFF_STREAK_REWARD_BONUS_MAX_MULTIPLIER) stacking on top of it, so "one a
  * day" would quietly mean several.
  *
  * At full access it is a ceiling on the EARNED terms only, never on the premium
@@ -1312,34 +1312,34 @@ export const FREEBUFF_REWARD_SESSION_WINDOW_HOURS = 24
  * them; the cap changes how fast it may be spent, not whether it exists.
  *
  * Consequence worth knowing: while this is 1 the bounty promo
- * (`FREEBUFF_GLM_PROMO_*`, glm-promo.ts) can no longer do anything — it lifts
+ * (`FUCKBUFF_GLM_PROMO_*`, glm-promo.ts) can no longer do anything — it lifts
  * how much of a bounty bank may be spent in a day, and this is below its
  * floor. The promo is left wired rather than deleted so raising this number
  * restores it without a second change.
  */
-export const FREEBUFF_REWARD_MAX_DAILY_SESSIONS = 1
+export const FUCKBUFF_REWARD_MAX_DAILY_SESSIONS = 1
 /** Master kill-switch for the referral-reward program. While true, qualified
  *  referrals grant daily reward sessions and the CLI advertises the perk. Flip
  *  to false to wind the program down: entitlement drops to 0 for everyone and
  *  the CLI stops showing the banner. The perk is intentionally framed as
  *  limited-time in the UI so turning this off isn't a surprise. */
-export const FREEBUFF_REWARD_REFERRAL_ENABLED = true
+export const FUCKBUFF_REWARD_REFERRAL_ENABLED = true
 /** Reward sessions are exactly one hour of wall-clock time, regardless of the
  *  global free-session length, so the "1 hour per referral per day" promise is
  *  exact. */
-export const FREEBUFF_REWARD_SESSION_LENGTH_MS = 60 * 60 * 1000
-export const FREEBUFF_LIMITED_SESSION_RESET_TIMEZONE =
-  FREEBUFF_PREMIUM_SESSION_RESET_TIMEZONE
-export const FREEBUFF_LIMITED_SESSION_PERIOD = FREEBUFF_PREMIUM_SESSION_PERIOD
+export const FUCKBUFF_REWARD_SESSION_LENGTH_MS = 60 * 60 * 1000
+export const FUCKBUFF_LIMITED_SESSION_RESET_TIMEZONE =
+  FUCKBUFF_PREMIUM_SESSION_RESET_TIMEZONE
+export const FUCKBUFF_LIMITED_SESSION_PERIOD = FUCKBUFF_PREMIUM_SESSION_PERIOD
 
 /**
- * Streak rewards. Once a user reaches a `FREEBUFF_STREAK_REWARD_INTERVAL_DAYS`
+ * Streak rewards. Once a user reaches a `FUCKBUFF_STREAK_REWARD_INTERVAL_DAYS`
  * (7)-day daily streak, they earn:
  *   - +1 session in their primary daily pool (premium for full-access users,
  *     limited for limited-access) **every day** the streak stays at 7+; and
  *   - +1 EARNED REWARD session per reward-pool window per completed 7 days of
  *     the current streak (7 days → 1, 14 → 2), capped at
- *     `FREEBUFF_STREAK_REWARD_BONUS_MAX_MULTIPLIER` (28-day streak), on top of
+ *     `FUCKBUFF_STREAK_REWARD_BONUS_MAX_MULTIPLIER` (28-day streak), on top of
  *     referrals. The reward pool resets daily (Pacific) since 2026-07-29,
  *     weekly before.
  *
@@ -1353,50 +1353,50 @@ export const FREEBUFF_LIMITED_SESSION_PERIOD = FREEBUFF_PREMIUM_SESSION_PERIOD
  * reward bonus is derived live from the current streak, so it refills at the
  * reward pool reset and shuts off as soon as the streak breaks.
  */
-export const FREEBUFF_STREAK_REWARD_INTERVAL_DAYS = 7
+export const FUCKBUFF_STREAK_REWARD_INTERVAL_DAYS = 7
 /** Cap on the reward streak bonus: at most this many 7-day tiers count, so a
  *  28-day (or longer) streak earns 4 reward sessions per pool window — before
- *  FREEBUFF_REWARD_MAX_DAILY_SESSIONS clamps the pool's total. */
-export const FREEBUFF_STREAK_REWARD_BONUS_MAX_MULTIPLIER = 4
+ *  FUCKBUFF_REWARD_MAX_DAILY_SESSIONS clamps the pool's total. */
+export const FUCKBUFF_STREAK_REWARD_BONUS_MAX_MULTIPLIER = 4
 /** Master kill-switch for streak rewards. When false, streaks grant nothing
  *  and effective limits fall back to the base pool limits. */
-export const FREEBUFF_STREAK_REWARDS_ENABLED = true
+export const FUCKBUFF_STREAK_REWARDS_ENABLED = true
 /** Sub-switch for the recurring streak REWARD entitlement. Lets the perk be
  *  wound down independently of the premium/limited bonus (and of the separate
  *  referral-driven reward program). */
-export const FREEBUFF_STREAK_REWARD_BONUS_ENABLED = true
+export const FUCKBUFF_STREAK_REWARD_BONUS_ENABLED = true
 /** Session units added to an eligible streak-reward pool. One whole session. */
-export const FREEBUFF_STREAK_BONUS_SESSION_UNITS = 1
+export const FUCKBUFF_STREAK_BONUS_SESSION_UNITS = 1
 
 /** How much history the account hub's activity map covers. A year, matching
  *  what the grid can legibly draw at 53 columns. Free: the map is drawn from
  *  one narrow row per active day. */
-export const FREEBUFF_USAGE_MAP_DAYS = 365
+export const FUCKBUFF_USAGE_MAP_DAYS = 365
 
 /** Lookback for the hub's token and message totals, which are aggregated from
  *  `message` on demand. Days rather than months on purpose: that table's cost
  *  scales with how much the account sent, not with the calendar. */
-export const FREEBUFF_RECENT_TOKENS_DAYS = 7
+export const FUCKBUFF_RECENT_TOKENS_DAYS = 7
 
 /** Which session pool a streak bonus credit applies to. `premium` and `limited`
  *  are the daily pools (full vs limited access); `glm` is the weekly GLM 5.2
  *  pool (full access only). */
-export type FreebuffStreakRewardPool = 'premium' | 'limited' | 'glm'
+export type FuckbuffStreakRewardPool = 'premium' | 'limited' | 'glm'
 /** Deprecated wire compatibility field. Session usage now resets at midnight
  *  Pacific time rather than using a rolling hourly window. */
-export const FREEBUFF_PREMIUM_SESSION_WINDOW_HOURS = 24
-export const FREEBUFF_LIMITED_SESSION_WINDOW_HOURS =
-  FREEBUFF_PREMIUM_SESSION_WINDOW_HOURS
+export const FUCKBUFF_PREMIUM_SESSION_WINDOW_HOURS = 24
+export const FUCKBUFF_LIMITED_SESSION_WINDOW_HOURS =
+  FUCKBUFF_PREMIUM_SESSION_WINDOW_HOURS
 
-const FREEBUFF_EASTERN_TIMEZONE = 'America/New_York'
-const FREEBUFF_PACIFIC_TIMEZONE = 'America/Los_Angeles'
+const FUCKBUFF_EASTERN_TIMEZONE = 'America/New_York'
+const FUCKBUFF_PACIFIC_TIMEZONE = 'America/Los_Angeles'
 
 interface LocalTimeFormatOptions {
   locale?: string
   timeZone?: string
 }
 
-/** Full-access freebuff models that benefit from spawning the gemini-thinker
+/** Full-access fuckbuff models that benefit from spawning the gemini-thinker
  *  subagent for deeper reasoning. Used by the CLI to toggle the gemini-thinker
  *  spawnable + prompts based on the user's pick, and by the server to admit
  *  gemini-thinker child requests against a parent session bound to one of
@@ -1414,19 +1414,19 @@ interface LocalTimeFormatOptions {
  *  bound model, and no row can be bound to a paused model, so the entry is
  *  inert — and it means the thinker comes back with Pro in one edit instead of
  *  being forgotten. */
-export const FREEBUFF_GEMINI_THINKER_PARENT_MODELS = new Set<string>([
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
-  FREEBUFF_GPT_6_LUNA_MODEL_ID,
+export const FUCKBUFF_GEMINI_THINKER_PARENT_MODELS = new Set<string>([
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID,
 ])
 
-export function canFreebuffModelSpawnGeminiThinker(modelId: string): boolean {
-  return FREEBUFF_GEMINI_THINKER_PARENT_MODELS.has(modelId)
+export function canFuckbuffModelSpawnGeminiThinker(modelId: string): boolean {
+  return FUCKBUFF_GEMINI_THINKER_PARENT_MODELS.has(modelId)
 }
 
 /**
- * Hard context windows (in tokens) of the freebuff models, keyed by the backend
+ * Hard context windows (in tokens) of the fuckbuff models, keyed by the backend
  * model id sent to the completions endpoint.
  *
  * Every number was read off a real provider rejection in prod rather than a
@@ -1444,24 +1444,24 @@ export function canFreebuffModelSpawnGeminiThinker(modelId: string): boolean {
  * is the reference copy: add a model here (with the rejection text that proves
  * the number) and the test will tell you to mirror it.
  *
- * Models absent from the map fall back to FREEBUFF_DEFAULT_CONTEXT_WINDOW. The
+ * Models absent from the map fall back to FUCKBUFF_DEFAULT_CONTEXT_WINDOW. The
  * risk is asymmetric — guessing too high silently wedges a thread forever,
  * guessing too low only prunes earlier than strictly needed — so a model is
  * added only once its real limit has been observed.
  */
-export const FREEBUFF_MODEL_CONTEXT_WINDOWS: Record<string, number> = {
-  [FREEBUFF_MINIMAX_M3_MODEL_ID]: 524_288,
-  [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 1_048_576,
+export const FUCKBUFF_MODEL_CONTEXT_WINDOWS: Record<string, number> = {
+  [FUCKBUFF_MINIMAX_M3_MODEL_ID]: 524_288,
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 1_048_576,
   // Fast mode is the same upstream model on DeepSeek's own API, so the
   // rejection above is its rejection too.
-  [FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]: 1_048_576,
+  [FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]: 1_048_576,
   // Read off the rejection above on 2026-08-12 — the same window as Flash, and
   // the entry Pro had been missing since it shipped. Absent, base-chat gave a
-  // million-token model FREEBUFF_DEFAULT_CONTEXT_WINDOW's 131_072 and summarized
+  // million-token model FUCKBUFF_DEFAULT_CONTEXT_WINDOW's 131_072 and summarized
   // a Pro chat thread at ~52k estimated tokens, 8x early. Unlike Luna and Muse
   // Spark below this is an observed limit rather than a published one, so it is
   // entered exactly.
-  [FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 1_048_576,
+  [FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID]: 1_048_576,
   // Luna is the one entry not read off a provider rejection. Every Luna
   // endpoint OpenRouter lists (OpenAI, its flex/priority tiers, Azure, Bedrock)
   // declares context_length 1_050_000, verified against the live endpoints API
@@ -1469,55 +1469,55 @@ export const FREEBUFF_MODEL_CONTEXT_WINDOWS: Record<string, number> = {
   // the safe side of the asymmetry above AND makes base-chat's 0.4 budget come
   // out at exactly 400k.
   //
-  // Absent, Luna fell to FREEBUFF_DEFAULT_CONTEXT_WINDOW and base-chat budgeted
+  // Absent, Luna fell to FUCKBUFF_DEFAULT_CONTEXT_WINDOW and base-chat budgeted
   // it 131_072 * 0.4 = 52_428 — a 20x under-estimate of a million-token model,
   // which summarizes a chat thread that had plenty of room left. Every
   // summarize rewrites history from the front and throws away the prompt cache
   // with it.
-  [FREEBUFF_GPT_5_6_LUNA_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_GPT_5_6_LUNA_MODEL_ID]: 1_000_000,
   // GPT-6 Luna publishes the same 1,050,000; entered low for the same reason.
-  [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 1_000_000,
   // Novita publishes 372k for the `-es` route (their /v1/models, 2026-08-21),
   // far below Luna's own 1M — it is a Codex session, not the Luna API model.
   // Sized from what the provider states rather than inherited from the name.
-  [FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID]: 372_000,
+  [FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID]: 372_000,
   // Meta publishes 1,048,576 for every Muse Spark variant. Entered as 1_000_000
   // for the same reason Luna is: it stays on the safe side of the asymmetry
   // above while remaining an honest order of magnitude, where falling through
   // to the 131_072 default would summarize a million-token thread 8x early.
-  [FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID]: 1_000_000,
   // OpenRouter publishes 1,048,576 for the single Ox Alpha endpoint. Entered as
   // 1_000_000 for the same reason as the two above: a published number is not
   // an observed rejection, and the asymmetry here punishes guessing high.
-  [FREEBUFF_OX_ALPHA_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_OX_ALPHA_MODEL_ID]: 1_000_000,
   // OpenRouter publishes 1,310,720 for GLM 5.3 Flash (131,072 max completion
   // tokens). Entered as 1_000_000, again for the reason above: this is a
   // published figure rather than an observed rejection, and guessing high
   // wedges a thread forever while guessing low only prunes early. Correct it
   // upward once a real rejection quotes the number.
-  [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: 1_000_000,
   // Solar Pro 4: 524,288 published, entered low for the same reason.
-  [FREEBUFF_SOLAR_PRO_4_MODEL_ID]: 500_000,
+  [FUCKBUFF_SOLAR_PRO_4_MODEL_ID]: 500_000,
   // Solar Mini 4 publishes the same 524,288.
-  [FREEBUFF_SOLAR_MINI_4_MODEL_ID]: 500_000,
+  [FUCKBUFF_SOLAR_MINI_4_MODEL_ID]: 500_000,
   // OpenRouter publishes 1,000,000 for Space Bunny Alpha's one endpoint.
-  [FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID]: 1_000_000,
   // The three below were already 1_000_000 in base-chat's mirror and missing
   // here, so Desktop's context meter (and the server catalog's default rows)
   // drew them at the 131_072 default. GPT-6.1 Sol publishes 1,050,000 on every
   // OpenRouter endpoint (verified 2026-09-30), Muse Spark 1.3 the 1,048,576
   // above, and Gemini 3.8 Flash 1,048,576; all entered low like their peers.
-  [FREEBUFF_GPT_61_SOL_MODEL_ID]: 1_000_000,
-  [FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 1_000_000,
-  [FREEBUFF_GEMINI_38_FLASH_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_GPT_61_SOL_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_GEMINI_38_FLASH_MODEL_ID]: 1_000_000,
   // Gemini 4 Argon publishes 1,048,576 on every OpenRouter endpoint
   // (2026-10-13); entered low like its peers.
-  [FREEBUFF_GEMINI_4_ARGON_MODEL_ID]: 1_000_000,
+  [FUCKBUFF_GEMINI_4_ARGON_MODEL_ID]: 1_000_000,
 }
 
-/** Window assumed for any model missing from FREEBUFF_MODEL_CONTEXT_WINDOWS.
+/** Window assumed for any model missing from FUCKBUFF_MODEL_CONTEXT_WINDOWS.
  *  Smaller than every window we have measured. */
-export const FREEBUFF_DEFAULT_CONTEXT_WINDOW = 131_072
+export const FUCKBUFF_DEFAULT_CONTEXT_WINDOW = 131_072
 
 /* Two supersedes notices lived here — FLASH_SUPERSEDES_NOTICE ("V4 Flash 07/31
  * performs better for most tasks") and FLASH_RECOMMENDED_NOTICE ("V4 Flash
@@ -1532,7 +1532,7 @@ export const FREEBUFF_DEFAULT_CONTEXT_WINDOW = 131_072
  *    default. Flash became premium on 2026-08-18 and started closing for the
  *    ten-hour peak window on 2026-08-21, so by the end the picker was steering
  *    users toward a model that is asleep for part of every day.
- *  - A NOTICE IS NOT JUST COPY. migrateSupersededFreebuffModelPreference
+ *  - A NOTICE IS NOT JUST COPY. migrateSupersededFuckbuffModelPreference
  *    rewrites a SAVED pick on every load, so a stale notice does not merely
  *    give bad advice — it silently moves users off the model they chose, on
  *    every launch, with no action from them.
@@ -1556,7 +1556,7 @@ export const FREEBUFF_DEFAULT_CONTEXT_WINDOW = 131_072
  * web/src/llm-api/deepseek.ts carries both.
  */
 const DEEPSEEK_V4_PRO_MODEL = {
-  id: FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  id: FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
   // Dated for the same reason Flash is: the wire id is undated and auto-updates,
   // so an undated label tells a returning user nothing changed when in fact the
   // GA build is a different model from the preview they formed an opinion about.
@@ -1585,13 +1585,13 @@ const DEEPSEEK_V4_PRO_MODEL = {
   // of them always is — if Pro ever returns to DeepSeek direct, close it again
   // and check Flash in the same commit.
   availability: 'always',
-  warning: FREEBUFF_AI_TRAINING_NOTICE,
+  warning: FUCKBUFF_AI_TRAINING_NOTICE,
   dataUse: 'training',
   premium: true,
   multimodal: false,
   // DeepSeek's own documented default (thinking on, effort high,
   // api-docs.deepseek.com/guides/thinking_mode), sent explicitly so a
-  // provider-side default change cannot silently move Freebuff.
+  // provider-side default change cannot silently move Fuckbuff.
   reasoningEffort: 'high',
   // Low maps to a real low template on these builds, so Pro offers the same
   // three rungs as Flash. See DEEPSEEK_V4_REASONING_EFFORTS.
@@ -1606,17 +1606,17 @@ const DEEPSEEK_V4_PRO_MODEL = {
   // a FLAT rate on its new lane, and Flash is now the row that closes at
   // peak. Pointing Pro at Flash would send users to a model that is asleep for
   // ten hours precisely when this one is their best option — and because
-  // `migrateSupersededFreebuffModelPreference` rewrites a SAVED pick on every
+  // `migrateSupersededFuckbuffModelPreference` rewrites a SAVED pick on every
   // load, it would do that silently and repeatedly. That exact failure is
   // documented on MIMO_V25_MODEL; this is the same trap pointing the other way.
   // No `isNew`. The badge exists to pull attention to a row, which is the
   // opposite of what this one should do now.
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const MIMO_V25_MODEL = {
-  id: FREEBUFF_MIMO_V25_MODEL_ID,
+  id: FUCKBUFF_MIMO_V25_MODEL_ID,
   // MiMo 2.6 Flash since 2026-09-21, under the unchanged wire id (see
-  // FREEBUFF_MIMO_V25_MODEL_ID). Same Xiaomi rate card as 2.5 to the cent
+  // FUCKBUFF_MIMO_V25_MODEL_ID). Same Xiaomi rate card as 2.5 to the cent
   // ($0.14 in / $0.28 out / $0.0028 cache read per M), so nothing about this
   // row's economics or its unmetered/fallback role moved with the name.
   // Shown as "MiMo v2.6 Flash Fast" since 2026-10-14 (product): the full-speed half of
@@ -1634,36 +1634,36 @@ const MIMO_V25_MODEL = {
   // pause. The pointer to Flash rested on "same price, strictly better model,
   // so there is no cost argument to weigh". Flash costing a premium session
   // ended that: MiMo is now the only UNLIMITED row and the target of
-  // FALLBACK_FREEBUFF_MODEL_ID, so this row is precisely where a user lands
+  // FALLBACK_FUCKBUFF_MODEL_ID, so this row is precisely where a user lands
   // when their premium pool is spent.
   //
   // Two things went wrong while the pointer was still here, and both are worse
   // than a stale nudge:
-  //  - `migrateSupersededFreebuffModelPreference` rewrites a SAVED pick on
+  //  - `migrateSupersededFuckbuffModelPreference` rewrites a SAVED pick on
   //    every load, so a user who deliberately chose the unlimited model was
   //    silently moved onto the premium one at each launch.
   //  - The picker nagged "switch to V4 Flash" on the very row it had just
   //    stepped a spent user down to — advice they cannot take until tomorrow.
   //
-  // Restore it together with Flash leaving FREEBUFF_PREMIUM_MODEL_IDS, not
+  // Restore it together with Flash leaving FUCKBUFF_PREMIUM_MODEL_IDS, not
   // before: the argument returns only when Flash is free again.
   //
   // NEW because the model under this row changed (2.5 -> 2.6 Flash) while its
   // id did not — exactly the returning user the badge exists for.
   isNew: true,
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const MIMO_V26_PRO_MODEL = {
-  id: FREEBUFF_MIMO_V26_PRO_MODEL_ID,
+  id: FUCKBUFF_MIMO_V26_PRO_MODEL_ID,
   displayName: 'MiMo 2.6 Pro',
-  // Full access only: deliberately absent from LIMITED_FREEBUFF_MODEL_IDS.
+  // Full access only: deliberately absent from LIMITED_FUCKBUFF_MODEL_IDS.
   tagline: 'Strong reasoning',
   availability: 'always',
   // Same host and terms as the MiMo row: Xiaomi's API, reached through
   // OpenRouter's `xiaomi/fp8` endpoint with Xiaomi direct as the backup lane.
   dataUse: 'service',
   // Premium, like GPT-6 Luna: not a STANDARD (free, unmetered) model —
-  // FREEBUFF_STANDARD_MODEL_IDS is derived from `!premium`. Open to every
+  // FUCKBUFF_STANDARD_MODEL_IDS is derived from `!premium`. Open to every
   // full-access account without a plan since 2026-09-25 (paid-only before,
   // US-exempt from 09-22); plan-only at limited access. Freebucks is the
   // meter that prices it.
@@ -1674,10 +1674,10 @@ const MIMO_V26_PRO_MODEL = {
   // Like MiMo 2.6 Flash, no effort ladder: Xiaomi exposes thinking on/off
   // only, and the product has no separate control for that.
   isNew: true,
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const DEEPSEEK_V4_FLASH_MODEL = {
-  id: FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  id: FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
   // RENAMED 2026-09-10, and the rename is the point rather than cosmetic.
   //
   // The old name carried a BUILD DATE ('DeepSeek V4 Flash 07/31') for exactly
@@ -1743,8 +1743,8 @@ const DEEPSEEK_V4_FLASH_MODEL = {
   // and a fallback that most users cannot open is not a fallback. GLM 5.3
   // Flash is ungated and the cheapest row we serve. Inert while this row is
   // `always`, like the pointer it replaces.
-  unavailableFallback: FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-  warning: FREEBUFF_AI_TRAINING_NOTICE,
+  unavailableFallback: FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+  warning: FUCKBUFF_AI_TRAINING_NOTICE,
   dataUse: 'training',
   // UNLIMITED again as of 2026-08-24, reversing the 2026-08-18 metering. Flash
   // went into the daily pool on cost; what changed is that it now has a cheap lane to spend on.
@@ -1753,20 +1753,20 @@ const DEEPSEEK_V4_FLASH_MODEL = {
   // refused a slot. Metering Flash by the premium pool throttles the demand
   // that would fill that lane.
   //
-  // The limited tier is a separate catalog (LIMITED_FREEBUFF_MODEL_IDS).
+  // The limited tier is a separate catalog (LIMITED_FUCKBUFF_MODEL_IDS).
   //
   // What did NOT move with it, on purpose:
-  //  - FALLBACK_FREEBUFF_MODEL_ID stays MiMo. The fallback has to be available
+  //  - FALLBACK_FUCKBUFF_MODEL_ID stays MiMo. The fallback has to be available
   //    at every hour and Flash is `off_peak_only`; non-premium is necessary for
   //    that slot, not sufficient.
-  //  - DEFAULT_FREEBUFF_MODEL_ID stays Luna. Which model leads the picker is a
+  //  - DEFAULT_FUCKBUFF_MODEL_ID stays Luna. Which model leads the picker is a
   //    product decision, not a consequence of the quota bucket.
   //  - MIMO_V25_MODEL's supersededBy pointer stays off. Its comment asks for it
   //    back "when Flash is free again", but that was written before Flash
   //    closed for the peak window; restoring it would rewrite saved MiMo picks
   //    onto a model that is shut ten hours a day.
   //
-  // Reverting is this flag plus the FREEBUFF_PREMIUM_MODEL_IDS entry, which
+  // Reverting is this flag plus the FUCKBUFF_PREMIUM_MODEL_IDS entry, which
   // move together.
   premium: false,
   // TRUE since 2026-09-10, when the undated `deepseek-v4-flash` wire id began
@@ -1793,7 +1793,7 @@ const DEEPSEEK_V4_FLASH_MODEL = {
   efforts: DEEPSEEK_V4_REASONING_EFFORTS,
   defaultEffort: 'high',
   isNew: true,
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * DeepSeek V4.1 Flash in FAST MODE (2026-09-26).
@@ -1813,7 +1813,7 @@ const DEEPSEEK_V4_FLASH_MODEL = {
  *    from that grant at admission and runs a single direct lane in the router
  *    (web/src/llm-api/deepseek-router.ts).
  *
- * Priced on DeepSeek's own clock (freebuff-freebucks.ts): 50 Freebucks in
+ * Priced on DeepSeek's own clock (fuckbuff-freebucks.ts): 50 Freebucks in
  * the weekday window where DeepSeek direct doubles, 25 the rest of the time.
  * The harness spends about 1.3x base3 per task, and DeepSeek direct bills
  * 1.7x Luminal off-peak and 3.4x at peak on the same tokens.
@@ -1825,15 +1825,15 @@ const DEEPSEEK_V4_FLASH_MODEL = {
  * Freebucks at its own price.
  */
 const DEEPSEEK_V4_FLASH_FAST_MODEL = {
-  id: FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+  id: FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
   displayName: 'DeepSeek V4.1 Flash Fast',
   tagline: 'Parallel agents',
   taglineTooltip:
     'Gathers context with parallel subagents. Runs on DeepSeek’s own API.',
   availability: 'always',
   // Inert while `always`; names the row this one is a variant of.
-  unavailableFallback: FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  warning: FREEBUFF_AI_TRAINING_NOTICE,
+  unavailableFallback: FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  warning: FUCKBUFF_AI_TRAINING_NOTICE,
   dataUse: 'training',
   premium: true,
   multimodal: true,
@@ -1841,14 +1841,14 @@ const DEEPSEEK_V4_FLASH_FAST_MODEL = {
   efforts: DEEPSEEK_V4_REASONING_EFFORTS,
   defaultEffort: 'high',
   isNew: true,
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * The provisioned extended-context tiers.
  *
  * Full rows so the provisioning tooling, the usage ledger and support have a
  * display name and a data-use classification to read, exactly like every other
- * model. They are deliberately NOT in FREEBUFF_MODELS, FREEBUFF_WEB_MODELS or
+ * model. They are deliberately NOT in FUCKBUFF_MODELS, FUCKBUFF_WEB_MODELS or
  * any quota list: the tier is granted per account rather than picked, so a
  * client that rendered one would offer a row most accounts cannot run, and a
  * quota list would meter a tier whose ceiling is the grant itself.
@@ -1857,20 +1857,20 @@ const DEEPSEEK_V4_FLASH_FAST_MODEL = {
  * point of the suffix — it names the provisioned variant, not a new family.
  */
 const DEEPSEEK_V41_FLASH_MODEL = {
-  id: FREEBUFF_DEEPSEEK_V41_FLASH_MODEL_ID,
+  id: FUCKBUFF_DEEPSEEK_V41_FLASH_MODEL_ID,
   displayName: 'DeepSeek V4.1 Flash',
   tagline: 'Early access',
   availability: 'always',
-  warning: FREEBUFF_AI_TRAINING_NOTICE,
+  warning: FUCKBUFF_AI_TRAINING_NOTICE,
   dataUse: 'training',
   premium: false,
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GLM_V53_MODEL = {
-  id: FREEBUFF_GLM_V53_MODEL_ID,
+  id: FUCKBUFF_GLM_V53_MODEL_ID,
   displayName: 'GLM 5.3',
   tagline: 'Early access',
   availability: 'always',
@@ -1879,10 +1879,10 @@ const GLM_V53_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_6_SOL_MODEL = {
-  id: FREEBUFF_GPT_6_SOL_MODEL_ID,
+  id: FUCKBUFF_GPT_6_SOL_MODEL_ID,
   displayName: 'GPT-6 Sol',
   tagline: 'Most capable',
   availability: 'always',
@@ -1892,10 +1892,10 @@ const GPT_6_SOL_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_6_SOL_PRO_MODEL = {
-  id: FREEBUFF_GPT_6_SOL_PRO_MODEL_ID,
+  id: FUCKBUFF_GPT_6_SOL_PRO_MODEL_ID,
   displayName: 'GPT-6 Sol Pro',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -1905,10 +1905,10 @@ const GPT_6_SOL_PRO_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_6_LUNA_PRO_MODEL = {
-  id: FREEBUFF_GPT_6_LUNA_PRO_MODEL_ID,
+  id: FUCKBUFF_GPT_6_LUNA_PRO_MODEL_ID,
   displayName: 'GPT-6 Luna Pro',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -1918,10 +1918,10 @@ const GPT_6_LUNA_PRO_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_6_ASTRA_MODEL = {
-  id: FREEBUFF_GPT_6_ASTRA_MODEL_ID,
+  id: FUCKBUFF_GPT_6_ASTRA_MODEL_ID,
   displayName: 'GPT-6 Astra',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -1931,10 +1931,10 @@ const GPT_6_ASTRA_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_6_ASTRA_PRO_MODEL = {
-  id: FREEBUFF_GPT_6_ASTRA_PRO_MODEL_ID,
+  id: FUCKBUFF_GPT_6_ASTRA_PRO_MODEL_ID,
   displayName: 'GPT-6 Astra Pro',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -1944,10 +1944,10 @@ const GPT_6_ASTRA_PRO_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_5_6_SOL_MODEL = {
-  id: FREEBUFF_GPT_5_6_SOL_MODEL_ID,
+  id: FUCKBUFF_GPT_5_6_SOL_MODEL_ID,
   displayName: 'GPT-5.6 Sol',
   tagline: 'Most capable',
   availability: 'always',
@@ -1957,10 +1957,10 @@ const GPT_5_6_SOL_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_5_6_SOL_PRO_MODEL = {
-  id: FREEBUFF_GPT_5_6_SOL_PRO_MODEL_ID,
+  id: FUCKBUFF_GPT_5_6_SOL_PRO_MODEL_ID,
   displayName: 'GPT-5.6 Sol Pro',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -1970,10 +1970,10 @@ const GPT_5_6_SOL_PRO_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_5_6_TERRA_MODEL = {
-  id: FREEBUFF_GPT_5_6_TERRA_MODEL_ID,
+  id: FUCKBUFF_GPT_5_6_TERRA_MODEL_ID,
   displayName: 'GPT-5.6 Terra',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -1983,10 +1983,10 @@ const GPT_5_6_TERRA_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_5_6_TERRA_PRO_MODEL = {
-  id: FREEBUFF_GPT_5_6_TERRA_PRO_MODEL_ID,
+  id: FUCKBUFF_GPT_5_6_TERRA_PRO_MODEL_ID,
   displayName: 'GPT-5.6 Terra Pro',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -1996,10 +1996,10 @@ const GPT_5_6_TERRA_PRO_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_5_6_LUNA_PRO_MODEL = {
-  id: FREEBUFF_GPT_5_6_LUNA_PRO_MODEL_ID,
+  id: FUCKBUFF_GPT_5_6_LUNA_PRO_MODEL_ID,
   displayName: 'GPT-5.6 Luna Pro',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -2009,10 +2009,10 @@ const GPT_5_6_LUNA_PRO_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_5_5_MODEL = {
-  id: FREEBUFF_GPT_5_5_MODEL_ID,
+  id: FUCKBUFF_GPT_5_5_MODEL_ID,
   displayName: 'GPT-5.5',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2022,10 +2022,10 @@ const GPT_5_5_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_5_5_PRO_MODEL = {
-  id: FREEBUFF_GPT_5_5_PRO_MODEL_ID,
+  id: FUCKBUFF_GPT_5_5_PRO_MODEL_ID,
   displayName: 'GPT-5.5 Pro',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -2035,10 +2035,10 @@ const GPT_5_5_PRO_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_5_4_PRO_MODEL = {
-  id: FREEBUFF_GPT_5_4_PRO_MODEL_ID,
+  id: FUCKBUFF_GPT_5_4_PRO_MODEL_ID,
   displayName: 'GPT-5.4 Pro',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -2048,10 +2048,10 @@ const GPT_5_4_PRO_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const O3_PRO_MODEL = {
-  id: FREEBUFF_O3_PRO_MODEL_ID,
+  id: FUCKBUFF_O3_PRO_MODEL_ID,
   displayName: 'o3 Pro',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -2061,10 +2061,10 @@ const O3_PRO_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const CLAUDE_OPUS_5_5_MODEL = {
-  id: FREEBUFF_CLAUDE_OPUS_5_5_MODEL_ID,
+  id: FUCKBUFF_CLAUDE_OPUS_5_5_MODEL_ID,
   displayName: 'Claude Opus 5.5',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -2074,10 +2074,10 @@ const CLAUDE_OPUS_5_5_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const CLAUDE_OPUS_5_MODEL = {
-  id: FREEBUFF_CLAUDE_OPUS_5_MODEL_ID,
+  id: FUCKBUFF_CLAUDE_OPUS_5_MODEL_ID,
   displayName: 'Claude Opus 5',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -2087,10 +2087,10 @@ const CLAUDE_OPUS_5_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const CLAUDE_SONNET_5_MODEL = {
-  id: FREEBUFF_CLAUDE_SONNET_5_MODEL_ID,
+  id: FUCKBUFF_CLAUDE_SONNET_5_MODEL_ID,
   displayName: 'Claude Sonnet 5',
   tagline: 'Balanced',
   availability: 'always',
@@ -2100,10 +2100,10 @@ const CLAUDE_SONNET_5_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const CLAUDE_OPUS_4_8_MODEL = {
-  id: FREEBUFF_CLAUDE_OPUS_4_8_MODEL_ID,
+  id: FUCKBUFF_CLAUDE_OPUS_4_8_MODEL_ID,
   displayName: 'Claude Opus 4.8',
   tagline: 'Deep reasoning',
   availability: 'always',
@@ -2113,10 +2113,10 @@ const CLAUDE_OPUS_4_8_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const CLAUDE_SONNET_4_6_MODEL = {
-  id: FREEBUFF_CLAUDE_SONNET_4_6_MODEL_ID,
+  id: FUCKBUFF_CLAUDE_SONNET_4_6_MODEL_ID,
   displayName: 'Claude Sonnet 4.6',
   tagline: 'Balanced',
   availability: 'always',
@@ -2126,10 +2126,10 @@ const CLAUDE_SONNET_4_6_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const QWEN3_8_MAX_PRIME_MODEL = {
-  id: FREEBUFF_QWEN3_8_MAX_PRIME_MODEL_ID,
+  id: FUCKBUFF_QWEN3_8_MAX_PRIME_MODEL_ID,
   displayName: 'Qwen3.8 Max Prime',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2138,10 +2138,10 @@ const QWEN3_8_MAX_PRIME_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const QWEN3_8_MAX_0902_MODEL = {
-  id: FREEBUFF_QWEN3_8_MAX_0902_MODEL_ID,
+  id: FUCKBUFF_QWEN3_8_MAX_0902_MODEL_ID,
   displayName: 'Qwen3.8 Max',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2150,10 +2150,10 @@ const QWEN3_8_MAX_0902_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const QWEN3_8_FLASH_MODEL = {
-  id: FREEBUFF_QWEN3_8_FLASH_MODEL_ID,
+  id: FUCKBUFF_QWEN3_8_FLASH_MODEL_ID,
   displayName: 'Qwen3.8 Flash',
   tagline: 'Fast',
   availability: 'always',
@@ -2162,10 +2162,10 @@ const QWEN3_8_FLASH_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const QWEN3_8_27B_MODEL = {
-  id: FREEBUFF_QWEN3_8_27B_MODEL_ID,
+  id: FUCKBUFF_QWEN3_8_27B_MODEL_ID,
   displayName: 'Qwen3.8 27B',
   tagline: 'Fast',
   availability: 'always',
@@ -2174,10 +2174,10 @@ const QWEN3_8_27B_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const QWEN3_7_MAX_MODEL = {
-  id: FREEBUFF_QWEN3_7_MAX_MODEL_ID,
+  id: FUCKBUFF_QWEN3_7_MAX_MODEL_ID,
   displayName: 'Qwen3.7 Max',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2186,10 +2186,10 @@ const QWEN3_7_MAX_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const QWEN3_7_PLUS_MODEL = {
-  id: FREEBUFF_QWEN3_7_PLUS_MODEL_ID,
+  id: FUCKBUFF_QWEN3_7_PLUS_MODEL_ID,
   displayName: 'Qwen3.7 Plus',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2198,10 +2198,10 @@ const QWEN3_7_PLUS_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const QWEN3_6_MAX_PREVIEW_MODEL = {
-  id: FREEBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID,
+  id: FUCKBUFF_QWEN3_6_MAX_PREVIEW_MODEL_ID,
   displayName: 'Qwen3.6 Max',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2210,10 +2210,10 @@ const QWEN3_6_MAX_PREVIEW_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const QWEN3_6_PLUS_MODEL = {
-  id: FREEBUFF_QWEN3_6_PLUS_MODEL_ID,
+  id: FUCKBUFF_QWEN3_6_PLUS_MODEL_ID,
   displayName: 'Qwen3.6 Plus',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2222,10 +2222,10 @@ const QWEN3_6_PLUS_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GROK_4_7_MODEL = {
-  id: FREEBUFF_GROK_4_7_MODEL_ID,
+  id: FUCKBUFF_GROK_4_7_MODEL_ID,
   displayName: 'Grok 4.7',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2235,10 +2235,10 @@ const GROK_4_7_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GROK_4_6_MODEL = {
-  id: FREEBUFF_GROK_4_6_MODEL_ID,
+  id: FUCKBUFF_GROK_4_6_MODEL_ID,
   displayName: 'Grok 4.6',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2248,10 +2248,10 @@ const GROK_4_6_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GROK_4_5_MODEL = {
-  id: FREEBUFF_GROK_4_5_MODEL_ID,
+  id: FUCKBUFF_GROK_4_5_MODEL_ID,
   displayName: 'Grok 4.5',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2261,10 +2261,10 @@ const GROK_4_5_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GROK_4_20_MODEL = {
-  id: FREEBUFF_GROK_4_20_MODEL_ID,
+  id: FUCKBUFF_GROK_4_20_MODEL_ID,
   displayName: 'Grok 4.20',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2274,10 +2274,10 @@ const GROK_4_20_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GEMINI_3_7_FLASH_MODEL = {
-  id: FREEBUFF_GEMINI_3_7_FLASH_MODEL_ID,
+  id: FUCKBUFF_GEMINI_3_7_FLASH_MODEL_ID,
   displayName: 'Gemini 3.7 Flash',
   tagline: 'Fast',
   availability: 'always',
@@ -2287,10 +2287,10 @@ const GEMINI_3_7_FLASH_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GEMINI_3_6_FLASH_MODEL = {
-  id: FREEBUFF_GEMINI_3_6_FLASH_MODEL_ID,
+  id: FUCKBUFF_GEMINI_3_6_FLASH_MODEL_ID,
   displayName: 'Gemini 3.6 Flash',
   tagline: 'Fast',
   availability: 'always',
@@ -2300,10 +2300,10 @@ const GEMINI_3_6_FLASH_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GEMINI_3_5_FLASH_MODEL = {
-  id: FREEBUFF_GEMINI_3_5_FLASH_MODEL_ID,
+  id: FUCKBUFF_GEMINI_3_5_FLASH_MODEL_ID,
   displayName: 'Gemini 3.5 Flash',
   tagline: 'Fast',
   availability: 'always',
@@ -2313,10 +2313,10 @@ const GEMINI_3_5_FLASH_MODEL = {
   reasoningEffort: 'high',
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const KIMI_K3_MODEL = {
-  id: FREEBUFF_KIMI_K3_MODEL_ID,
+  id: FUCKBUFF_KIMI_K3_MODEL_ID,
   displayName: 'Kimi K3',
   tagline: 'Agentic coding',
   availability: 'always',
@@ -2325,10 +2325,10 @@ const KIMI_K3_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GLM_5_3_PRIME_MODEL = {
-  id: FREEBUFF_GLM_5_3_PRIME_MODEL_ID,
+  id: FUCKBUFF_GLM_5_3_PRIME_MODEL_ID,
   displayName: 'GLM 5.3 Prime',
   tagline: 'Strong all-around',
   availability: 'always',
@@ -2337,10 +2337,10 @@ const GLM_5_3_PRIME_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GLM_5_3_FLASHX_MODEL = {
-  id: FREEBUFF_GLM_5_3_FLASHX_MODEL_ID,
+  id: FUCKBUFF_GLM_5_3_FLASHX_MODEL_ID,
   displayName: 'GLM 5.3 FlashX',
   tagline: 'Fast',
   availability: 'always',
@@ -2349,10 +2349,10 @@ const GLM_5_3_FLASHX_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GLM_5_TURBO_MODEL = {
-  id: FREEBUFF_GLM_5_TURBO_MODEL_ID,
+  id: FUCKBUFF_GLM_5_TURBO_MODEL_ID,
   displayName: 'GLM 5 Turbo',
   tagline: 'Fast',
   availability: 'always',
@@ -2361,10 +2361,10 @@ const GLM_5_TURBO_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const MISTRAL_LARGE_MODEL = {
-  id: FREEBUFF_MISTRAL_LARGE_MODEL_ID,
+  id: FUCKBUFF_MISTRAL_LARGE_MODEL_ID,
   displayName: 'Mistral Large',
   tagline: 'Balanced',
   availability: 'always',
@@ -2373,10 +2373,10 @@ const MISTRAL_LARGE_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const CODESTRAL_2508_MODEL = {
-  id: FREEBUFF_CODESTRAL_2508_MODEL_ID,
+  id: FUCKBUFF_CODESTRAL_2508_MODEL_ID,
   displayName: 'Codestral',
   tagline: 'Code-focused',
   availability: 'always',
@@ -2385,10 +2385,10 @@ const CODESTRAL_2508_MODEL = {
   multimodal: false,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const LLAMA_4_MAVERICK_MODEL = {
-  id: FREEBUFF_LLAMA_4_MAVERICK_MODEL_ID,
+  id: FUCKBUFF_LLAMA_4_MAVERICK_MODEL_ID,
   displayName: 'Llama 4 Maverick',
   tagline: 'Balanced',
   availability: 'always',
@@ -2397,13 +2397,13 @@ const LLAMA_4_MAVERICK_MODEL = {
   multimodal: true,
   reasoningEffort: 'high',
   defaultEffort: 'high',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * The provisioned tiers, as rows. Exported for the provisioning tooling and
  * for support lookups; NOT spread into any catalog, for the reason above.
  */
-export const FREEBUFF_PROVISIONED_MODELS = [
+export const FUCKBUFF_PROVISIONED_MODELS = [
   DEEPSEEK_V41_FLASH_MODEL,
   GLM_V53_MODEL,
   GPT_6_SOL_MODEL,
@@ -2447,17 +2447,17 @@ export const FREEBUFF_PROVISIONED_MODELS = [
   MISTRAL_LARGE_MODEL,
   CODESTRAL_2508_MODEL,
   LLAMA_4_MAVERICK_MODEL,
-] as const satisfies readonly FreebuffModelOption[]
+] as const satisfies readonly FuckbuffModelOption[]
 
 const MINIMAX_M3_MODEL = {
-  id: FREEBUFF_MINIMAX_M3_MODEL_ID,
+  id: FUCKBUFF_MINIMAX_M3_MODEL_ID,
   displayName: 'MiniMax M3',
   tagline: 'Fastest',
   availability: 'always',
   dataUse: 'service',
   // M3 is served by Fireworks without provider-side training. Its `service`
-  // data-use classification keeps it out of FREEBUFF_TRACED_MODEL_IDS.
-  // WITHDRAWN 2026-08-20 (FREEBUFF_PAUSED_FREE_MODEL_IDS). The row is kept
+  // data-use classification keeps it out of FUCKBUFF_TRACED_MODEL_IDS.
+  // WITHDRAWN 2026-08-20 (FUCKBUFF_PAUSED_FREE_MODEL_IDS). The row is kept
   // here, not deleted: a paused model has to stay in SUPPORTED so the server
   // still recognises the id and can coerce it. `premium` is now moot — nothing
   // reaches a pool through a model that never survives admission — but it stays
@@ -2473,11 +2473,11 @@ const MINIMAX_M3_MODEL = {
   // "free rather than premium-pooled" (Flash became premium on 2026-08-18) and
   // as the better default (Flash now closes for ten hours a day). A nudge that
   // survives the argument it was making is worse than none, because
-  // migrateSupersededFreebuffModelPreference acts on it silently.
-} as const satisfies FreebuffModelOption
+  // migrateSupersededFuckbuffModelPreference acts on it silently.
+} as const satisfies FuckbuffModelOption
 
 const GPT_5_6_LUNA_MODEL = {
-  id: FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
+  id: FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
   displayName: 'GPT-5.6 Luna',
   // Luna is the general-purpose premium option; its row's own badges (Images,
   // no training notice) distinguish it from the other all-around models.
@@ -2485,16 +2485,16 @@ const GPT_5_6_LUNA_MODEL = {
   availability: 'always',
   // OpenAI's API does not train on request data, and the route carries
   // data_collection: 'deny', so no AI-training notice and no trace storage
-  // (FREEBUFF_TRACED_MODEL_IDS keys off this).
+  // (FUCKBUFF_TRACED_MODEL_IDS keys off this).
   dataUse: 'service',
   premium: true,
   // OpenRouter reports input modalities text + image + file for this model.
   multimodal: true,
-  reasoningEffort: FREEBUFF_GPT_5_6_LUNA_REASONING_EFFORT,
+  reasoningEffort: FUCKBUFF_GPT_5_6_LUNA_REASONING_EFFORT,
   // OpenRouter's model metadata advertises all five enabled effort levels.
   efforts: EFFORTS_THROUGH_MAX,
-  defaultEffort: FREEBUFF_GPT_5_6_LUNA_REASONING_EFFORT,
-  // WITHDRAWN 2026-09-24 (FREEBUFF_PAUSED_FREE_MODEL_IDS), two days after
+  defaultEffort: FUCKBUFF_GPT_5_6_LUNA_REASONING_EFFORT,
+  // WITHDRAWN 2026-09-24 (FUCKBUFF_PAUSED_FREE_MODEL_IDS), two days after
   // GPT-6 Luna replaced it in every picker. The row is kept, not deleted, so
   // the id stays recognised for the binaries that still hold it. The notes
   // below record what was true while it was offered.
@@ -2505,16 +2505,16 @@ const GPT_5_6_LUNA_MODEL = {
   // reasons a user may still deliberately want it — but the picker now says
   // plainly that Pro is the better default.
   //
-  // NOT in FREEBUFF_WEB_DEEMPHASIZED_MODEL_IDS — which is now empty, but Luna
+  // NOT in FUCKBUFF_WEB_DEEMPHASIZED_MODEL_IDS — which is now empty, but Luna
   // would not qualify anyway: muting is this product's "materially dearer"
   // signal, and against Pro that does not resolve — Pro is 2.76x cheaper on the cache reads that
   // dominate agent traffic, and dearer on fresh input and output (full table on
   // that constant). Steering on quality is honest; implying a settled price
   // difference in either direction would not be.
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_6_LUNA_MODEL = {
-  id: FREEBUFF_GPT_6_LUNA_MODEL_ID,
+  id: FUCKBUFF_GPT_6_LUNA_MODEL_ID,
   displayName: 'GPT-6 Luna',
   // Inherits 5.6's tagline because it is the same slot in the catalog: the
   // general-purpose premium row, no training notice, native image input.
@@ -2522,15 +2522,15 @@ const GPT_6_LUNA_MODEL = {
   availability: 'always',
   // OpenAI's API does not train on request data and the route carries
   // data_collection: 'deny', so no AI-training notice and no trace storage
-  // (FREEBUFF_TRACED_MODEL_IDS keys off this field).
+  // (FUCKBUFF_TRACED_MODEL_IDS keys off this field).
   dataUse: 'service',
   premium: true,
   // OpenRouter reports text + image + file input.
   multimodal: true,
-  reasoningEffort: FREEBUFF_GPT_6_LUNA_REASONING_EFFORT,
+  reasoningEffort: FUCKBUFF_GPT_6_LUNA_REASONING_EFFORT,
   // No `max` (2026-09-29, by product decision).
   efforts: EFFORTS_LOW_THROUGH_XHIGH,
-  defaultEffort: FREEBUFF_GPT_6_LUNA_REASONING_EFFORT,
+  defaultEffort: FUCKBUFF_GPT_6_LUNA_REASONING_EFFORT,
   // NEW because the row is new to every surface on 2026-09-22, and because a
   // returning user needs to notice that the Luna they knew is a different
   // model now.
@@ -2545,10 +2545,10 @@ const GPT_6_LUNA_MODEL = {
   experimental: true,
   taglineTooltip:
     'On OpenAI flex capacity, with a standard-tier backup when it’s busy.',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GPT_61_SOL_MODEL = {
-  id: FREEBUFF_GPT_61_SOL_MODEL_ID,
+  id: FUCKBUFF_GPT_61_SOL_MODEL_ID,
   displayName: 'GPT-6.1 Sol',
   // The one-session-a-day limit is in the tagline since the Promotional pill
   // came off (product, 2026-10-15), so nobody meets it first as a refusal.
@@ -2560,18 +2560,18 @@ const GPT_61_SOL_MODEL = {
   premium: true,
   // OpenRouter reports text + image + file input.
   multimodal: true,
-  reasoningEffort: FREEBUFF_GPT_61_SOL_REASONING_EFFORT,
+  reasoningEffort: FUCKBUFF_GPT_61_SOL_REASONING_EFFORT,
   // Capped at `high` by product decision (2026-09-29): the dearest row, and
   // reasoning bills as output at $5/M.
   efforts: EFFORTS_THROUGH_HIGH,
-  defaultEffort: FREEBUFF_GPT_61_SOL_REASONING_EFFORT,
+  defaultEffort: FUCKBUFF_GPT_61_SOL_REASONING_EFFORT,
   isNew: true,
   taglineTooltip:
     'On OpenAI flex capacity, with a standard-tier backup when it’s busy.',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GEMINI_4_ARGON_MODEL = {
-  id: FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
+  id: FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
   displayName: 'Gemini 4 Argon',
   tagline: 'Google flagship',
   availability: 'always',
@@ -2582,18 +2582,18 @@ const GEMINI_4_ARGON_MODEL = {
   premium: true,
   // OpenRouter reports text, image, file, audio and video input.
   multimodal: true,
-  reasoningEffort: FREEBUFF_GEMINI_4_ARGON_REASONING_EFFORT,
+  reasoningEffort: FUCKBUFF_GEMINI_4_ARGON_REASONING_EFFORT,
   // Capped at `high` like Sol: reasoning bills as output at $5/M.
   efforts: EFFORTS_THROUGH_HIGH,
-  defaultEffort: FREEBUFF_GEMINI_4_ARGON_REASONING_EFFORT,
+  defaultEffort: FUCKBUFF_GEMINI_4_ARGON_REASONING_EFFORT,
   isNew: true,
   // PROMOTIONAL, by product decision (2026-10-13): 100 Freebucks is a
-  // temporary price (FREEBUFF_GEMINI_4_ARGON_MODEL_ID), and the label says so
+  // temporary price (FUCKBUFF_GEMINI_4_ARGON_MODEL_ID), and the label says so
   // rather than letting a user build a habit on it.
   promotional: GEMINI_4_ARGON_PROMOTIONAL,
   taglineTooltip:
     'On Google flex capacity, with a standard-tier backup when it’s busy.',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * Solar Pro 4 (Upstage). Retired from every picker on 2026-09-23 when Solar
@@ -2608,7 +2608,7 @@ const GEMINI_4_ARGON_MODEL = {
  * listed in the pickers' Unlimited section.
  */
 const SOLAR_PRO_4_MODEL = {
-  id: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+  id: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
   displayName: 'Solar Pro 4',
   tagline: SOLAR_PRO_4_OFFER.tagline,
   availability: 'always',
@@ -2616,14 +2616,14 @@ const SOLAR_PRO_4_MODEL = {
   // to improve Solar, which the Privacy Policy counts as training use (a
   // collection notice would not cover it). Traced from 2026-10-09, once the
   // label had been live for an hour.
-  warning: FREEBUFF_AI_TRAINING_NOTICE,
+  warning: FUCKBUFF_AI_TRAINING_NOTICE,
   dataUse: 'training',
-  premium: FREEBUFF_SOLAR_PRO_4_ENTITLEMENT.fullAccess.premium,
+  premium: FUCKBUFF_SOLAR_PRO_4_ENTITLEMENT.fullAccess.premium,
   multimodal: false,
   // PROMOTIONAL, by product decision (2026-10-05): 0 Freebucks is a temporary
   // price. Clear it with the schedule entry that ends the promotion.
   promotional: SOLAR_PROMOTIONAL,
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * Solar Mini 4 (Upstage), a 35B mixture-of-experts with 3B active. It takes
@@ -2650,27 +2650,27 @@ const SOLAR_PRO_4_MODEL = {
  * Pro 4's, and listed beside it in the pickers' Unlimited section.
  */
 const SOLAR_MINI_4_MODEL = {
-  id: FREEBUFF_SOLAR_MINI_4_MODEL_ID,
+  id: FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
   displayName: 'Solar Mini 4',
   tagline: 'Fast and light',
   availability: 'always',
   // As Pro 4: labelled for AI training, and traced.
-  warning: FREEBUFF_AI_TRAINING_NOTICE,
+  warning: FUCKBUFF_AI_TRAINING_NOTICE,
   dataUse: 'training',
-  premium: FREEBUFF_SOLAR_MINI_4_ENTITLEMENT.fullAccess.premium,
+  premium: FUCKBUFF_SOLAR_MINI_4_ENTITLEMENT.fullAccess.premium,
   multimodal: false,
   isNew: true,
   // As Pro 4's: clear it with the schedule entry that ends the promotion.
   promotional: SOLAR_PROMOTIONAL,
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * Gemini 3.8 Flash. Premium, and unlike most premium rows it is priced premium
- * as well as badged it — see FREEBUFF_GEMINI_38_FLASH_MODEL_ID for the tier
+ * as well as badged it — see FUCKBUFF_GEMINI_38_FLASH_MODEL_ID for the tier
  * table.
  */
 const GEMINI_38_FLASH_MODEL = {
-  id: FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
+  id: FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
   displayName: 'Gemini 3.8 Flash',
   // The 1M context is the thing a user picks this row FOR, and it is the
   // largest in the catalog by a wide margin.
@@ -2680,7 +2680,7 @@ const GEMINI_38_FLASH_MODEL = {
   // row can reach are paid ones — every probe billed a non-zero amount, which
   // is what distinguishes the paid tier from the AI Studio free tier that does
   // train. So no training notice and no trace storage
-  // (FREEBUFF_TRACED_MODEL_IDS keys off this field).
+  // (FUCKBUFF_TRACED_MODEL_IDS keys off this field).
   //
   // Worth knowing when revisiting: OpenRouter's own UI badges the AI Studio
   // endpoints with a data-retention warning and the Vertex ones with a shield,
@@ -2705,23 +2705,23 @@ const GEMINI_38_FLASH_MODEL = {
   efforts: EFFORTS_HIGH_ONLY,
   defaultEffort: 'high',
   isNew: true,
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const GLM_V52_MODEL = {
-  id: FREEBUFF_GLM_V52_MODEL_ID,
+  id: FUCKBUFF_GLM_V52_MODEL_ID,
   displayName: 'GLM 5.2',
   tagline: 'Unlock by referring friends',
   availability: 'always',
   dataUse: 'service',
   // Served by Fireworks without provider-side training; its `service`
-  // data-use classification keeps GLM out of FREEBUFF_TRACED_MODEL_IDS.
+  // data-use classification keeps GLM out of FUCKBUFF_TRACED_MODEL_IDS.
   // `premium` drives the "Premium" badge styling in the picker; GLM's real
   // gate is its weekly referral-session pool, not the daily premium pool.
   premium: true,
   multimodal: false,
   // Our CrofAI route accepts but ignores reasoning_effort (including invalid
   // values), so OpenRouter's GLM ladder does not describe the route users run.
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * GLM 5.3 Flash — the catalog's deep row, and DeepSeek V4 Pro's replacement.
@@ -2731,7 +2731,7 @@ const GLM_V52_MODEL = {
  * than infer entitlement from the model id alone.
  */
 const GLM_V53_FLASH_MODEL = {
-  id: FREEBUFF_GLM_V53_FLASH_MODEL_ID,
+  id: FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
   // Undated. The wire id carries the build ('5.3-flash') and there is no second
   // snapshot to tell apart, so the rule the DeepSeek rows follow — date a name
   // whose wire id auto-updates — has nothing to bite on here.
@@ -2749,12 +2749,12 @@ const GLM_V53_FLASH_MODEL = {
   // Z.ai's terms for this endpoint carry no training grant to pass on and no
   // assurance to repeat, so `service` is the conservative reading: we assert no
   // training warning we cannot substantiate, and no safety we cannot either.
-  // Load-bearing beyond the copy — FREEBUFF_TRACED_MODEL_IDS keys off this
+  // Load-bearing beyond the copy — FUCKBUFF_TRACED_MODEL_IDS keys off this
   // field, so 'training' here would start storing hour-long agent traces of a
   // model nobody granted us traces on.
   dataUse: 'service',
   // UNMETERED, like DeepSeek V4 Flash and MiMo — the two other rows in
-  // FREEBUFF_STANDARD_MODEL_IDS. It was premium-pooled while its true cost was
+  // FUCKBUFF_STANDARD_MODEL_IDS. It was premium-pooled while its true cost was
   // unknown; measured production spend has now settled that, and it is the
   // CHEAPEST row we serve (per-message and per-session figures live in the
   // internal cost notes, not in this exported file).
@@ -2764,7 +2764,7 @@ const GLM_V53_FLASH_MODEL = {
   // model while the dearer ones are uncapped inverts the reason caps exist.
   //
   // NOT a limited-tier change. That tier reads the explicit
-  // LIMITED_FREEBUFF_MODEL_IDS / FREEBUFF_WEB_GEO_EXEMPT_MODEL_IDS allowlists,
+  // LIMITED_FUCKBUFF_MODEL_IDS / FUCKBUFF_WEB_GEO_EXEMPT_MODEL_IDS allowlists,
   // not this flag, so limited-region users are unaffected.
   premium: false,
   // OpenRouter reports text + image + video in, text out.
@@ -2798,7 +2798,7 @@ const GLM_V53_FLASH_MODEL = {
   //
   // No `supersededBy` and no RECOMMENDED badge: nothing in this catalog nudges
   // anyone anywhere, and a notice here would rewrite saved picks on every load
-  // (see migrateSupersededFreebuffModelPreference).
+  // (see migrateSupersededFuckbuffModelPreference).
   isNew: true,
   // The Sep 30 "deal ends" notice came off on 2026-10-01: the deal ended and
   // the price moved (15, then a temporary 25 peak through the catalog). The
@@ -2806,9 +2806,9 @@ const GLM_V53_FLASH_MODEL = {
   // product decision.
   //
   // PROMOTIONAL from 2026-10-09 to 10-12 (the label on the compiled 15). The
-  // promotion ended on 2026-10-13 with the price at 20 (freebuff-freebucks.ts),
+  // promotion ended on 2026-10-13 with the price at 20 (fuckbuff-freebucks.ts),
   // so the field is gone.
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * Kimi K3 (Eco), CrofAI. God-only, for testing, and the cost is part of why.
@@ -2830,7 +2830,7 @@ const GLM_V53_FLASH_MODEL = {
  * as its own row, this label has to be disambiguated at that point.
  */
 const GPT_5_6_LUNA_ES_MODEL = {
-  id: FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID,
+  id: FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID,
   // Named for what it IS. "Luna" appears nowhere: the route answers "Codex" when
   // asked, so a row calling it Luna would be contradicted by the model itself.
   displayName: 'Codex (test)',
@@ -2841,17 +2841,17 @@ const GPT_5_6_LUNA_ES_MODEL = {
   // training warning we cannot substantiate, and not asserting safety we
   // cannot either.
   dataUse: 'service',
-  // TRUE so it cannot fall into FREEBUFF_STANDARD_MODEL_IDS, which is derived
+  // TRUE so it cannot fall into FUCKBUFF_STANDARD_MODEL_IDS, which is derived
   // as `WEB_ALL.filter(m => !m.premium)` — the UNMETERED pool. God-only is the
   // gate; this flag is what stops the row becoming free inference if the gate
   // is ever widened.
   premium: true,
   multimodal: false,
-  reasoningEffort: FREEBUFF_GPT_5_6_LUNA_REASONING_EFFORT,
-} as const satisfies FreebuffModelOption
+  reasoningEffort: FUCKBUFF_GPT_5_6_LUNA_REASONING_EFFORT,
+} as const satisfies FuckbuffModelOption
 
 const KIMI_K3_ECO_MODEL = {
-  id: FREEBUFF_KIMI_K3_ECO_MODEL_ID,
+  id: FUCKBUFF_KIMI_K3_ECO_MODEL_ID,
   displayName: 'Kimi K3',
   tagline: 'Via CrofAI',
   availability: 'always',
@@ -2861,24 +2861,24 @@ const KIMI_K3_ECO_MODEL = {
   experimental: true,
   // CrofAI likewise ignores reasoning_effort for this build. Do not expose a
   // control until this concrete route reports distinct supported levels.
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 const FABLE_5_1_MODEL = {
-  id: FREEBUFF_FABLE_5_1_MODEL_ID,
+  id: FUCKBUFF_FABLE_5_1_MODEL_ID,
   displayName: 'Claude Fable 5.1',
   tagline: "Anthropic's most intelligent model",
   availability: 'always',
   // Load-bearing, not decoration: `dataUse: 'training'` is what puts this model
-  // in FREEBUFF_TRACED_MODEL_IDS, which is the entire point of the trial — we
+  // in FUCKBUFF_TRACED_MODEL_IDS, which is the entire point of the trial — we
   // are buying hour-long agent traces with the pool. The warning is the
   // disclosure that makes that legitimate, and the catalog invariant test
   // requires the two to agree.
-  warning: FREEBUFF_AI_TRAINING_NOTICE,
+  warning: FUCKBUFF_AI_TRAINING_NOTICE,
   dataUse: 'training',
-  // Not in FREEBUFF_PREMIUM_MODEL_IDS: the daily premium pool is shared across
+  // Not in FUCKBUFF_PREMIUM_MODEL_IDS: the daily premium pool is shared across
   // its models and Fable is metered by its OWN global pool instead (see
-  // FREEBUFF_LIMITED_OFFER_MODEL_IDS). The flag only marks it as scarce for the
-  // pickers' styling and for FREEBUFF_STANDARD_MODEL_IDS, which must not
+  // FUCKBUFF_LIMITED_OFFER_MODEL_IDS). The flag only marks it as scarce for the
+  // pickers' styling and for FUCKBUFF_STANDARD_MODEL_IDS, which must not
   // absorb it.
   premium: true,
   multimodal: true,
@@ -2886,7 +2886,7 @@ const FABLE_5_1_MODEL = {
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
   isNew: true,
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * Meta Muse Spark 1.2 Contributor. Out of every picker since 2026-09-28, when
@@ -2895,43 +2895,43 @@ const FABLE_5_1_MODEL = {
  * update). `supersededBy` moves a saved 1.2 pick onto 1.3 on newer clients.
  */
 const MUSE_SPARK_12_CONTRIBUTOR_MODEL = {
-  id: FREEBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
+  id: FUCKBUFF_MUSE_SPARK_12_CONTRIBUTOR_MODEL_ID,
   displayName: 'Muse Spark 1.2',
   tagline: 'Queue',
   taglineTooltip: MUSE_SPARK_FALLBACK_NOTICE,
   availability: 'always',
   // Load-bearing pair (a catalog invariant test enforces it): the Contributor
   // tier's whole discount is Meta training on prompts and completions.
-  warning: FREEBUFF_AI_TRAINING_NOTICE,
+  warning: FUCKBUFF_AI_TRAINING_NOTICE,
   dataUse: 'training',
   // Follows 1.3 out of the premium pool (2026-10-10).
   premium: false,
   multimodal: false,
-  reasoningEffort: FREEBUFF_MUSE_SPARK_REASONING_EFFORT,
+  reasoningEffort: FUCKBUFF_MUSE_SPARK_REASONING_EFFORT,
   // Up to `high` only (2026-09-29, by product decision).
   efforts: EFFORTS_THROUGH_HIGH,
-  defaultEffort: FREEBUFF_MUSE_SPARK_REASONING_EFFORT,
+  defaultEffort: FUCKBUFF_MUSE_SPARK_REASONING_EFFORT,
   // A strict version bump rather than a steer: identical price, terms, pool
-  // and paywall, a better model. migrateSupersededFreebuffModelPreference
+  // and paywall, a better model. migrateSupersededFuckbuffModelPreference
   // rewrites a saved 1.2 pick to 1.3 on load.
   supersededBy: {
-    modelId: FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+    modelId: FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
     notice: 'Muse Spark 1.3 replaces Muse Spark 1.2',
     actionLabel: 'Switch to Muse Spark 1.3',
   },
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * Meta Muse Spark 1.3 Contributor. Open to every FULL-ACCESS account with no
  * plan since 2026-10-09 (it was paid-only on every surface from 2026-09-28),
  * at 15 Freebucks; at LIMITED access it stays plan-only
- * (FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS), drawn locked with a press that
+ * (FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS), drawn locked with a press that
  * opens the plans page — Luna's and MiMo 2.6 Pro's treatment. Cheaper per
  * token than DeepSeek V4 Flash; what is scarce is Meta's rate limit, and a
  * request that meets it is answered by DeepSeek V4.1 Flash at the same price.
  */
 const MUSE_SPARK_13_CONTRIBUTOR_MODEL = {
-  id: FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+  id: FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
   displayName: 'Muse Spark 1.3',
   // Three facts have to fit here, because on the CLI and Desktop this is the
   // ONLY line a row gets — those pickers render no tooltip: the row is rate
@@ -2944,7 +2944,7 @@ const MUSE_SPARK_13_CONTRIBUTOR_MODEL = {
   // third fact and left the first two to be discovered.
   //
   // It reads that again from 2026-09-29, because it is true again: on the
-  // OpenRouter lane (FREEBUFF_MUSE_SPARK_LANE) there is no silent-retry window
+  // OpenRouter lane (FUCKBUFF_MUSE_SPARK_LANE) there is no silent-retry window
   // and no queue — a request Meta will not take is answered on the fallback at
   // once — so "Queues" would describe a lane the row no longer runs on.
   tagline: 'Falls back when busy',
@@ -2952,7 +2952,7 @@ const MUSE_SPARK_13_CONTRIBUTOR_MODEL = {
   availability: 'always',
   // Load-bearing pair (a catalog invariant test enforces it): the Contributor
   // tier's whole discount is Meta training on prompts and completions.
-  warning: FREEBUFF_AI_TRAINING_NOTICE,
+  warning: FUCKBUFF_AI_TRAINING_NOTICE,
   dataUse: 'training',
   // Standard since 2026-10-10, when Meta lifted the Contributor rate limit
   // that the premium pool was bounding (see the id's doc comment).
@@ -2962,24 +2962,24 @@ const MUSE_SPARK_13_CONTRIBUTOR_MODEL = {
   // vision-model description at the completions layer, which is a real
   // fallback and not a capability worth badging (same call as 1.2).
   multimodal: false,
-  reasoningEffort: FREEBUFF_MUSE_SPARK_REASONING_EFFORT,
+  reasoningEffort: FUCKBUFF_MUSE_SPARK_REASONING_EFFORT,
   // Up to `high` only (2026-09-29, by product decision).
   efforts: EFFORTS_THROUGH_HIGH,
-  defaultEffort: FREEBUFF_MUSE_SPARK_REASONING_EFFORT,
+  defaultEffort: FUCKBUFF_MUSE_SPARK_REASONING_EFFORT,
   isNew: true,
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
  * The Ox Alpha picker row. STANDARD rather than premium — metered by no session
  * pool on any surface, which is what `!premium` means here
- * (FREEBUFF_STANDARD_MODEL_IDS is derived by filtering on it).
+ * (FUCKBUFF_STANDARD_MODEL_IDS is derived by filtering on it).
  *
  * That is a reading of a $0 price and a measured ceiling, not an oversight of
  * the rule the premium lists keep repeating. There is nothing to ration: the
  * model costs nothing and the fence keeps it that way
- * (FREEBUFF_OX_ALPHA_MAX_PRICE), and its host absorbed 300 concurrent requests,
+ * (FUCKBUFF_OX_ALPHA_MAX_PRICE), and its host absorbed 300 concurrent requests,
  * ~99k prompt tokens/sec and 1,800 requests at a sustained 10/s without a
- * single 429 (docs/freebuff-ox-alpha.md). What a pool would really ration is
+ * single 429 (docs/fuckbuff-ox-alpha.md). What a pool would really ration is
  * our standing with that host, and no number in this file can tell us where
  * that limit is — serving the model and watching it can, which is what the two
  * browser surfaces are for here.
@@ -2991,14 +2991,14 @@ const MUSE_SPARK_13_CONTRIBUTOR_MODEL = {
  * badge was warning about.
  *
  * WITHDRAWN. The row is kept rather than deleted because a paused model must
- * stay a recognised id (see FREEBUFF_PAUSED_FREE_MODEL_IDS); it is in no picker
+ * stay a recognised id (see FUCKBUFF_PAUSED_FREE_MODEL_IDS); it is in no picker
  * list, so `premium: false` no longer places it anywhere — it is out of
- * FREEBUFF_WEB_ALL_MODELS, and therefore out of the derived
- * FREEBUFF_STANDARD_MODEL_IDS. The flag stays as written so that restoring the
+ * FUCKBUFF_WEB_ALL_MODELS, and therefore out of the derived
+ * FUCKBUFF_STANDARD_MODEL_IDS. The flag stays as written so that restoring the
  * row is one edit to the pause list rather than several that must agree.
  */
 const OX_ALPHA_MODEL = {
-  id: FREEBUFF_OX_ALPHA_MODEL_ID,
+  id: FUCKBUFF_OX_ALPHA_MODEL_ID,
   displayName: 'Ox Alpha',
   // Names the property a user picks this row FOR. "Free" would not distinguish
   // it — every row in this catalog is free to the user — and naming the host
@@ -3008,14 +3008,14 @@ const OX_ALPHA_MODEL = {
   // NOT the AI-training notice, and the gap between the two is the point. The
   // stealth terms say the host keeps prompts and completions and does not train
   // on them, so `dataUse` stays 'service' — that field is what
-  // FREEBUFF_TRACED_MODEL_IDS keys off, and claiming a training grant we were
+  // FUCKBUFF_TRACED_MODEL_IDS keys off, and claiming a training grant we were
   // not given would be wrong in the direction that changes behavior. The
   // warning still says the thing a user wants before pasting a private repo
   // into a provider whose name nobody will tell them.
   //
   // NOTE this is the one row where a warning does not imply `dataUse:
   // 'training'`. The invariant test asserting they move together scopes itself
-  // to SUPPORTED_FREEBUFF_MODELS (the CLI/Desktop catalog), which this is
+  // to SUPPORTED_FUCKBUFF_MODELS (the CLI/Desktop catalog), which this is
   // deliberately not in; ox-alpha.test.ts pins the exception so it reads as a
   // decision rather than as drift.
   warning: 'Anonymous provider retains prompts',
@@ -3023,7 +3023,7 @@ const OX_ALPHA_MODEL = {
   premium: false,
   // text + image + video in, text out.
   multimodal: true,
-  // See FREEBUFF_OX_ALPHA_MODEL_ID for the measurement behind this. The
+  // See FUCKBUFF_OX_ALPHA_MODEL_ID for the measurement behind this. The
   // provider's own default is `max`, which is 4x the tokens and 4x the latency
   // of `high` for no better answer.
   reasoningEffort: 'high',
@@ -3034,10 +3034,10 @@ const OX_ALPHA_MODEL = {
   // model would be the one claim about it that is actively false. It renders
   // nowhere today — the row is in no picker list — but it would be the first
   // thing seen if the pause were ever lifted without re-reading this row.
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
 /**
- * The Space Bunny Alpha picker row (see FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID).
+ * The Space Bunny Alpha picker row (see FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID).
  * STANDARD rather than premium: it sits in no premium pool, because it costs
  * us nothing and the zero-price fence keeps it that way; its Freebucks price
  * is the meter. BETA (`experimental`) for the reason Ox Alpha carried the
@@ -3045,7 +3045,7 @@ const OX_ALPHA_MODEL = {
  * and Ox Alpha's host did exactly that a week after launch.
  */
 const SPACE_BUNNY_ALPHA_MODEL = {
-  id: FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+  id: FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
   displayName: 'Space Bunny Alpha',
   tagline: '1M context',
   availability: 'always',
@@ -3061,18 +3061,18 @@ const SPACE_BUNNY_ALPHA_MODEL = {
   efforts: EFFORTS_THROUGH_MAX,
   defaultEffort: 'high',
   experimental: true,
-  // NOT `isNew` any more: the row is withdrawn (FREEBUFF_PAUSED_FREE_MODEL_IDS).
+  // NOT `isNew` any more: the row is withdrawn (FUCKBUFF_PAUSED_FREE_MODEL_IDS).
   taglineTooltip:
     'Stealth model. May change or be withdrawn without notice.',
-} as const satisfies FreebuffModelOption
+} as const satisfies FuckbuffModelOption
 
-export const SUPPORTED_FREEBUFF_MODELS = [
+export const SUPPORTED_FUCKBUFF_MODELS = [
   OX_ALPHA_MODEL,
   SPACE_BUNNY_ALPHA_MODEL,
   DEEPSEEK_V4_PRO_MODEL,
   MINIMAX_M3_MODEL,
   // 5.6 stays SUPPORTED after its 2026-09-22 retirement and 2026-09-24
-  // withdrawal (FREEBUFF_PAUSED_FREE_MODEL_IDS) so the server still recognises
+  // withdrawal (FUCKBUFF_PAUSED_FREE_MODEL_IDS) so the server still recognises
   // the id: the released binaries that still hold it get the withdrawn answer
   // or a coercion, never an unknown-model refusal.
   GPT_5_6_LUNA_MODEL,
@@ -3093,11 +3093,11 @@ export const SUPPORTED_FREEBUFF_MODELS = [
   MIMO_V25_MODEL,
   MIMO_V26_PRO_MODEL,
   FABLE_5_1_MODEL,
-] as const satisfies readonly FreebuffModelOption[]
+] as const satisfies readonly FuckbuffModelOption[]
 
-// GLM 5.2 is intentionally NOT in FREEBUFF_MODELS: it isn't a freely-pickable
+// GLM 5.2 is intentionally NOT in FUCKBUFF_MODELS: it isn't a freely-pickable
 // grid model, it's a referral reward surfaced by the separate referral banner.
-// It stays in SUPPORTED_FREEBUFF_MODELS so the session/chat layers accept it as
+// It stays in SUPPORTED_FUCKBUFF_MODELS so the session/chat layers accept it as
 // a valid model id once the user's weekly entitlement admits them.
 //
 // MiMo 2.5 Pro is GONE (2026-08-04). It was hidden from the client pickers on
@@ -3111,20 +3111,20 @@ export const SUPPORTED_FREEBUFF_MODELS = [
 // grid.
 //
 // DeepSeek V4 Pro is WITHDRAWN (2026-08-26) and left this list — the row is gone
-// from every picker and every pool. It stays in SUPPORTED_FREEBUFF_MODELS on
+// from every picker and every pool. It stays in SUPPORTED_FUCKBUFF_MODELS on
 // purpose: released clients hold their catalog in the binary and keep asking for
 // it, and an id the server does not RECOGNISE cannot be coerced, only refused.
 // Recognising it is what lets admission substitute (see
-// FREEBUFF_PAUSED_FREE_MODEL_IDS) instead of wedging those clients the way
+// FUCKBUFF_PAUSED_FREE_MODEL_IDS) instead of wedging those clients the way
 // #1801 wedged the limited tier.
 //
 // GLM 5.3 Flash takes the slot it vacated — the row a user reaches for depth —
 // at roughly an eighth of the price per token. That substitution is the whole
 // change: the catalog keeps a deep option, and the line that could not be
 // afforded goes.
-export const FREEBUFF_MODELS = [
+export const FUCKBUFF_MODELS = [
   // GLM 5.3 FLASH LEADS as of 2026-08-30, and the position is not a preference —
-  // a test pins FREEBUFF_MODELS[0] to DEFAULT_FREEBUFF_MODEL_ID, so this moved
+  // a test pins FUCKBUFF_MODELS[0] to DEFAULT_FUCKBUFF_MODEL_ID, so this moved
   // because the DEFAULT moved. It is an explicit product decision, taken
   // against the note that used to sit on this row telling you not to.
   //
@@ -3137,7 +3137,7 @@ export const FREEBUFF_MODELS = [
   //  - JOINABLE WITH AN EMPTY WALLET. This row is UNMETERED — `premium: false`
   //    — so unlike every default since 2026-08-18 it cannot be exhausted. The
   //    `premiumExhausted` step-down in
-  //    getRecommendedFreebuffModelId still exists for the limited tier and for
+  //    getRecommendedFuckbuffModelId still exists for the limited tier and for
   //    callers that pass it, but it is no longer load-bearing FOR THE DEFAULT:
   //    a new user's first send cannot fail because a pool ran dry.
   //
@@ -3158,34 +3158,34 @@ export const FREEBUFF_MODELS = [
   //
   // Ordering is still the ONLY steer here — no supersedes notices, nothing
   // badged RECOMMENDED, because a `supersededBy` would rewrite saved picks on
-  // every load (see migrateSupersededFreebuffModelPreference). Leading the list
+  // every load (see migrateSupersededFuckbuffModelPreference). Leading the list
   // IS the recommendation; a returning user who chose another row keeps it.
-  // A test pins the first row to DEFAULT_FREEBUFF_MODEL_ID.
+  // A test pins the first row to DEFAULT_FUCKBUFF_MODEL_ID.
   //
   // MIMO 2.6 FLASH LEADS as of 2026-09-30, because the DEFAULT moved to it —
   // the only reason this line ever moves. GLM 5.3 Flash led 2026-09-05 to then.
   // The Flash row now sits outside the MiMo UI flag, since the default must be
-  // listed; FREEBUFF_ENABLE_MIMO_MODELS_IN_UI gates the Pro row only.
+  // listed; FUCKBUFF_ENABLE_MIMO_MODELS_IN_UI gates the Pro row only.
   MIMO_V25_MODEL,
   GLM_V53_FLASH_MODEL,
   DEEPSEEK_V4_FLASH_MODEL,
   // FAST MODE beside the row it is a variant of (2026-09-26), behind
-  // FREEBUFF_ENABLE_FAST_MODE_IN_UI. Order here only matters
+  // FUCKBUFF_ENABLE_FAST_MODE_IN_UI. Order here only matters
   // off the meter: every picker sorts its rows cheapest first once prices
   // arrive, and at 25-50 Freebucks this lands among the premium rows.
-  ...(FREEBUFF_ENABLE_FAST_MODE_IN_UI ? [DEEPSEEK_V4_FLASH_FAST_MODEL] : []),
+  ...(FUCKBUFF_ENABLE_FAST_MODE_IN_UI ? [DEEPSEEK_V4_FLASH_FAST_MODEL] : []),
   // GPT-6 LUNA TAKES 5.6'S SLOT (2026-09-22). Same position, same tagline,
   // half the price on the flex lane; 5.6 left this list in the same change and
-  // was paused on 2026-09-24 (FREEBUFF_PAUSED_FREE_MODEL_IDS).
+  // was paused on 2026-09-24 (FUCKBUFF_PAUSED_FREE_MODEL_IDS).
   GPT_6_LUNA_MODEL,
-  ...(FREEBUFF_ENABLE_MIMO_MODELS_IN_UI ? [MIMO_V26_PRO_MODEL] : []),
+  ...(FUCKBUFF_ENABLE_MIMO_MODELS_IN_UI ? [MIMO_V26_PRO_MODEL] : []),
   // OX ALPHA LEFT THIS LIST on 2026-08-27, when its anonymous host ended the
   // free promotion the row existed for. MiMo is the sole UNMETERED row again.
   //
   // Dropping it here is what takes it out of every picker on every surface —
-  // FREEBUFF_WEB_MODELS reaches it only by spreading this list — but it is NOT
-  // what stops it being served. FREEBUFF_PAUSED_FREE_MODEL_IDS is, and the row
-  // stays in SUPPORTED_FREEBUFF_MODELS so the id remains recognisable and
+  // FUCKBUFF_WEB_MODELS reaches it only by spreading this list — but it is NOT
+  // what stops it being served. FUCKBUFF_PAUSED_FREE_MODEL_IDS is, and the row
+  // stays in SUPPORTED_FUCKBUFF_MODELS so the id remains recognisable and
   // coercible for the installed binaries that still hold it.
   //
   // SOLAR MINI 4 TOOK SOLAR PRO 4'S SLOT on 2026-09-23 (same Upstage lane, at
@@ -3195,7 +3195,7 @@ export const FREEBUFF_MODELS = [
   SOLAR_MINI_4_MODEL,
   SOLAR_PRO_4_MODEL,
   // SPACE BUNNY ALPHA LEFT THIS LIST on 2026-10-06, withdrawn (see its entry
-  // in FREEBUFF_PAUSED_FREE_MODEL_IDS). It joined on 2026-09-23 as a BETA
+  // in FUCKBUFF_PAUSED_FREE_MODEL_IDS). It joined on 2026-09-23 as a BETA
   // stealth row.
   // GEMINI 3.8 FLASH LEFT THIS LIST on 2026-09-03, hours after joining it, when
   // the row was withdrawn, and came back to Web alone behind the paywall on
@@ -3214,7 +3214,7 @@ export const FREEBUFF_MODELS = [
   //
   // 1.2 TAKES ITS PLACE, on every surface (2026-09-07). It answered on every
   // key in the same probe that found 1.3 dead, and the reason it was
-  // Freebuff Web only for its first life no longer holds: the completions
+  // Fuckbuff Web only for its first life no longer holds: the completions
   // layer reroutes anything the shared ceiling cannot absorb to DeepSeek V4
   // Flash with no client involvement, and the key pool made saturation rare —
   // so a surface no longer needs somewhere to render a wait, which was the
@@ -3222,11 +3222,11 @@ export const FREEBUFF_MODELS = [
   // widened 1.3 three days ago; it did not depend on the version.
   //
   // GEMINI 3.8 FLASH IS BACK IN THIS LIST since 2026-09-21, on every surface,
-  // and still a PAID-ONLY row (FREEBUFF_SUBSCRIPTION_PRO_MODEL_IDS). What kept
+  // and still a PAID-ONLY row (FUCKBUFF_SUBSCRIPTION_PRO_MODEL_IDS). What kept
   // it Web-only was that its paywall ran on Web alone; it is now in
-  // FREEBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS, so listing
+  // FUCKBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS, so listing
   // it here no longer hands the dearest row out free. The CLI and Desktop pickers draw it LOCKED
-  // for an account without a plan (`freebuffPlanRequired`): no price, a "paid
+  // for an account without a plan (`fuckbuffPlanRequired`): no price, a "paid
   // plan" note, and a press that opens the plans page.
   GEMINI_38_FLASH_MODEL,
   // MUSE SPARK 1.3 CONTRIBUTOR REPLACES 1.2 (2026-09-28). It was a PAID-ONLY
@@ -3244,21 +3244,21 @@ export const FREEBUFF_MODELS = [
   // GPT-6.1 Sol (2026-09-29): free in the US, paid-only elsewhere, at 250
   // Freebucks — the dearest row, so last in a cheapest-first list.
   GPT_61_SOL_MODEL,
-] as const satisfies readonly FreebuffModelOption[]
+] as const satisfies readonly FuckbuffModelOption[]
 
 /** Public full-access models metered by the shared premium pool. The catalog
  *  flag is the owner; server admission and every picker consume this
  *  projection. The limited tier meters its explicit catalog by region instead. */
-export const FREEBUFF_PREMIUM_MODEL_IDS = Object.freeze(
-  FREEBUFF_MODELS.filter((model) => model.premium).map((model) => model.id),
+export const FUCKBUFF_PREMIUM_MODEL_IDS = Object.freeze(
+  FUCKBUFF_MODELS.filter((model) => model.premium).map((model) => model.id),
 )
 
 /**
  * The catalog's human-facing name for `model`, or the raw id when it has none.
  */
-export function freebuffModelLabel(model: string): string {
+export function fuckbuffModelLabel(model: string): string {
   return (
-    SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === model)?.displayName ?? model
+    SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === model)?.displayName ?? model
   )
 }
 
@@ -3269,11 +3269,11 @@ export function freebuffModelLabel(model: string): string {
  * second list, so a row that stops being experimental stops saying so
  * everywhere at once.
  */
-export function isFreebuffExperimentalModel(
+export function isFuckbuffExperimentalModel(
   model: string | null | undefined,
 ): boolean {
   if (!model) return false
-  const row = SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === model)
+  const row = SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === model)
   // `in` rather than a property read: the catalog is a union of `as const`
   // literals and only some carry the optional flag, so a direct access does not
   // typecheck against the members that omit it.
@@ -3283,13 +3283,13 @@ export function isFreebuffExperimentalModel(
 /**
  * Models free mode no longer runs, but still RECOGNISES.
  *
- * This is not a picker-only retirement (FREEBUFF_WEB_RETIRED_PICKER_MODEL_IDS
+ * This is not a picker-only retirement (FUCKBUFF_WEB_RETIRED_PICKER_MODEL_IDS
  * is that, and is deliberately empty) — nothing here is served to anyone. It is
  * the opposite problem: a paused model must stay a known id so the server can
  * SUBSTITUTE for it.
  *
- * An id dropped from SUPPORTED entirely is one `isFreebuffSessionModelId` says
- * nothing about, so the coercion in `resolveFreebuffSessionModelForAccessTier`
+ * An id dropped from SUPPORTED entirely is one `isFuckbuffSessionModelId` says
+ * nothing about, so the coercion in `resolveFuckbuffSessionModelForAccessTier`
  * never runs and the request is simply refused. Every installed client holding
  * that pick then retries forever, because the pick comes from the catalog
  * compiled into its binary and no server change reaches it — which is what
@@ -3303,7 +3303,7 @@ export function isFreebuffExperimentalModel(
  * #1801: the coercion has to exist BEFORE a model is taken away, because the
  * clients that need it are the ones already installed.
  */
-export const FREEBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
+export const FUCKBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
   // GPT-5.6 Luna, withdrawn from free mode entirely on 2026-09-24 — stage two
   // of the retirement that took it out of every picker on 2026-09-22, when
   // GPT-6 Luna took its slot. The server-side prerequisite that kept it
@@ -3326,8 +3326,8 @@ export const FREEBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
   //
   // Its roots (base2-free-luna, base3-free-luna, code-reviewer-luna) and their
   // FREE_MODE_AGENT_MODELS entries stay until nothing live can still be bound
-  // to it. The row stays in SUPPORTED_FREEBUFF_MODELS for good.
-  FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
+  // to it. The row stays in SUPPORTED_FUCKBUFF_MODELS for good.
+  FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
   // (Muse Spark 1.3 sat here from 2026-09-07, when every key answered
   // `404 model_not_found`, until 2026-09-28, when it returned as a paid-only
   // row on a new key.)
@@ -3340,7 +3340,7 @@ export const FREEBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
   // an id the server does not RECOGNISE cannot be coerced, only refused, and a
   // refusal here is the client retry loop of #1801. Listed here it stays recognised, is coerced to the
   // fallback at admission, and is served to nobody.
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
   // Withdrawn from free mode entirely on 2026-08-26, on cost. Pro was the
   // dearest row we serve — $0.66 in / $0.022 cache read / $1.98 out per M
   // off-peak on DeepSeek direct, exactly double inside the peak windows — and
@@ -3350,10 +3350,10 @@ export const FREEBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
   //
   // PAUSED rather than deleted, for the reason above it: every released CLI and
   // Desktop holds this id in its compiled-in catalog and will keep sending it.
-  // The row stays in SUPPORTED_FREEBUFF_MODELS and its agent entries stay in
+  // The row stays in SUPPORTED_FUCKBUFF_MODELS and its agent entries stay in
   // FREE_MODE_AGENT_MODELS so sessions admitted before the deploy drain instead
   // of failing mid-turn — the door is shut in front of them, not under them.
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
   // Withdrawn from free mode entirely on 2026-08-27: the anonymous host ended
   // the free promotion, so the row is no longer served to us at all. This is
   // not a cost decision like the two above it — there is nothing left to buy.
@@ -3371,12 +3371,12 @@ export const FREEBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
   // did (base2-free-ox-alpha / base3-free-ox-alpha in free-agents.ts): sessions
   // admitted before the deploy drain instead of failing mid-turn with
   // free_mode_invalid_agent_model. The door is shut in front of them, not under
-  // them. See "Withdrawing it" in docs/freebuff-ox-alpha.md for the order.
+  // them. See "Withdrawing it" in docs/fuckbuff-ox-alpha.md for the order.
   //
   // The zero-price fence in web/src/llm-api/openrouter.ts stays too. It costs
   // nothing while nothing is admitted, and it is the guard that would stop a
   // repriced stealth slug billing us if this row were ever restored.
-  FREEBUFF_OX_ALPHA_MODEL_ID,
+  FUCKBUFF_OX_ALPHA_MODEL_ID,
   // Withdrawn from free mode entirely on 2026-10-06. It was served free through
   // OpenCode Zen after OpenRouter dropped it on 10-05, and OpenCode throttled
   // our server IPs: from about 20:45Z that day it served nothing, and every
@@ -3389,9 +3389,9 @@ export const FREEBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
   // 10-01), so it must stay recognised to be coerced or refused cleanly rather
   // than looping. Its row, roots, agent allowlist entries, OpenCode Zen lane
   // and queue stay, so restoring it is this one line.
-  FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+  FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
   // Withdrawn from free mode entirely on 2026-08-31, on cost, when the reward
-  // it backed moved to GLM 5.3 Flash (FREEBUFF_REWARD_MODEL_IDS). This row was
+  // it backed moved to GLM 5.3 Flash (FUCKBUFF_REWARD_MODEL_IDS). This row was
   // reachable ONLY through that earned pool, so re-pointing the pool left it
   // reachable by nobody — and it is materially dearer per token than the row
   // that replaced it, which is the whole reason the reward moved.
@@ -3407,9 +3407,9 @@ export const FREEBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
   // Paused rather than deleted for the reason the three rows above give: every
   // released CLI and Desktop holds this id, an unrecognised id can only be
   // refused, and that refusal is the #1801 retry loop. Its row stays in
-  // SUPPORTED_FREEBUFF_MODELS and its agent entries stay in FREE_MODE_AGENT_MODELS
+  // SUPPORTED_FUCKBUFF_MODELS and its agent entries stay in FREE_MODE_AGENT_MODELS
   // so sessions admitted before the deploy drain instead of failing mid-turn.
-  FREEBUFF_GLM_V52_MODEL_ID,
+  FUCKBUFF_GLM_V52_MODEL_ID,
   // GEMINI 3.8 FLASH WAS HERE from 2026-09-03 to 2026-09-04 and is NOT any
   // more. Both halves of what withdrew it were measured again before it came
   // back, because only one of them had actually been fixed:
@@ -3429,11 +3429,11 @@ export const FREEBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
   //    the measurement.
   //
   // It comes back BEHIND THE PAYWALL rather than to where it was:
-  // FREEBUFF_SUBSCRIPTION_PRO_MODEL_IDS, listed to everyone without a price and
+  // FUCKBUFF_SUBSCRIPTION_PRO_MODEL_IDS, listed to everyone without a price and
   // openable only on a paid session. It was Web-only until 2026-09-21, while
   // its paywall ran on Web alone; it now runs on every surface
-  // (FREEBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS) and the row is in
-  // FREEBUFF_MODELS.
+  // (FUCKBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS) and the row is in
+  // FUCKBUFF_MODELS.
 ]
 
 /**
@@ -3443,24 +3443,24 @@ export const FREEBUFF_PAUSED_FREE_MODEL_IDS: readonly string[] = [
  * this id is a released binary whose picker still lists it, so "unavailable"
  * alone leaves the user staring at a row that looks fine and does not work.
  */
-export function freebuffWithdrawnModelMessage(id: string): string {
-  const model = SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === id)
+export function fuckbuffWithdrawnModelMessage(id: string): string {
+  const model = SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === id)
   const name = model?.displayName ?? id
   const replacement =
-    SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === DEFAULT_FREEBUFF_MODEL_ID)
-      ?.displayName ?? DEFAULT_FREEBUFF_MODEL_ID
-  return `${name} is no longer available in Freebuff. We recommend using ${replacement} instead.`
+    SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === DEFAULT_FUCKBUFF_MODEL_ID)
+      ?.displayName ?? DEFAULT_FUCKBUFF_MODEL_ID
+  return `${name} is no longer available in Fuckbuff. We recommend using ${replacement} instead.`
 }
 
-/** The same fact as `freebuffWithdrawnModelMessage`, shaped to sit inside the
+/** The same fact as `fuckbuffWithdrawnModelMessage`, shaped to sit inside the
  *  sentence released clients build around `availableHours` — "<model> isn't
  *  available right now (…)". Those binaries predate the `withdrawn` flag and
  *  render that field verbatim, so this is the only wording they can be told a
  *  withdrawal in. */
-export function freebuffWithdrawnModelAvailabilityLabel(): string {
+export function fuckbuffWithdrawnModelAvailabilityLabel(): string {
   const replacement =
-    SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === DEFAULT_FREEBUFF_MODEL_ID)
-      ?.displayName ?? DEFAULT_FREEBUFF_MODEL_ID
+    SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === DEFAULT_FUCKBUFF_MODEL_ID)
+      ?.displayName ?? DEFAULT_FUCKBUFF_MODEL_ID
   return `no longer offered in free mode — we recommend ${replacement}`
 }
 
@@ -3468,18 +3468,18 @@ export function freebuffWithdrawnModelAvailabilityLabel(): string {
  * What a client that understands `updateRequired` says: the model is fine,
  * the build is not, and updating costs nothing extra.
  */
-export function freebuffUpdateRequiredModelMessage(id: string): string {
-  const model = SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === id)
+export function fuckbuffUpdateRequiredModelMessage(id: string): string {
+  const model = SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === id)
   const name = model?.displayName ?? id
-  return `Update Freebuff Desktop to keep using ${name}. This version can't resume your purchased time — the model itself is fine, and updating won't charge you again.`
+  return `Update Fuckbuff Desktop to keep using ${name}. This version can't resume your purchased time — the model itself is fine, and updating won't charge you again.`
 }
 
 /** The same fact shaped to sit inside "<model> isn't available right now (…)",
  *  which is the only sentence a binary that predates `updateRequired` can
  *  build. Scopes the unavailability to the client version, so the reader is
  *  not told the model is down. */
-export function freebuffUpdateRequiredAvailabilityLabel(): string {
-  return 'only on this version of Freebuff Desktop — update it to resume your purchased time without another charge'
+export function fuckbuffUpdateRequiredAvailabilityLabel(): string {
+  return 'only on this version of Fuckbuff Desktop — update it to resume your purchased time without another charge'
 }
 
 /**
@@ -3487,8 +3487,8 @@ export function freebuffUpdateRequiredAvailabilityLabel(): string {
  * sessions are paused, the model is fine, and nothing about the user's build
  * or pick needs changing.
  */
-export function freebuffPurchasesPausedModelMessage(id: string): string {
-  const model = SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === id)
+export function fuckbuffPurchasesPausedModelMessage(id: string): string {
+  const model = SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === id)
   const name = model?.displayName ?? id
   return `Purchased Desktop sessions are paused right now, so a new one for ${name} can't be started yet — the model itself is fine. Try again shortly.`
 }
@@ -3497,19 +3497,19 @@ export function freebuffPurchasesPausedModelMessage(id: string): string {
  *  which is the only sentence a binary that predates `purchasesPaused` can
  *  build. Scopes the unavailability to purchased sessions, so the reader is
  *  not told the model is down. */
-export function freebuffPurchasesPausedAvailabilityLabel(): string {
+export function fuckbuffPurchasesPausedAvailabilityLabel(): string {
   return 'purchased sessions are paused right now — the model itself is fine; try again shortly'
 }
 
 /**
- * Models we no longer serve on Freebuff's own agents, with no compatibility
+ * Models we no longer serve on Fuckbuff's own agents, with no compatibility
  * path left for them: still recognised (so an old client gets a clear answer
  * instead of an unknown-model error), in no picker, admitted at no tier. The
- * completions route answers them with `freebuffRetiredModelMessage`
+ * completions route answers them with `fuckbuffRetiredModelMessage`
  * (2026-10-01: an old CLI was still running MiniMax M3 on `base2-free`,
  * ~2,300 requests a day, because only session admission refused it), and
  * session admission refuses them as withdrawn with
- * `freebuffRetiredModelAvailabilityLabel`. Every id here shipped in released
+ * `fuckbuffRetiredModelAvailabilityLabel`. Every id here shipped in released
  * CLI and Desktop catalogs, so the caller is an old build: both answers tell
  * it to update.
  *
@@ -3517,49 +3517,49 @@ export function freebuffPurchasesPausedAvailabilityLabel(): string {
  * V4 Flash in the week before, so it had no compatibility path left either.
  *
  * GPT-5.6 Luna is paused too but NOT here: paid requests still run it on
- * Freebuff's own Luna agents (`base2-free-luna` in a paid cost mode) and in
+ * Fuckbuff's own Luna agents (`base2-free-luna` in a paid cost mode) and in
  * paid lite mode, and this list refuses an agent bundled for a retired model
  * in every cost mode. Free admission refuses it as withdrawn.
  */
-export const FREEBUFF_RETIRED_MODEL_IDS: readonly string[] = [
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
-  FREEBUFF_GLM_V52_MODEL_ID,
-  FREEBUFF_OX_ALPHA_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
+export const FUCKBUFF_RETIRED_MODEL_IDS: readonly string[] = [
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
+  FUCKBUFF_GLM_V52_MODEL_ID,
+  FUCKBUFF_OX_ALPHA_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID,
 ]
 
-export function isFreebuffRetiredModelId(
+export function isFuckbuffRetiredModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return FREEBUFF_RETIRED_MODEL_IDS.some((modelId) =>
-    freebuffModelIdMatches(id, modelId),
+  return FUCKBUFF_RETIRED_MODEL_IDS.some((modelId) =>
+    fuckbuffModelIdMatches(id, modelId),
   )
 }
 
 /** What a retired model's request is told, in words every client renders. */
-export function freebuffRetiredModelMessage(id: string): string {
+export function fuckbuffRetiredModelMessage(id: string): string {
   const name =
-    SUPPORTED_FREEBUFF_MODELS.find((m) => freebuffModelIdMatches(id, m.id))
+    SUPPORTED_FUCKBUFF_MODELS.find((m) => fuckbuffModelIdMatches(id, m.id))
       ?.displayName ?? id
-  return `${name} is no longer available in Freebuff. Update to the latest version to keep coding: run \`npm install -g freebuff@latest\` for the CLI, or restart Freebuff Desktop to update it.`
+  return `${name} is no longer available in Fuckbuff. Update to the latest version to keep coding: run \`npm install -g fuckbuff@latest\` for the CLI, or restart Fuckbuff Desktop to update it.`
 }
 
 /** The same fact shaped to sit inside "<model> isn't available right now (…)",
  *  the sentence every released client builds from a `model_unavailable`
- *  admission refusal (see `freebuffWithdrawnModelAvailabilityLabel`). */
-export function freebuffRetiredModelAvailabilityLabel(): string {
-  return 'retired — update Freebuff to the latest version and pick another model to keep going'
+ *  admission refusal (see `fuckbuffWithdrawnModelAvailabilityLabel`). */
+export function fuckbuffRetiredModelAvailabilityLabel(): string {
+  return 'retired — update Fuckbuff to the latest version and pick another model to keep going'
 }
 
 /** Suffix-tolerant like the other model predicates, so a dated provider
  *  snapshot of a paused model cannot slip past the pause. */
-export function isFreebuffPausedFreeModelId(
+export function isFuckbuffPausedFreeModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return FREEBUFF_PAUSED_FREE_MODEL_IDS.some((modelId) =>
-    freebuffModelIdMatches(id, modelId),
+  return FUCKBUFF_PAUSED_FREE_MODEL_IDS.some((modelId) =>
+    fuckbuffModelIdMatches(id, modelId),
   )
 }
 
@@ -3577,91 +3577,91 @@ export function isFreebuffPausedFreeModelId(
 // This exists because these are frontier models we cannot afford to leave
 // standing open, and because the point of running them at all is the traces:
 // they are `dataUse: 'training'`, so every hour-long session lands in
-// chat_completion_traces (FREEBUFF_TRACED_MODEL_IDS).
+// chat_completion_traces (FUCKBUFF_TRACED_MODEL_IDS).
 // ---------------------------------------------------------------------------
 
 /** Models offered only while their shared global pool has sessions left. */
-export const FREEBUFF_LIMITED_OFFER_MODEL_IDS = [
-  FREEBUFF_FABLE_5_1_MODEL_ID,
+export const FUCKBUFF_LIMITED_OFFER_MODEL_IDS = [
+  FUCKBUFF_FABLE_5_1_MODEL_ID,
 ] as const
 
-export type FreebuffLimitedOfferModelId =
-  (typeof FREEBUFF_LIMITED_OFFER_MODEL_IDS)[number]
+export type FuckbuffLimitedOfferModelId =
+  (typeof FUCKBUFF_LIMITED_OFFER_MODEL_IDS)[number]
 
 /** Suffix-tolerant like the other model predicates, so a dated provider
  *  snapshot can't dodge the pool accounting. */
-export function isFreebuffLimitedOfferModelId(
+export function isFuckbuffLimitedOfferModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return FREEBUFF_LIMITED_OFFER_MODEL_IDS.some((modelId) =>
-    freebuffModelIdMatches(id, modelId),
+  return FUCKBUFF_LIMITED_OFFER_MODEL_IDS.some((modelId) =>
+    fuckbuffModelIdMatches(id, modelId),
   )
 }
 
 /** One admission per user for the entire campaign; early ends do not refund it. */
-export const FREEBUFF_LIMITED_OFFER_SESSION_LIMIT = 1
+export const FUCKBUFF_LIMITED_OFFER_SESSION_LIMIT = 1
 /** Hard ceiling for the Fable 5.1 trace campaign, even if an env value is larger. */
-export const FREEBUFF_LIMITED_OFFER_MAX_SESSIONS = 500
+export const FUCKBUFF_LIMITED_OFFER_MAX_SESSIONS = 500
 
-/** Freebuff Web-only picker/support set: the CLI/Desktop catalog plus the
+/** Fuckbuff Web-only picker/support set: the CLI/Desktop catalog plus the
  *  earned GLM 5.2 row. */
-export const FREEBUFF_WEB_MODELS = [
+export const FUCKBUFF_WEB_MODELS = [
   // Ox Alpha is gone from both browser pickers as of 2026-08-27. It reached
-  // this list only by spreading ...FREEBUFF_MODELS, and it left that list when
+  // this list only by spreading ...FUCKBUFF_MODELS, and it left that list when
   // its host ended the free promotion. Naming it here would put a PAUSED row
   // back in the picker without making it admissible — a visible row whose
   // first send is coerced away, which is the offer-without-gate shape
-  // common/src/testing/freebuff-offer-invariants.ts exists to catch.
-  // Muse Spark 1.2 is NOT in this list: it left FREEBUFF_MODELS on 2026-09-28
-  // and stays only in SUPPORTED_FREEBUFF_MODELS for released binaries.
-  // Gemini 3.8 Flash reaches this list by spreading FREEBUFF_MODELS since
+  // common/src/testing/fuckbuff-offer-invariants.ts exists to catch.
+  // Muse Spark 1.2 is NOT in this list: it left FUCKBUFF_MODELS on 2026-09-28
+  // and stays only in SUPPORTED_FUCKBUFF_MODELS for released binaries.
+  // Gemini 3.8 Flash reaches this list by spreading FUCKBUFF_MODELS since
   // 2026-09-21. It was named here alone while the paywall ran on Web alone;
   // naming it here too would now duplicate the row.
   // GLM 5.2 LEFT on 2026-08-31, when the reward it backed moved to GLM 5.3
-  // Flash and the row was withdrawn (FREEBUFF_PAUSED_FREE_MODEL_IDS). It
+  // Flash and the row was withdrawn (FUCKBUFF_PAUSED_FREE_MODEL_IDS). It
   // reached this list, and only this list, as the earned row the browser picker
   // rendered locked; there is nothing left for that row to unlock.
   //
   // Leaving it would be the offer-without-gate shape that
-  // common/src/testing/freebuff-offer-invariants.ts exists to catch — a visible
+  // common/src/testing/fuckbuff-offer-invariants.ts exists to catch — a visible
   // row whose first send is coerced away. Removing it is ALSO what keeps it out
-  // of FREEBUFF_STANDARD_MODEL_IDS, which is derived by filtering `!premium`
-  // over FREEBUFF_WEB_ALL_MODELS; the pause and this removal close the two
+  // of FUCKBUFF_STANDARD_MODEL_IDS, which is derived by filtering `!premium`
+  // over FUCKBUFF_WEB_ALL_MODELS; the pause and this removal close the two
   // halves of that door separately and both are needed.
-  ...FREEBUFF_MODELS,
-] as const satisfies readonly FreebuffModelOption[]
+  ...FUCKBUFF_MODELS,
+] as const satisfies readonly FuckbuffModelOption[]
 
-export const FREEBUFF_WEB_GOD_ONLY_MODELS = [
+export const FUCKBUFF_WEB_GOD_ONLY_MODELS = [
   KIMI_K3_ECO_MODEL,
   GPT_5_6_LUNA_ES_MODEL,
-] as const satisfies readonly FreebuffModelOption[]
+] as const satisfies readonly FuckbuffModelOption[]
 
-export const FREEBUFF_WEB_ALL_MODELS = [
-  ...FREEBUFF_WEB_GOD_ONLY_MODELS,
-  ...FREEBUFF_WEB_MODELS,
-] as const satisfies readonly FreebuffModelOption[]
+export const FUCKBUFF_WEB_ALL_MODELS = [
+  ...FUCKBUFF_WEB_GOD_ONLY_MODELS,
+  ...FUCKBUFF_WEB_MODELS,
+] as const satisfies readonly FuckbuffModelOption[]
 
-/** Derived rather than hand-listed: this is what isFreebuffWebGodOnlyModelId()
+/** Derived rather than hand-listed: this is what isFuckbuffWebGodOnlyModelId()
  *  checks to keep a god-only row off /api/live, /api/latency and the picker
  *  for a non-god user, and a hand-maintained second list can drift from
- *  FREEBUFF_WEB_GOD_ONLY_MODELS above without either failing to compile — the
- *  same shape FREEBUFF_ROOT_AGENT_IDS avoids relative to the base3 map. */
-export const FREEBUFF_WEB_GOD_ONLY_MODEL_IDS = Object.freeze(
-  FREEBUFF_WEB_GOD_ONLY_MODELS.map((model) => model.id),
+ *  FUCKBUFF_WEB_GOD_ONLY_MODELS above without either failing to compile — the
+ *  same shape FUCKBUFF_ROOT_AGENT_IDS avoids relative to the base3 map. */
+export const FUCKBUFF_WEB_GOD_ONLY_MODEL_IDS = Object.freeze(
+  FUCKBUFF_WEB_GOD_ONLY_MODELS.map((model) => model.id),
 )
 
 /**
  * Web/Cloud models the picker no longer offers, while the backend keeps
  * honoring them so a session already running on one finishes normally: the id
- * stays in FREEBUFF_WEB_MODELS and in whichever quota list meters it, because
+ * stays in FUCKBUFF_WEB_MODELS and in whichever quota list meters it, because
  * dropping a live session's model from the catalog fails admission mid-run and
  * dropping it from its quota list alone would leave it metered by NO pool.
  *
  * EMPTY BY DEFAULT, and the bar for adding to it is high.
  *
  * Hiding a row here is not a withdrawal — withdrawing a model is the pause
- * list's job (FREEBUFF_PAUSED_FREE_MODEL_IDS) or deletion. Two former
+ * list's job (FUCKBUFF_PAUSED_FREE_MODEL_IDS) or deletion. Two former
  * occupants, the CrofAI GLM 5.2 route (from 2026-07-30) and HY3 (since the
  * initial web rollout), were both deleted outright on 2026-08-04. Muse Spark
  * 1.2 sat here from 2026-09-02 until it went back into the pickers on
@@ -3672,16 +3672,16 @@ export const FREEBUFF_WEB_GOD_ONLY_MODEL_IDS = Object.freeze(
  * itself, and never for a model that costs real money or is entitlement-earned.
  * Then finish the removal.
  */
-export const FREEBUFF_WEB_RETIRED_PICKER_MODEL_IDS = [] as const
+export const FUCKBUFF_WEB_RETIRED_PICKER_MODEL_IDS = [] as const
 
 /** Whether the Web/Cloud picker should offer `id` as a new selection. False
- *  for retired routes (see FREEBUFF_WEB_RETIRED_PICKER_MODEL_IDS), which the
+ *  for retired routes (see FUCKBUFF_WEB_RETIRED_PICKER_MODEL_IDS), which the
  *  backend still serves for sessions already on them. */
-export function isFreebuffWebSelectableModelId(
+export function isFuckbuffWebSelectableModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return !FREEBUFF_WEB_RETIRED_PICKER_MODEL_IDS.some(
+  return !FUCKBUFF_WEB_RETIRED_PICKER_MODEL_IDS.some(
     (modelId) => modelId === id,
   )
 }
@@ -3689,12 +3689,12 @@ export function isFreebuffWebSelectableModelId(
 /** Models metered by the shared Web/Cloud premium pool. Public rows stay first
  *  for stable response ordering; Web-only rows derive from the same catalog
  *  metadata rather than a second entitlement list. */
-export const FREEBUFF_WEB_PREMIUM_MODEL_IDS = Object.freeze([
-  ...FREEBUFF_PREMIUM_MODEL_IDS,
-  ...FREEBUFF_WEB_ALL_MODELS.filter(
+export const FUCKBUFF_WEB_PREMIUM_MODEL_IDS = Object.freeze([
+  ...FUCKBUFF_PREMIUM_MODEL_IDS,
+  ...FUCKBUFF_WEB_ALL_MODELS.filter(
     (model) =>
       model.premium &&
-      !FREEBUFF_MODELS.some((publicModel) => publicModel.id === model.id),
+      !FUCKBUFF_MODELS.some((publicModel) => publicModel.id === model.id),
   ).map((model) => model.id),
   // Muse Spark 1.2 was named here from 2026-09-28 (out of every picker, so
   // nothing derived named it) until 2026-10-10, when both Muse Spark rows
@@ -3713,8 +3713,8 @@ export const FREEBUFF_WEB_PREMIUM_MODEL_IDS = Object.freeze([
  * was named after was removed; the list itself is unchanged and is now the
  * catalog invariant several tests assert against.
  */
-export const FREEBUFF_STANDARD_MODEL_IDS = Object.freeze(
-  FREEBUFF_WEB_ALL_MODELS.filter((model) => !model.premium).map(
+export const FUCKBUFF_STANDARD_MODEL_IDS = Object.freeze(
+  FUCKBUFF_WEB_ALL_MODELS.filter((model) => !model.premium).map(
     (model) => model.id,
   ),
 )
@@ -3727,7 +3727,7 @@ export const FREEBUFF_STANDARD_MODEL_IDS = Object.freeze(
  * 5.2 could be withdrawn from free mode entirely.
  *
  * LIMITED TIER ONLY, AND THAT IS THE WHOLE SHAPE OF THIS LIST. At full access
- * GLM 5.3 Flash is unmetered — it is in FREEBUFF_STANDARD_MODEL_IDS and is the
+ * GLM 5.3 Flash is unmetered — it is in FUCKBUFF_STANDARD_MODEL_IDS and is the
  * default pick on every surface — so "unlock GLM 5.3 Flash" would be a reward
  * for something the user already has. The full-access half of the reward is
  * therefore a different thing entirely: one EXTRA session in the shared daily
@@ -3744,40 +3744,40 @@ export const FREEBUFF_STANDARD_MODEL_IDS = Object.freeze(
  * `z-ai/glm` could never hand one model's entitlement to the other. That
  * hazard has not gone away just because the two swapped places.
  */
-export const FREEBUFF_REWARD_MODEL_ID = FREEBUFF_GLM_V53_FLASH_MODEL_ID
-export const FREEBUFF_REWARD_MODEL_IDS = [FREEBUFF_REWARD_MODEL_ID] as const
+export const FUCKBUFF_REWARD_MODEL_ID = FUCKBUFF_GLM_V53_FLASH_MODEL_ID
+export const FUCKBUFF_REWARD_MODEL_IDS = [FUCKBUFF_REWARD_MODEL_ID] as const
 
 /** What the reward model is CALLED, read off the catalog rather than written
  *  out, so the dozen-odd surfaces that say "you earned an X session" cannot
  *  drift from the model they actually unlock. Every one of them said "GLM 5.2"
  *  as a literal until 2026-08-31, which is why swapping the model meant editing
  *  copy in fourteen files. */
-export const FREEBUFF_REWARD_MODEL_DISPLAY_NAME: string =
-  SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === FREEBUFF_REWARD_MODEL_ID)
+export const FUCKBUFF_REWARD_MODEL_DISPLAY_NAME: string =
+  SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === FUCKBUFF_REWARD_MODEL_ID)
     ?.displayName ?? 'GLM 5.3 Flash'
 
 /** Wire headers for the free-mode session endpoints
  *  (/api/v1/freebuff/session). Shared so the server handlers and every client
  *  (CLI, desktop) agree on the exact strings instead of redefining literals. */
-export const FREEBUFF_INSTANCE_HEADER = 'x-freebuff-instance-id'
+export const FUCKBUFF_INSTANCE_HEADER = 'x-fuckbuff-instance-id'
 /** Reuse this exact live single-session instance; never buy or take over. */
-export const FREEBUFF_REUSE_INSTANCE_HEADER = 'x-freebuff-reuse-instance-id'
-export const FREEBUFF_MODEL_HEADER = 'x-freebuff-model'
+export const FUCKBUFF_REUSE_INSTANCE_HEADER = 'x-fuckbuff-reuse-instance-id'
+export const FUCKBUFF_MODEL_HEADER = 'x-fuckbuff-model'
 /** Marks a POST to the dedicated `/admission` route, which refuses one
  *  without it (older servers also read a wallet ceiling from its value; send
  *  `session`). Wallet consent itself is client-side. */
-export const FREEBUFF_WALLET_SPEND_LIMIT_HEADER =
-  'x-freebuff-wallet-spend-limit'
+export const FUCKBUFF_WALLET_SPEND_LIMIT_HEADER =
+  'x-fuckbuff-wallet-spend-limit'
 /** Dedicated routes fail closed on servers predating these guarantees. */
-export const FREEBUFF_SESSION_ADMISSION_PATH =
+export const FUCKBUFF_SESSION_ADMISSION_PATH =
   '/api/v1/freebuff/session/admission'
-export const FREEBUFF_SESSION_REUSE_PATH = '/api/v1/freebuff/session/reuse'
-export const FREEBUFF_SESSION_UNSUPPORTED_MESSAGE =
-  'This server cannot safely start or resume your session yet. Reload or update Freebuff and try again shortly. No purchase was made.'
-/** Server-to-server header; honoured only from the Freebuff Web service account. */
-export const FREEBUFF_ACTING_USER_HEADER = 'x-freebuff-acting-user-id'
-/** Server-to-server header; honoured only from the Freebuff Web service account. */
-export const FREEBUFF_PRIVILEGED_USER_HEADER = 'x-freebuff-privileged-user'
+export const FUCKBUFF_SESSION_REUSE_PATH = '/api/v1/freebuff/session/reuse'
+export const FUCKBUFF_SESSION_UNSUPPORTED_MESSAGE =
+  'This server cannot safely start or resume your session yet. Reload or update Fuckbuff and try again shortly. No purchase was made.'
+/** Server-to-server header; honoured only from the Fuckbuff Web service account. */
+export const FUCKBUFF_ACTING_USER_HEADER = 'x-fuckbuff-acting-user-id'
+/** Server-to-server header; honoured only from the Fuckbuff Web service account. */
+export const FUCKBUFF_PRIVILEGED_USER_HEADER = 'x-fuckbuff-privileged-user'
 /**
  * The house-ad click id (`bfcid`) lifted out of its first-party freebuff.com
  * cookie and carried to the Stripe checkout route on codebuff.com, which
@@ -3789,33 +3789,33 @@ export const FREEBUFF_PRIVILEGED_USER_HEADER = 'x-freebuff-privileged-user'
  * yields `400 invalid_click_id` and a stolen one can only credit the campaign
  * that already earned the click.
  */
-export const FREEBUFF_AD_CLICK_ID_HEADER = 'x-freebuff-bfcid'
+export const FUCKBUFF_AD_CLICK_ID_HEADER = 'x-fuckbuff-bfcid'
 /** The first-party cookie the hosted conversion tag banks a click id in. Same
  *  name the tag itself writes; read server-side at checkout. */
-export const FREEBUFF_AD_CLICK_ID_COOKIE = 'bfcid'
-/** Trusted Freebuff Web/Cloud session-proxy hint: also resolve the GLM referral
+export const FUCKBUFF_AD_CLICK_ID_COOKIE = 'bfcid'
+/** Trusted Fuckbuff Web/Cloud session-proxy hint: also resolve the GLM referral
  * pool, which costs a query of its own. Set by the surfaces that render a GLM
  * row. The name is historical — every other pool is now sent unconditionally —
  * but the string stays as-is so installed clients keep working. */
-export const FREEBUFF_INCLUDE_UNUSED_RATE_LIMITS_HEADER =
-  'x-freebuff-include-unused-rate-limits'
+export const FUCKBUFF_INCLUDE_UNUSED_RATE_LIMITS_HEADER =
+  'x-fuckbuff-include-unused-rate-limits'
 /** Set by the CLI on its recurring active-session poll. The response keeps the
  *  authoritative session state but omits quota snapshots the CLI already has
  *  and does not need for its countdown. */
-export const FREEBUFF_COMPACT_SESSION_HEADER = 'x-freebuff-compact-session'
-/** Set to '1' by Freebuff Desktop to opt into multi-session mode (concurrent
+export const FUCKBUFF_COMPACT_SESSION_HEADER = 'x-fuckbuff-compact-session'
+/** Set to '1' by Fuckbuff Desktop to opt into multi-session mode (concurrent
  *  per-tab sessions); absent for CLI/web, which keep one session per user. */
-export const FREEBUFF_MULTI_SESSION_HEADER = 'x-freebuff-multi-session'
+export const FUCKBUFF_MULTI_SESSION_HEADER = 'x-fuckbuff-multi-session'
 /** Set to '1' on a per-instance GET /session to mark it as a liveness beat: the
  *  client is telling the server this tab is still there. Only a beat writes the
  *  row's `last_seen_at`, and only a row with a `last_seen_at` can give up its
  *  concurrency slot for going quiet — so a client that never beats keeps the
  *  `expires_at`-only rule and is never dropped mid-window. */
-export const FREEBUFF_HEARTBEAT_HEADER = 'x-freebuff-heartbeat'
+export const FUCKBUFF_HEARTBEAT_HEADER = 'x-fuckbuff-heartbeat'
 /** How often a beating client re-beats. The server's liveness TTL is a multiple
  *  of this (several missed beats), so a brief network blip never costs a live
  *  tab its slot. */
-export const FREEBUFF_SESSION_HEARTBEAT_INTERVAL_MS = 45_000
+export const FUCKBUFF_SESSION_HEARTBEAT_INTERVAL_MS = 45_000
 /** Set on POST /session to the instance id of the single-slot holder the caller
  *  was just told about, meaning "end that tab's session and give me the slot"
  *  (Desktop's "Use it here"). Liveness covers a holder that stopped beating, but
@@ -3826,14 +3826,14 @@ export const FREEBUFF_SESSION_HEARTBEAT_INTERVAL_MS = 45_000
  *  It names a holder rather than saying "take whatever is there": the server
  *  only honors it when it still matches the holder the rejection identified, so
  *  a click on a stale card can never end a tab the user was never shown. */
-export const FREEBUFF_TAKEOVER_INSTANCE_HEADER =
-  'x-freebuff-takeover-instance-id'
+export const FUCKBUFF_TAKEOVER_INSTANCE_HEADER =
+  'x-fuckbuff-takeover-instance-id'
 /** Drain window after a session's `expires_at`: the gate still serves an
  *  in-flight agent run, but no new prompt should start. Shared because the
  *  client has to know it too — a tab keeps beating until its row is past this,
  *  which is what lets the server tell a run that is finishing from a tab that
  *  died. Server-side accessor: `getSessionGraceMs()`. */
-export const FREEBUFF_SESSION_GRACE_MS = 30 * 60 * 1000
+export const FUCKBUFF_SESSION_GRACE_MS = 30 * 60 * 1000
 
 /** How long a Desktop tab may hold its session with nothing running before the
  *  app gives the slot back.
@@ -3857,8 +3857,8 @@ export const FREEBUFF_SESSION_GRACE_MS = 30 * 60 * 1000
  *  prompt. Only a turn keeps the clock alive — scrolling and typing are
  *  invisible to the server half — so it is deliberately several times longer
  *  than it would need to be if it could see the user. */
-export const FREEBUFF_WEB_MULTIMODAL_MODEL_IDS = Object.freeze(
-  FREEBUFF_WEB_ALL_MODELS.filter((model) => model.multimodal).map(
+export const FUCKBUFF_WEB_MULTIMODAL_MODEL_IDS = Object.freeze(
+  FUCKBUFF_WEB_ALL_MODELS.filter((model) => model.multimodal).map(
     (model) => model.id,
   ),
 )
@@ -3880,27 +3880,27 @@ export const FREEBUFF_WEB_MULTIMODAL_MODEL_IDS = Object.freeze(
  *
  * Delete an entry here to start tracing that row; that is the whole switch.
  */
-const FREEBUFF_UNTRACED_TRAINING_MODEL_IDS: readonly string[] = [
-  ...FREEBUFF_MUSE_SPARK_MODEL_IDS,
+const FUCKBUFF_UNTRACED_TRAINING_MODEL_IDS: readonly string[] = [
+  ...FUCKBUFF_MUSE_SPARK_MODEL_IDS,
 ]
 
 /** Free-mode models whose chat-completion traces we store in our own dataset
  *  (chat_completion_traces). Derived from machine-readable data-use metadata;
  *  UI wording can change without changing retention behavior. */
-export const FREEBUFF_TRACED_MODEL_IDS = SUPPORTED_FREEBUFF_MODELS.filter(
-  (model: FreebuffModelOption) =>
+export const FUCKBUFF_TRACED_MODEL_IDS = SUPPORTED_FUCKBUFF_MODELS.filter(
+  (model: FuckbuffModelOption) =>
     model.dataUse === 'training' &&
-    !FREEBUFF_UNTRACED_TRAINING_MODEL_IDS.some((id) => id === model.id),
+    !FUCKBUFF_UNTRACED_TRAINING_MODEL_IDS.some((id) => id === model.id),
 ).map((model) => model.id)
 
-export type FreebuffModelId = (typeof FREEBUFF_MODELS)[number]['id']
-export type SupportedFreebuffModelId =
-  (typeof SUPPORTED_FREEBUFF_MODELS)[number]['id']
-export type FreebuffWebModelId = (typeof FREEBUFF_WEB_ALL_MODELS)[number]['id']
+export type FuckbuffModelId = (typeof FUCKBUFF_MODELS)[number]['id']
+export type SupportedFuckbuffModelId =
+  (typeof SUPPORTED_FUCKBUFF_MODELS)[number]['id']
+export type FuckbuffWebModelId = (typeof FUCKBUFF_WEB_ALL_MODELS)[number]['id']
 
 /** A new CLI user's selection until a session response moves it to Balanced,
  *  and the model the picker's "RECOMMENDED" hero opens on; Desktop starts on
- *  freebuffAppDefaultModelIds and falls back to this. DeepSeek V4.1 Flash as of
+ *  fuckbuffAppDefaultModelIds and falls back to this. DeepSeek V4.1 Flash as of
  *  2026-09-02 (unmetered on the Luminal lane; it carries the AI-training
  *  notice, and it is also the limited tier's default). The paragraphs below
  *  were written for the GLM 5.3 Flash default of 2026-08-30 and still hold.
@@ -3908,8 +3908,8 @@ export type FreebuffWebModelId = (typeof FREEBUFF_WEB_ALL_MODELS)[number]['id']
  *  THE FIRST DEFAULT SINCE 2026-08-18 THAT IS NOT PREMIUM, and that is the
  *  substantive change rather than a detail. Every default in between drew on the
  *  shared daily pool, which made a step-down mandatory for anything holding a
- *  live quota — getRecommendedFreebuffModelId's `premiumExhausted`, Desktop's
- *  availableFreebuffDefault — because otherwise the recommended pick became a
+ *  live quota — getRecommendedFuckbuffModelId's `premiumExhausted`, Desktop's
+ *  availableFuckbuffDefault — because otherwise the recommended pick became a
  *  model whose next send fails admission. That machinery all still exists and
  *  still serves the limited tier, but it is no longer load-bearing here: this
  *  row is unmetered and uncapped, so a new user's first send cannot fail for
@@ -3922,8 +3922,8 @@ export type FreebuffWebModelId = (typeof FREEBUFF_WEB_ALL_MODELS)[number]['id']
  *  the wire; since 2026-08-31 it is pinned to `high` (see
  *  GLM_V53_FLASH_REASONING_EFFORTS for why) and that gap is closed.
  *
- *  Still three separate constants: this one, DEFAULT_FREEBUFF_WEB_MODEL_ID and
- *  FALLBACK_FREEBUFF_MODEL_ID (what callers needing a guaranteed-available id
+ *  Still three separate constants: this one, DEFAULT_FUCKBUFF_WEB_MODEL_ID and
+ *  FALLBACK_FUCKBUFF_MODEL_ID (what callers needing a guaranteed-available id
  *  for resolution / auto-fallbacks should use). The first two name the same
  *  model today and have diverged before; the third is genuinely a different
  *  model rather than the same one under two names.
@@ -3934,25 +3934,25 @@ export type FreebuffWebModelId = (typeof FREEBUFF_WEB_ALL_MODELS)[number]['id']
  *  longer one to render on the default row. */
 //
 // MiMo 2.6 Flash since 2026-09-30 (product call), on every surface and tier:
-// DEFAULT_FREEBUFF_WEB_MODEL_ID and LIMITED_FREEBUFF_HERO_MODEL_ID moved with
-// it. Only the RECOMMENDATION moved. PREVIOUS_DEFAULT_FREEBUFF_MODEL_ID and
-// FREEBUFF_DEFAULT_MODEL_MIGRATION_ID were deliberately NOT bumped, so no saved
+// DEFAULT_FUCKBUFF_WEB_MODEL_ID and LIMITED_FUCKBUFF_HERO_MODEL_ID moved with
+// it. Only the RECOMMENDATION moved. PREVIOUS_DEFAULT_FUCKBUFF_MODEL_ID and
+// FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID were deliberately NOT bumped, so no saved
 // GLM pick is rewritten: MiMo is 10 Freebucks an hour to GLM's 5, and moving
 // an inherited GLM pick onto it would silently halve that user's hours.
-export const DEFAULT_FREEBUFF_MODEL_ID: FreebuffModelId =
-  FREEBUFF_MIMO_V25_MODEL_ID
+export const DEFAULT_FUCKBUFF_MODEL_ID: FuckbuffModelId =
+  FUCKBUFF_MIMO_V25_MODEL_ID
 
 /** The default this one replaced, and the stamp of the one-time move of saved
- *  picks off it (util/freebuff-default-model-migration.ts). Every surface
+ *  picks off it (util/fuckbuff-default-model-migration.ts). Every surface
  *  persists the model a session ran on, so a saved old default is usually
  *  inherited, not chosen. Bump both together at the next flip. */
-export const PREVIOUS_DEFAULT_FREEBUFF_MODEL_ID: FreebuffModelId =
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
-export const FREEBUFF_DEFAULT_MODEL_MIGRATION_ID = 'glm-5.3-flash-2026-09-05'
+export const PREVIOUS_DEFAULT_FUCKBUFF_MODEL_ID: FuckbuffModelId =
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
+export const FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID = 'glm-5.3-flash-2026-09-05'
 
-/** What new Freebuff Web/Cloud users see selected in the browser pickers, and
+/** What new Fuckbuff Web/Cloud users see selected in the browser pickers, and
  *  the model a new Cloud thread starts on. DeepSeek V4.1 Flash as of
- *  2026-09-02, moving with DEFAULT_FREEBUFF_MODEL_ID rather than independently.
+ *  2026-09-02, moving with DEFAULT_FUCKBUFF_MODEL_ID rather than independently.
  *
  *  The browser surfaces are where this default matters most and where the trade
  *  cuts both ways hardest. A browser build is one long agentic run against a
@@ -3963,7 +3963,7 @@ export const FREEBUFF_DEFAULT_MODEL_MIGRATION_ID = 'glm-5.3-flash-2026-09-05'
  *
  *  Against that: browser turns re-send their whole prefix every step, so these
  *  surfaces are the most latency-sensitive we have, and preparation already
- *  costs ~6.3s at p50 before a token (docs/freebuff-ttft-deferred-vm.md). The
+ *  costs ~6.3s at p50 before a token (docs/fuckbuff-ttft-deferred-vm.md). The
  *  deep default this comment expected to have to walk back HAS been walked back
  *  — the row was pinned to `high` on 2026-08-31, for looping rather than for
  *  latency (see GLM_V53_FLASH_REASONING_EFFORTS) — so the per-step reasoning
@@ -3976,12 +3976,12 @@ export const FREEBUFF_DEFAULT_MODEL_MIGRATION_ID = 'glm-5.3-flash-2026-09-05'
  *  message on the traffic that actually runs it bills an order of magnitude
  *  LESS than Luna (figures in the internal cost notes, not here).
  *
- *  Kept as its own constant from DEFAULT_FREEBUFF_MODEL_ID (CLI/Desktop) so the
+ *  Kept as its own constant from DEFAULT_FUCKBUFF_MODEL_ID (CLI/Desktop) so the
  *  browser surfaces can steer independently. They name the same model today and
  *  diverged as recently as 2026-08-04 -> 2026-08-12. */
-// MiMo 2.6 Flash since 2026-09-30, with DEFAULT_FREEBUFF_MODEL_ID.
-export const DEFAULT_FREEBUFF_WEB_MODEL_ID: FreebuffWebModelId =
-  FREEBUFF_MIMO_V25_MODEL_ID
+// MiMo 2.6 Flash since 2026-09-30, with DEFAULT_FUCKBUFF_MODEL_ID.
+export const DEFAULT_FUCKBUFF_WEB_MODEL_ID: FuckbuffWebModelId =
+  FUCKBUFF_MIMO_V25_MODEL_ID
 
 /** Premium models the Web/Cloud picker renders small and muted: they are
  *  materially more expensive per token than the recommended default without
@@ -4023,21 +4023,21 @@ export const DEFAULT_FREEBUFF_WEB_MODEL_ID: FreebuffWebModelId =
  *  product-steering decision and the repricing alone should not silently flip
  *  it. But the numbers that justified both no longer say what they said; this
  *  is the note for whoever revisits it. */
-export const FREEBUFF_WEB_DEEMPHASIZED_MODEL_IDS: readonly FreebuffModelId[] =
+export const FUCKBUFF_WEB_DEEMPHASIZED_MODEL_IDS: readonly FuckbuffModelId[] =
   []
 
-export function isFreebuffWebDeemphasizedModelId(
+export function isFuckbuffWebDeemphasizedModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return FREEBUFF_WEB_DEEMPHASIZED_MODEL_IDS.some((modelId) =>
-    freebuffModelIdMatches(id, modelId),
+  return FUCKBUFF_WEB_DEEMPHASIZED_MODEL_IDS.some((modelId) =>
+    fuckbuffModelIdMatches(id, modelId),
   )
 }
 
 /** Always-available fallback used when the requested model can't be served
  *  right now (unknown id, deployment hours closed, premium pool spent). Kept
- *  distinct from DEFAULT_FREEBUFF_MODEL_ID so a new user's "preferred default"
+ *  distinct from DEFAULT_FUCKBUFF_MODEL_ID so a new user's "preferred default"
  *  can be the smartest model without auto-flipping anyone to a closed
  *  serverless model.
  *
@@ -4050,16 +4050,16 @@ export function isFreebuffWebDeemphasizedModelId(
  *
  *  MiMo 2.5, the cheapest row we serve, which is what the token-heavy Cloud
  *  planner and build paths reading this want. A separate constant from
- *  LIMITED_FREEBUFF_MODEL_ID (the limited hero) on purpose. */
-export const FALLBACK_FREEBUFF_MODEL_ID: FreebuffModelId =
-  FREEBUFF_MIMO_V25_MODEL_ID
+ *  LIMITED_FUCKBUFF_MODEL_ID (the limited hero) on purpose. */
+export const FALLBACK_FUCKBUFF_MODEL_ID: FuckbuffModelId =
+  FUCKBUFF_MIMO_V25_MODEL_ID
 
 /** The limited tier's hero, and the model an out-of-tier or stale pick is
  *  coerced to. The same row as the full-access default since 2026-09-02. */
 // Since 2026-09-07 this is the COERCION TARGET and no longer the hero: the
 // row an out-of-tier or stale pick is rewritten to, and the row a limited
 // session is substituted onto. The hero — what the picker leads with and
-// Enter lands on — is LIMITED_FREEBUFF_HERO_MODEL_ID below. They were one
+// Enter lands on — is LIMITED_FUCKBUFF_HERO_MODEL_ID below. They were one
 // constant until then; splitting them is what lets the limited tier
 // recommend GLM 5.3 Flash while keeping a coercion target that is joinable
 // with NO meter, NO grant and NO plan.
@@ -4072,8 +4072,8 @@ export const FALLBACK_FREEBUFF_MODEL_ID: FreebuffModelId =
 // rollback for Freebucks, and a rollback must not turn every coerced limited
 // pick into a refusal. DeepSeek V4 Flash stays here because it is joinable
 // under every configuration this server can be in.
-export const LIMITED_FREEBUFF_MODEL_ID: FreebuffModelId =
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
+export const LIMITED_FUCKBUFF_MODEL_ID: FuckbuffModelId =
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
 /** The limited tier's HERO — the row its pickers lead with and recommend —
  *  as distinct from the coercion target above. GLM 5.3 Flash since
  *  2026-09-07: it is the cheapest row we serve (well under DeepSeek V4 Flash
@@ -4082,10 +4082,10 @@ export const LIMITED_FREEBUFF_MODEL_ID: FreebuffModelId =
  *  Reachable at limited access because every account is on the meter; if the
  *  meter is ever rolled back, every picker already repairs a locked hero onto
  *  the next joinable row (the CLI's grid repair, Desktop's `canStart` filter),
- *  and the server coerces onto LIMITED_FREEBUFF_MODEL_ID, never onto this. */
-// MiMo 2.6 Flash since 2026-09-30, with DEFAULT_FREEBUFF_MODEL_ID.
-export const LIMITED_FREEBUFF_HERO_MODEL_ID: FreebuffModelId =
-  FREEBUFF_MIMO_V25_MODEL_ID
+ *  and the server coerces onto LIMITED_FUCKBUFF_MODEL_ID, never onto this. */
+// MiMo 2.6 Flash since 2026-09-30, with DEFAULT_FUCKBUFF_MODEL_ID.
+export const LIMITED_FUCKBUFF_HERO_MODEL_ID: FuckbuffModelId =
+  FUCKBUFF_MIMO_V25_MODEL_ID
 /**
  * The limited tier's catalog, hero first — the ONE owner of which models are
  * limited-tier: the web geo-exempt list, the quota pool, and chat's list all
@@ -4095,57 +4095,57 @@ export const LIMITED_FREEBUFF_HERO_MODEL_ID: FreebuffModelId =
  * the chat gate must substitute rather than refuse (#1801).
  */
 // Ox Alpha joined the limited tier on 2026-08-24 and LEFT it on 2026-08-27,
-// when its host ended the free promotion (FREEBUFF_PAUSED_FREE_MODEL_IDS).
+// when its host ended the free promotion (FUCKBUFF_PAUSED_FREE_MODEL_IDS).
 // Limited access is metered by REGION rather than by model, so this narrows
 // what those users may pick without changing how much they get.
 //
 // Removing it here is not what stops it being served — the pause is — but this
-// list is mapped over SUPPORTED_FREEBUFF_MODELS to build
-// LIMITED_FREEBUFF_MODELS, which reaches the CLI picker, the home FAQ and the
+// list is mapped over SUPPORTED_FUCKBUFF_MODELS to build
+// LIMITED_FUCKBUFF_MODELS, which reaches the CLI picker, the home FAQ and the
 // README. Leaving it would advertise a row nothing may admit.
 //
-// It left FREEBUFF_WEB_GEO_EXEMPT_MODEL_IDS in the same change, so the two
+// It left FUCKBUFF_WEB_GEO_EXEMPT_MODEL_IDS in the same change, so the two
 // limited catalogs still agree for this row.
 //
 // Solar Pro 4 joined on 2026-09-03. Limited access is still metered by the
 // regional pool, so this widens the catalog without making that tier unmetered.
 // Solar Mini 4 took its place on 2026-09-23, as it did in every picker.
-export const LIMITED_FREEBUFF_MODEL_IDS = [
-  // Hero first (LIMITED_FREEBUFF_HERO_MODEL_ID). MiMo 2.6 Flash since
+export const LIMITED_FUCKBUFF_MODEL_IDS = [
+  // Hero first (LIMITED_FUCKBUFF_HERO_MODEL_ID). MiMo 2.6 Flash since
   // 2026-09-30 (GLM 5.3 Flash 2026-09-07 to then) — see
-  // LIMITED_FREEBUFF_MODEL_ID for why the coercion target is a different row.
-  FREEBUFF_MIMO_V25_MODEL_ID,
-  FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  ...(FREEBUFF_SOLAR_MINI_4_ENTITLEMENT.limitedAccess
-    ? [FREEBUFF_SOLAR_MINI_4_ENTITLEMENT.modelId]
+  // LIMITED_FUCKBUFF_MODEL_ID for why the coercion target is a different row.
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+  FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  ...(FUCKBUFF_SOLAR_MINI_4_ENTITLEMENT.limitedAccess
+    ? [FUCKBUFF_SOLAR_MINI_4_ENTITLEMENT.modelId]
     : []),
-  ...(FREEBUFF_SOLAR_PRO_4_ENTITLEMENT.limitedAccess
-    ? [FREEBUFF_SOLAR_PRO_4_ENTITLEMENT.modelId]
+  ...(FUCKBUFF_SOLAR_PRO_4_ENTITLEMENT.limitedAccess
+    ? [FUCKBUFF_SOLAR_PRO_4_ENTITLEMENT.modelId]
     : []),
   // Space Bunny Alpha sat here from 2026-10-01 until its withdrawal on
-  // 2026-10-06 (FREEBUFF_PAUSED_FREE_MODEL_IDS).
+  // 2026-10-06 (FUCKBUFF_PAUSED_FREE_MODEL_IDS).
 ] as const
-export const LIMITED_FREEBUFF_MODELS = LIMITED_FREEBUFF_MODEL_IDS.map(
-  (modelId) => SUPPORTED_FREEBUFF_MODELS.find((model) => model.id === modelId)!,
+export const LIMITED_FUCKBUFF_MODELS = LIMITED_FUCKBUFF_MODEL_IDS.map(
+  (modelId) => SUPPORTED_FUCKBUFF_MODELS.find((model) => model.id === modelId)!,
 )
 
 /** The `session_model_mismatch` message for a limited-tier caller naming a
  *  model the tier cannot run; derived so it cannot lag the catalog again. */
-export const LIMITED_FREEBUFF_MODEL_MISMATCH_MESSAGE = `Limited free access is only available with ${LIMITED_FREEBUFF_MODELS.map(
+export const LIMITED_FUCKBUFF_MODEL_MISMATCH_MESSAGE = `Limited free access is only available with ${LIMITED_FUCKBUFF_MODELS.map(
   (model) => model.displayName,
 ).join(' or ')}.`
 
-/** Access tier carried in the Freebuff Web Convex JWT. Extends the CLI tier
+/** Access tier carried in the Fuckbuff Web Convex JWT. Extends the CLI tier
  *  with 'blocked': the app still loads, but every agent send is rejected
  *  server-side. */
-export type FreebuffWebAccessTier = FreebuffAccessTier | 'blocked'
+export type FuckbuffWebAccessTier = FuckbuffAccessTier | 'blocked'
 
 /** How many of a user's projects may have an agent RUNNING at the same time on
- *  Freebuff Web/Cloud. Past the cap the take-over prompt appears, and taking
+ *  Fuckbuff Web/Cloud. Past the cap the take-over prompt appears, and taking
  *  over stops only the longest-idle run.
  *
- *  STILL 1 — and raising it is a one-line change here ONLY once Freebuff Web is
+ *  STILL 1 — and raising it is a one-line change here ONLY once Fuckbuff Web is
  *  on the per-tab (multi-session) free-session store. On the single-session
  *  store the web surface uses today, `admitOrTakeOver` rotates
  *  `active_instance_id` on EVERY `requestSession`, including a same-model live
@@ -4154,15 +4154,15 @@ export type FreebuffWebAccessTier = FreebuffAccessTier | 'blocked'
  *  its next completions call with `session_superseded` — concurrency that
  *  silently kills the run the user is watching. Desktop already runs concurrent
  *  per-tab sessions via `requestSession({ multiSession, instanceId })`; wiring
- *  Web to the same path (session request header + `freebuff_multi_session` in
+ *  Web to the same path (session request header + `fuckbuff_multi_session` in
  *  the runner's `codebuff_metadata`) is what unblocks 2.
  *
  *  Everything else is already cap-agnostic: rows are per (user, project) and
  *  only `agent_running` ones count, so opening or reading a second project is
  *  free at any cap — that part shipped 2026-08-12. */
-export const FREEBUFF_MAX_CONCURRENT_PROJECTS = 1
+export const FUCKBUFF_MAX_CONCURRENT_PROJECTS = 1
 
-/** Backstop on project creation for outer-region (limited-tier) Freebuff
+/** Backstop on project creation for outer-region (limited-tier) Fuckbuff
  *  Web users. A project the user still has consumes one slot — creations that
  *  failed and were rolled back do not, so a bad creation never costs quota.
  *  The quota resets at midnight Pacific time.
@@ -4179,10 +4179,10 @@ export const FREEBUFF_MAX_CONCURRENT_PROJECTS = 1
  *  binds only a small tail of accounts, so this bounds the worst case rather
  *  than reclaiming capacity; the routing change that moved limited-region
  *  desktops to Nodepod is what actually moved the number. (measured figures:
- *  freebuff-models.knowledge.md)
+ *  fuckbuff-models.knowledge.md)
  *
- *  Override per deployment with FREEBUFF_WEB_PROJECT_DAILY_LIMIT. */
-export const FREEBUFF_WEB_PROJECT_DAILY_LIMIT = 5
+ *  Override per deployment with FUCKBUFF_WEB_PROJECT_DAILY_LIMIT. */
+export const FUCKBUFF_WEB_PROJECT_DAILY_LIMIT = 5
 
 /** How many of a user's sandboxes may be running at once. A sandbox counts as
  *  open while its project has an agent run in flight or has proven presence
@@ -4192,14 +4192,14 @@ export const FREEBUFF_WEB_PROJECT_DAILY_LIMIT = 5
  *  holding on 2026-08-19, so it binds nobody today and only stops that number
  *  growing.
  *
- *  Override per deployment with FREEBUFF_WEB_MAX_OPEN_SANDBOXES. */
-export const FREEBUFF_WEB_MAX_OPEN_SANDBOXES = 2
+ *  Override per deployment with FUCKBUFF_WEB_MAX_OPEN_SANDBOXES. */
+export const FUCKBUFF_WEB_MAX_OPEN_SANDBOXES = 2
 
 /** Per-day cap on blank ("plan a custom stack") Cloud projects, which unlike
  *  connect-repo need no GitHub App install and each boot a full-size VM. Same
  *  backstop role — and the same rollback exemption — as the web limit above.
  *  Resets at midnight Pacific time. */
-export const FREEBUFF_CLOUD_BLANK_PROJECT_DAILY_LIMIT = 10
+export const FUCKBUFF_CLOUD_BLANK_PROJECT_DAILY_LIMIT = 10
 
 /** Per-project ceiling on custom-stack planner turns.
  *
@@ -4215,14 +4215,14 @@ export const FREEBUFF_CLOUD_BLANK_PROJECT_DAILY_LIMIT = 10
  * Only planning turns count. "Start building" is a separate mutation, so a user
  * who exhausts the cap with a finished plan can still build — they just cannot
  * keep chatting. */
-export const FREEBUFF_CLOUD_PLANNER_TURN_LIMIT = 12
+export const FUCKBUFF_CLOUD_PLANNER_TURN_LIMIT = 12
 
 /**
- * Models available to limited-region Freebuff Web users.
+ * Models available to limited-region Fuckbuff Web users.
  *
  * **Widened 2026-09-04 to the whole Web free catalog except the rows a plan
  * unlocks at limited access.**
- * It used to alias `LIMITED_FREEBUFF_MODEL_IDS` (Flash, MiMo, Solar), which
+ * It used to alias `LIMITED_FUCKBUFF_MODEL_IDS` (Flash, MiMo, Solar), which
  * left limited regions without the CHEAPEST row we serve — GLM 5.3 Flash at 5
  * Freebucks an hour, a third of the Flash price — so the tier that can least
  * afford a session was also the one barred from the cheap one.
@@ -4232,25 +4232,25 @@ export const FREEBUFF_CLOUD_PLANNER_TURN_LIMIT = 12
  *
  * Luna is the deliberate full-access exception: it stays plan-gated only at
  * the limited tier
- * (`isFreebuffSubscriptionModelIdForAccessTier` admits it only with a live
+ * (`isFuckbuffSubscriptionModelIdForAccessTier` admits it only with a live
  * paid plan there), while a full-access account may spend its ordinary premium
  * allowance on it. The Web picker lists it locked at limited access rather
  * than hiding it, so the row is an offer instead of an absence.
  *
- * Its own name, and NOT `LIMITED_FREEBUFF_MODEL_IDS`, because this is a
+ * Its own name, and NOT `LIMITED_FUCKBUFF_MODEL_IDS`, because this is a
  * broader browser catalog: CLI/Desktop also offer GLM 5.3 Flash, while
  * the other additions remain browser-only. Admission
- * (`isFreebuffSessionModelAllowedForAccessTier`) reads both limited lists,
+ * (`isFuckbuffSessionModelAllowedForAccessTier`) reads both limited lists,
  * since one shared admission path serves every surface; the limited pool
  * meters by tier rather than by model.
  */
 /**
  * Model ids only a PAID session may open.
  *
- * Defined in the CATALOG rather than in freebuff-subscriptions.ts, which is
- * where it is published from as `FREEBUFF_SUBSCRIPTION_PRO_MODEL_IDS` and where
+ * Defined in the CATALOG rather than in fuckbuff-subscriptions.ts, which is
+ * where it is published from as `FUCKBUFF_SUBSCRIPTION_PRO_MODEL_IDS` and where
  * its policy is documented. It lives here because this file needs it and
- * cannot import that one — freebuff-subscriptions.ts already imports this
+ * cannot import that one — fuckbuff-subscriptions.ts already imports this
  * module, so the dependency only runs one way.
  *
  * The limited-tier plan-only set below extends this one. Defining the global
@@ -4258,19 +4258,19 @@ export const FREEBUFF_CLOUD_PLANNER_TURN_LIMIT = 12
  * without making Luna globally Pro-only just because it has the narrower
  * limited-tier restriction.
  */
-export const FREEBUFF_PRO_ONLY_CATALOG_MODEL_IDS: readonly string[] =
+export const FUCKBUFF_PRO_ONLY_CATALOG_MODEL_IDS: readonly string[] =
   Object.freeze([
-    FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
+    FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
     // GPT-6.1 Sol (2026-09-29) and Gemini 4 Argon (2026-10-13): paid-only on
-    // every surface OUTSIDE THE US — FREEBUFF_US_OR_PAID_MODEL_IDS is the
+    // every surface OUTSIDE THE US — FUCKBUFF_US_OR_PAID_MODEL_IDS is the
     // exemption.
-    FREEBUFF_GPT_61_SOL_MODEL_ID,
-    FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
+    FUCKBUFF_GPT_61_SOL_MODEL_ID,
+    FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
     // Muse Spark 1.3 (and 1.2 with it) was paid-only on every surface from
     // 2026-09-28 and LEFT this list on 2026-10-09, by product decision, on
     // MiMo 2.6 Pro's and Luna's terms below: open to every full-access
     // account at 15 Freebucks, plan-only at limited access
-    // (FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS). Re-locking it for everyone
+    // (FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS). Re-locking it for everyone
     // is a one-line move back here and in the every-surface list, or without a
     // deploy a `locked` full-access entry in the server model catalog.
     //
@@ -4278,38 +4278,38 @@ export const FREEBUFF_PRO_ONLY_CATALOG_MODEL_IDS: readonly string[] =
     // decision: every FULL-ACCESS account opens them with no plan (metered in
     // Freebucks at their own prices). They were paid-only from 2026-09-21, and
     // open to US viewers without a plan from 2026-09-22 (the retired
-    // FREEBUFF_US_OR_PAID_MODEL_IDS exemption). At LIMITED access they are
-    // still plan-only — FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS below.
+    // FUCKBUFF_US_OR_PAID_MODEL_IDS exemption). At LIMITED access they are
+    // still plan-only — FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS below.
   ])
 
 /**
  * Pro-only rows whose paywall is enforced on CLI and Desktop too, not only on
- * Freebuff Web (FREEBUFF_PRO_ENFORCED_SURFACES).
+ * Fuckbuff Web (FUCKBUFF_PRO_ENFORCED_SURFACES).
  *
- * Gemini 3.8 Flash has been in the CLI/Desktop catalog (FREEBUFF_MODELS) since
+ * Gemini 3.8 Flash has been in the CLI/Desktop catalog (FUCKBUFF_MODELS) since
  * 2026-09-21. Two things carry the gate on those surfaces: session admission
  * refuses a non-paying account (`checkProOnlyModel` in
  * web/src/server/free-session/public-api.ts), and the CLI and Desktop pickers
  * draw the row LOCKED for an account without a live plan
- * (`freebuffPlanRequired`): listed, with no price, and a press opens the plans
+ * (`fuckbuffPlanRequired`): listed, with no price, and a press opens the plans
  * page instead of starting a session. The first is the gate; the second only
  * stops the picker offering what admission would refuse. (MiMo 2.6 Pro was
  * here too until it opened to full access on 2026-09-25.)
  */
-export const FREEBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS: readonly string[] =
+export const FUCKBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS: readonly string[] =
   Object.freeze([
-    FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
-    // GPT-6.1 Sol and Gemini 4 Argon are in FREEBUFF_MODELS, so the CLI and
+    FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
+    // GPT-6.1 Sol and Gemini 4 Argon are in FUCKBUFF_MODELS, so the CLI and
     // Desktop list them.
-    FREEBUFF_GPT_61_SOL_MODEL_ID,
-    FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
+    FUCKBUFF_GPT_61_SOL_MODEL_ID,
+    FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
   ])
 
 /**
  * Rows a viewer opens when they are IN THE US **or** hold a live plan.
  * Everyone else sees them listed and locked, and admission refuses the start.
  * An EXEMPTION from the paywall lists above, not a second gate: every id here
- * is also in FREEBUFF_PRO_ONLY_CATALOG_MODEL_IDS.
+ * is also in FUCKBUFF_PRO_ONLY_CATALOG_MODEL_IDS.
  *
  * The country half is resolved SERVER-SIDE from the authenticated request (the
  * same resolution the access tier uses), never from anything a client sends.
@@ -4321,7 +4321,7 @@ export const FREEBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS: readonly string[] =
  * non-US and sees the paywall.
  *
  * No client can see the country this turns on, so the server ships the
- * VERDICT per viewer (`FreebuffFreebucksInfo.planRequiredModelIds`) and the
+ * VERDICT per viewer (`FuckbuffFreebucksInfo.planRequiredModelIds`) and the
  * pickers draw their existing lock from it.
  *
  * GPT-6 Luna and MiMo 2.6 Pro held this exemption 2026-09-22 → 09-25, when
@@ -4329,45 +4329,45 @@ export const FREEBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS: readonly string[] =
  * Sol brings it back (2026-09-29, by product decision); Gemini 4 Argon joins
  * it on the same terms (2026-10-13).
  */
-export const FREEBUFF_US_OR_PAID_MODEL_IDS: readonly string[] = Object.freeze([
-  FREEBUFF_GPT_61_SOL_MODEL_ID,
-  FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
+export const FUCKBUFF_US_OR_PAID_MODEL_IDS: readonly string[] = Object.freeze([
+  FUCKBUFF_GPT_61_SOL_MODEL_ID,
+  FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
 ])
 
-export function isFreebuffUsOrPaidModelId(
+export function isFuckbuffUsOrPaidModelId(
   id: string | null | undefined,
 ): boolean {
   return (
     !!id &&
-    FREEBUFF_US_OR_PAID_MODEL_IDS.some((gated) =>
-      freebuffModelIdMatches(id, gated),
+    FUCKBUFF_US_OR_PAID_MODEL_IDS.some((gated) =>
+      fuckbuffModelIdMatches(id, gated),
     )
   )
 }
 
-export function isFreebuffProOnlyEverySurfaceModelId(
+export function isFuckbuffProOnlyEverySurfaceModelId(
   id: string | null | undefined,
 ): boolean {
   return (
     !!id &&
-    FREEBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS.some((pro) =>
-      freebuffModelIdMatches(id, pro),
+    FUCKBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS.some((pro) =>
+      fuckbuffModelIdMatches(id, pro),
     )
   )
 }
 
 /** Whether the catalog marks `id` openable only on a paid session. Exact match:
  *  the suffix-tolerant public predicate is
- *  `isFreebuffSubscriptionProModelId`. */
-export function isFreebuffProOnlyCatalogModelId(id: string): boolean {
-  return FREEBUFF_PRO_ONLY_CATALOG_MODEL_IDS.includes(id)
+ *  `isFuckbuffSubscriptionProModelId`. */
+export function isFuckbuffProOnlyCatalogModelId(id: string): boolean {
+  return FUCKBUFF_PRO_ONLY_CATALOG_MODEL_IDS.includes(id)
 }
 
 /** Flash FAST MODE in the plan sets below, on MiMo 2.6 Pro's terms: open at
  *  full access, a plan unlocks it at limited access. Behind the UI switch with
  *  the picker row: a plan cannot sell what no picker lists. */
-const FAST_MODE_PLAN_MODEL_IDS = FREEBUFF_ENABLE_FAST_MODE_IN_UI
-  ? [FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]
+const FAST_MODE_PLAN_MODEL_IDS = FUCKBUFF_ENABLE_FAST_MODE_IN_UI
+  ? [FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID]
   : []
 
 /**
@@ -4380,56 +4380,56 @@ const FAST_MODE_PLAN_MODEL_IDS = FREEBUFF_ENABLE_FAST_MODE_IN_UI
  * explicit prevents the global Pro gate from paywalling full-access users just
  * to preserve the limited-tier catalog boundary.
  */
-export const FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS: readonly string[] =
+export const FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS: readonly string[] =
   Object.freeze([
-    FREEBUFF_GPT_6_LUNA_MODEL_ID,
-    FREEBUFF_MIMO_V26_PRO_MODEL_ID,
+    FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+    FUCKBUFF_MIMO_V26_PRO_MODEL_ID,
     ...FAST_MODE_PLAN_MODEL_IDS,
     // Muse Spark 1.3 (2026-10-09): open to every full-access account, a paid
     // plan at limited access, like Luna and MiMo 2.6 Pro. 1.2 is not listed:
     // it is not offered at limited access at all (not even with a plan), only
     // kept for released binaries at full access.
-    FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
-    ...FREEBUFF_PRO_ONLY_CATALOG_MODEL_IDS,
+    FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+    ...FUCKBUFF_PRO_ONLY_CATALOG_MODEL_IDS,
   ])
 
-export function isFreebuffLimitedTierPlanOnlyModelId(id: string): boolean {
-  return FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS.includes(id)
+export function isFuckbuffLimitedTierPlanOnlyModelId(id: string): boolean {
+  return FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS.includes(id)
 }
 
-export const FREEBUFF_WEB_GEO_EXEMPT_MODEL_IDS: readonly string[] = [
+export const FUCKBUFF_WEB_GEO_EXEMPT_MODEL_IDS: readonly string[] = [
   ...new Set<string>([
-    ...LIMITED_FREEBUFF_MODEL_IDS,
-    ...FREEBUFF_WEB_MODELS.filter(
+    ...LIMITED_FUCKBUFF_MODEL_IDS,
+    ...FUCKBUFF_WEB_MODELS.filter(
       (model) =>
-        isFreebuffWebSelectableModelId(model.id) &&
-        !isFreebuffWebGodOnlyModelId(model.id) &&
+        isFuckbuffWebSelectableModelId(model.id) &&
+        !isFuckbuffWebGodOnlyModelId(model.id) &&
         // This is deliberately broader than the global Pro set. Luna is free
         // from the premium pool at full access but still plan-locked here;
         // Gemini 3.8 Flash is plan-only at every tier.
-        !isFreebuffLimitedTierPlanOnlyModelId(model.id),
+        !isFuckbuffLimitedTierPlanOnlyModelId(model.id),
     ).map((model) => model.id),
   ]),
 ]
 
-export function isFreebuffWebGeoExemptModelId(
+export function isFuckbuffWebGeoExemptModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return FREEBUFF_WEB_GEO_EXEMPT_MODEL_IDS.some((modelId) => modelId === id)
+  return FUCKBUFF_WEB_GEO_EXEMPT_MODEL_IDS.some((modelId) => modelId === id)
 }
 
-/** Models a limited-tier Freebuff Web user may select. */
-export const FREEBUFF_WEB_LIMITED_MODEL_IDS = [
+/** Models a limited-tier Fuckbuff Web user may select. */
+export const FUCKBUFF_WEB_LIMITED_MODEL_IDS = [
   ...new Set<string>([
-    ...FREEBUFF_WEB_GEO_EXEMPT_MODEL_IDS,
-    ...LIMITED_FREEBUFF_MODEL_IDS,
+    ...FUCKBUFF_WEB_GEO_EXEMPT_MODEL_IDS,
+    ...LIMITED_FUCKBUFF_MODEL_IDS,
   ]),
 ]
 
-export function isFreebuffWebModelAllowedForLimitedTier(
+export function isFuckbuffWebModelAllowedForLimitedTier(
   id: string | null | undefined,
-  /** See `hasPaidSubscription` on isFreebuffSessionModelAllowedForAccessTier. */
+  /** See `hasPaidSubscription` on isFuckbuffSessionModelAllowedForAccessTier. */
   hasPaidSubscription = false,
 ): boolean {
   if (!id) return false
@@ -4446,44 +4446,44 @@ export function isFreebuffWebModelAllowedForLimitedTier(
   // had bought.
   return (
     isRewardModelRedeemableAtLimitedTier(id) ||
-    FREEBUFF_WEB_LIMITED_MODEL_IDS.some((modelId) => modelId === id) ||
-    (hasPaidSubscription && isFreebuffSubscriptionModelIdForAccessTier(id))
+    FUCKBUFF_WEB_LIMITED_MODEL_IDS.some((modelId) => modelId === id) ||
+    (hasPaidSubscription && isFuckbuffSubscriptionModelIdForAccessTier(id))
   )
 }
 
-/** Coerce a limited-tier Freebuff Web selection (premium ids, stale
- * localStorage values) to LIMITED_FREEBUFF_MODEL_ID. */
-export function resolveFreebuffWebModelForLimitedTier(
+/** Coerce a limited-tier Fuckbuff Web selection (premium ids, stale
+ * localStorage values) to LIMITED_FUCKBUFF_MODEL_ID. */
+export function resolveFuckbuffWebModelForLimitedTier(
   id: string | null | undefined,
-  /** See `hasPaidSubscription` on isFreebuffSessionModelAllowedForAccessTier. */
+  /** See `hasPaidSubscription` on isFuckbuffSessionModelAllowedForAccessTier. */
   hasPaidSubscription = false,
 ): string {
-  return isFreebuffWebModelAllowedForLimitedTier(id, hasPaidSubscription)
+  return isFuckbuffWebModelAllowedForLimitedTier(id, hasPaidSubscription)
     ? (id as string)
-    : LIMITED_FREEBUFF_MODEL_ID
+    : LIMITED_FUCKBUFF_MODEL_ID
 }
 
-export function getFreebuffModelsForAccessTier(
-  accessTier: FreebuffAccessTier | null | undefined,
-  /** See `hasPaidSubscription` on isFreebuffSessionModelAllowedForAccessTier.
+export function getFuckbuffModelsForAccessTier(
+  accessTier: FuckbuffAccessTier | null | undefined,
+  /** See `hasPaidSubscription` on isFuckbuffSessionModelAllowedForAccessTier.
    *
    *  Read from the session response's `subscription.tierId` — non-null exactly
    *  when the server resolved an ENTITLING row — rather than from anything the
    *  client decides for itself. A picker that widened on its own belief would
    *  offer rows admission then refuses. */
   hasPaidSubscription = false,
-): readonly FreebuffModelOption[] {
+): readonly FuckbuffModelOption[] {
   // At full access a paid-only row is LISTED to every account, and the CLI and
   // Desktop pickers draw it LOCKED for one without a plan
-  // (`freebuffPlanRequired`): no price, and a press opens the plans page.
+  // (`fuckbuffPlanRequired`): no price, and a press opens the plans page.
   // Listed rather than hidden (a product call, 2026-09-21) because the thing
   // between the user and the row is a plan we sell. Admission refuses a
-  // planless start regardless (FREEBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS).
-  if (accessTier !== 'limited') return FREEBUFF_MODELS
+  // planless start regardless (FUCKBUFF_PRO_ONLY_EVERY_SURFACE_MODEL_IDS).
+  if (accessTier !== 'limited') return FUCKBUFF_MODELS
   // The same holds at LIMITED access (product call, 2026-09-30): the rows a
   // plan unlocks there are listed to every limited account, and drawn locked
   // for one without a plan — the server's `planRequiredModelIds` for a
-  // limited viewer is FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS, which is
+  // limited viewer is FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS, which is
   // every row appended below. They were hidden until then, which gave the
   // plans page nothing to point at from the CLI and Desktop pickers (the Web
   // picker already listed them, LIMITED_TIER_PLAN_LOCKED_MODELS).
@@ -4493,30 +4493,30 @@ export function getFreebuffModelsForAccessTier(
   // Plan rows are appended rather than merged in catalog order: the limited
   // rows are what this account can still run for free once the plan's windows
   // are spent, so they stay first and keep their picker position.
-  const planModels = FREEBUFF_MODELS.filter(
+  const planModels = FUCKBUFF_MODELS.filter(
     (model) =>
-      isFreebuffSubscriptionModelIdForAccessTier(model.id) &&
-      !LIMITED_FREEBUFF_MODELS.some((limited) => limited.id === model.id),
+      isFuckbuffSubscriptionModelIdForAccessTier(model.id) &&
+      !LIMITED_FUCKBUFF_MODELS.some((limited) => limited.id === model.id),
   )
-  return [...LIMITED_FREEBUFF_MODELS, ...planModels]
+  return [...LIMITED_FUCKBUFF_MODELS, ...planModels]
 }
 
 /** The model the CLI/Desktop picker highlights as the "recommended" hero so a
  *  new user can start with one Enter press without scanning the full list. Full
- *  access → DEFAULT_FREEBUFF_MODEL_ID (GPT-5.6 Luna); limited →
- *  LIMITED_FREEBUFF_MODEL_ID (MiMo 2.5). Both names are restated here because
+ *  access → DEFAULT_FUCKBUFF_MODEL_ID (GPT-5.6 Luna); limited →
+ *  LIMITED_FUCKBUFF_MODEL_ID (MiMo 2.5). Both names are restated here because
  *  this docblock twice outlived the constants it described — it still named V4
  *  Pro and V4 Flash on 2026-08-24, long after neither was returned.
  *
  *  The hero is premium, so ALWAYS pass `premiumExhausted` from the live quota
- *  snapshot: it flips to FALLBACK_FREEBUFF_MODEL_ID once the daily pool runs
+ *  snapshot: it flips to FALLBACK_FUCKBUFF_MODEL_ID once the daily pool runs
  *  out, because the recommended pick has to stay joinable. A caller that omits
  *  it will offer a hero whose next send fails admission. */
-export function getRecommendedFreebuffModelId(
-  accessTier: FreebuffAccessTier | null | undefined,
+export function getRecommendedFuckbuffModelId(
+  accessTier: FuckbuffAccessTier | null | undefined,
   options: { premiumExhausted?: boolean } = {},
-): SupportedFreebuffModelId {
-  if (accessTier === 'limited') return LIMITED_FREEBUFF_HERO_MODEL_ID
+): SupportedFuckbuffModelId {
+  if (accessTier === 'limited') return LIMITED_FUCKBUFF_HERO_MODEL_ID
   // The step-down fires only if the default actually DRAWS on the pool that ran
   // dry. It used to fire unconditionally, which was correct for as long as
   // every default was premium (2026-08-18 onwards) and became wrong the moment
@@ -4525,51 +4525,51 @@ export function getRecommendedFreebuffModelId(
   // different unmetered row for no reason, and tell them their quota caused it.
   if (
     options.premiumExhausted &&
-    isFreebuffPremiumModelId(DEFAULT_FREEBUFF_MODEL_ID)
+    isFuckbuffPremiumModelId(DEFAULT_FUCKBUFF_MODEL_ID)
   ) {
-    return FALLBACK_FREEBUFF_MODEL_ID
+    return FALLBACK_FUCKBUFF_MODEL_ID
   }
-  return DEFAULT_FREEBUFF_MODEL_ID
+  return DEFAULT_FUCKBUFF_MODEL_ID
 }
 
-/** The models a new Freebuff Desktop or browser-workspace chat starts on, in
+/** The models a new Fuckbuff Desktop or browser-workspace chat starts on, in
  *  the order to try them (product, 2026-10-06). At full access: DeepSeek V4.1
  *  Flash Fast outside DeepSeek's expensive window, where its price is half,
  *  then DeepSeek V4.1 Flash, which is also the pick inside the window and
  *  when the tier is not known yet. At limited access, where Fast is plan-only:
- *  MiMo 2.6 Flash. The CLI keeps getRecommendedFreebuffModelId. */
-export function freebuffAppDefaultModelIds(
-  accessTier: FreebuffAccessTier | null | undefined,
+ *  MiMo 2.6 Flash. The CLI keeps getRecommendedFuckbuffModelId. */
+export function fuckbuffAppDefaultModelIds(
+  accessTier: FuckbuffAccessTier | null | undefined,
   now: Date = new Date(),
-): FreebuffModelId[] {
-  if (accessTier === 'limited') return [LIMITED_FREEBUFF_HERO_MODEL_ID]
+): FuckbuffModelId[] {
+  if (accessTier === 'limited') return [LIMITED_FUCKBUFF_HERO_MODEL_ID]
   if (accessTier !== 'full' || isDeepSeekExpensiveWindow(now))
-    return [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]
+    return [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]
   return [
-    FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
-    FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
   ]
 }
 
-/** The Web/Cloud counterpart of getRecommendedFreebuffModelId: full access →
- *  DEFAULT_FREEBUFF_WEB_MODEL_ID (GPT-5.6 Luna); limited →
- *  LIMITED_FREEBUFF_MODEL_ID. `premiumExhausted` flips the hero to the
+/** The Web/Cloud counterpart of getRecommendedFuckbuffModelId: full access →
+ *  DEFAULT_FUCKBUFF_WEB_MODEL_ID (GPT-5.6 Luna); limited →
+ *  LIMITED_FUCKBUFF_MODEL_ID. `premiumExhausted` flips the hero to the
  *  unlimited flash model so the recommended pick is always joinable. */
-export function getRecommendedFreebuffWebModelId(
-  accessTier: FreebuffAccessTier | null | undefined,
+export function getRecommendedFuckbuffWebModelId(
+  accessTier: FuckbuffAccessTier | null | undefined,
   options: { premiumExhausted?: boolean } = {},
-): FreebuffWebModelId {
-  if (accessTier === 'limited') return LIMITED_FREEBUFF_HERO_MODEL_ID
-  // Same condition as getRecommendedFreebuffModelId, and for the same reason —
+): FuckbuffWebModelId {
+  if (accessTier === 'limited') return LIMITED_FUCKBUFF_HERO_MODEL_ID
+  // Same condition as getRecommendedFuckbuffModelId, and for the same reason —
   // see the comment there. Keyed off the WEB default, since the two constants
   // are allowed to name different models and have done.
   if (
     options.premiumExhausted &&
-    isFreebuffPremiumModelId(DEFAULT_FREEBUFF_WEB_MODEL_ID)
+    isFuckbuffPremiumModelId(DEFAULT_FUCKBUFF_WEB_MODEL_ID)
   ) {
-    return FALLBACK_FREEBUFF_MODEL_ID
+    return FALLBACK_FUCKBUFF_MODEL_ID
   }
-  return DEFAULT_FREEBUFF_WEB_MODEL_ID
+  return DEFAULT_FUCKBUFF_WEB_MODEL_ID
 }
 
 /** Reward ids stay nameable at limited access. Legacy accounts fund them from
@@ -4578,46 +4578,46 @@ export function getRecommendedFreebuffWebModelId(
 export function isRewardModelRedeemableAtLimitedTier(
   model: string | null | undefined,
 ): boolean {
-  return FREEBUFF_REWARD_MODEL_IDS.some((modelId) => modelId === model)
+  return FUCKBUFF_REWARD_MODEL_IDS.some((modelId) => modelId === model)
 }
 
-export function isFreebuffModelAllowedForAccessTier(
+export function isFuckbuffModelAllowedForAccessTier(
   model: string | null | undefined,
-  accessTier: FreebuffAccessTier | null | undefined,
-  /** See `hasPaidSubscription` on isFreebuffSessionModelAllowedForAccessTier.
+  accessTier: FuckbuffAccessTier | null | undefined,
+  /** See `hasPaidSubscription` on isFuckbuffSessionModelAllowedForAccessTier.
    *  Defaults false, so a caller that cannot answer keeps today's behaviour. */
   hasPaidSubscription = false,
 ): boolean {
   if (!model) return false
-  if (accessTier !== 'limited') return isFreebuffModelId(model)
+  if (accessTier !== 'limited') return isFuckbuffModelId(model)
   return (
     isRewardModelRedeemableAtLimitedTier(model) ||
-    LIMITED_FREEBUFF_MODEL_IDS.some((modelId) => modelId === model) ||
-    // A plan reaches limited regions. Gated on isFreebuffModelId as well, so
+    LIMITED_FUCKBUFF_MODEL_IDS.some((modelId) => modelId === model) ||
+    // A plan reaches limited regions. Gated on isFuckbuffModelId as well, so
     // this only ever widens to a row this catalog actually offers.
     (hasPaidSubscription &&
-      isFreebuffSubscriptionModelIdForAccessTier(model) &&
-      isFreebuffModelId(model))
+      isFuckbuffSubscriptionModelIdForAccessTier(model) &&
+      isFuckbuffModelId(model))
   )
 }
 
 /** Session admission is shared by CLI/Desktop/Web/Cloud. Client pickers use
- *  FREEBUFF_MODELS or FREEBUFF_WEB_MODELS, while the server accepts their union
- *  with temporarily retired models from SUPPORTED_FREEBUFF_MODELS. */
-export function isFreebuffSessionModelId(
+ *  FUCKBUFF_MODELS or FUCKBUFF_WEB_MODELS, while the server accepts their union
+ *  with temporarily retired models from SUPPORTED_FUCKBUFF_MODELS. */
+export function isFuckbuffSessionModelId(
   id: string | null | undefined,
-): id is SupportedFreebuffModelId | FreebuffWebModelId {
+): id is SupportedFuckbuffModelId | FuckbuffWebModelId {
   return (
-    isSupportedFreebuffModelId(id) ||
-    isFreebuffWebModelId(id, {
+    isSupportedFuckbuffModelId(id) ||
+    isFuckbuffWebModelId(id, {
       includeGodOnly: true,
     })
   )
 }
 
-export function isFreebuffSessionModelAllowedForAccessTier(
+export function isFuckbuffSessionModelAllowedForAccessTier(
   model: string | null | undefined,
-  accessTier: FreebuffAccessTier | null | undefined,
+  accessTier: FuckbuffAccessTier | null | undefined,
   /**
    * Whether this account holds a live PAID plan.
    *
@@ -4635,14 +4635,14 @@ export function isFreebuffSessionModelAllowedForAccessTier(
   if (!model) return false
   // A paused model is allowed to NO tier. Checked ahead of everything else
   // because the pause is the whole point: it is still a recognised session id
-  // (see FREEBUFF_PAUSED_FREE_MODEL_IDS), so every other branch here would
+  // (see FUCKBUFF_PAUSED_FREE_MODEL_IDS), so every other branch here would
   // happily admit it.
-  if (isFreebuffPausedFreeModelId(model)) return false
+  if (isFuckbuffPausedFreeModelId(model)) return false
   // The server catalog's tier access, when it sets one. `locked` is a PAYWALL,
   // not a tier refusal, at full access (checkProOnlyModel refuses a planless
   // start); at limited access it is what a paid plan unlocks, exactly like the
   // compiled plan rows below.
-  const catalogAccess = getFreebuffModelPolicyOverlay()?.tierAccess?.(
+  const catalogAccess = getFuckbuffModelPolicyOverlay()?.tierAccess?.(
     model,
     accessTier === 'limited' ? 'limited' : 'full',
   )
@@ -4650,7 +4650,7 @@ export function isFreebuffSessionModelAllowedForAccessTier(
   if (catalogAccess === 'open') return true
   if (catalogAccess === 'locked')
     return accessTier !== 'limited' || hasPaidSubscription
-  if (accessTier !== 'limited') return isFreebuffSessionModelId(model)
+  if (accessTier !== 'limited') return isFuckbuffSessionModelId(model)
   // See isRewardModelRedeemableAtLimitedTier: GLM's limited-tier gate is the quota
   // pool (bounty grants only), not this allowlist.
   //
@@ -4658,7 +4658,7 @@ export function isFreebuffSessionModelAllowedForAccessTier(
   // branch above takes the union of both full catalogs: session admission is
   // shared by CLI, Desktop, Web and Cloud, so it must accept every row ANY of
   // them may legitimately offer. Reading only the CLI/Desktop list
-  // (LIMITED_FREEBUFF_MODEL_IDS) is what it did until Ox Alpha, which was
+  // (LIMITED_FUCKBUFF_MODEL_IDS) is what it did until Ox Alpha, which was
   // harmless only while the two lists happened to agree — the moment a
   // browser-only row reaches limited regions, that version offers a picker row
   // whose first send fails admission with session_model_mismatch.
@@ -4667,20 +4667,20 @@ export function isFreebuffSessionModelAllowedForAccessTier(
   // keyed on the tier rather than the model.
   return (
     // Campaign admission owns its global and per-user caps, on either tier.
-    FREEBUFF_LIMITED_OFFER_MODEL_IDS.some((modelId) => modelId === model) ||
+    FUCKBUFF_LIMITED_OFFER_MODEL_IDS.some((modelId) => modelId === model) ||
     isRewardModelRedeemableAtLimitedTier(model) ||
-    FREEBUFF_WEB_LIMITED_MODEL_IDS.some((modelId) => modelId === model) ||
+    FUCKBUFF_WEB_LIMITED_MODEL_IDS.some((modelId) => modelId === model) ||
     // Paid plans reach limited regions too — see `hasPaidSubscription`.
-    (hasPaidSubscription && isFreebuffSubscriptionModelIdForAccessTier(model))
+    (hasPaidSubscription && isFuckbuffSubscriptionModelIdForAccessTier(model))
   )
 }
 
 /**
  * The models a plan's pooled allowance may be spent on.
  *
- * Defined HERE and published from `freebuff-subscriptions.ts` as
- * `FREEBUFF_SUBSCRIPTION_MODEL_IDS`, for the reason
- * FREEBUFF_PRO_ONLY_CATALOG_MODEL_IDS gives: that module imports this one, so
+ * Defined HERE and published from `fuckbuff-subscriptions.ts` as
+ * `FUCKBUFF_SUBSCRIPTION_MODEL_IDS`, for the reason
+ * FUCKBUFF_PRO_ONLY_CATALOG_MODEL_IDS gives: that module imports this one, so
  * the dependency can only run this way, and this file needs the set.
  *
  * It was DUPLICATED into a predicate here until 2026-09-04, with a drift test
@@ -4693,33 +4693,33 @@ export function isFreebuffSessionModelAllowedForAccessTier(
  * sits in the slot DeepSeek V4 Pro held until its withdrawal from free mode on
  * 2026-08-26.
  */
-export const FREEBUFF_PLAN_METERED_CATALOG_MODEL_IDS: readonly string[] =
+export const FUCKBUFF_PLAN_METERED_CATALOG_MODEL_IDS: readonly string[] =
   Object.freeze([
-    FREEBUFF_GLM_V53_FLASH_MODEL_ID,
+    FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
     // GPT-6 Luna replaced 5.6 here on 2026-09-22. 5.6 LEFT rather than
     // lingering: a plan can only cover a model admission will actually open,
     // and 5.6 is out of every picker.
-    FREEBUFF_GPT_6_LUNA_MODEL_ID,
-    FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+    FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+    FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
     // Kimi K3 (CrofAI) LEFT on 2026-10-01, for the reason 5.6 did above: its
     // provider is retired and no picker on any surface lists it, so no plan
     // can sell it. Listing it here also widened limited-tier admission and
     // the plan's usage rows to a model no subscriber can select.
-    FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
+    FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
     // With Luna: this list is what widens the limited tier for a subscriber,
     // so a plan-only row missing here would be offered and then coerced away.
-    FREEBUFF_MIMO_V26_PRO_MODEL_ID,
+    FUCKBUFF_MIMO_V26_PRO_MODEL_ID,
     // Flash fast mode, for the same reason as MiMo 2.6 Pro.
     ...FAST_MODE_PLAN_MODEL_IDS,
     // Muse Spark 1.3 (2026-09-28): the plans page promises every plan model in
     // every country, so a limited-region subscriber must be able to open it.
     // (1.2 is deliberately absent: it survives only for released binaries at
     // full access, and is not offered at limited access at all.)
-    FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+    FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
     // GPT-6.1 Sol (2026-09-29) and Gemini 4 Argon (2026-10-13): available to
     // EVERY paid account, limited region included.
-    FREEBUFF_GPT_61_SOL_MODEL_ID,
-    FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
+    FUCKBUFF_GPT_61_SOL_MODEL_ID,
+    FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
   ])
 
 /**
@@ -4731,67 +4731,67 @@ export const FREEBUFF_PLAN_METERED_CATALOG_MODEL_IDS: readonly string[] =
  * them has to agree on the same set of ids or a subscriber sees a row they
  * cannot start, or starts a session that silently runs a different model.
  */
-export function isFreebuffSubscriptionModelIdForAccessTier(
+export function isFuckbuffSubscriptionModelIdForAccessTier(
   model: string | null | undefined,
 ): boolean {
   if (!model) return false
-  return FREEBUFF_PLAN_METERED_CATALOG_MODEL_IDS.includes(model)
+  return FUCKBUFF_PLAN_METERED_CATALOG_MODEL_IDS.includes(model)
 }
 
-export function isFreebuffModelId(
+export function isFuckbuffModelId(
   id: string | null | undefined,
-): id is FreebuffModelId {
+): id is FuckbuffModelId {
   if (!id) return false
-  return FREEBUFF_MODELS.some((m) => m.id === id)
+  return FUCKBUFF_MODELS.some((m) => m.id === id)
 }
 
-export function isFreebuffWebModelId(
+export function isFuckbuffWebModelId(
   id: string | null | undefined,
   options: { includeGodOnly?: boolean } = {},
-): id is FreebuffWebModelId {
+): id is FuckbuffWebModelId {
   if (!id) return false
   const models = options.includeGodOnly
-    ? FREEBUFF_WEB_ALL_MODELS
-    : FREEBUFF_WEB_MODELS
+    ? FUCKBUFF_WEB_ALL_MODELS
+    : FUCKBUFF_WEB_MODELS
   return models.some((m) => m.id === id)
 }
 
-export function isFreebuffWebGodOnlyModelId(
+export function isFuckbuffWebGodOnlyModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return FREEBUFF_WEB_GOD_ONLY_MODEL_IDS.some((modelId) => modelId === id)
+  return FUCKBUFF_WEB_GOD_ONLY_MODEL_IDS.some((modelId) => modelId === id)
 }
 
-export function resolveFreebuffModel(
+export function resolveFuckbuffModel(
   id: string | null | undefined,
-): FreebuffModelId {
-  return isFreebuffModelId(id) ? id : FALLBACK_FREEBUFF_MODEL_ID
+): FuckbuffModelId {
+  return isFuckbuffModelId(id) ? id : FALLBACK_FUCKBUFF_MODEL_ID
 }
 
-export function resolveFreebuffWebModel(
+export function resolveFuckbuffWebModel(
   id: string | null | undefined,
   options: { includeGodOnly?: boolean } = {},
-): FreebuffWebModelId {
-  return isFreebuffWebModelId(id, options)
+): FuckbuffWebModelId {
+  return isFuckbuffWebModelId(id, options)
     ? id
-    : (FALLBACK_FREEBUFF_MODEL_ID as FreebuffWebModelId)
+    : (FALLBACK_FUCKBUFF_MODEL_ID as FuckbuffWebModelId)
 }
 
 /** Resolve an explicit CLI selection for an access tier. The ordinary picker
- * uses `FREEBUFF_MODELS`; a limited-tier user may also hold an earned reward
+ * uses `FUCKBUFF_MODELS`; a limited-tier user may also hold an earned reward
  * balance for the reward model, and any user may have been told about
  * a limited-offer model this launch. Both live outside what the tier's picker
  * lists, so without these passes an explicit pick of either would be silently
  * rewritten to the fallback model — the user would press Enter on Fable and
  * land on DeepSeek. */
-export function resolveFreebuffModelForAccessTier(
+export function resolveFuckbuffModelForAccessTier(
   id: string | null | undefined,
-  accessTier: FreebuffAccessTier | null | undefined,
-  /** See `hasPaidSubscription` on isFreebuffSessionModelAllowedForAccessTier. */
+  accessTier: FuckbuffAccessTier | null | undefined,
+  /** See `hasPaidSubscription` on isFuckbuffSessionModelAllowedForAccessTier. */
   hasPaidSubscription = false,
-): FreebuffModelId | FreebuffLimitedOfferModelId {
-  const limitedOffer = FREEBUFF_LIMITED_OFFER_MODEL_IDS.find(
+): FuckbuffModelId | FuckbuffLimitedOfferModelId {
+  const limitedOffer = FUCKBUFF_LIMITED_OFFER_MODEL_IDS.find(
     (modelId) => modelId === id,
   )
   if (limitedOffer) return limitedOffer
@@ -4801,27 +4801,27 @@ export function resolveFreebuffModelForAccessTier(
     // joinable. Before 2026-08-31 this named GLM 5.2 explicitly, because that
     // row was in no tier's catalog at all; the reward model is now an ordinary
     // full-access row, so this is the ONLY tier that still needs the pass.
-    if (isRewardModelRedeemableAtLimitedTier(id)) return id as FreebuffModelId
+    if (isRewardModelRedeemableAtLimitedTier(id)) return id as FuckbuffModelId
     // A plan model survives it for the same reason: the plan's own windows
     // decide whether the session is joinable, not this allowlist.
-    return isFreebuffModelAllowedForAccessTier(
+    return isFuckbuffModelAllowedForAccessTier(
       id,
       accessTier,
       hasPaidSubscription,
     )
-      ? (id as FreebuffModelId)
-      : LIMITED_FREEBUFF_MODEL_ID
+      ? (id as FuckbuffModelId)
+      : LIMITED_FUCKBUFF_MODEL_ID
   }
-  return resolveFreebuffModel(id)
+  return resolveFuckbuffModel(id)
 }
 
-export function resolveFreebuffSessionModelForAccessTier(
+export function resolveFuckbuffSessionModelForAccessTier(
   id: string | null | undefined,
-  accessTier: FreebuffAccessTier | null | undefined,
+  accessTier: FuckbuffAccessTier | null | undefined,
   options: {
     includeGodOnly?: boolean
     /**
-     * See `hasPaidSubscription` on isFreebuffSessionModelAllowedForAccessTier.
+     * See `hasPaidSubscription` on isFuckbuffSessionModelAllowedForAccessTier.
      *
      * This is the coercion that made the server-side widening dead code. The
      * chat gate admitted a limited subscriber's plan model, but admission had
@@ -4832,45 +4832,45 @@ export function resolveFreebuffSessionModelForAccessTier(
      */
     hasPaidSubscription?: boolean
   } = {},
-): SupportedFreebuffModelId | FreebuffWebModelId {
+): SupportedFuckbuffModelId | FuckbuffWebModelId {
   if (accessTier === 'limited') {
-    return isFreebuffSessionModelAllowedForAccessTier(
+    return isFuckbuffSessionModelAllowedForAccessTier(
       id,
       accessTier,
       options.hasPaidSubscription ?? false,
     )
-      ? (id as SupportedFreebuffModelId)
-      : LIMITED_FREEBUFF_MODEL_ID
+      ? (id as SupportedFuckbuffModelId)
+      : LIMITED_FUCKBUFF_MODEL_ID
   }
   // NOTE: a withdrawn model does NOT resolve here. It used to coerce silently
   // to the fallback, which kept clients running but left a user who picked it
   // watching a different model answer with no explanation. Admission REFUSES it
   // with `model_unavailable` and a message naming the replacement (see
-  // freebuffWithdrawnModelMessage). That refusal is deliberately not
+  // fuckbuffWithdrawnModelMessage). That refusal is deliberately not
   // session-ending, so the client shows the message instead of re-admitting.
   //
   // That last paragraph described an intention rather than the code from
   // 2026-08-20 until 2026-08-27: nothing on either admission path consulted the
-  // pause at all — `isFreebuffSessionModelAvailable` reads the availability
+  // pause at all — `isFuckbuffSessionModelAvailable` reads the availability
   // WINDOW — so a withdrawn pick admitted normally, spent a session unit, took
   // Desktop's single premium slot for the hour, and was then refused by the
   // chat gate on every request against it. `withdrawnModelRefusal` in
   // web/src/server/free-session/public-api.ts is the refusal this names.
-  if (isSupportedFreebuffModelId(id)) return id
-  return resolveFreebuffWebModel(id, {
+  if (isSupportedFuckbuffModelId(id)) return id
+  return resolveFuckbuffWebModel(id, {
     includeGodOnly: options.includeGodOnly ?? true,
   })
 }
 
-export function isSupportedFreebuffModelId(
+export function isSupportedFuckbuffModelId(
   id: string | null | undefined,
-): id is SupportedFreebuffModelId {
+): id is SupportedFuckbuffModelId {
   if (!id) return false
   return (
-    SUPPORTED_FREEBUFF_MODELS.some((m) => m.id === id) ||
+    SUPPORTED_FUCKBUFF_MODELS.some((m) => m.id === id) ||
     // A catalog-only model (server catalog) is a supported session model on
     // the server that registered it, and unknown everywhere else.
-    getFreebuffModelPolicyOverlay()?.model?.(id) !== undefined
+    getFuckbuffModelPolicyOverlay()?.model?.(id) !== undefined
   )
 }
 
@@ -4885,7 +4885,7 @@ export function isSupportedFreebuffModelId(
  * must match here, never the reverse. Only a date-led suffix matches, so e.g.
  * `mimo-v2.5-pro` never matches the base `mimo-v2.5`.
  */
-export function freebuffModelIdMatches(
+export function fuckbuffModelIdMatches(
   candidate: string | null | undefined,
   baseId: string,
 ): boolean {
@@ -4897,50 +4897,50 @@ export function freebuffModelIdMatches(
 }
 
 /** Whether the requested model is Gemini Pro, tolerating the dated snapshot
- *  suffix. Use this instead of `=== FREEBUFF_GEMINI_PRO_MODEL_ID` so a caller
+ *  suffix. Use this instead of `=== FUCKBUFF_GEMINI_PRO_MODEL_ID` so a caller
  *  can't dodge a Gemini gate by sending the dated id. */
-export function isFreebuffGeminiProModelId(
+export function isFuckbuffGeminiProModelId(
   id: string | null | undefined,
 ): boolean {
-  return freebuffModelIdMatches(id, FREEBUFF_GEMINI_PRO_MODEL_ID)
+  return fuckbuffModelIdMatches(id, FUCKBUFF_GEMINI_PRO_MODEL_ID)
 }
 
-export function isFreebuffPremiumModelId(
+export function isFuckbuffPremiumModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
   // Suffix-tolerant: a dated variant of a premium id (e.g. a dated Kimi) must
   // still count as premium so it can't dodge the premium daily rate cap.
-  return FREEBUFF_PREMIUM_MODEL_IDS.some((modelId) =>
-    freebuffModelIdMatches(id, modelId),
+  return FUCKBUFF_PREMIUM_MODEL_IDS.some((modelId) =>
+    fuckbuffModelIdMatches(id, modelId),
   )
 }
 
-export function isFreebuffWebPremiumModelId(
+export function isFuckbuffWebPremiumModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return FREEBUFF_WEB_PREMIUM_MODEL_IDS.some((modelId) =>
-    freebuffModelIdMatches(id, modelId),
+  return FUCKBUFF_WEB_PREMIUM_MODEL_IDS.some((modelId) =>
+    fuckbuffModelIdMatches(id, modelId),
   )
 }
 
-/** True for any Muse Spark Contributor wire id (FREEBUFF_MUSE_SPARK_MODEL_IDS).
+/** True for any Muse Spark Contributor wire id (FUCKBUFF_MUSE_SPARK_MODEL_IDS).
  *  Every version shares one team-wide rate limit at Meta, so the queue, the
  *  cooldown and the fallback that key off this predicate treat them as one
  *  model. Suffix-tolerant like the other model predicates so a dated provider
- *  snapshot can't slip past the rate-limit queue (docs/freebuff-muse-spark.md). */
+ *  snapshot can't slip past the rate-limit queue (docs/fuckbuff-muse-spark.md). */
 export function isMuseSparkModelId(id: string | null | undefined): boolean {
   if (!id) return false
-  return FREEBUFF_MUSE_SPARK_MODEL_IDS.some((modelId) =>
-    freebuffModelIdMatches(id, modelId),
+  return FUCKBUFF_MUSE_SPARK_MODEL_IDS.some((modelId) =>
+    fuckbuffModelIdMatches(id, modelId),
   )
 }
 
-export function isFreebuffSessionPremiumModelId(
+export function isFuckbuffSessionPremiumModelId(
   id: string | null | undefined,
 ): boolean {
-  return isFreebuffWebPremiumModelId(id)
+  return isFuckbuffWebPremiumModelId(id)
 }
 
 /**
@@ -4950,19 +4950,19 @@ export function isFreebuffSessionPremiumModelId(
  * TRUE OF GLM 5.3 FLASH, WHICH IS ALSO AN ORDINARY UNMETERED ROW, so this
  * predicate is only a quota answer WHEN PAIRED WITH THE LIMITED ACCESS TIER.
  * Every caller that routes on it must check the tier too. At full access the
- * same id is in FREEBUFF_STANDARD_MODEL_IDS and must stay unmetered — routing
+ * same id is in FUCKBUFF_STANDARD_MODEL_IDS and must stay unmetered — routing
  * it to the reward pool there would put the product's default model behind an
  * earned balance, which is the one outcome the 2026-08-31 swap had to avoid.
  *
- * Distinct from isFreebuffGlmV53FlashModelId, which asks the same question for
+ * Distinct from isFuckbuffGlmV53FlashModelId, which asks the same question for
  * a different purpose (the OpenRouter price fence). Same id today, different
  * reason, and they are free to diverge the next time the reward moves.
  */
-export function isFreebuffRewardModelId(
+export function isFuckbuffRewardModelId(
   id: string | null | undefined,
 ): boolean {
-  return FREEBUFF_REWARD_MODEL_IDS.some((modelId) =>
-    freebuffModelIdMatches(id, modelId),
+  return FUCKBUFF_REWARD_MODEL_IDS.some((modelId) =>
+    fuckbuffModelIdMatches(id, modelId),
   )
 }
 
@@ -4970,16 +4970,16 @@ export function isFreebuffRewardModelId(
  *  suffix. Used by the OpenRouter layer to apply this row's price ceiling, so a
  *  dated variant cannot dodge it.
  *
- *  DISTINCT FROM isFreebuffRewardModelId and never a widening of it. The two
+ *  DISTINCT FROM isFuckbuffRewardModelId and never a widening of it. The two
  *  share a name and a `z-ai/` prefix and nothing else: 5.2 is the referral
  *  reward metered by its own earned pool, 5.3 Flash is a premium-pool row every
  *  full-access account gets. A predicate that prefix-matched `z-ai/glm` would
  *  hand one model's entitlement to the other — the exact failure that made
  *  `crof/glm-5.2` a second entitlement. */
-export function isFreebuffGlmV53FlashModelId(
+export function isFuckbuffGlmV53FlashModelId(
   id: string | null | undefined,
 ): boolean {
-  return freebuffModelIdMatches(id, FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+  return fuckbuffModelIdMatches(id, FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
 }
 
 /** Whether the requested model is Gemini 3.8 Flash, tolerating the dated
@@ -4987,60 +4987,60 @@ export function isFreebuffGlmV53FlashModelId(
  *  preference and price ceiling, so a dated variant can dodge neither — and
  *  the ceiling is the only thing standing between it and an endpoint at 3.6x.
  *
- *  DISTINCT from isFreebuffGeminiProModelId, which gates Gemini Pro to the
+ *  DISTINCT from isFuckbuffGeminiProModelId, which gates Gemini Pro to the
  *  gemini-thinker subagents. The two must never be merged or prefix-matched on
  *  `google/gemini`: Pro is a subagent-only route with its own agent binding,
  *  this is an ordinary picker row, and a shared predicate would either put Pro
  *  in the picker or refuse this row to every agent that is not a thinker. */
-export function isFreebuffGemini38FlashModelId(
+export function isFuckbuffGemini38FlashModelId(
   id: string | null | undefined,
 ): boolean {
-  return freebuffModelIdMatches(id, FREEBUFF_GEMINI_38_FLASH_MODEL_ID)
+  return fuckbuffModelIdMatches(id, FUCKBUFF_GEMINI_38_FLASH_MODEL_ID)
 }
 
 /** Whether the requested model is Gemini 4 Argon, tolerating a dated
  *  snapshot. Never prefix-matched on `google/gemini` (see
- *  isFreebuffGemini38FlashModelId). */
-export function isFreebuffGemini4ArgonModelId(
+ *  isFuckbuffGemini38FlashModelId). */
+export function isFuckbuffGemini4ArgonModelId(
   id: string | null | undefined,
 ): boolean {
-  return freebuffModelIdMatches(id, FREEBUFF_GEMINI_4_ARGON_MODEL_ID)
+  return fuckbuffModelIdMatches(id, FUCKBUFF_GEMINI_4_ARGON_MODEL_ID)
 }
 
 /** Whether the requested model is GPT-5.6 Luna, tolerating the dated snapshot
  *  suffix. Used by the OpenRouter layer to apply Luna's pinned routing and
  *  reasoning effort, so a dated variant can't dodge either. */
-export function isFreebuffGpt56LunaModelId(
+export function isFuckbuffGpt56LunaModelId(
   id: string | null | undefined,
 ): boolean {
-  return freebuffModelIdMatches(id, FREEBUFF_GPT_5_6_LUNA_MODEL_ID)
+  return fuckbuffModelIdMatches(id, FUCKBUFF_GPT_5_6_LUNA_MODEL_ID)
 }
 
 /** Whether `id` is GPT-6 Luna, tolerating a dated snapshot suffix. Used by the
  *  OpenRouter layer to apply the flex-first endpoint order and the price
- *  ceiling (FREEBUFF_GPT_6_LUNA_UPSTREAM_ORDER / _MAX_PRICE).
+ *  ceiling (FUCKBUFF_GPT_6_LUNA_UPSTREAM_ORDER / _MAX_PRICE).
  *
- *  Separate from isFreebuffGpt56LunaModelId and never prefix-matched on
+ *  Separate from isFuckbuffGpt56LunaModelId and never prefix-matched on
  *  `openai/gpt-`: 5.6 routes through the Cheaper Inference -> Novita cascade,
  *  which cannot serve a gpt-6 slug at all, so one shared predicate would send
  *  this row to a lane that 404s it. */
 /** Whether the requested model is GPT-6.1 Sol, tolerating a dated snapshot. */
-export function isFreebuffGpt61SolModelId(
+export function isFuckbuffGpt61SolModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return freebuffModelIdMatches(id, FREEBUFF_GPT_61_SOL_MODEL_ID)
+  return fuckbuffModelIdMatches(id, FUCKBUFF_GPT_61_SOL_MODEL_ID)
 }
 
-export function isFreebuffGpt6LunaModelId(
+export function isFuckbuffGpt6LunaModelId(
   id: string | null | undefined,
 ): boolean {
-  return freebuffModelIdMatches(id, FREEBUFF_GPT_6_LUNA_MODEL_ID)
+  return fuckbuffModelIdMatches(id, FUCKBUFF_GPT_6_LUNA_MODEL_ID)
 }
 
 /**
- * Models that may ONLY be served to the Freebuff Web service account — i.e. to
- * turns issued by the Freebuff Web / Cloud runner itself, never to a caller
+ * Models that may ONLY be served to the Fuckbuff Web service account — i.e. to
+ * turns issued by the Fuckbuff Web / Cloud runner itself, never to a caller
  * holding an ordinary API key. Enforced server-side in
  * web/src/app/api/v1/chat/completions/_post.ts, next to the free-mode
  * agent+model allowlist.
@@ -5051,21 +5051,21 @@ export function isFreebuffGpt6LunaModelId(
  * 2026-09-04 for that reason, each when it went to the CLI and Desktop; adding
  * a row to those catalogs REQUIRES removing it from here in the same change.
  *
- * Withdrawing a model entirely is `FREEBUFF_PAUSED_FREE_MODEL_IDS`, not this
+ * Withdrawing a model entirely is `FUCKBUFF_PAUSED_FREE_MODEL_IDS`, not this
  * list: pausing stops admissions on every surface in one deploy, while this
  * list leaves a visible picker row that 403s on send.
  */
-export const FREEBUFF_SERVICE_ONLY_MODEL_IDS =
+export const FUCKBUFF_SERVICE_ONLY_MODEL_IDS =
   [] as const satisfies readonly string[]
 
-/** Whether `id` may only be served to the Freebuff Web service account. Matches
+/** Whether `id` may only be served to the Fuckbuff Web service account. Matches
  *  dated builds for the same reason the price fence does: a variant that slips
  *  past this predicate is the same model with the gate off. */
-export function isFreebuffServiceOnlyModelId(
+export function isFuckbuffServiceOnlyModelId(
   id: string | null | undefined,
 ): boolean {
-  return FREEBUFF_SERVICE_ONLY_MODEL_IDS.some((modelId) =>
-    freebuffModelIdMatches(id, modelId),
+  return FUCKBUFF_SERVICE_ONLY_MODEL_IDS.some((modelId) =>
+    fuckbuffModelIdMatches(id, modelId),
   )
 }
 
@@ -5073,56 +5073,56 @@ export function isFreebuffServiceOnlyModelId(
  *  the OpenRouter lane, which attaches the zero-price fence to exactly these
  *  requests — a dated variant that slipped past this predicate would be the
  *  same model with no fence on it. */
-export function isFreebuffOxAlphaModelId(
+export function isFuckbuffOxAlphaModelId(
   id: string | null | undefined,
 ): boolean {
-  return freebuffModelIdMatches(id, FREEBUFF_OX_ALPHA_MODEL_ID)
+  return fuckbuffModelIdMatches(id, FUCKBUFF_OX_ALPHA_MODEL_ID)
 }
 
 /** Whether `id` names Space Bunny Alpha, including any dated build of it —
  *  the OpenRouter lane's zero-price fence keys off this, for the reason given
- *  on isFreebuffOxAlphaModelId. */
-export function isFreebuffSpaceBunnyAlphaModelId(
+ *  on isFuckbuffOxAlphaModelId. */
+export function isFuckbuffSpaceBunnyAlphaModelId(
   id: string | null | undefined,
 ): boolean {
-  return freebuffModelIdMatches(id, FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID)
+  return fuckbuffModelIdMatches(id, FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID)
 }
 
 /** The catalog's reasoning effort for the requested model, tolerating dated
  *  snapshot suffixes like every other id helper. Null for models that carry
- *  none — see FreebuffModelOption.reasoningEffort. */
+ *  none — see FuckbuffModelOption.reasoningEffort. */
 /** The catalog row for any surface's id, or undefined. Both catalogs, for the
- *  same reason getFreebuffModelReasoningEffort reads both: a Web-only model is
- *  absent from SUPPORTED_FREEBUFF_MODELS by design. */
-function findFreebuffModelOption(
+ *  same reason getFuckbuffModelReasoningEffort reads both: a Web-only model is
+ *  absent from SUPPORTED_FUCKBUFF_MODELS by design. */
+function findFuckbuffModelOption(
   id: string | null | undefined,
-): FreebuffModelOption | undefined {
+): FuckbuffModelOption | undefined {
   return (
-    SUPPORTED_FREEBUFF_MODELS.find((m) => freebuffModelIdMatches(id, m.id)) ??
-    FREEBUFF_WEB_ALL_MODELS.find((m) => freebuffModelIdMatches(id, m.id)) ??
-    (id ? getFreebuffModelPolicyOverlay()?.model?.(id) : undefined)
+    SUPPORTED_FUCKBUFF_MODELS.find((m) => fuckbuffModelIdMatches(id, m.id)) ??
+    FUCKBUFF_WEB_ALL_MODELS.find((m) => fuckbuffModelIdMatches(id, m.id)) ??
+    (id ? getFuckbuffModelPolicyOverlay()?.model?.(id) : undefined)
   )
 }
 
 /** The ladder a user may pick from for this model, or null when it offers no
  *  choice — which is every model that has not opted in. */
-export function getFreebuffModelEfforts(
+export function getFuckbuffModelEfforts(
   id: string | null | undefined,
 ): readonly ReasoningEffort[] | null {
   const override = id
-    ? getFreebuffModelPolicyOverlay()?.efforts?.(id)
+    ? getFuckbuffModelPolicyOverlay()?.efforts?.(id)
     : undefined
   if (override) return override.efforts.length > 0 ? override.efforts : null
-  const efforts = findFreebuffModelOption(id)?.efforts
+  const efforts = findFuckbuffModelOption(id)?.efforts
   return efforts && efforts.length > 0 ? efforts : null
 }
 
 /** Where this model's ladder starts before a user touches it. */
-export function getFreebuffModelDefaultEffort(
+export function getFuckbuffModelDefaultEffort(
   id: string | null | undefined,
 ): ReasoningEffort | null {
   const override = id
-    ? getFreebuffModelPolicyOverlay()?.efforts?.(id)
+    ? getFuckbuffModelPolicyOverlay()?.efforts?.(id)
     : undefined
   if (override) {
     if (override.efforts.length === 0) return null
@@ -5130,7 +5130,7 @@ export function getFreebuffModelDefaultEffort(
       override.defaultEffort ?? override.efforts[override.efforts.length - 1]!
     )
   }
-  const entry = findFreebuffModelOption(id)
+  const entry = findFuckbuffModelOption(id)
   if (!entry?.efforts?.length) return null
   return entry.defaultEffort ?? entry.efforts[entry.efforts.length - 1]!
 }
@@ -5141,7 +5141,7 @@ export function getFreebuffModelDefaultEffort(
  *
  * Keyed on the model the request will ACTUALLY run — not the one the user
  * picked. Those differ more often than they look: a limited-tier user's premium
- * pick is coerced (resolveFreebuffSessionModelForAccessTier), the cloud build
+ * pick is coerced (resolveFuckbuffSessionModelForAccessTier), the cloud build
  * path rewrites it, and a Muse Spark turn can be rerouted to Luna mid-flight.
  * Clamping against the requested model would then let one model's rung reach
  * another's API — `xhigh` landing on DeepSeek maps to `max`, the most expensive
@@ -5152,13 +5152,13 @@ export function getFreebuffModelDefaultEffort(
  * the closest thing to what they chose. Models with no ladder return null and
  * keep whatever `reasoningEffort` already says.
  */
-export function resolveFreebuffReasoningEffort(
+export function resolveFuckbuffReasoningEffort(
   modelId: string | null | undefined,
   requested: unknown,
 ): ReasoningEffort | null {
-  const efforts = getFreebuffModelEfforts(modelId)
+  const efforts = getFuckbuffModelEfforts(modelId)
   if (!efforts) return null
-  const fallback = getFreebuffModelDefaultEffort(modelId)
+  const fallback = getFuckbuffModelDefaultEffort(modelId)
   if (!fallback) return null
   // Medium was briefly offered for Flash before the 07/31 capability matrix was
   // corrected, and reaches these models from persisted Desktop/Web preferences
@@ -5173,31 +5173,31 @@ export function resolveFreebuffReasoningEffort(
   // exactly the model users pick for deliberation.
   if (
     requested === 'medium' &&
-    (freebuffModelIdMatches(modelId, FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID) ||
-      freebuffModelIdMatches(
+    (fuckbuffModelIdMatches(modelId, FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID) ||
+      fuckbuffModelIdMatches(
         modelId,
-        FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+        FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
       ) ||
-      freebuffModelIdMatches(modelId, FREEBUFF_DEEPSEEK_V4_PRO_MODEL_ID))
+      fuckbuffModelIdMatches(modelId, FUCKBUFF_DEEPSEEK_V4_PRO_MODEL_ID))
   ) {
     return 'high'
   }
   return clampReasoningEffort(requested, efforts, fallback)
 }
 
-export function getFreebuffModelReasoningEffort(
+export function getFuckbuffModelReasoningEffort(
   id: string | null | undefined,
-): NonNullable<FreebuffModelOption['reasoningEffort']> | null {
+): NonNullable<FuckbuffModelOption['reasoningEffort']> | null {
   // BOTH catalogs, and the Web one is not optional. This used to read
-  // SUPPORTED_FREEBUFF_MODELS alone — the CLI/Desktop catalog — which silently
+  // SUPPORTED_FUCKBUFF_MODELS alone — the CLI/Desktop catalog — which silently
   // excluded every Web-only model. Muse Spark is deliberately absent from that
   // list (its absence IS the Desktop gate), so setting `reasoningEffort` on its
   // row did nothing at all and gave no hint why: the field was present, the
   // lookup simply could not see the row. Any future Web-only model would have
   // hit the same wall.
-  const entry: FreebuffModelOption | undefined =
-    SUPPORTED_FREEBUFF_MODELS.find((m) => freebuffModelIdMatches(id, m.id)) ??
-    FREEBUFF_WEB_ALL_MODELS.find((m) => freebuffModelIdMatches(id, m.id))
+  const entry: FuckbuffModelOption | undefined =
+    SUPPORTED_FUCKBUFF_MODELS.find((m) => fuckbuffModelIdMatches(id, m.id)) ??
+    FUCKBUFF_WEB_ALL_MODELS.find((m) => fuckbuffModelIdMatches(id, m.id))
   return entry?.reasoningEffort ?? null
 }
 
@@ -5209,12 +5209,12 @@ export function getFreebuffModelReasoningEffort(
  * on a model they cannot start — the next new thread, a different app, or a
  * plain page reload would open on it and fail admission. Picking it applies to
  * the surface in front of you; anything that starts fresh falls back to
- * DEFAULT_FREEBUFF_WEB_MODEL_ID.
+ * DEFAULT_FUCKBUFF_WEB_MODEL_ID.
  *
  * TIER-AWARE SINCE 2026-08-31, and it has to be. The rule used to name GLM 5.2,
  * which was earned at every tier. The reward model is now GLM 5.3 Flash, which
  * is earned ONLY at limited access — at full access it is unmetered and is
- * DEFAULT_FREEBUFF_WEB_MODEL_ID itself. Refusing to remember it there would
+ * DEFAULT_FUCKBUFF_WEB_MODEL_ID itself. Refusing to remember it there would
  * mean the product's default model is the one pick that never sticks, and a
  * user who deliberately chose it would find it reset on every reload.
  *
@@ -5223,46 +5223,46 @@ export function getFreebuffModelReasoningEffort(
  * tier.
  *
  * Every localStorage read AND write of the remembered model must go through
- * this (via resolveRememberedFreebuffWebModel), so a value saved before this
+ * this (via resolveRememberedFuckbuffWebModel), so a value saved before this
  * rule existed self-heals on the next load instead of persisting forever.
  */
-export function isFreebuffWebRememberableModelId(
+export function isFuckbuffWebRememberableModelId(
   id: string | null | undefined,
-  accessTier: FreebuffAccessTier | null | undefined = 'full',
+  accessTier: FuckbuffAccessTier | null | undefined = 'full',
 ): boolean {
   if (accessTier !== 'limited') return true
-  return !isFreebuffRewardModelId(id)
+  return !isFuckbuffRewardModelId(id)
 }
 
 /**
  * The model a surface should START on, given a remembered (localStorage)
  * selection: the saved model when it is still valid and rememberable, else
- * DEFAULT_FREEBUFF_WEB_MODEL_ID.
+ * DEFAULT_FUCKBUFF_WEB_MODEL_ID.
  *
- * Distinct from resolveFreebuffWebModel, which resolves a LIVE selection and
+ * Distinct from resolveFuckbuffWebModel, which resolves a LIVE selection and
  * must leave a just-picked earned row alone.
  */
-export function resolveRememberedFreebuffWebModel(
+export function resolveRememberedFuckbuffWebModel(
   id: string | null | undefined,
   options: {
     includeGodOnly?: boolean
-    /** See isFreebuffWebRememberableModelId — only the limited tier refuses to
+    /** See isFuckbuffWebRememberableModelId — only the limited tier refuses to
      *  remember anything, and only the reward row. */
-    accessTier?: FreebuffAccessTier | null
+    accessTier?: FuckbuffAccessTier | null
   } = {},
-): FreebuffWebModelId {
-  const resolved = resolveFreebuffWebModel(id, options)
-  return isFreebuffWebRememberableModelId(resolved, options.accessTier)
+): FuckbuffWebModelId {
+  const resolved = resolveFuckbuffWebModel(id, options)
+  return isFuckbuffWebRememberableModelId(resolved, options.accessTier)
     ? resolved
-    : DEFAULT_FREEBUFF_WEB_MODEL_ID
+    : DEFAULT_FUCKBUFF_WEB_MODEL_ID
 }
 
 /**
- * Return whether a model used by a Freebuff surface accepts image input.
+ * Return whether a model used by a Fuckbuff surface accepts image input.
  * Unknown models return undefined so the provider backend does not strip
  * images from newly added or paid models until their capability is known.
  */
-export function getFreebuffModelImageSupport(
+export function getFuckbuffModelImageSupport(
   id: string | null | undefined,
 ): boolean | undefined {
   if (!id) return undefined
@@ -5270,7 +5270,7 @@ export function getFreebuffModelImageSupport(
   // Keep the retired chat wire id text-only during a staggered deployment.
   // It now routes to DeepSeek direct, but has no catalog option of its own.
   if (
-    freebuffModelIdMatches(id, FREEBUFF_DEEPSEEK_V4_FLASH_FIREWORKS_MODEL_ID)
+    fuckbuffModelIdMatches(id, FUCKBUFF_DEEPSEEK_V4_FLASH_FIREWORKS_MODEL_ID)
   ) {
     return false
   }
@@ -5285,64 +5285,64 @@ export function getFreebuffModelImageSupport(
   // With the row's own answer, a text-only catalog model gets the describe
   // pipeline every compiled text-only model already gets.
   const model =
-    SUPPORTED_FREEBUFF_MODELS.find((option) =>
-      freebuffModelIdMatches(id, option.id),
+    SUPPORTED_FUCKBUFF_MODELS.find((option) =>
+      fuckbuffModelIdMatches(id, option.id),
     ) ??
-    FREEBUFF_WEB_ALL_MODELS.find((option) =>
-      freebuffModelIdMatches(id, option.id),
+    FUCKBUFF_WEB_ALL_MODELS.find((option) =>
+      fuckbuffModelIdMatches(id, option.id),
     ) ??
-    getFreebuffModelPolicyOverlay()?.model?.(id)
+    getFuckbuffModelPolicyOverlay()?.model?.(id)
   return model?.multimodal
 }
 
-export function isFreebuffWebMultimodalModelId(
+export function isFuckbuffWebMultimodalModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return FREEBUFF_WEB_MULTIMODAL_MODEL_IDS.some((modelId) => modelId === id)
+  return FUCKBUFF_WEB_MULTIMODAL_MODEL_IDS.some((modelId) => modelId === id)
 }
 
 /** Whether we store our own chat-completion traces for this free-mode model.
- *  See FREEBUFF_TRACED_MODEL_IDS. */
-export function isFreebuffTracedModelId(
+ *  See FUCKBUFF_TRACED_MODEL_IDS. */
+export function isFuckbuffTracedModelId(
   id: string | null | undefined,
 ): boolean {
   if (!id) return false
-  return FREEBUFF_TRACED_MODEL_IDS.some((modelId) => modelId === id)
+  return FUCKBUFF_TRACED_MODEL_IDS.some((modelId) => modelId === id)
 }
 
-export function resolveSupportedFreebuffModel(
+export function resolveSupportedFuckbuffModel(
   id: string | null | undefined,
-): SupportedFreebuffModelId {
-  return isSupportedFreebuffModelId(id) ? id : FALLBACK_FREEBUFF_MODEL_ID
+): SupportedFuckbuffModelId {
+  return isSupportedFuckbuffModelId(id) ? id : FALLBACK_FUCKBUFF_MODEL_ID
 }
 
-export function getFreebuffModel(id: string): FreebuffModelOption {
+export function getFuckbuffModel(id: string): FuckbuffModelOption {
   return (
-    SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === id) ??
-    getFreebuffModelPolicyOverlay()?.model?.(id) ??
-    FREEBUFF_MODELS.find((m) => m.id === FALLBACK_FREEBUFF_MODEL_ID)!
+    SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === id) ??
+    getFuckbuffModelPolicyOverlay()?.model?.(id) ??
+    FUCKBUFF_MODELS.find((m) => m.id === FALLBACK_FUCKBUFF_MODEL_ID)!
   )
 }
 
-export function getFreebuffWebModel(id: string): FreebuffModelOption {
+export function getFuckbuffWebModel(id: string): FuckbuffModelOption {
   return (
-    FREEBUFF_WEB_ALL_MODELS.find((m) => m.id === id) ??
-    FREEBUFF_WEB_ALL_MODELS.find((m) => m.id === FALLBACK_FREEBUFF_MODEL_ID)!
+    FUCKBUFF_WEB_ALL_MODELS.find((m) => m.id === id) ??
+    FUCKBUFF_WEB_ALL_MODELS.find((m) => m.id === FALLBACK_FUCKBUFF_MODEL_ID)!
   )
 }
 
 /** The "a better model exists" notice for `id`, or undefined when the model is
  *  current. Returns nothing when the replacement is not itself selectable on
  *  this surface, so a picker never offers a switch to a model it cannot show. */
-export function getFreebuffModelSupersededBy(
+export function getFuckbuffModelSupersededBy(
   id: string | null | undefined,
   selectableModelIds: readonly string[],
-): FreebuffModelOption['supersededBy'] | undefined {
+): FuckbuffModelOption['supersededBy'] | undefined {
   if (!id) return undefined
-  const catalog: readonly FreebuffModelOption[] = [
-    ...SUPPORTED_FREEBUFF_MODELS,
-    ...FREEBUFF_WEB_ALL_MODELS,
+  const catalog: readonly FuckbuffModelOption[] = [
+    ...SUPPORTED_FUCKBUFF_MODELS,
+    ...FUCKBUFF_WEB_ALL_MODELS,
   ]
   const supersededBy = catalog.find(
     (candidate) => candidate.id === id,
@@ -5368,15 +5368,15 @@ export function getFreebuffModelSupersededBy(
  * store. "Closed 00:00-10:00 UTC" asks someone at 2am to do timezone
  * arithmetic before they can tell whether the product is broken.
  */
-export function getFreebuffModelUnavailableLabel(
+export function getFuckbuffModelUnavailableLabel(
   id: string,
   now: Date = new Date(),
   options: LocalTimeFormatOptions = {},
 ): string | undefined {
-  if (isFreebuffSessionModelAvailable(id, now)) return undefined
+  if (isFuckbuffSessionModelAvailable(id, now)) return undefined
   const model =
-    SUPPORTED_FREEBUFF_MODELS.find((candidate) => candidate.id === id) ??
-    getFreebuffWebModel(id)
+    SUPPORTED_FUCKBUFF_MODELS.find((candidate) => candidate.id === id) ??
+    getFuckbuffWebModel(id)
   if (model.availability === 'off_peak_only') {
     const back = deepSeekExpensiveWindowEndsAt(now)
     // Named, even though this label is only ever built in-app. "In-app" is not
@@ -5389,31 +5389,31 @@ export function getFreebuffModelUnavailableLabel(
       options.timeZone,
     )}`
   }
-  return getFreebuffDeploymentAvailabilityLabel(now, options)
+  return getFuckbuffDeploymentAvailabilityLabel(now, options)
 }
 
 /**
  * WHEN a time-gated model is open, in the reader's local clock — the inverse of
- * `getFreebuffModelUnavailableLabel`, which only speaks once the door is
+ * `getFuckbuffModelUnavailableLabel`, which only speaks once the door is
  * already shut.
  *
  * Shown on the row at all hours so a user can plan around the window instead of
  * discovering it by being refused. Returns undefined for models with no time
  * restriction at all, which is most of the catalog.
  */
-export function getFreebuffModelAvailabilityWindowLabel(
+export function getFuckbuffModelAvailabilityWindowLabel(
   id: string,
   now: Date = new Date(),
   options: LocalTimeFormatOptions = {},
 ): string | undefined {
   const model =
-    SUPPORTED_FREEBUFF_MODELS.find((candidate) => candidate.id === id) ??
-    getFreebuffWebModel(id)
+    SUPPORTED_FUCKBUFF_MODELS.find((candidate) => candidate.id === id) ??
+    getFuckbuffWebModel(id)
   if (model.availability === 'off_peak_only') {
     return `Open ${formatDeepSeekOffPeakWindowLocal(now, options.timeZone)}`
   }
   if (model.availability === 'deployment_hours') {
-    return getFreebuffDeploymentAvailabilityLabel(now, options)
+    return getFuckbuffDeploymentAvailabilityLabel(now, options)
   }
   return undefined
 }
@@ -5436,30 +5436,30 @@ export function getFreebuffModelAvailabilityWindowLabel(
  * superseded automatically gets BOTH the picker nudge and this steering —
  * they can never disagree about which models are stale.
  */
-export function migrateSupersededFreebuffModelPreference(
+export function migrateSupersededFuckbuffModelPreference(
   id: string | null | undefined,
   selectableModelIds: readonly string[],
 ): string | null {
-  return getFreebuffModelSupersededBy(id, selectableModelIds)?.modelId ?? null
+  return getFuckbuffModelSupersededBy(id, selectableModelIds)?.modelId ?? null
 }
 
-function getNextFreebuffDeploymentStart(now: Date): Date {
-  const easternNow = getZonedParts(now, FREEBUFF_EASTERN_TIMEZONE)
+function getNextFuckbuffDeploymentStart(now: Date): Date {
+  const easternNow = getZonedParts(now, FUCKBUFF_EASTERN_TIMEZONE)
   const isBeforeTodayOpen = easternNow.hour < 9
 
   const offset = isBeforeTodayOpen ? 0 : 1
 
   return getUtcForZonedTime(
     addDaysToYmd(easternNow.year, easternNow.month, easternNow.day, offset),
-    FREEBUFF_EASTERN_TIMEZONE,
+    FUCKBUFF_EASTERN_TIMEZONE,
     9,
     0,
   )
 }
 
-function getCurrentFreebuffDeploymentEnd(now: Date): Date {
-  const pacificNow = getZonedParts(now, FREEBUFF_PACIFIC_TIMEZONE)
-  return getUtcForZonedTime(pacificNow, FREEBUFF_PACIFIC_TIMEZONE, 17, 0)
+function getCurrentFuckbuffDeploymentEnd(now: Date): Date {
+  const pacificNow = getZonedParts(now, FUCKBUFF_PACIFIC_TIMEZONE)
+  return getUtcForZonedTime(pacificNow, FUCKBUFF_PACIFIC_TIMEZONE, 17, 0)
 }
 
 function isSameLocalDay(left: Date, right: Date, timeZone?: string): boolean {
@@ -5490,33 +5490,33 @@ function formatLocalTime(
   }).format(date)
 }
 
-export function getFreebuffDeploymentAvailabilityLabel(
+export function getFuckbuffDeploymentAvailabilityLabel(
   now: Date = new Date(),
   options: LocalTimeFormatOptions = {},
 ): string {
-  if (isFreebuffDeploymentHours(now)) {
-    const closesAt = getCurrentFreebuffDeploymentEnd(now)
+  if (isFuckbuffDeploymentHours(now)) {
+    const closesAt = getCurrentFuckbuffDeploymentEnd(now)
     return `until ${formatLocalTime(closesAt, now, options)}`
   }
 
-  const opensAt = getNextFreebuffDeploymentStart(now)
+  const opensAt = getNextFuckbuffDeploymentStart(now)
   return `opens ${formatLocalTime(opensAt, now, options)}`
 }
 
-export function isFreebuffDeploymentHours(now: Date = new Date()): boolean {
-  const eastern = getZonedParts(now, FREEBUFF_EASTERN_TIMEZONE)
-  const pacific = getZonedParts(now, FREEBUFF_PACIFIC_TIMEZONE)
+export function isFuckbuffDeploymentHours(now: Date = new Date()): boolean {
+  const eastern = getZonedParts(now, FUCKBUFF_EASTERN_TIMEZONE)
+  const pacific = getZonedParts(now, FUCKBUFF_PACIFIC_TIMEZONE)
   return (
     eastern.hour * 60 + eastern.minute >= 9 * 60 &&
     pacific.hour * 60 + pacific.minute < 17 * 60
   )
 }
 
-export function isFreebuffModelAvailable(
+export function isFuckbuffModelAvailable(
   id: string,
   now: Date = new Date(),
 ): boolean {
-  const model = SUPPORTED_FREEBUFF_MODELS.find((m) => m.id === id)
+  const model = SUPPORTED_FUCKBUFF_MODELS.find((m) => m.id === id)
   if (!model) return false
   return isAvailableAt(model.availability, now)
 }
@@ -5536,24 +5536,24 @@ export function isFreebuffModelAvailable(
  * wrong, because the disagreement only surfaces after the user commits.
  */
 function isAvailableAt(
-  availability: FreebuffModelOption['availability'],
+  availability: FuckbuffModelOption['availability'],
   now: Date,
 ): boolean {
   if (availability === 'always') return true
   if (availability === 'off_peak_only') return !isDeepSeekExpensiveWindow(now)
-  return isFreebuffDeploymentHours(now)
+  return isFuckbuffDeploymentHours(now)
 }
 
 /**
  * The window to quote when `model` is refused for being unavailable.
  *
  * Derived from the model's OWN availability instead of assumed. Both refusal
- * sites in free-session/public-api.ts gate on isFreebuffSessionModelAvailable,
+ * sites in free-session/public-api.ts gate on isFuckbuffSessionModelAvailable,
  * which covers `deployment_hours` AND `off_peak_only`, but both hardcoded the
  * deployment-hours label -- so a model closed for DeepSeek's peak window was
  * quoted our staffing hours, a different window entirely.
  */
-export function freebuffModelUnavailableWindow(
+export function fuckbuffModelUnavailableWindow(
   id: string,
   now: Date = new Date(),
   /**
@@ -5565,17 +5565,17 @@ export function freebuffModelUnavailableWindow(
    * AM" — 10:00 UTC, noon for them — at 10:34 on their own clock.
    *
    * Clients that DO know the reader's zone should render `availableAt` instead
-   * (see freebuffModelUnavailableAt); this string is the floor, correct for
+   * (see fuckbuffModelUnavailableAt); this string is the floor, correct for
    * everyone and local to no one.
    */
   timeZone: string = FALLBACK_WINDOW_TIME_ZONE,
 ): string {
   const model =
-    SUPPORTED_FREEBUFF_MODELS.find((candidate) => candidate.id === id) ??
-    getFreebuffWebModel(id)
+    SUPPORTED_FUCKBUFF_MODELS.find((candidate) => candidate.id === id) ??
+    getFuckbuffWebModel(id)
   return model.availability === 'off_peak_only'
     ? formatDeepSeekExpensiveWindowReturn(now, timeZone)
-    : FREEBUFF_DEPLOYMENT_HOURS_LABEL
+    : FUCKBUFF_DEPLOYMENT_HOURS_LABEL
 }
 
 /**
@@ -5588,13 +5588,13 @@ export function freebuffModelUnavailableWindow(
  * the limited-offer branch is a pool that refills on no schedule, so both
  * return undefined rather than a guess a client would render as fact.
  */
-export function freebuffModelUnavailableAt(
+export function fuckbuffModelUnavailableAt(
   id: string,
   now: Date = new Date(),
 ): string | undefined {
   const model =
-    SUPPORTED_FREEBUFF_MODELS.find((candidate) => candidate.id === id) ??
-    getFreebuffWebModel(id)
+    SUPPORTED_FUCKBUFF_MODELS.find((candidate) => candidate.id === id) ??
+    getFuckbuffWebModel(id)
   if (model.availability !== 'off_peak_only') return undefined
   if (!isDeepSeekExpensiveWindow(now)) return undefined
   return deepSeekExpensiveWindowEndsAt(now).toISOString()
@@ -5609,7 +5609,7 @@ export function freebuffModelUnavailableAt(
  * computable return time). Shared rather than reimplemented per surface so the
  * CLI, Desktop and Web cannot drift into three different answers to "when?".
  */
-export function formatFreebuffModelUnavailableWindow(
+export function formatFuckbuffModelUnavailableWindow(
   body: { availableHours: string; availableAt?: string },
   options: LocalTimeFormatOptions & { now?: Date } = {},
 ): string {
@@ -5627,13 +5627,13 @@ export function formatFreebuffModelUnavailableWindow(
   )}`
 }
 
-export function isFreebuffSessionModelAvailable(
+export function isFuckbuffSessionModelAvailable(
   id: string,
   now: Date = new Date(),
 ): boolean {
   const model =
-    SUPPORTED_FREEBUFF_MODELS.find((candidate) => candidate.id === id) ??
-    getFreebuffWebModel(id)
+    SUPPORTED_FUCKBUFF_MODELS.find((candidate) => candidate.id === id) ??
+    getFuckbuffWebModel(id)
   // Same reading as the picker's joinability check, deliberately — see
   // isAvailableAt. `off_peak_only` is the ten hours DeepSeek charges double
   // (00:00-10:00 UTC), a different window from `deployment_hours`, which tracks
@@ -5641,25 +5641,25 @@ export function isFreebuffSessionModelAvailable(
   return isAvailableAt(model.availability, now)
 }
 
-export function resolveAvailableFreebuffModel(
+export function resolveAvailableFuckbuffModel(
   id: string | null | undefined,
   now: Date = new Date(),
-): FreebuffModelId {
-  const resolved = resolveFreebuffModel(id)
-  if (isFreebuffModelAvailable(resolved, now)) return resolved
+): FuckbuffModelId {
+  const resolved = resolveFuckbuffModel(id)
+  if (isFuckbuffModelAvailable(resolved, now)) return resolved
   // A closed row may name where its traffic should go instead — V4 Flash sends
   // its peak hours to V4 Pro. Checked for availability itself rather than
   // trusted, so a chain of closed rows can never strand a pick; anything
   // unresolvable still lands on the unlimited fallback.
   const declared = (
-    SUPPORTED_FREEBUFF_MODELS as readonly FreebuffModelOption[]
+    SUPPORTED_FUCKBUFF_MODELS as readonly FuckbuffModelOption[]
   ).find((candidate) => candidate.id === resolved)?.unavailableFallback
   if (
     declared &&
-    isFreebuffModelId(declared) &&
-    isFreebuffModelAvailable(declared, now)
+    isFuckbuffModelId(declared) &&
+    isFuckbuffModelAvailable(declared, now)
   ) {
     return declared
   }
-  return FALLBACK_FREEBUFF_MODEL_ID
+  return FALLBACK_FUCKBUFF_MODEL_ID
 }

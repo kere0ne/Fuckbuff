@@ -33,8 +33,8 @@ export type FatalCrashReport = {
   arch: string
   uptimeSeconds: number
   crashedAt: string
-  /** Whether a Freebuff hour was live, i.e. resumable by the next launch. */
-  heldFreebuffSession: boolean
+  /** Whether a Fuckbuff hour was live, i.e. resumable by the next launch. */
+  heldFuckbuffSession: boolean
 }
 
 function reportPath(dir: string): string {
@@ -54,7 +54,7 @@ export function buildFatalCrashReport(
   label: string,
   error: unknown,
   context: {
-    heldFreebuffSession: boolean
+    heldFuckbuffSession: boolean
     version?: string
     now?: number
     uptimeSeconds?: number
@@ -80,7 +80,7 @@ export function buildFatalCrashReport(
     arch: process.arch,
     uptimeSeconds: Math.round(context.uptimeSeconds ?? process.uptime()),
     crashedAt: new Date(context.now ?? Date.now()).toISOString(),
-    heldFreebuffSession: context.heldFreebuffSession,
+    heldFuckbuffSession: context.heldFuckbuffSession,
   }
 }
 
@@ -88,7 +88,7 @@ export function buildFatalCrashReport(
 export function recordFatalCrashSync(
   label: string,
   error: unknown,
-  context: { heldFreebuffSession: boolean },
+  context: { heldFuckbuffSession: boolean },
   dir?: string,
 ): void {
   try {

@@ -1,15 +1,15 @@
 import { describe, expect, test } from 'bun:test'
 
 import {
-  getFreebuffRetentionMilestonesToFire,
-  isFirstFreebuffPrompt,
-  planFreebuffRedditConversionEvents,
-} from '@codebuff/common/util/reddit-freebuff-retention'
+  getFuckbuffRetentionMilestonesToFire,
+  isFirstFuckbuffPrompt,
+  planFuckbuffRedditConversionEvents,
+} from '@codebuff/common/util/reddit-fuckbuff-retention'
 
-describe('isFirstFreebuffPrompt', () => {
+describe('isFirstFuckbuffPrompt', () => {
   test('returns true on first-ever usage day', () => {
     expect(
-      isFirstFreebuffPrompt({
+      isFirstFuckbuffPrompt({
         previousUsageDays: [],
         newUsageDayRecorded: true,
       }),
@@ -18,7 +18,7 @@ describe('isFirstFreebuffPrompt', () => {
 
   test('returns false on repeat prompts same day', () => {
     expect(
-      isFirstFreebuffPrompt({
+      isFirstFuckbuffPrompt({
         previousUsageDays: ['2026-06-30'],
         newUsageDayRecorded: false,
       }),
@@ -27,7 +27,7 @@ describe('isFirstFreebuffPrompt', () => {
 
   test('returns false on a later usage day', () => {
     expect(
-      isFirstFreebuffPrompt({
+      isFirstFuckbuffPrompt({
         previousUsageDays: ['2026-06-30'],
         newUsageDayRecorded: true,
       }),
@@ -35,10 +35,10 @@ describe('isFirstFreebuffPrompt', () => {
   })
 })
 
-describe('getFreebuffRetentionMilestonesToFire', () => {
+describe('getFuckbuffRetentionMilestonesToFire', () => {
   test('returns nothing on first-ever usage day', () => {
     expect(
-      getFreebuffRetentionMilestonesToFire({
+      getFuckbuffRetentionMilestonesToFire({
         previousUsageDays: [],
         todayDateKey: '2026-06-30',
         newUsageDayRecorded: true,
@@ -48,7 +48,7 @@ describe('getFreebuffRetentionMilestonesToFire', () => {
 
   test('returns nothing when no new usage day was recorded', () => {
     expect(
-      getFreebuffRetentionMilestonesToFire({
+      getFuckbuffRetentionMilestonesToFire({
         previousUsageDays: ['2026-06-30'],
         todayDateKey: '2026-07-01',
         newUsageDayRecorded: false,
@@ -58,7 +58,7 @@ describe('getFreebuffRetentionMilestonesToFire', () => {
 
   test('fires 1d retention on day 1', () => {
     expect(
-      getFreebuffRetentionMilestonesToFire({
+      getFuckbuffRetentionMilestonesToFire({
         previousUsageDays: ['2026-06-30'],
         todayDateKey: '2026-07-01',
         newUsageDayRecorded: true,
@@ -68,7 +68,7 @@ describe('getFreebuffRetentionMilestonesToFire', () => {
 
   test('does not repeat 1d on day 2', () => {
     expect(
-      getFreebuffRetentionMilestonesToFire({
+      getFuckbuffRetentionMilestonesToFire({
         previousUsageDays: ['2026-06-30', '2026-07-01'],
         todayDateKey: '2026-07-02',
         newUsageDayRecorded: true,
@@ -78,7 +78,7 @@ describe('getFreebuffRetentionMilestonesToFire', () => {
 
   test('fires 7d retention on day 7', () => {
     expect(
-      getFreebuffRetentionMilestonesToFire({
+      getFuckbuffRetentionMilestonesToFire({
         previousUsageDays: ['2026-06-30', '2026-07-01'],
         todayDateKey: '2026-07-07',
         newUsageDayRecorded: true,
@@ -88,7 +88,7 @@ describe('getFreebuffRetentionMilestonesToFire', () => {
 
   test('does not backfill missed milestones after a long gap', () => {
     expect(
-      getFreebuffRetentionMilestonesToFire({
+      getFuckbuffRetentionMilestonesToFire({
         previousUsageDays: ['2026-06-01'],
         todayDateKey: '2026-07-01',
         newUsageDayRecorded: true,
@@ -98,7 +98,7 @@ describe('getFreebuffRetentionMilestonesToFire', () => {
 
   test('fires 24d retention only on exact day 24', () => {
     expect(
-      getFreebuffRetentionMilestonesToFire({
+      getFuckbuffRetentionMilestonesToFire({
         previousUsageDays: ['2026-06-01', '2026-06-02'],
         todayDateKey: '2026-06-25',
         newUsageDayRecorded: true,
@@ -107,10 +107,10 @@ describe('getFreebuffRetentionMilestonesToFire', () => {
   })
 })
 
-describe('planFreebuffRedditConversionEvents', () => {
+describe('planFuckbuffRedditConversionEvents', () => {
   test('first prompt only on day 0', () => {
     expect(
-      planFreebuffRedditConversionEvents({
+      planFuckbuffRedditConversionEvents({
         previousUsageDays: [],
         todayDateKey: '2026-06-30',
         newUsageDayRecorded: true,
@@ -120,7 +120,7 @@ describe('planFreebuffRedditConversionEvents', () => {
 
   test('1d retention without first prompt on day 1', () => {
     expect(
-      planFreebuffRedditConversionEvents({
+      planFuckbuffRedditConversionEvents({
         previousUsageDays: ['2026-06-30'],
         todayDateKey: '2026-07-01',
         newUsageDayRecorded: true,

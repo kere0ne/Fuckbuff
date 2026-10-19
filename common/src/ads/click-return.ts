@@ -1,6 +1,6 @@
 /**
  * The post-click RETURN label (COD-694): after an ad click, did the user come
- * back to Freebuff, and how long were they away?
+ * back to Fuckbuff, and how long were they away?
  *
  * It is the frequent proxy for the low-data L3 design (targeting doc 20 §3):
  * P(convert | click) is built on P(long click | click, context), and a long
@@ -18,7 +18,7 @@
  * - Web: `visibilitychange` on the tab (and window focus as a backstop).
  *
  * This module holds only the wire contract and a clock-injected state
- * machine. The DOM binding sits beside it so Desktop's renderer and Freebuff
+ * machine. The DOM binding sits beside it so Desktop's renderer and Fuckbuff
  * Web share one implementation; the CLI drives the machine from its prompt
  * path. The threshold N that turns `away_ms` into "long" is deliberately NOT
  * applied here: clients report the raw duration and the eval lab applies N as
@@ -194,7 +194,7 @@ type Pending<Key> = {
 
 /**
  * The state machine every client drives. Only one click is pending at a
- * time: a second click proves the user was back in Freebuff, so the first
+ * time: a second click proves the user was back in Fuckbuff, so the first
  * resolves as `returned` via `next_click` before the second is armed.
  *
  * `away_ms` runs from the CLICK, not from the moment focus left, because the
@@ -332,7 +332,7 @@ export function createClickAckGate<Key>(): {
 }
 
 // ---------------------------------------------------------------------------
-// DOM binding (Desktop renderer, Freebuff Web). Structural types only, so
+// DOM binding (Desktop renderer, Fuckbuff Web). Structural types only, so
 // `common` needs no DOM lib.
 // ---------------------------------------------------------------------------
 

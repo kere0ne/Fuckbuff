@@ -86,7 +86,7 @@ Types updates.
 
 ### Added
 
-- You can now get an API key from the [Codebuff website](https://www.codebuff.com/profile?tab=api-keys)!
+- You can now get an API key from the Codebuff website!
 - You can provide your own custom tools!
 
 ### Updated

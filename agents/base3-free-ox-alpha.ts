@@ -1,4 +1,4 @@
-import { FREEBUFF_OX_ALPHA_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_OX_ALPHA_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase3CliRoot } from './base3'
 
@@ -18,8 +18,8 @@ import { createBase3CliRoot } from './base3'
  */
 const definition = {
   ...createBase3CliRoot({
-    model: FREEBUFF_OX_ALPHA_MODEL_ID,
-    isFreebuff: true,
+    model: FUCKBUFF_OX_ALPHA_MODEL_ID,
+    isFuckbuff: true,
   }),
   id: 'base3-free-ox-alpha',
   displayName: 'Buffy on Ox Alpha',

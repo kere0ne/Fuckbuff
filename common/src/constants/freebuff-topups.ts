@@ -13,7 +13,7 @@
  * advertiser-facing form and the webhook-side parser have to agree on, which
  * is why they live in `common` rather than in either app.
  *
- * See `docs/freebuff-placements-prepaid.md` for the ledger shape and the
+ * See `docs/fuckbuff-placements-prepaid.md` for the ledger shape and the
  * ordered list of what wiring Stripe actually changes.
  */
 
@@ -51,15 +51,15 @@ export const AD_TOP_UP_PRESET_CENTS = [
  * their card statement when they are trying to work out what we charged them
  * for.
  */
-export const AD_TOP_UP_PRODUCT_NAME = 'Freebuff placements balance'
+export const AD_TOP_UP_PRODUCT_NAME = 'Fuckbuff placements balance'
 /**
- * Suffix on every one-off Freebuff card charge (placements top-ups and the
+ * Suffix on every one-off Fuckbuff card charge (placements top-ups and the
  * postpaid sweep). The Stripe account is Codebuff's, so a card line reads
  * `CODEBUFF* <suffix>`; prefix + `* ` + suffix must fit Stripe's 22 characters
- * and this fits exactly. Subscription Products carry `FREEBUFF.COM` on the
+ * and this fits exactly. Subscription Products carry `FUCKBUFF.COM` on the
  * Product itself instead.
  */
-export const AD_STATEMENT_DESCRIPTOR_SUFFIX = 'FREEBUFF.COM'
+export const AD_STATEMENT_DESCRIPTOR_SUFFIX = 'FUCKBUFF.COM'
 
 /** The only currency this rail accepts. Asserted at parse time, not assumed. */
 export const AD_TOP_UP_CURRENCY = 'usd'
@@ -161,7 +161,7 @@ export function isValidPlacementCpcFloorOverride(
  * because four separate layers have to agree on it -- the admission
  * validators, the `/r/` click-recording guard, the reprice clamp, and the
  * table CHECK. Two of those are in `packages/internal` and two in
- * `freebuff/web`, and a second copy of this predicate is exactly how the
+ * `fuckbuff/web`, and a second copy of this predicate is exactly how the
  * price a campaign serves at drifts from the price an automatic run will
  * clamp it to.
  */

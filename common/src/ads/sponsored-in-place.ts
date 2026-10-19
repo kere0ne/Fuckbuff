@@ -4,7 +4,7 @@
  * conversation, editing the user's working copy, with no worktree, commit,
  * branch or pull request.
  *
- * Read the amendment in `docs/freebuff-sponsored-local-execution.md` before
+ * Read the amendment in `docs/fuckbuff-sponsored-local-execution.md` before
  * touching anything here: the write root moves onto the user's real files, so
  * `.git` becomes read-only to the run, secret-bearing files become unreadable,
  * and the rewind becomes the undo.

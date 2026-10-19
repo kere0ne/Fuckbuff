@@ -23,14 +23,14 @@
 import {
   SURVEY_EVENT_BATCH_MAX,
   SURVEY_EVENT_DWELL_MS_MAX,
-} from './freebuff-sponsored-survey'
+} from './fuckbuff-sponsored-survey'
 
-import type { ProfileSurveySurface } from './freebuff-profile-survey'
+import type { ProfileSurveySurface } from './fuckbuff-profile-survey'
 import type {
   SurveyEventBatch,
   SurveyEventInput,
   SurveyEventKind,
-} from './freebuff-sponsored-survey'
+} from './fuckbuff-sponsored-survey'
 
 export const SURVEY_EVENTS_PATH = '/api/survey-events'
 

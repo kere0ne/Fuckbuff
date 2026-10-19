@@ -48,19 +48,19 @@ describe('parseSponsoredRuntimeProbe', () => {
   test('lists what ran, in the fixed order', () => {
     expect(
       parseSponsoredRuntimeProbe(
-        'python\nnode\nnpx\n__freebuff_runtimes_done__\n',
+        'python\nnode\nnpx\n__fuckbuff_runtimes_done__\n',
       ),
     ).toEqual(['node', 'npx', 'python'])
   })
 
   test('nothing found is an empty list; a probe cut short is unknown', () => {
-    expect(parseSponsoredRuntimeProbe('__freebuff_runtimes_done__')).toEqual([])
+    expect(parseSponsoredRuntimeProbe('__fuckbuff_runtimes_done__')).toEqual([])
     expect(parseSponsoredRuntimeProbe('node\n')).toBeUndefined()
   })
 
   test('noise never becomes a runtime', () => {
     expect(
-      parseSponsoredRuntimeProbe('nodejs\nv20.1.0\n__freebuff_runtimes_done__'),
+      parseSponsoredRuntimeProbe('nodejs\nv20.1.0\n__fuckbuff_runtimes_done__'),
     ).toEqual([])
   })
 })
@@ -71,7 +71,7 @@ describe('probeSponsoredRuntimes', () => {
   test("reads the broker's answer", async () => {
     expect(
       await probeSponsoredRuntimes(
-        broker('node\nbun\n__freebuff_runtimes_done__\n'),
+        broker('node\nbun\n__fuckbuff_runtimes_done__\n'),
         request,
       ),
     ).toEqual(['node', 'bun'])
@@ -83,7 +83,7 @@ describe('probeSponsoredRuntimes', () => {
     ).toBeUndefined()
     expect(
       await probeSponsoredRuntimes(
-        broker('__freebuff_runtimes_done__', 1),
+        broker('__fuckbuff_runtimes_done__', 1),
         request,
       ),
     ).toBeUndefined()
@@ -95,7 +95,7 @@ describe('probeSponsoredRuntimes', () => {
   })
 
   test('a broker with its own shell (the Windows floor) is not asked', async () => {
-    const floor = broker('__freebuff_runtimes_done__', 0, { ownsShell: true })
+    const floor = broker('__fuckbuff_runtimes_done__', 0, { ownsShell: true })
     expect(await probeSponsoredRuntimes(floor, request)).toBeUndefined()
     expect(floor.started).toBe(0)
   })

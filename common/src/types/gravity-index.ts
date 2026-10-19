@@ -107,7 +107,7 @@ const runtimeAttributionFields = {
       'Stable Codebuff session ID for Gravity API key attribution. Codebuff usually fills this automatically.',
     ),
   // Raw, stable per-end-user identifier for Gravity attribution + payout
-  // matching. Surfaces that run under a shared service account (e.g. Freebuff
+  // matching. Surfaces that run under a shared service account (e.g. Fuckbuff
   // Web) set this to the real end user so conversions don't all collapse onto
   // the service account. The server hashes it before sending it to Gravity.
   // Codebuff usually fills this automatically.

@@ -4,12 +4,12 @@ import {
   PROFILE_SURVEY_QUESTIONS,
   profileSurveyQuestion,
   type ProfileSurveyQuestion,
-} from '../freebuff-profile-survey'
+} from '../fuckbuff-profile-survey'
 import {
   createFakeProfileSurveyClient,
   createFetchProfileSurveyTransport,
   createHttpProfileSurveyClient,
-} from '../freebuff-profile-survey-client'
+} from '../fuckbuff-profile-survey-client'
 import {
   formatProfileSurveyAnswer,
   isAllNotApplicable,
@@ -22,7 +22,7 @@ import {
   profileSurveySelections,
   profileSurveyStartIndex,
   toggleProfileSurveyOption,
-} from '../freebuff-profile-survey-form'
+} from '../fuckbuff-profile-survey-form'
 
 const q = (id: string) => profileSurveyQuestion(id) as ProfileSurveyQuestion
 const shopping = q('shopping')

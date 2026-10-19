@@ -173,7 +173,7 @@ describe('handleSkill home-directory opt-in', () => {
     fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'skill-home-'))
     realHomedir = os.homedir
     // Stand in for the HOST's home. On a server this is the server's own home
-    // while `projectRoot` is someone else's checkout — on Freebuff Cloud, a
+    // while `projectRoot` is someone else's checkout — on Fuckbuff Cloud, a
     // Daytona sandbox path.
     ;(os as any).homedir = () => fakeHome
   })

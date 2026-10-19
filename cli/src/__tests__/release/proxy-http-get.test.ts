@@ -220,7 +220,7 @@ for (const helperModule of helperModules) {
       })
 
       const response = await client.httpGet(
-        'https://registry.npmjs.org/freebuff/latest',
+        'https://registry.npmjs.org/fuckbuff/latest',
       )
       response.resume()
 
@@ -240,7 +240,7 @@ for (const helperModule of helperModules) {
       expect(httpsGetCalls[0]?.agent).toBeDefined()
       expect(httpsGetCalls[0]).toMatchObject({
         hostname: 'registry.npmjs.org',
-        path: '/freebuff/latest',
+        path: '/fuckbuff/latest',
         headers: {
           'User-Agent': 'release-test-agent',
         },
@@ -315,14 +315,14 @@ for (const helperModule of helperModules) {
       })
 
       const response = await client.httpGet(
-        'https://registry.npmjs.org/freebuff/latest',
+        'https://registry.npmjs.org/fuckbuff/latest',
       )
       response.resume()
 
       expect(httpsGetCalls).toHaveLength(2)
       expect(httpsGetCalls[0]).toMatchObject({
         hostname: 'registry.npmjs.org',
-        path: '/freebuff/latest',
+        path: '/fuckbuff/latest',
       })
       expect(httpsGetCalls[1]).toMatchObject({
         hostname: 'registry.npmjs.org',

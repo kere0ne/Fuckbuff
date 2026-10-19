@@ -1,9 +1,9 @@
 /** Older servers can still return a final turn_spend_limit refusal. The SDK
  * must preserve its copy and avoid retrying it. Current servers do not. */
 import {
-  FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
-  FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
-} from '@codebuff/common/constants/freebuff-errors'
+  FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
+  FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
+} from '@codebuff/common/constants/fuckbuff-errors'
 import { extractApiErrorDetails } from '@codebuff/common/util/error'
 import { APICallError, streamText } from 'ai'
 import { afterEach, describe, expect, test } from 'bun:test'
@@ -52,8 +52,8 @@ async function failureOf(maxRetries: number): Promise<unknown> {
 describe('per-turn spend breaker on the SDK side', () => {
   test('a capped turn is refused once, not retried, and keeps the server copy', async () => {
     const server = serve429({
-      error: FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
-      message: FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
+      error: FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
+      message: FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
     })
 
     const error = await failureOf(3)
@@ -65,13 +65,13 @@ describe('per-turn spend breaker on the SDK side', () => {
     const apiError = error as APICallError
     expect(apiError.isRetryable).toBe(false)
     expect(apiError.statusCode).toBe(429)
-    expect(apiError.message).toBe(FREEBUFF_TURN_SPEND_LIMIT_MESSAGE)
+    expect(apiError.message).toBe(FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE)
     // What the runtime's error parser (run-agent-step.ts) reads off it: the
     // code reaches `AgentOutput.error`, the copy replaces "Agent run error: …".
     expect(extractApiErrorDetails(error)).toMatchObject({
       statusCode: 429,
-      errorCode: FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
-      message: FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
+      errorCode: FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
+      message: FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
     })
   })
 

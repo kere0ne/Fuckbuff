@@ -84,7 +84,7 @@ export class SitesClient {
       throw new SitesClientError(
         401,
         'sites_sign_in_required',
-        'Sign in to Freebuff to view and deploy sites.',
+        'Sign in to Fuckbuff to view and deploy sites.',
       )
     // All callers construct a relative path from validated ids; no redirects may receive the bearer.
     try {
@@ -100,7 +100,7 @@ export class SitesClient {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
-            'X-Freebuff-Product-Context': JSON.stringify({
+            'X-Fuckbuff-Product-Context': JSON.stringify({
               originApp: this.options.originApp,
               ...this.context.getStore(),
             }),
@@ -140,12 +140,12 @@ export class SitesClient {
           domain_limit: 'Remove the existing domain before connecting another.',
           domain_not_ready: 'Wait for DNS and HTTPS verification before making this domain primary.',
           domain_dns_unavailable: 'DNS could not be checked. Try again shortly.',
-          domain_dns_changed: 'Restore the active domain’s DNS or remove it to return to the Freebuff URL.',
+          domain_dns_changed: 'Restore the active domain’s DNS or remove it to return to the Fuckbuff URL.',
           domain_reconciliation_required: 'A provider registration needs reconciliation. Contact support before retrying.',
           domains_not_configured: 'Custom-domain hosting is not configured for this deployment.',
         }
         const messages: Record<number, string> = {
-          401: 'Sign in to Freebuff to use Sites.',
+          401: 'Sign in to Fuckbuff to use Sites.',
           403: 'Your account cannot access Sites.',
           404: 'Sites is not enabled on this backend, or this site was not found.',
           409: 'The environment is busy or the request conflicts with an earlier operation.',

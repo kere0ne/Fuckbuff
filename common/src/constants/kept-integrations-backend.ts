@@ -1,6 +1,6 @@
 /**
  * Which store owns the platform-Convex integration tables that are KEPT
- * (COD-742 batch 6, track E5; docs/freebuff-kept-integrations-postgres.md).
+ * (COD-742 batch 6, track E5; docs/fuckbuff-kept-integrations-postgres.md).
  * Three independent checked-in switches, one per sub-domain, so each can be
  * shadowed and flipped on its own:
  *

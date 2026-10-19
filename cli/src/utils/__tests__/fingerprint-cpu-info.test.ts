@@ -4,7 +4,7 @@ import { canReadCpuDetails, getSystemInfo } from '../fingerprint'
 
 import type { CpuInfo } from 'node:os'
 
-// CodebuffAI/freebuff#1374: under proot-distro (Termux) /proc/stat is a
+// CodebuffAI/fuckbuff#1374: under proot-distro (Termux) /proc/stat is a
 // hardcoded 8-core file while /proc/cpuinfo is live, so on a 9-core phone
 // Bun's native CPU read throws `Failed to get CPU information` every time.
 const CPU_ERROR = 'Failed to get CPU information'

@@ -1,4 +1,4 @@
-import { FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import type { AgentDefinition } from './types/agent-definition'
 
@@ -73,7 +73,7 @@ const outputSchema = {
 const definition: AgentDefinition = {
   id: 'tmux-cli',
   displayName: 'Tmux CLI Agent',
-  model: FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  model: FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
   // Moved off MiniMax M3 on 2026-08-01 so a free session driving a terminal
   // bills the same model its root runs on instead of silently spending on M3.
   //

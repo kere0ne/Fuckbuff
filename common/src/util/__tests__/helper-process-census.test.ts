@@ -112,7 +112,7 @@ const TASKLIST = [
   '"conhost.exe","4124","Console","1","1,712 K"',
   '"conhost.exe","5536","Console","1","1,700 K"',
   '"bash.exe","7000","Console","1","9,000 K"',
-  '"freebuff.exe","8000","Console","1","300,000 K"',
+  '"fuckbuff.exe","8000","Console","1","300,000 K"',
   '"Image Name","PID","Session Name","Session#","Mem Usage"',
   '',
 ].join('\r\n')

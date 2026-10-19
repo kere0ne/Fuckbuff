@@ -31,7 +31,7 @@ export enum AnalyticsEvent {
   // common/src/util/engagement-tracker.ts.
   PRODUCT_ACTIVE_MINUTE = 'product_active_minute',
 
-  // Freebuff Cloud feature use: one event per publish, member invite,
+  // Fuckbuff Cloud feature use: one event per publish, member invite,
   // integration, custom link, AI credential connect or delivery step.
   // Emitted from Convex's `recordCloudFeatureUsage` (PostHog + Axiom, via
   // convex/analytics.ts) under the canonical codebuff user id. Properties:
@@ -75,7 +75,7 @@ export enum AnalyticsEvent {
   // launch, shipped by the next one: the crashing process can only write a
   // local report before process.exit. Bounded payload: label, error name,
   // truncated message and top stack frames, crashed version, platform,
-  // uptime, and whether a Freebuff hour was held (resumable).
+  // uptime, and whether a Fuckbuff hour was held (resumable).
   CLI_FATAL_CRASH = 'cli.fatal_crash',
   FEEDBACK_BUTTON_HOVERED = 'cli.feedback_button_hovered',
   FOLLOWUP_CLICKED = 'cli.followup_clicked',
@@ -193,7 +193,7 @@ export enum AnalyticsEvent {
   FEEDBACK_AUTH_ERROR = 'api.feedback_auth_error',
   FEEDBACK_VALIDATION_ERROR = 'api.feedback_validation_error',
 
-  // Feedback hub - the Axiom mirror (docs/freebuff-feedback-hub.md §14).
+  // Feedback hub - the Axiom mirror (docs/fuckbuff-feedback-hub.md §14).
   // One row per feedback_item the hub inserted or changed, from EVERY source:
   // support email, Discord, GitHub, the in-product forms, CLI and Desktop.
   // STOPPED 2026-10-06 with the frozen hub; kept so its history stays promoted
@@ -238,7 +238,7 @@ export enum AnalyticsEvent {
   // Distinct from the `ads.*` serving events above, which are the viewer side.
   // Properties are enums, lengths, amounts and ids only — never advertiser
   // free text, URLs or emails. See
-  // freebuff/web/src/components/advertisers/analytics.knowledge.md.
+  // fuckbuff/web/src/components/advertisers/analytics.knowledge.md.
   ADVERTISER_LANDING_VIEWED = 'advertiser.landing_viewed',
   ADVERTISER_LANDING_CTA_CLICKED = 'advertiser.landing_cta_clicked',
   /** A hero surface tab (CLI/Desktop/Web/Mobile) was picked by hand. */
@@ -296,12 +296,12 @@ export enum AnalyticsEvent {
   TOKEN_COUNT_VALIDATION_ERROR = 'api.token_count_validation_error',
   TOKEN_COUNT_ERROR = 'api.token_count_error',
 
-  // Freebuff - Creator Attribution
-  FREEBUFF_REFERRER_ATTRIBUTED = 'freebuff.referrer_attributed',
+  // Fuckbuff - Creator Attribution
+  FUCKBUFF_REFERRER_ATTRIBUTED = 'fuckbuff.referrer_attributed',
 
-  // Freebuff - Referral program server lifecycle (emitted from packages/billing
+  // Fuckbuff - Referral program server lifecycle (emitted from packages/billing
   // via the server logger → Axiom `event` column).
-  FREEBUFF_REFERRAL_REDEEMED = 'freebuff.referral.redeemed',
+  FUCKBUFF_REFERRAL_REDEEMED = 'fuckbuff.referral.redeemed',
   // A redemption attempt that hit one of the one-shot eligibility guards
   // (signup_too_old, user_banned, reverse_referral, self_referral). Deliberately EXCLUDES the two repeat-prone errors —
   // invalid_code (cookie intentionally kept for legacy codes) and
@@ -309,76 +309,76 @@ export enum AnalyticsEvent {
   // — which would otherwise re-fire on every <=10-min token mint; those log
   // at debug only. Without this event, a "my friend's invite didn't count"
   // support case is undiagnosable — the guards otherwise return silently.
-  FREEBUFF_REFERRAL_REDEEM_FAILED = 'freebuff.referral.redeem_failed',
+  FUCKBUFF_REFERRAL_REDEEM_FAILED = 'fuckbuff.referral.redeem_failed',
   // Attribution went through and the referred user redeemed from an IP or
   // browser the REFERRER was recently seen on. Informational only: this is
   // also exactly what a genuine in-person referral looks like ("try it,
   // here's my laptop").
-  FREEBUFF_REFERRAL_SOCK_SIGNAL = 'freebuff.referral.sock_signal',
-  // Freebuff - Get Started Page (referral onboarding funnel, in order:
+  FUCKBUFF_REFERRAL_SOCK_SIGNAL = 'fuckbuff.referral.sock_signal',
+  // Fuckbuff - Get Started Page (referral onboarding funnel, in order:
   //   viewed → sign_in_clicked → signed_in → eligibility_resolved →
   //   [connect_github_clicked] → install_command_copied | web_clicked).
   // Every event carries a `referrer` prop (the inviter's name) for per-referrer
   // funnel breakdowns.
-  FREEBUFF_GET_STARTED_VIEWED = 'freebuff.get_started_viewed',
-  FREEBUFF_GET_STARTED_SIGN_IN_CLICKED = 'freebuff.get_started_sign_in_clicked',
-  FREEBUFF_GET_STARTED_SIGNED_IN = 'freebuff.get_started_signed_in',
-  FREEBUFF_EMAIL_AUTH = 'freebuff.email_auth',
-  FREEBUFF_AUTH_STEP = 'freebuff.auth_step',
-  FREEBUFF_GET_STARTED_ELIGIBILITY_RESOLVED = 'freebuff.get_started_eligibility_resolved',
-  FREEBUFF_GET_STARTED_CONNECT_GITHUB_CLICKED = 'freebuff.get_started_connect_github_clicked',
-  FREEBUFF_GET_STARTED_INSTALL_COMMAND_COPIED = 'freebuff.get_started_install_command_copied',
-  FREEBUFF_GET_STARTED_WEB_CLICKED = 'freebuff.get_started_web_clicked',
+  FUCKBUFF_GET_STARTED_VIEWED = 'fuckbuff.get_started_viewed',
+  FUCKBUFF_GET_STARTED_SIGN_IN_CLICKED = 'fuckbuff.get_started_sign_in_clicked',
+  FUCKBUFF_GET_STARTED_SIGNED_IN = 'fuckbuff.get_started_signed_in',
+  FUCKBUFF_EMAIL_AUTH = 'fuckbuff.email_auth',
+  FUCKBUFF_AUTH_STEP = 'fuckbuff.auth_step',
+  FUCKBUFF_GET_STARTED_ELIGIBILITY_RESOLVED = 'fuckbuff.get_started_eligibility_resolved',
+  FUCKBUFF_GET_STARTED_CONNECT_GITHUB_CLICKED = 'fuckbuff.get_started_connect_github_clicked',
+  FUCKBUFF_GET_STARTED_INSTALL_COMMAND_COPIED = 'fuckbuff.get_started_install_command_copied',
+  FUCKBUFF_GET_STARTED_WEB_CLICKED = 'fuckbuff.get_started_web_clicked',
   // Deprecated (previous get-started design — no longer fired):
-  FREEBUFF_GET_STARTED_HELP_EXPANDED = 'freebuff.get_started_help_expanded',
-  FREEBUFF_GET_STARTED_EDITOR_CLICKED = 'freebuff.get_started_editor_clicked',
+  FUCKBUFF_GET_STARTED_HELP_EXPANDED = 'fuckbuff.get_started_help_expanded',
+  FUCKBUFF_GET_STARTED_EDITOR_CLICKED = 'fuckbuff.get_started_editor_clicked',
 
-  // Freebuff - Chat
+  // Fuckbuff - Chat
   // Emitted once per new-thread title generation attempt (server-side). The
   // `outcome` property is one of: generated | empty | unknown_model | error |
   // aborted. Carries `latencyMs`, `model`, and `titleLength` so the failure/
   // fallback rate and added latency are queryable.
-  FREEBUFF_CHAT_TITLE_GENERATED = 'freebuff.chat_title_generated',
-  FREEBUFF_TITLE_RATE_LIMITED = 'api.freebuff_title_rate_limited',
+  FUCKBUFF_CHAT_TITLE_GENERATED = 'fuckbuff.chat_title_generated',
+  FUCKBUFF_TITLE_RATE_LIMITED = 'api.fuckbuff_title_rate_limited',
 
-  // Freebuff - CLI landing page (/cli). Fired when the install command is
+  // Fuckbuff - CLI landing page (/cli). Fired when the install command is
   // copied; `location` distinguishes hero vs install section. Lets us measure
   // install intent per campaign (utm_* ride along as super-properties) — the
   // best proxy conversion for CLI traffic, since CLI activation happens in a
   // separate identity space with no key back to the web landing.
-  FREEBUFF_CLI_INSTALL_COMMAND_COPIED = 'freebuff.cli_install_command_copied',
+  FUCKBUFF_CLI_INSTALL_COMMAND_COPIED = 'fuckbuff.cli_install_command_copied',
 
-  // Freebuff - Enterprise landing page (/enterprise). Fired when the contact
+  // Fuckbuff - Enterprise landing page (/enterprise). Fired when the contact
   // form is submitted successfully; carries `companySize` and whether the
   // sender self-identified as an AI lab, so inbound demand can be segmented
   // without reading the emails. The lead itself lands in james@/victor@ inboxes
   // — this event only measures the funnel into them.
-  FREEBUFF_ENTERPRISE_CONTACT_SUBMITTED = 'freebuff.enterprise_contact_submitted',
+  FUCKBUFF_ENTERPRISE_CONTACT_SUBMITTED = 'fuckbuff.enterprise_contact_submitted',
 
-  // Freebuff - Desktop download CTAs (home hero, products row, /desktop).
+  // Fuckbuff - Desktop download CTAs (home hero, products row, /desktop).
   // Fired on every click of a download button; `location` distinguishes the
   // CTA, `platform` the build, and `repeat: true` marks a click we swallowed
   // because the same download had just started (the "did that work?" double
   // click) — a direct read on whether the click feedback is landing.
-  FREEBUFF_DESKTOP_DOWNLOAD_CLICKED = 'freebuff.desktop_download_clicked',
+  FUCKBUFF_DESKTOP_DOWNLOAD_CLICKED = 'fuckbuff.desktop_download_clicked',
 
-  // Freebuff Web creation gate: the user's idea was screened as something Web
+  // Fuckbuff Web creation gate: the user's idea was screened as something Web
   // cannot build, and they clicked through to the surface we suggested.
   // `surface` is desktop | cli | unsupported. Pairs with the Convex
   // web_gate_decision row (which carries the same click) — PostHog answers
   // "did the redirect land?" across the funnel, Convex answers "for which
   // ideas?". Both exist because the Convex row cannot see what the user does
   // after leaving /web.
-  FREEBUFF_WEB_GATE_REDIRECT_CLICKED = 'freebuff.web_gate_redirect_clicked',
+  FUCKBUFF_WEB_GATE_REDIRECT_CLICKED = 'fuckbuff.web_gate_redirect_clicked',
 
-  // Freebuff Web first-session onboarding. The details sequence runs in the
+  // Fuckbuff Web first-session onboarding. The details sequence runs in the
   // chat pane while the first build streams; its answers are composed into the
   // user's SECOND prompt, which is the drop-off metric this exists to move
   // (51% of Web projects never get one). `_STEP` fires per question with
   // whether it was answered or skipped, so the funnel shows which question
   // people bail on. `_FINISHED` carries `answered` (0-4) and `sent`.
-  FREEBUFF_WEB_ONBOARDING_STEP = 'freebuff.web_onboarding_step',
-  FREEBUFF_WEB_ONBOARDING_FINISHED = 'freebuff.web_onboarding_finished',
+  FUCKBUFF_WEB_ONBOARDING_STEP = 'fuckbuff.web_onboarding_step',
+  FUCKBUFF_WEB_ONBOARDING_FINISHED = 'fuckbuff.web_onboarding_finished',
   // PostHog's own person-update event: carries only `$set`, so it updates the
   // person (here `onboarding_source`) without adding a custom event.
   PERSON_PROPERTIES_SET = '$set',
@@ -386,67 +386,67 @@ export enum AnalyticsEvent {
   // The workspace spotlight tour that follows the first build. `_STEP` fires
   // per pane shown (preview/database/logs/publish/chat); `_FINISHED` records
   // completed vs skipped and where they stopped.
-  FREEBUFF_WEB_TOUR_STEP = 'freebuff.web_tour_step',
-  FREEBUFF_WEB_TOUR_FINISHED = 'freebuff.web_tour_finished',
+  FUCKBUFF_WEB_TOUR_STEP = 'fuckbuff.web_tour_step',
+  FUCKBUFF_WEB_TOUR_FINISHED = 'fuckbuff.web_tour_finished',
 
-  // Freebuff - Cloud landing page (/cloud). Fired when a logged-out visitor
+  // Fuckbuff - Cloud landing page (/cloud). Fired when a logged-out visitor
   // clicks a "Continue with GitHub" / "Connect your repo" CTA; `location`
   // distinguishes hero vs the migration/lovable section vs the final CTA. Best
   // proxy for cloud sign-up intent (utm_* ride along as super-properties).
-  FREEBUFF_CLOUD_CONNECT_REPO_CLICKED = 'freebuff.cloud_connect_repo_clicked',
-  FREEBUFF_CLOUD_BLANK_PROJECT_CLICKED = 'freebuff.cloud_blank_project_clicked',
+  FUCKBUFF_CLOUD_CONNECT_REPO_CLICKED = 'fuckbuff.cloud_connect_repo_clicked',
+  FUCKBUFF_CLOUD_BLANK_PROJECT_CLICKED = 'fuckbuff.cloud_blank_project_clicked',
 
-  // Freebuff - Home Page
-  FREEBUFF_HOME_INSTALL_COMMAND_COPIED = 'freebuff.home_install_command_copied',
-  FREEBUFF_HOME_GITHUB_CLICKED = 'freebuff.home_github_clicked',
-  FREEBUFF_HOME_INSTALL_GUIDE_EXPANDED = 'freebuff.home_install_guide_expanded',
-  FREEBUFF_HOME_FAQ_OPENED = 'freebuff.home_faq_opened',
+  // Fuckbuff - Home Page
+  FUCKBUFF_HOME_INSTALL_COMMAND_COPIED = 'fuckbuff.home_install_command_copied',
+  FUCKBUFF_HOME_GITHUB_CLICKED = 'fuckbuff.home_github_clicked',
+  FUCKBUFF_HOME_INSTALL_GUIDE_EXPANDED = 'fuckbuff.home_install_guide_expanded',
+  FUCKBUFF_HOME_FAQ_OPENED = 'fuckbuff.home_faq_opened',
 
-  // Freebuff - Home hero: the visitor committed to a product (`tab`, `surface`,
+  // Fuckbuff - Home hero: the visitor committed to a product (`tab`, `surface`,
   // `action`; see HeroTabs.tsx). A hero Desktop download is instead
-  // FREEBUFF_DESKTOP_DOWNLOAD_CLICKED at HOME_HERO_DOWNLOAD_LOCATION.
+  // FUCKBUFF_DESKTOP_DOWNLOAD_CLICKED at HOME_HERO_DOWNLOAD_LOCATION.
   // Report: `bun scripts/home-hero-funnel.ts`.
-  FREEBUFF_HOME_HERO_SURFACE_CHOSEN = 'freebuff.home_hero_surface_chosen',
+  FUCKBUFF_HOME_HERO_SURFACE_CHOSEN = 'fuckbuff.home_hero_surface_chosen',
 
-  // Freebuff - Home savings calculator CTA. Fires alongside
-  // FREEBUFF_DESKTOP_DOWNLOAD_CLICKED (location: savings_calculator) but adds
+  // Fuckbuff - Home savings calculator CTA. Fires alongside
+  // FUCKBUFF_DESKTOP_DOWNLOAD_CLICKED (location: savings_calculator) but adds
   // what the visitor had configured at the moment they converted: `savings`
   // (the headline number they were looking at), `perSeat`, `seats`, `tools`
   // and `toolCount`. The question it exists to answer is whether a bigger
   // computed number actually converts better — bucket `savings` and compare
   // click-through, which the download event alone cannot show.
-  FREEBUFF_HOME_SAVINGS_CTA_CLICKED = 'freebuff.home_savings_cta_clicked',
+  FUCKBUFF_HOME_SAVINGS_CTA_CLICKED = 'fuckbuff.home_savings_cta_clicked',
 
-  // Freebuff - acquisition attribution (UTM / ad-click params captured as
+  // Fuckbuff - acquisition attribution (UTM / ad-click params captured as
   // super-properties; filter by utm_source, reddit_click_id, is_reddit_traffic)
-  FREEBUFF_ATTRIBUTED = 'freebuff.attributed',
-  FREEBUFF_AFFILIATE_SIGNUP = 'freebuff.affiliate.signup',
-  FREEBUFF_AFFILIATE_ACTIVATION = 'freebuff.affiliate.activation',
-  // Freebuff - Reddit ad funnel (filter in PostHog by reddit_click_id / utm_source)
-  FREEBUFF_REDDIT_FUNNEL_CLI_INSTALLED = 'freebuff.reddit_funnel.cli_installed',
-  FREEBUFF_REDDIT_FUNNEL_LOGIN = 'freebuff.reddit_funnel.login',
-  FREEBUFF_REDDIT_FUNNEL_SIGN_UP = 'freebuff.reddit_funnel.sign_up',
-  FREEBUFF_REDDIT_FUNNEL_FIRST_PROMPT = 'freebuff.reddit_funnel.first_prompt',
-  FREEBUFF_REDDIT_FUNNEL_RETENTION_1D = 'freebuff.reddit_funnel.retention_1d',
-  FREEBUFF_REDDIT_FUNNEL_RETENTION_7D = 'freebuff.reddit_funnel.retention_7d',
-  FREEBUFF_REDDIT_FUNNEL_RETENTION_24D = 'freebuff.reddit_funnel.retention_24d',
+  FUCKBUFF_ATTRIBUTED = 'fuckbuff.attributed',
+  FUCKBUFF_AFFILIATE_SIGNUP = 'fuckbuff.affiliate.signup',
+  FUCKBUFF_AFFILIATE_ACTIVATION = 'fuckbuff.affiliate.activation',
+  // Fuckbuff - Reddit ad funnel (filter in PostHog by reddit_click_id / utm_source)
+  FUCKBUFF_REDDIT_FUNNEL_CLI_INSTALLED = 'fuckbuff.reddit_funnel.cli_installed',
+  FUCKBUFF_REDDIT_FUNNEL_LOGIN = 'fuckbuff.reddit_funnel.login',
+  FUCKBUFF_REDDIT_FUNNEL_SIGN_UP = 'fuckbuff.reddit_funnel.sign_up',
+  FUCKBUFF_REDDIT_FUNNEL_FIRST_PROMPT = 'fuckbuff.reddit_funnel.first_prompt',
+  FUCKBUFF_REDDIT_FUNNEL_RETENTION_1D = 'fuckbuff.reddit_funnel.retention_1d',
+  FUCKBUFF_REDDIT_FUNNEL_RETENTION_7D = 'fuckbuff.reddit_funnel.retention_7d',
+  FUCKBUFF_REDDIT_FUNNEL_RETENTION_24D = 'fuckbuff.reddit_funnel.retention_24d',
   // Legacy surface-specific names retained for historical dashboards.
-  FREEBUFF_REDDIT_FUNNEL_FIRST_PROMPT_CLI = 'freebuff.reddit_funnel.first_prompt_cli',
-  FREEBUFF_REDDIT_FUNNEL_FIRST_PROMPT_WEB = 'freebuff.reddit_funnel.first_prompt_web',
-  FREEBUFF_REDDIT_FUNNEL_FIRST_PROMPT_CHAT = 'freebuff.reddit_funnel.first_prompt_chat',
-  FREEBUFF_REDDIT_FUNNEL_RETENTION_1D_CLI = 'freebuff.reddit_funnel.retention_1d_cli',
-  FREEBUFF_REDDIT_FUNNEL_RETENTION_7D_CLI = 'freebuff.reddit_funnel.retention_7d_cli',
-  FREEBUFF_REDDIT_FUNNEL_RETENTION_24D_CLI = 'freebuff.reddit_funnel.retention_24d_cli',
-  FREEBUFF_REDDIT_FUNNEL_GRAVITY_AD_CLICK = 'freebuff.reddit_funnel.gravity_ad_click',
+  FUCKBUFF_REDDIT_FUNNEL_FIRST_PROMPT_CLI = 'fuckbuff.reddit_funnel.first_prompt_cli',
+  FUCKBUFF_REDDIT_FUNNEL_FIRST_PROMPT_WEB = 'fuckbuff.reddit_funnel.first_prompt_web',
+  FUCKBUFF_REDDIT_FUNNEL_FIRST_PROMPT_CHAT = 'fuckbuff.reddit_funnel.first_prompt_chat',
+  FUCKBUFF_REDDIT_FUNNEL_RETENTION_1D_CLI = 'fuckbuff.reddit_funnel.retention_1d_cli',
+  FUCKBUFF_REDDIT_FUNNEL_RETENTION_7D_CLI = 'fuckbuff.reddit_funnel.retention_7d_cli',
+  FUCKBUFF_REDDIT_FUNNEL_RETENTION_24D_CLI = 'fuckbuff.reddit_funnel.retention_24d_cli',
+  FUCKBUFF_REDDIT_FUNNEL_GRAVITY_AD_CLICK = 'fuckbuff.reddit_funnel.gravity_ad_click',
 
-  // Freebuff web /chat ads experiment (server-rendered Gravity ads vs the
+  // Fuckbuff web /chat ads experiment (server-rendered Gravity ads vs the
   // existing @gravity-ai/react inline slot; bucketed by user id — see
-  // freebuff/web/src/app/chat/_components/ad-experiment.ts). Both events carry
+  // fuckbuff/web/src/app/chat/_components/ad-experiment.ts). Both events carry
   // `experiment` + `variant` so PostHog can break down exposure and CTR by arm.
-  FREEBUFF_CHAT_ADS_EXPERIMENT_EXPOSED = 'freebuff.chat_ads.experiment_exposed',
-  FREEBUFF_CHAT_ADS_AD_SHOWN = 'freebuff.chat_ads.ad_shown',
+  FUCKBUFF_CHAT_ADS_EXPERIMENT_EXPOSED = 'fuckbuff.chat_ads.experiment_exposed',
+  FUCKBUFF_CHAT_ADS_AD_SHOWN = 'fuckbuff.chat_ads.ad_shown',
 
-  // Freebuff Desktop (Electron app)
+  // Fuckbuff Desktop (Electron app)
   // Mirrors the CLI's surface events so the desktop shows up in the same DAU /
   // login funnels. `message_sent` (above) is reused with `surface: 'desktop'`;
   // these capture the launch, auth, and per-turn activity unique to the app.
@@ -479,7 +479,7 @@ export enum AnalyticsEvent {
   // Feature-adoption catch-all. ONE event for the long tail of desktop
   // features (panels, worktrees, diffs, skills, terminal, preview, …), keyed
   // by a bounded `feature` property from
-  // `freebuff-desktop/src/shared/features.ts`. A single PostHog insight
+  // `fuckbuff-desktop/src/shared/features.ts`. A single PostHog insight
   // ("desktop.feature_used, broken down by feature", unique users) answers
   // "what do people actually use?" for the whole app, and adding a feature
   // never means adding an event to this enum or to the sampling lists.

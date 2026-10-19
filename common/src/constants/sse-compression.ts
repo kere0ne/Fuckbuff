@@ -10,5 +10,5 @@
  * before the recovery send no header and get the uncompressed stream, which a
  * cut ends cleanly and they already continue from.
  */
-export const FREEBUFF_SSE_GZIP_RECOVERY_HEADER = 'x-freebuff-sse-gzip-recovery'
-export const FREEBUFF_SSE_GZIP_RECOVERY_VALUE = '1'
+export const FUCKBUFF_SSE_GZIP_RECOVERY_HEADER = 'x-fuckbuff-sse-gzip-recovery'
+export const FUCKBUFF_SSE_GZIP_RECOVERY_VALUE = '1'

@@ -15,7 +15,7 @@ import {
 const AD = {
   title: 'Ship Postgres in one command',
   adText: 'Serverless Postgres with branching.',
-  url: 'https://neon.tech/freebuff',
+  url: 'https://neon.tech/fuckbuff',
 }
 
 describe('getInlineAdLayout at the widths the builder previews', () => {

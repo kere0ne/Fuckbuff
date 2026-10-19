@@ -149,8 +149,8 @@ export type LoadSkillsOptions = {
    * and gets one by default reads the WRONG MACHINE's files and feeds them to a
    * model, which looks exactly like working correctly.
    *
-   * That second case was real: Freebuff Cloud embeds the runner in the
-   * freebuff/web server process while the repo lives in a Daytona sandbox, so
+   * That second case was real: Fuckbuff Cloud embeds the runner in the
+   * fuckbuff/web server process while the repo lives in a Daytona sandbox, so
    * the old always-on home search made every Cloud turn parse the web server's
    * `~/.claude/skills` and offer it to the model.
    *

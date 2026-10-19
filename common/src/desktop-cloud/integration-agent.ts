@@ -73,7 +73,7 @@ export type IntegrationToolInput<K extends IntegrationToolKind> = z.infer<
 export const integrationToolDescriptions: Record<IntegrationToolKind, string> =
   {
     search:
-      'Find tools in the apps the user connected to Freebuff (listed under Integrations in your instructions). ' +
+      'Find tools in the apps the user connected to Fuckbuff (listed under Integrations in your instructions). ' +
       'Describe each action you need in plain English, one per query. Returns the matching tools with their exact ' +
       `input schemas and each app's accounts. Call this before ${INTEGRATION_TOOLS.run}.`,
     schemas: `Get the exact input schemas of integration tools that ${INTEGRATION_TOOLS.search} listed without one.`,
@@ -82,7 +82,7 @@ export const integrationToolDescriptions: Record<IntegrationToolKind, string> =
       'schema. Calls in one request run in parallel, so only batch independent calls. When an app has more than one ' +
       'account, set account on every call to that app.',
     connect:
-      "Show the user a button that connects an app to their Freebuff account. Use it when the task needs an app that isn't " +
+      "Show the user a button that connects an app to their Fuckbuff account. Use it when the task needs an app that isn't " +
       'connected, or the user asks to connect one. Then stop and wait for the user; never call it twice for the same app.',
   }
 
@@ -155,7 +155,7 @@ export function integrationsPrompt(
   if (!connections.length)
     return `# Integrations
 
-The user hasn't connected any apps to Freebuff. When a task needs one (Gmail, Slack, Linear, PostHog and many more), call ${name.connect} to offer a connect button, then wait for the user.`
+The user hasn't connected any apps to Fuckbuff. When a task needs one (Gmail, Slack, Linear, PostHog and many more), call ${name.connect} to offer a connect button, then wait for the user.`
   const apps = connections.map(({ app, accounts }) => {
     const list = accounts.map((account) =>
       account.label
@@ -166,7 +166,7 @@ The user hasn't connected any apps to Freebuff. When a task needs one (Gmail, Sl
   })
   return `# Integrations
 
-Apps the user connected to Freebuff, each account followed by its handle:
+Apps the user connected to Fuckbuff, each account followed by its handle:
 ${apps.join('\n')}
 
 Reach these apps only through the integration tools: call ${name.search} with what you need to do, then ${name.run} with the tools it returns, following each input schema exactly. Batch independent calls into one request.

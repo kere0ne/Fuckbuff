@@ -2,7 +2,7 @@ import { createRequire } from 'module'
 
 import { Argument, Command } from 'commander'
 
-import { IS_FREEBUFF, type AgentMode } from './utils/constants'
+import { IS_FUCKBUFF, type AgentMode } from './utils/constants'
 import { getCliEnv } from './utils/env'
 
 const require = createRequire(import.meta.url)
@@ -40,20 +40,20 @@ export function loadPackageVersion(): string {
 
 export function parseArgs({
   argv = process.argv,
-  isFreebuff = IS_FREEBUFF,
+  isFuckbuff = IS_FUCKBUFF,
   version = loadPackageVersion(),
 }: {
   argv?: string[]
-  isFreebuff?: boolean
+  isFuckbuff?: boolean
   version?: string
 } = {}): ParsedArgs {
   const program = new Command()
 
-  if (isFreebuff) {
-    // Freebuff: simplified CLI - no prompt args, no agent override, no clear-logs
+  if (isFuckbuff) {
+    // Fuckbuff: simplified CLI - no prompt args, no agent override, no clear-logs
     program
-      .name('freebuff')
-      .description('Freebuff - Free AI coding assistant')
+      .name('fuckbuff')
+      .description('Fuckbuff - Free AI coding assistant')
       .version(version, '-v, --version', 'Print the CLI version')
       .option(
         '--continue [conversation-id]',
@@ -118,9 +118,9 @@ export function parseArgs({
   const continueFlag = options.continue
 
   // Determine initial mode from flags (last flag wins if multiple specified)
-  // Freebuff always uses LITE mode
+  // Fuckbuff always uses LITE mode
   let initialMode: AgentMode | undefined
-  if (isFreebuff) {
+  if (isFuckbuff) {
     initialMode = 'LITE'
   } else {
     if (options.free || options.lite) initialMode = 'LITE'
@@ -129,7 +129,7 @@ export function parseArgs({
   }
 
   return {
-    initialPrompt: !isFreebuff && args.length > 0 ? args.join(' ') : null,
+    initialPrompt: !isFuckbuff && args.length > 0 ? args.join(' ') : null,
     command: args[0],
     agent: options.agent,
     clearLogs: options.clearLogs || false,

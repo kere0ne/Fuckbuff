@@ -1,4 +1,4 @@
-import { IS_FREEBUFF } from './constants'
+import { IS_FUCKBUFF } from './constants'
 import { getCliEnv } from './env'
 
 /**
@@ -37,7 +37,7 @@ export function getAdDeviceInfo(): AdDeviceInfo {
 }
 
 export function getCliAdRequestUserAgent(): string {
-  const product = IS_FREEBUFF ? 'Freebuff-CLI' : 'Codebuff-CLI'
+  const product = IS_FUCKBUFF ? 'Fuckbuff-CLI' : 'Codebuff-CLI'
   const version = getCliEnv().CODEBUFF_CLI_VERSION ?? 'dev'
   return `${product}/${version}`
 }

@@ -5,49 +5,49 @@ import {
 } from '@codebuff/common/util/terminal-safe-text'
 import { env } from '@codebuff/common/env'
 import {
-  FREEBUFF_CLIENT_VERSION_HEADER,
-  FREEBUFF_DESKTOP_ATTEMPT_HEADER,
-  FREEBUFF_PURCHASE_CONTINUITY_HEADER,
-} from '@codebuff/common/constants/freebuff-desktop-sessions'
+  FUCKBUFF_CLIENT_VERSION_HEADER,
+  FUCKBUFF_DESKTOP_ATTEMPT_HEADER,
+  FUCKBUFF_PURCHASE_CONTINUITY_HEADER,
+} from '@codebuff/common/constants/fuckbuff-desktop-sessions'
 import { clientEnvironmentHeaders } from './client-environment'
 import { getCliEnv } from './env'
 import { timedApiCall } from '../ads/ad-signals'
-import { freebuffCliAttemptId } from './freebuff-session-identity'
+import { fuckbuffCliAttemptId } from './fuckbuff-session-identity'
 import {
-  FREEBUFF_COMPACT_SESSION_HEADER,
-  FREEBUFF_HEARTBEAT_HEADER,
-  FREEBUFF_INCLUDE_UNUSED_RATE_LIMITS_HEADER,
-  FREEBUFF_INSTANCE_HEADER,
-  FREEBUFF_MODEL_HEADER,
-  FREEBUFF_MULTI_SESSION_HEADER,
-  FREEBUFF_TAKEOVER_INSTANCE_HEADER,
-  FREEBUFF_WALLET_SPEND_LIMIT_HEADER,
-  FREEBUFF_SESSION_ADMISSION_PATH,
-  FREEBUFF_SESSION_UNSUPPORTED_MESSAGE,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_COMPACT_SESSION_HEADER,
+  FUCKBUFF_HEARTBEAT_HEADER,
+  FUCKBUFF_INCLUDE_UNUSED_RATE_LIMITS_HEADER,
+  FUCKBUFF_INSTANCE_HEADER,
+  FUCKBUFF_MODEL_HEADER,
+  FUCKBUFF_MULTI_SESSION_HEADER,
+  FUCKBUFF_TAKEOVER_INSTANCE_HEADER,
+  FUCKBUFF_WALLET_SPEND_LIMIT_HEADER,
+  FUCKBUFF_SESSION_ADMISSION_PATH,
+  FUCKBUFF_SESSION_UNSUPPORTED_MESSAGE,
+} from '@codebuff/common/constants/fuckbuff-models'
 
 import {
-  FREEBUFF_CATALOG_FETCH_HEADER,
-  FREEBUFF_CATALOG_PROTOCOL_HEADER,
-  FREEBUFF_CATALOG_PROTOCOL_VERSION,
-  FREEBUFF_CATALOG_STALE_ERROR,
-} from '@codebuff/common/types/freebuff-model-catalog'
+  FUCKBUFF_CATALOG_FETCH_HEADER,
+  FUCKBUFF_CATALOG_PROTOCOL_HEADER,
+  FUCKBUFF_CATALOG_PROTOCOL_VERSION,
+  FUCKBUFF_CATALOG_STALE_ERROR,
+} from '@codebuff/common/types/fuckbuff-model-catalog'
 
-import { useFreebuffCatalogStore } from '../state/freebuff-catalog-store'
+import { useFuckbuffCatalogStore } from '../state/fuckbuff-catalog-store'
 import {
-  freebuffDeviceHeaders,
-  noteFreebuffDeviceKeyError,
-} from './freebuff-device-key'
-import { freebuffCatalogHandleFor } from './freebuff-model-directory'
+  fuckbuffDeviceHeaders,
+  noteFuckbuffDeviceKeyError,
+} from './fuckbuff-device-key'
+import { fuckbuffCatalogHandleFor } from './fuckbuff-model-directory'
 
-import type { FreebuffSessionResponse } from '../types/freebuff-session'
-import type { FreebuffModelCatalog } from '@codebuff/common/types/freebuff-model-catalog'
-import type { FreebuffSessionServerResponse } from '@codebuff/common/types/freebuff-session'
+import type { FuckbuffSessionResponse } from '../types/fuckbuff-session'
+import type { FuckbuffModelCatalog } from '@codebuff/common/types/fuckbuff-model-catalog'
+import type { FuckbuffSessionServerResponse } from '@codebuff/common/types/fuckbuff-session'
 
 const SESSION_FETCH_TIMEOUT_MS = 20_000
-export type FreebuffSessionMethod = 'POST' | 'GET' | 'DELETE'
+export type FuckbuffSessionMethod = 'POST' | 'GET' | 'DELETE'
 
-export class FreebuffSessionRequestError extends Error {
+export class FuckbuffSessionRequestError extends Error {
   constructor(
     message: string,
     readonly statusCode: number,
@@ -55,18 +55,18 @@ export class FreebuffSessionRequestError extends Error {
     readonly errorCode?: string,
   ) {
     super(message)
-    this.name = 'FreebuffSessionRequestError'
+    this.name = 'FuckbuffSessionRequestError'
   }
 }
 
-export function isFreebuffSessionTimeoutError(error: unknown): boolean {
+export function isFuckbuffSessionTimeoutError(error: unknown): boolean {
   return (
     error instanceof Error &&
     (error.name === 'TimeoutError' || /timeout|timed out/i.test(error.message))
   )
 }
 
-export type FreebuffSessionFailureDisposition = 'retry' | 'stop' | 'unknown'
+export type FuckbuffSessionFailureDisposition = 'retry' | 'stop' | 'unknown'
 
 /** How the poll loop should handle a failed request.
  *
@@ -75,12 +75,12 @@ export type FreebuffSessionFailureDisposition = 'retry' | 'stop' | 'unknown'
  * and 503 responses are the exception: edge rejection or admission shedding
  * produces them before the session mutation can commit. GET is read-only and
  * can retry transient failures normally. */
-export function classifyFreebuffSessionRequestFailure(
-  method: Extract<FreebuffSessionMethod, 'POST' | 'GET'>,
+export function classifyFuckbuffSessionRequestFailure(
+  method: Extract<FuckbuffSessionMethod, 'POST' | 'GET'>,
   error: unknown,
-): FreebuffSessionFailureDisposition {
+): FuckbuffSessionFailureDisposition {
   if (method === 'POST') {
-    if (!(error instanceof FreebuffSessionRequestError)) return 'unknown'
+    if (!(error instanceof FuckbuffSessionRequestError)) return 'unknown'
     // These responses are produced before the session mutation can commit:
     // 408/429 come from an edge or unparsed response (the endpoint's typed
     // rate-limit responses are returned above), and a 503 means no handler was
@@ -94,7 +94,7 @@ export function classifyFreebuffSessionRequestFailure(
       : 'unknown'
   }
 
-  if (!(error instanceof FreebuffSessionRequestError)) return 'retry'
+  if (!(error instanceof FuckbuffSessionRequestError)) return 'retry'
   return error.statusCode === 408 ||
     error.statusCode === 429 ||
     error.statusCode >= 500
@@ -126,7 +126,7 @@ export function sessionFetchSignal(
 }
 
 /** The web API origin the session and catalog endpoints live on. */
-export function freebuffApiBaseUrl(): string {
+export function fuckbuffApiBaseUrl(): string {
   return sessionBaseUrl()
 }
 
@@ -137,12 +137,12 @@ function sessionBaseUrl(): string {
   )
 }
 
-function sessionEndpoint(method: FreebuffSessionMethod): string {
-  return `${sessionBaseUrl()}${method === 'POST' ? FREEBUFF_SESSION_ADMISSION_PATH : '/api/v1/freebuff/session'}`
+function sessionEndpoint(method: FuckbuffSessionMethod): string {
+  return `${sessionBaseUrl()}${method === 'POST' ? FUCKBUFF_SESSION_ADMISSION_PATH : '/api/v1/freebuff/session'}`
 }
 
 /** The host the session API is reached on, for copy that names it. */
-export function freebuffSessionHost(): string {
+export function fuckbuffSessionHost(): string {
   try {
     return new URL(sessionBaseUrl()).host
   } catch {
@@ -155,9 +155,9 @@ export function freebuffSessionHost(): string {
  * not like. Bun's `fetch` surfaces these as `fetch failed`, a TimeoutError, or
  * a bare socket code.
  */
-export function isFreebuffSessionNetworkError(error: unknown): boolean {
+export function isFuckbuffSessionNetworkError(error: unknown): boolean {
   if (!(error instanceof Error)) return false
-  if (isFreebuffSessionTimeoutError(error)) return true
+  if (isFuckbuffSessionTimeoutError(error)) return true
   return /fetch failed|ECONNREFUSED|ECONNRESET|ENOTFOUND|EHOSTUNREACH|ENETUNREACH|EAI_AGAIN|network/i.test(
     `${error.message} ${(error.cause as Error | undefined)?.message ?? ''}`,
   )
@@ -175,7 +175,7 @@ export function isFreebuffSessionNetworkError(error: unknown): boolean {
  * host we could not reach and the two things that actually help, and never
  * blame the machine: the server was serving everyone else at the time.
  */
-export function freebuffSessionUnreachableMessage(host: string): string {
+export function fuckbuffSessionUnreachableMessage(host: string): string {
   return (
     `Couldn't get a response from ${host}. If your browser can open ` +
     `freebuff.com, this network isn't routing to that host: try mobile data ` +
@@ -183,7 +183,7 @@ export function freebuffSessionUnreachableMessage(host: string): string {
   )
 }
 
-type FreebuffSessionCallOptions = {
+type FuckbuffSessionCallOptions = {
   instanceId?: string
   multiSession?: boolean
   takeoverInstanceId?: string
@@ -195,53 +195,53 @@ type FreebuffSessionCallOptions = {
 /**
  * One session request, in whichever protocol this process is speaking.
  *
- * In catalog mode (docs/freebuff-model-catalog.md) every call carries the
+ * In catalog mode (docs/fuckbuff-model-catalog.md) every call carries the
  * catalog protocol header, so the server answers with catalog keys, and an
  * admission's `model` is a KEY that goes out as the row's HANDLE. Every call
  * also carries the held catalog's fetch id and this install's device
- * signature (freebuff-device-key.ts), when there is one. A handle the
- * server no longer accepts comes back as 409 `freebuff_catalog_stale`: the
+ * signature (fuckbuff-device-key.ts), when there is one. A handle the
+ * server no longer accepts comes back as 409 `fuckbuff_catalog_stale`: the
  * catalog is refetched once and the request retried once with the new handle
  * for the same key. A second refusal is surfaced like any other failure.
  *
  * In fallback mode the catalog headers are omitted.
  */
-export async function callFreebuffSession(
-  method: FreebuffSessionMethod,
+export async function callFuckbuffSession(
+  method: FuckbuffSessionMethod,
   token: string,
-  opts: FreebuffSessionCallOptions = {},
-): Promise<FreebuffSessionServerResponse> {
-  const catalog = useFreebuffCatalogStore.getState().catalog
+  opts: FuckbuffSessionCallOptions = {},
+): Promise<FuckbuffSessionServerResponse> {
+  const catalog = useFuckbuffCatalogStore.getState().catalog
   try {
-    return await requestFreebuffSession(method, token, opts, catalog)
+    return await requestFuckbuffSession(method, token, opts, catalog)
   } catch (error) {
     const refreshAfterStale =
-      useFreebuffCatalogStore.getState().refreshAfterStale
+      useFuckbuffCatalogStore.getState().refreshAfterStale
     if (
       !catalog ||
-      !(error instanceof FreebuffSessionRequestError) ||
-      error.errorCode !== FREEBUFF_CATALOG_STALE_ERROR ||
+      !(error instanceof FuckbuffSessionRequestError) ||
+      error.errorCode !== FUCKBUFF_CATALOG_STALE_ERROR ||
       !refreshAfterStale ||
       opts.signal?.aborted
     ) {
       throw error
     }
     if (!(await refreshAfterStale())) throw error
-    return requestFreebuffSession(
+    return requestFuckbuffSession(
       method,
       token,
       opts,
-      useFreebuffCatalogStore.getState().catalog,
+      useFuckbuffCatalogStore.getState().catalog,
     )
   }
 }
 
-async function requestFreebuffSession(
-  method: FreebuffSessionMethod,
+async function requestFuckbuffSession(
+  method: FuckbuffSessionMethod,
   token: string,
-  opts: FreebuffSessionCallOptions,
-  catalog: FreebuffModelCatalog | null,
-): Promise<FreebuffSessionServerResponse> {
+  opts: FuckbuffSessionCallOptions,
+  catalog: FuckbuffModelCatalog | null,
+): Promise<FuckbuffSessionServerResponse> {
   const headers: Record<string, string> = {
     Authorization: `Bearer ${token}`,
     ...freebucksTimeZoneHeaders(),
@@ -249,46 +249,46 @@ async function requestFreebuffSession(
   }
   // Observe-only: ties a server-side refusal line to the build that saw it.
   const cliVersion = getCliEnv().CODEBUFF_CLI_VERSION
-  if (cliVersion) headers[FREEBUFF_CLIENT_VERSION_HEADER] = cliVersion
-  const attemptId = freebuffCliAttemptId(opts.instanceId)
+  if (cliVersion) headers[FUCKBUFF_CLIENT_VERSION_HEADER] = cliVersion
+  const attemptId = fuckbuffCliAttemptId(opts.instanceId)
   const multiSession = opts.multiSession ?? Boolean(attemptId)
   if (multiSession) {
-    headers[FREEBUFF_MULTI_SESSION_HEADER] = '1'
-    headers[FREEBUFF_PURCHASE_CONTINUITY_HEADER] = '1'
+    headers[FUCKBUFF_MULTI_SESSION_HEADER] = '1'
+    headers[FUCKBUFF_PURCHASE_CONTINUITY_HEADER] = '1'
     if (attemptId && method !== 'GET') {
-      headers[FREEBUFF_DESKTOP_ATTEMPT_HEADER] = attemptId
+      headers[FUCKBUFF_DESKTOP_ATTEMPT_HEADER] = attemptId
     }
     if (method === 'GET' && opts.instanceId) {
-      headers[FREEBUFF_HEARTBEAT_HEADER] = '1'
+      headers[FUCKBUFF_HEARTBEAT_HEADER] = '1'
       // A bare heartbeat omits balances and quotas. Rich refreshes (including
       // expiry and identity changes) must explicitly ask for that snapshot.
       if (!opts.compact)
-        headers[FREEBUFF_INCLUDE_UNUSED_RATE_LIMITS_HEADER] = '1'
+        headers[FUCKBUFF_INCLUDE_UNUSED_RATE_LIMITS_HEADER] = '1'
     }
   }
   if (catalog) {
-    headers[FREEBUFF_CATALOG_PROTOCOL_HEADER] = FREEBUFF_CATALOG_PROTOCOL_VERSION
-    if (catalog.fetchId) headers[FREEBUFF_CATALOG_FETCH_HEADER] = catalog.fetchId
+    headers[FUCKBUFF_CATALOG_PROTOCOL_HEADER] = FUCKBUFF_CATALOG_PROTOCOL_VERSION
+    if (catalog.fetchId) headers[FUCKBUFF_CATALOG_FETCH_HEADER] = catalog.fetchId
   }
   if ((multiSession || method !== 'POST') && opts.instanceId) {
-    headers[FREEBUFF_INSTANCE_HEADER] = opts.instanceId
+    headers[FUCKBUFF_INSTANCE_HEADER] = opts.instanceId
   }
   if (method === 'GET' && opts.compact) {
-    headers[FREEBUFF_COMPACT_SESSION_HEADER] = '1'
+    headers[FUCKBUFF_COMPACT_SESSION_HEADER] = '1'
   }
   if (method === 'POST') {
     if (opts.takeoverInstanceId)
-      headers[FREEBUFF_TAKEOVER_INSTANCE_HEADER] = opts.takeoverInstanceId
+      headers[FUCKBUFF_TAKEOVER_INSTANCE_HEADER] = opts.takeoverInstanceId
     if (opts.model) {
       // A key the catalog has no row for goes out as-is: the server answers
       // it stale, which refetches the catalog.
-      headers[FREEBUFF_MODEL_HEADER] = catalog
-        ? (freebuffCatalogHandleFor(catalog, opts.model) ?? opts.model)
+      headers[FUCKBUFF_MODEL_HEADER] = catalog
+        ? (fuckbuffCatalogHandleFor(catalog, opts.model) ?? opts.model)
         : opts.model
     }
     // The admission route refuses a POST without this header; its value no
     // longer limits anything (wallet consent is the picker's own prompt).
-    headers[FREEBUFF_WALLET_SPEND_LIMIT_HEADER] = 'session'
+    headers[FUCKBUFF_WALLET_SPEND_LIMIT_HEADER] = 'session'
   }
 
   const endpoint =
@@ -299,7 +299,7 @@ async function requestFreebuffSession(
     // Session calls send no body; the signature covers the empty one.
     Object.assign(
       headers,
-      await freebuffDeviceHeaders(token, {
+      await fuckbuffDeviceHeaders(token, {
         method,
         url: endpoint,
         fetchId: catalog.fetchId,
@@ -318,8 +318,8 @@ async function requestFreebuffSession(
     method === 'GET' ? await timedApiCall(fetchSession) : await fetchSession()
 
   if (method === 'POST' && [404, 405].includes(response.status)) {
-    throw new FreebuffSessionRequestError(
-      FREEBUFF_SESSION_UNSUPPORTED_MESSAGE,
+    throw new FuckbuffSessionRequestError(
+      FUCKBUFF_SESSION_UNSUPPORTED_MESSAGE,
       response.status,
       undefined,
       'session_admission_unsupported',
@@ -332,7 +332,7 @@ async function requestFreebuffSession(
   if (response.status === 403) {
     const body = (await response
       .json()
-      .catch(() => null)) as FreebuffSessionServerResponse | null
+      .catch(() => null)) as FuckbuffSessionServerResponse | null
     if (
       body &&
       (body.status === 'country_blocked' || body.status === 'banned')
@@ -345,7 +345,7 @@ async function requestFreebuffSession(
     const body = (await response
       .clone()
       .json()
-      .catch(() => null)) as FreebuffSessionServerResponse | null
+      .catch(() => null)) as FuckbuffSessionServerResponse | null
     if (
       body &&
       (body.status === 'model_locked' ||
@@ -362,7 +362,7 @@ async function requestFreebuffSession(
   if (response.status === 429 && method === 'POST') {
     const body = (await response
       .json()
-      .catch(() => null)) as FreebuffSessionServerResponse | null
+      .catch(() => null)) as FuckbuffSessionServerResponse | null
     if (
       body &&
       (body.status === 'rate_limited' ||
@@ -382,9 +382,9 @@ async function requestFreebuffSession(
     } catch {
       // Non-JSON errors have no machine-readable code.
     }
-    if (catalog) noteFreebuffDeviceKeyError(token, endpoint, errorCode)
-    throw new FreebuffSessionRequestError(
-      `freebuff session ${method} failed: ${response.status} ${sanitizeTerminalText(text.slice(0, 200))}`,
+    if (catalog) noteFuckbuffDeviceKeyError(token, endpoint, errorCode)
+    throw new FuckbuffSessionRequestError(
+      `fuckbuff session ${method} failed: ${response.status} ${sanitizeTerminalText(text.slice(0, 200))}`,
       response.status,
       parseRetryAfterMs(response.headers.get('retry-after')),
       errorCode,
@@ -394,7 +394,7 @@ async function requestFreebuffSession(
   // Server-written copy (messages, upgrade hints, Freebucks CTAs) is drawn in
   // the terminal: every string is stripped of escape sequences here.
   return sanitizeTerminalStrings(
-    (await response.json()) as FreebuffSessionServerResponse,
+    (await response.json()) as FuckbuffSessionServerResponse,
   )
 }
 
@@ -402,9 +402,9 @@ async function requestFreebuffSession(
  * Keep that snapshot only for the same active session; null tells the poller
  * to fetch one full response before compacting again. */
 export function mergeCompactActiveSession(
-  current: FreebuffSessionResponse | null,
-  next: FreebuffSessionServerResponse,
-): FreebuffSessionServerResponse | null {
+  current: FuckbuffSessionResponse | null,
+  next: FuckbuffSessionServerResponse,
+): FuckbuffSessionServerResponse | null {
   if (
     current?.status !== 'active' ||
     next.status !== 'active' ||
@@ -430,8 +430,8 @@ export function mergeCompactActiveSession(
   }
 }
 
-export function holdsLiveFreebuffSlot(
-  current: FreebuffSessionResponse | null,
+export function holdsLiveFuckbuffSlot(
+  current: FuckbuffSessionResponse | null,
 ): boolean {
   if (!current) return false
   return (

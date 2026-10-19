@@ -25,15 +25,15 @@ export const THREAD_OUTCOMES = ['completed', 'stopped', 'failed'] as const
 export type ThreadOutcome = (typeof THREAD_OUTCOMES)[number]
 
 /**
- * Who pays for a thread's model turns: Freebuff (its sessions and credits), or the user's own Codex
+ * Who pays for a thread's model turns: Fuckbuff (its sessions and credits), or the user's own Codex
  * (ChatGPT) or Claude login, or their own API key. A cloud thread runs Codex or Claude Code on the
- * account's ChatGPT sign-in or saved Claude Code key (`./agents`); any other cloud thread is Freebuff.
+ * account's ChatGPT sign-in or saved Claude Code key (`./agents`); any other cloud thread is Fuckbuff.
  */
-export const THREAD_FUNDINGS = ['freebuff', 'codex', 'claude', 'byok'] as const
+export const THREAD_FUNDINGS = ['fuckbuff', 'codex', 'claude', 'byok'] as const
 export type ThreadFunding = (typeof THREAD_FUNDINGS)[number]
 
 export const THREAD_FUNDING_LABELS: Record<ThreadFunding, string> = {
-  freebuff: 'Freebuff',
+  fuckbuff: 'Fuckbuff',
   codex: 'Codex',
   claude: 'Claude',
   byok: 'Own key',
@@ -117,7 +117,7 @@ export const threadDigestSchema = z
     /** Absent when the producer knows nothing about the thread's git (no branch, nothing measured). */
     git: threadDigestGitSchema.optional(),
     resolvedAt: isoTime.nullable(),
-    /** Absent reads as `freebuff`: a producer that does not say runs on Freebuff. */
+    /** Absent reads as `fuckbuff`: a producer that does not say runs on Fuckbuff. */
     funding: z.enum(THREAD_FUNDINGS).optional(),
     createdAt: isoTime,
     updatedAt: isoTime,

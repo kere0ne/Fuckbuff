@@ -15,7 +15,7 @@
  * on whichever error is loudest, while a ladder keeps the FIRST sighting of
  * every distinct error — the one that says "this is new" — and still collapses
  * a million repeats into seven events. Same shape as the Desktop toast-error
- * budget in freebuff-desktop/src/ui/store.ts. Nothing is hidden: the counts
+ * budget in fuckbuff-desktop/src/ui/store.ts. Nothing is hidden: the counts
  * move from rows onto `$exception_occurrence`.
  */
 

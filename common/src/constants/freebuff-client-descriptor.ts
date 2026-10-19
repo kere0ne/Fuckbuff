@@ -7,16 +7,16 @@
  * They never carry prompt text, paths, process names or other free text.
  */
 
-export const FREEBUFF_CLIENT_ENV_HEADER = 'x-freebuff-env'
+export const FUCKBUFF_CLIENT_ENV_HEADER = 'x-fuckbuff-env'
 
 /** `codebuff_metadata` key carrying the same environment descriptor. */
-export const FREEBUFF_CLIENT_ENV_METADATA_KEY = 'freebuff_client_env'
+export const FUCKBUFF_CLIENT_ENV_METADATA_KEY = 'fuckbuff_client_env'
 
 /** `codebuff_metadata` key carrying the input counts for the prompt that
  *  started the run. */
-export const FREEBUFF_INPUT_PROFILE_METADATA_KEY = 'freebuff_input_profile'
+export const FUCKBUFF_INPUT_PROFILE_METADATA_KEY = 'fuckbuff_input_profile'
 
-export const FREEBUFF_CLIENT_DESCRIPTOR_VERSION = 'v1'
+export const FUCKBUFF_CLIENT_DESCRIPTOR_VERSION = 'v1'
 
 /** `TERM_PROGRAM`, reduced to a fixed list. `none` = unset, `other` = a value
  *  not on the list. */

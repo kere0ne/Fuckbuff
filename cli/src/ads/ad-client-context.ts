@@ -72,14 +72,14 @@ import {
   type AdSessionSnapshot,
   type AdWorkSnapshot,
 } from './ad-signals'
-import { freebuffChatModel } from '../state/freebuff-chat-store'
-import { getEffectiveFreebuffReasoningEffort } from '../state/freebuff-model-store'
+import { fuckbuffChatModel } from '../state/fuckbuff-chat-store'
+import { getEffectiveFuckbuffReasoningEffort } from '../state/fuckbuff-model-store'
 import { useChatStore } from '../state/chat-store'
 import { getIdleTime } from '../utils/activity-tracker'
 import { getConfigDir } from '../utils/config-dir'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { getCliEnv, getSystemProcessEnv } from '../utils/env'
-import { getAgentIdForMode } from '../utils/freebuff-agent-selection'
+import { getAgentIdForMode } from '../utils/fuckbuff-agent-selection'
 import { getSkillCount, isSkillRegistryLoaded } from '../utils/skill-registry'
 
 type Terminal = (typeof TERMINALS)[number]
@@ -536,8 +536,8 @@ export function installMethodOf(
 }
 
 /** The wrapper's bin names: the npm package's `bin` entries. */
-export const launcherBinNames = (freebuff: boolean): readonly string[] =>
-  freebuff ? ['freebuff'] : ['codebuff', 'cb']
+export const launcherBinNames = (fuckbuff: boolean): readonly string[] =>
+  fuckbuff ? ['fuckbuff'] : ['codebuff', 'cb']
 
 const binNameOf = (path: string): string =>
   (path.split(/[\\/]/).pop() ?? '')
@@ -971,33 +971,33 @@ function countUserTurns(): number {
 }
 
 /**
- * `agent.mode` in Desktop's vocabulary (`build` / `plan`). Freebuff is locked
+ * `agent.mode` in Desktop's vocabulary (`build` / `plan`). Fuckbuff is locked
  * to Codebuff's `LITE`, which is a billing mode rather than anything the user
- * chose, so sending it made the field a constant on every Freebuff CLI row.
+ * chose, so sending it made the field a constant on every Fuckbuff CLI row.
  * The CLI's one planning mode is the composer's `/plan`; every turn otherwise
  * builds. Codebuff keeps its own, user-chosen mode.
  */
-export function freebuffAgentModeOf(inputMode: string | undefined): string {
+export function fuckbuffAgentModeOf(inputMode: string | undefined): string {
   return inputMode === 'plan' ? 'plan' : 'build'
 }
 
 function liveAgent(): AdContextAgent {
   const { agentMode, inputMode } = useChatStore.getState()
   const agent: AdContextAgent = {
-    mode: IS_FREEBUFF ? freebuffAgentModeOf(inputMode) : agentMode,
+    mode: IS_FUCKBUFF ? fuckbuffAgentModeOf(inputMode) : agentMode,
   }
   try {
     agent.harness = getAgentIdForMode(agentMode)
   } catch {
     // unknown harness
   }
-  // Codebuff's model is chosen per agent, not by the user, so only Freebuff
+  // Codebuff's model is chosen per agent, not by the user, so only Fuckbuff
   // has a model (and an effort) to report.
-  if (IS_FREEBUFF) {
+  if (IS_FUCKBUFF) {
     try {
-      const model = freebuffChatModel()
+      const model = fuckbuffChatModel()
       agent.model = model
-      agent.effort = getEffectiveFreebuffReasoningEffort(model) ?? 'default'
+      agent.effort = getEffectiveFuckbuffReasoningEffort(model) ?? 'default'
     } catch {
       // unknown model
     }
@@ -1033,7 +1033,7 @@ const diskFree = createLazyAsyncValue<number>(async () => {
 
 /**
  * When the CLI's config directory was created: the first launch of any
- * Codebuff/Freebuff CLI on this account. Read once; a filesystem without
+ * Codebuff/Fuckbuff CLI on this account. Read once; a filesystem without
  * birth times (some Linux mounts report 0) is unknown.
  */
 const configDirBirth = createLazyAsyncValue<number>(async () => {
@@ -1074,7 +1074,7 @@ function launcherOnPath(env: AdTermEnv): { done: boolean; path?: string } {
     started = findLauncherOnPath(
       env,
       process.platform,
-      launcherBinNames(IS_FREEBUFF),
+      launcherBinNames(IS_FUCKBUFF),
       { access: fsPromises.access, realpath: fsPromises.realpath },
     )
   } catch {
@@ -1105,7 +1105,7 @@ function liveInstallMethod(): InstallMethod | undefined {
   // is replaced in the binary, so it must be read through getCliEnv(), never
   // off the runtime process.env (where it is always undefined).
   const isBinary = getCliEnv().CODEBUFF_IS_BINARY === 'true'
-  const names = launcherBinNames(IS_FREEBUFF)
+  const names = launcherBinNames(IS_FUCKBUFF)
   const quick = installMethodOf(env, {
     isBinary,
     launcherPath: invokedLauncherPath(env, names, realpathSync),

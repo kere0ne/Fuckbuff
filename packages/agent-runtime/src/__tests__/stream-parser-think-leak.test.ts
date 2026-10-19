@@ -172,7 +172,7 @@ describe('processStream — leaked think tags', () => {
     expect(fullResponse).toBe('thought</think>done')
   })
 
-  // CodebuffAI/freebuff#1155
+  // CodebuffAI/fuckbuff#1155
   it('shows an unclosed head block as the reply when the model ended the step', async () => {
     const { text, reasoning, fullResponse } = await render(
       textChunks('<think>', 'Here is the answer.'),

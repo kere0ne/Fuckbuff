@@ -1,7 +1,7 @@
 /**
  * Who RUNS each Daytona sandbox / warm-pool background job — the checked-in
  * switch for moving their execution off platform Convex (COD-742 batch 5,
- * track E1; docs/freebuff-sandbox-jobs.md). The DATA stays in Convex: in
+ * track E1; docs/fuckbuff-sandbox-jobs.md). The DATA stays in Convex: in
  * either mode every read and write goes to the same Convex tables, through
  * the same internal functions. Only the process that runs the loop changes.
  *
@@ -9,8 +9,8 @@
  *              and for pool provisioning the embedded runner's subscription
  *              plus the Convex fallback batch claim the `daytona_pool_job`
  *              rows. The graphile tasks log and return without doing anything.
- * - `graphile` The freebuff-jobs crontab fires the task, which asks
- *              freebuff-web to run the same code with the Convex admin client.
+ * - `graphile` The fuckbuff-jobs crontab fires the task, which asks
+ *              fuckbuff-web to run the same code with the Convex admin client.
  *              The Convex cron action returns immediately, and for pool
  *              provisioning neither the runner subscription nor the Convex
  *              fallback batch is started.
@@ -19,13 +19,13 @@
  * the work. Both sides read this one table, so a flip is a single reviewed
  * diff that both sides deploy with. It lives in `common` because the Convex
  * actions (which may import only `@codebuff/common` from outside convex/),
- * freebuff-web and the jobs worker all read it. Never an env var.
+ * fuckbuff-web and the jobs worker all read it. Never an env var.
  *
  * DEPLOY ORDER for a flip to `graphile`: the jobs worker must already be
- * running, and freebuff-web must carry the same env the Convex deployment
+ * running, and fuckbuff-web must carry the same env the Convex deployment
  * gives the action (Daytona keys, `DAYTONA_*` budgets and kill switches,
  * `MIN_POOL_SIZE*`), or the moved job runs with different settings. A Convex
- * deploy and a freebuff-web deploy are not atomic: in the gap the job runs
+ * deploy and a fuckbuff-web deploy are not atomic: in the gap the job runs
  * TWICE (old Convex code, new web) or not at all (new Convex, old worker).
  * Every job here tolerates both for one tick; nothing tolerates it for long.
  */

@@ -1,4 +1,4 @@
-import { FREEBUFF_BASE3_FAST_WORKER_AGENT_ID } from '@codebuff/common/constants/free-agents'
+import { FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID } from '@codebuff/common/constants/free-agents'
 
 import { createBase3, createBase3CliRoot } from './base3'
 import { publisher } from './constants'
@@ -31,7 +31,7 @@ import type { SecretAgentDefinition } from './types/secret-agent-definition'
  *
  * A worker must be pinned to its root's model or the session gate rejects it
  * mid-run, so the worker id names the model. Which models run this harness is
- * FREEBUFF_FAST_MODE_MODEL_IDS (common/src/constants/freebuff-model-ids.ts).
+ * FUCKBUFF_FAST_MODE_MODEL_IDS (common/src/constants/fuckbuff-model-ids.ts).
  */
 
 /** Everything the root may spawn: searchers for context, the worker for
@@ -40,7 +40,7 @@ import type { SecretAgentDefinition } from './types/secret-agent-definition'
  *  since 2026-10-16: the 62-task bench without it (2026-10-05) was a wash. */
 export const BASE3_FAST_SPAWNABLE_AGENTS = [
   'code-searcher',
-  FREEBUFF_BASE3_FAST_WORKER_AGENT_ID,
+  FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID,
 ] as const
 
 /** The line every worker assignment opens with. The worker inherits a prompt
@@ -70,7 +70,7 @@ const WORKER_WITHHELD_TOOLS: ReadonlySet<string> = new Set([
  * parallel) and the one failure the fan-out invites (incoherent slices).
  */
 export function buildBase3FastGuidance(
-  workerAgentId: string = FREEBUFF_BASE3_FAST_WORKER_AGENT_ID,
+  workerAgentId: string = FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID,
 ): string {
   return `
 # Fast mode
@@ -90,7 +90,7 @@ You are running in fast mode: besides your own tools you can spawn helpers with 
 export const BASE3_FAST_GUIDANCE = buildBase3FastGuidance()
 
 /**
- * The Freebuff CLI root for a fast-mode model: `createBase3CliRoot` plus the
+ * The Fuckbuff CLI root for a fast-mode model: `createBase3CliRoot` plus the
  * fan-out. Its toolset is the CLI root's plus `spawn_agents`, assembled rather
  * than restated; the shipped-agents CI guard imports the definition and
  * checks the list it becomes.
@@ -115,13 +115,13 @@ export function createBase3FastCliRoot(
   const {
     noAskUser = false,
     noWeb = false,
-    workerAgentId = FREEBUFF_BASE3_FAST_WORKER_AGENT_ID,
+    workerAgentId = FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID,
     modelLabel,
     compaction,
   } = options
   const root = createBase3CliRoot({
     model,
-    isFreebuff: true,
+    isFuckbuff: true,
     noAskUser,
     noWeb,
     extraSystemPrompt: buildBase3FastGuidance(workerAgentId),
@@ -135,7 +135,7 @@ export function createBase3FastCliRoot(
       'Fast-mode coding agent: gathers context with parallel code-searchers, implements the change itself, and can split a large mechanical change across parallel prompt-cached workers that report which files they changed',
     toolNames: [...root.toolNames!, 'spawn_agents'],
     spawnableAgents: BASE3_FAST_SPAWNABLE_AGENTS.map((id) =>
-      id === FREEBUFF_BASE3_FAST_WORKER_AGENT_ID ? workerAgentId : id,
+      id === FUCKBUFF_BASE3_FAST_WORKER_AGENT_ID ? workerAgentId : id,
     ),
   }
 }

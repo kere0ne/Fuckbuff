@@ -1,11 +1,11 @@
 import { describe, expect, test } from 'bun:test'
 
-import { FREEBUFF_PROJECT_UNDERSTANDING_MODEL_ID } from '../../constants/free-agents'
+import { FUCKBUFF_PROJECT_UNDERSTANDING_MODEL_ID } from '../../constants/free-agents'
 import {
-  FREEBUFF_GPT_6_LUNA_MAX_PRICE,
-  FREEBUFF_GPT_6_LUNA_MODEL_ID,
-  FREEBUFF_GPT_6_LUNA_UPSTREAM_ORDER,
-} from '../../constants/freebuff-models'
+  FUCKBUFF_GPT_6_LUNA_MAX_PRICE,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_UPSTREAM_ORDER,
+} from '../../constants/fuckbuff-models'
 import {
   PROJECT_UNDERSTANDING_MODEL_PRICE_PER_MILLION_USD,
   estimateProjectUnderstandingCostUsd,
@@ -17,12 +17,12 @@ describe("the project-understanding agent's price card", () => {
   // There is no server-side GPT-6 Luna rate card to pin against: Luna is
   // OpenRouter-only and OpenRouter reports each request's cost itself. So the
   // card is pinned here, once, to OpenAI's published GPT-6 Luna list prices
-  // as documented on FREEBUFF_GPT_6_LUNA_UPSTREAM_ORDER (standard
+  // as documented on FUCKBUFF_GPT_6_LUNA_UPSTREAM_ORDER (standard
   // $0.10 / $0.010 cached / $0.50 per million; flex exactly half). A repricing
   // moves that comment, this literal and the card together.
   test('is the agent model', () => {
-    expect(FREEBUFF_PROJECT_UNDERSTANDING_MODEL_ID).toBe(
-      FREEBUFF_GPT_6_LUNA_MODEL_ID,
+    expect(FUCKBUFF_PROJECT_UNDERSTANDING_MODEL_ID).toBe(
+      FUCKBUFF_GPT_6_LUNA_MODEL_ID,
     )
   })
 
@@ -32,15 +32,15 @@ describe("the project-understanding agent's price card", () => {
 
   test('is an upper bound on the endpoints Luna is routed to first', () => {
     // Flex first, standard behind it: the card is the dearer of the two.
-    expect([...FREEBUFF_GPT_6_LUNA_UPSTREAM_ORDER]).toEqual([
+    expect([...FUCKBUFF_GPT_6_LUNA_UPSTREAM_ORDER]).toEqual([
       'openai/flex',
       'openai',
     ])
   })
 
   test("sits under the OpenRouter price ceiling, which must stay above list", () => {
-    expect(PRICE.input).toBeLessThan(FREEBUFF_GPT_6_LUNA_MAX_PRICE.prompt)
-    expect(PRICE.output).toBeLessThan(FREEBUFF_GPT_6_LUNA_MAX_PRICE.completion)
+    expect(PRICE.input).toBeLessThan(FUCKBUFF_GPT_6_LUNA_MAX_PRICE.prompt)
+    expect(PRICE.output).toBeLessThan(FUCKBUFF_GPT_6_LUNA_MAX_PRICE.completion)
   })
 })
 

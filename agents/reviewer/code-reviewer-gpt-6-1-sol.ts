@@ -1,4 +1,4 @@
-import { FREEBUFF_GPT_61_SOL_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GPT_61_SOL_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { publisher } from '../constants'
 import type { SecretAgentDefinition } from '../types/secret-agent-definition'
@@ -10,7 +10,7 @@ import { createReviewer } from './code-reviewer'
 const definition: SecretAgentDefinition = {
   id: 'code-reviewer-gpt-6-1-sol',
   publisher,
-  ...createReviewer(FREEBUFF_GPT_61_SOL_MODEL_ID),
+  ...createReviewer(FUCKBUFF_GPT_61_SOL_MODEL_ID),
 }
 
 export default definition

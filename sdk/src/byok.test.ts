@@ -448,7 +448,7 @@ describe('shared persistent BYOK store', () => {
     expect(await store.list()).toEqual([])
   })
   // A user writeup (2026-09-30): OmniRoute on http://localhost:20128/v1 with
-  // OMNIROUTE_API_KEY. Freebuff was started before the variable existed, and
+  // OMNIROUTE_API_KEY. Fuckbuff was started before the variable existed, and
   // every command answered "BYOK credential is unavailable or invalid" — the
   // `add` even threw after saving, so a retry said "already exists".
   describe('environment credential diagnostics', () => {
@@ -479,7 +479,7 @@ describe('shared persistent BYOK store', () => {
         ok: false,
         connection: { id: added.id, name: 'omniroute' },
         message:
-          'OMNIROUTE_API_KEY is not set in this Freebuff process. Set it and restart Freebuff from that terminal.',
+          'OMNIROUTE_API_KEY is not set in this Fuckbuff process. Set it and restart Fuckbuff from that terminal.',
       })
       expect(fetched).toBe(0)
       // A run start sees the same precise reason, as a typed credential error.
@@ -504,7 +504,7 @@ describe('shared persistent BYOK store', () => {
       const result = await store.validate(added)
       expect(result.ok).toBe(false)
       expect(result.ok ? '' : result.message).toBe(
-        'The provider rejected the key in OMNIROUTE_API_KEY (HTTP 401). OMNIROUTE_API_KEY is set in this Freebuff process; check that it holds the key this endpoint expects, then restart Freebuff from that terminal.',
+        'The provider rejected the key in OMNIROUTE_API_KEY (HTTP 401). OMNIROUTE_API_KEY is set in this Fuckbuff process; check that it holds the key this endpoint expects, then restart Fuckbuff from that terminal.',
       )
       expect(JSON.stringify(result)).not.toContain(syntheticKey)
     })
@@ -579,7 +579,7 @@ describe('shared persistent BYOK store', () => {
       const added = await store.create(input)
       expect(calls).toEqual([
         [
-          'com.freebuff.byok.v1',
+          'com.fuckbuff.byok.v1',
           added.credentialRef,
           input.apiKey,
         ],

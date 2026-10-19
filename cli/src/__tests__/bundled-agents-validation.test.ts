@@ -5,7 +5,7 @@
  * runs after resolving spawnable ids). One invalid definition anywhere in the
  * bundle blocks every message, whatever agent the user picked.
  *
- * Freebuff 0.2.13 shipped exactly that: its two `base3-fast-worker-*`
+ * Fuckbuff 0.2.13 shipped exactly that: its two `base3-fast-worker-*`
  * definitions were valid on their own, but `loadAgentDefinitions` appended the
  * user's `.agents/` ids to every `base*` agent's `spawnableAgents`, workers
  * included, and a worker has no `spawn_agents` tool (fixed in #4961). So this
@@ -36,13 +36,13 @@ mock.module('../utils/logger', () => ({
 
 import { bundledAgents } from '../agents/bundled-agents.generated'
 import { getProjectRoot, setProjectRoot } from '../project-files'
-import { freebuffCatalogRootAgent } from '../utils/freebuff-catalog-agent'
+import { fuckbuffCatalogRootAgent } from '../utils/fuckbuff-catalog-agent'
 import {
   __resetLocalAgentRegistryForTests,
   initializeAgentRegistry,
   loadAgentDefinitions,
 } from '../utils/local-agent-registry'
-import { catalogRow } from '../utils/__tests__/freebuff-catalog-fixtures'
+import { catalogRow } from '../utils/__tests__/fuckbuff-catalog-fixtures'
 
 import type { AgentDefinition } from '@codebuff/sdk'
 
@@ -65,7 +65,7 @@ describe('bundled agent definitions', () => {
   })
 
   test('the catalog-mode root built at send time passes too', async () => {
-    const root = freebuffCatalogRootAgent(
+    const root = fuckbuffCatalogRootAgent(
       catalogRow('m-flash', {
         handle: 'fbm1.opaque-handle',
         displayName: 'DeepSeek V4.1 Flash',

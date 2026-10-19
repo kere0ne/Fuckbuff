@@ -35,10 +35,10 @@ jobs:
       - name: Build SDK
         run: bun run build:sdk
 
-      - name: Build Freebuff binary
-        run: bun freebuff/cli/build.ts 0.0.0-ci
+      - name: Build Fuckbuff binary
+        run: bun fuckbuff/cli/build.ts 0.0.0-ci
 
-      - name: Smoke test Freebuff binary
+      - name: Smoke test Fuckbuff binary
         env:
           NEXT_PUBLIC_CB_ENVIRONMENT: prod
           NEXT_PUBLIC_CODEBUFF_APP_URL: https://codebuff.com
@@ -49,6 +49,6 @@ jobs:
           NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL: https://billing.stripe.com/p/login/test
           NEXT_PUBLIC_WEB_PORT: '3000'
         run: |
-          chmod +x cli/bin/freebuff
-          cli/bin/freebuff --version
-          bun cli/scripts/smoke-binary.ts cli/bin/freebuff
+          chmod +x cli/bin/fuckbuff
+          cli/bin/fuckbuff --version
+          bun cli/scripts/smoke-binary.ts cli/bin/fuckbuff

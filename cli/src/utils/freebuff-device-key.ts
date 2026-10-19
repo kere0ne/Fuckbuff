@@ -1,10 +1,10 @@
 /**
  * This install's device key and the request signing built on it
- * (docs/freebuff-model-catalog.md; the protocol is
- * `common/src/util/freebuff-device-signing.ts`).
+ * (docs/fuckbuff-model-catalog.md; the protocol is
+ * `common/src/util/fuckbuff-device-signing.ts`).
  *
  * The key pair lives in `device-key.json` in the CLI config dir
- * (`getConfigDir()`, so FREEBUFF_CONFIG_DIR profiles each have their own),
+ * (`getConfigDir()`, so FUCKBUFF_CONFIG_DIR profiles each have their own),
  * owner read/write only, beside `credentials.json`. It holds the private key
  * and the key id the server returned per account and API host; nothing in it
  * is a credential for anything but this install's own signatures.
@@ -17,35 +17,35 @@ import fs from 'fs'
 import path from 'path'
 
 import { IS_TEST } from '@codebuff/common/env'
-import { FREEBUFF_CATALOG_FETCH_HEADER } from '@codebuff/common/types/freebuff-model-catalog'
+import { FUCKBUFF_CATALOG_FETCH_HEADER } from '@codebuff/common/types/fuckbuff-model-catalog'
 import {
-  FreebuffDeviceSigner,
-  isFreebuffDeviceKeyUnknownError,
-  parseFreebuffDeviceKeyRecord,
-} from '@codebuff/common/util/freebuff-device-signing'
+  FuckbuffDeviceSigner,
+  isFuckbuffDeviceKeyUnknownError,
+  parseFuckbuffDeviceKeyRecord,
+} from '@codebuff/common/util/fuckbuff-device-signing'
 
-import { getFreebuffCatalog } from '../state/freebuff-catalog-store'
+import { getFuckbuffCatalog } from '../state/fuckbuff-catalog-store'
 import { getUserCredentials } from './auth'
 import { getConfigDir } from './config-dir'
 import { logger } from './logger'
 
 import type {
-  FreebuffDeviceKeyRecord,
-  FreebuffDeviceKeyStore,
-  FreebuffDeviceRequest,
-} from '@codebuff/common/util/freebuff-device-signing'
+  FuckbuffDeviceKeyRecord,
+  FuckbuffDeviceKeyStore,
+  FuckbuffDeviceRequest,
+} from '@codebuff/common/util/fuckbuff-device-signing'
 
 const DEVICE_KEY_FILE_MODE = 0o600
 const CONFIG_DIR_MODE = 0o700
 
-export function freebuffDeviceKeyPath(configDir: string = getConfigDir()): string {
+export function fuckbuffDeviceKeyPath(configDir: string = getConfigDir()): string {
   return path.join(configDir, 'device-key.json')
 }
 
 /** `device-key.json`, written atomically and owner-only. */
-export function createFreebuffDeviceKeyFileStore(
+export function createFuckbuffDeviceKeyFileStore(
   filePath: string,
-): FreebuffDeviceKeyStore {
+): FuckbuffDeviceKeyStore {
   return {
     async load() {
       let raw: string
@@ -58,12 +58,12 @@ export function createFreebuffDeviceKeyFileStore(
       // A file this build cannot read is replaced: the key is this install's
       // own, and a new one only costs a registration.
       try {
-        return parseFreebuffDeviceKeyRecord(JSON.parse(raw))
+        return parseFuckbuffDeviceKeyRecord(JSON.parse(raw))
       } catch {
         return null
       }
     },
-    async save(record: FreebuffDeviceKeyRecord) {
+    async save(record: FuckbuffDeviceKeyRecord) {
       await fs.promises.mkdir(path.dirname(filePath), {
         recursive: true,
         mode: CONFIG_DIR_MODE,
@@ -86,16 +86,16 @@ export function createFreebuffDeviceKeyFileStore(
 }
 
 // undefined: not built yet; null: signing is off for this process
-let signer: FreebuffDeviceSigner | null | undefined
+let signer: FuckbuffDeviceSigner | null | undefined
 
-function getSigner(): FreebuffDeviceSigner | null {
+function getSigner(): FuckbuffDeviceSigner | null {
   if (signer !== undefined) return signer
   // Tests never write to the developer's config dir or register a key over
   // the network; they install their own signer.
   if (IS_TEST) return (signer = null)
   try {
-    signer = new FreebuffDeviceSigner({
-      store: createFreebuffDeviceKeyFileStore(freebuffDeviceKeyPath()),
+    signer = new FuckbuffDeviceSigner({
+      store: createFuckbuffDeviceKeyFileStore(fuckbuffDeviceKeyPath()),
       client: 'cli',
       log: (message) => logger.debug({}, message),
     })
@@ -110,7 +110,7 @@ function getSigner(): FreebuffDeviceSigner | null {
 }
 
 /** Replace the process's signer (tests); null turns signing off. */
-export function setFreebuffDeviceSigner(next: FreebuffDeviceSigner | null): void {
+export function setFuckbuffDeviceSigner(next: FuckbuffDeviceSigner | null): void {
   signer = next
 }
 
@@ -130,9 +130,9 @@ function accountFor(token: string, url: string) {
  * The device headers for one request (key id, timestamp, signature), or none.
  * Never throws; waits a bounded time for a first registration.
  */
-export async function freebuffDeviceHeaders(
+export async function fuckbuffDeviceHeaders(
   token: string,
-  request: FreebuffDeviceRequest,
+  request: FuckbuffDeviceRequest,
   options: { register?: boolean } = {},
 ): Promise<Record<string, string>> {
   const active = getSigner()
@@ -148,12 +148,12 @@ export async function freebuffDeviceHeaders(
  * A response's error code said the server does not know the device key a
  * request named: forget the key id, so the next request registers again.
  */
-export function noteFreebuffDeviceKeyError(
+export function noteFuckbuffDeviceKeyError(
   token: string,
   url: string,
   errorCode: string | null | undefined,
 ): void {
-  if (!isFreebuffDeviceKeyUnknownError(errorCode)) return
+  if (!isFuckbuffDeviceKeyUnknownError(errorCode)) return
   getSigner()?.forgetRegistration(accountFor(token, url))
 }
 
@@ -162,15 +162,15 @@ export function noteFreebuffDeviceKeyError(
  * catalog mode, the held catalog's fetch id and a signature over the exact
  * body the SDK sends; in fallback mode, nothing, so the request is unchanged.
  */
-export async function freebuffCatalogCompletionHeaders(
+export async function fuckbuffCatalogCompletionHeaders(
   token: string,
   request: { method: string; url: string; body: string | Uint8Array | undefined },
 ): Promise<Record<string, string>> {
-  const catalog = getFreebuffCatalog()
+  const catalog = getFuckbuffCatalog()
   if (!catalog) return {}
   const fetchId = catalog.fetchId
   return {
-    ...(fetchId ? { [FREEBUFF_CATALOG_FETCH_HEADER]: fetchId } : {}),
-    ...(await freebuffDeviceHeaders(token, { ...request, fetchId })),
+    ...(fetchId ? { [FUCKBUFF_CATALOG_FETCH_HEADER]: fetchId } : {}),
+    ...(await fuckbuffDeviceHeaders(token, { ...request, fetchId })),
   }
 }

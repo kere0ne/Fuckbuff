@@ -18,9 +18,9 @@ export function sponsoredDeliveryClientDiagnostics(input: {
     : 'not_reported'
   const product = client.client_ua_product
   const inferredSurface =
-    product === 'freebuff-desktop' && os !== 'not_reported'
+    product === 'fuckbuff-desktop' && os !== 'not_reported'
       ? `desktop_${os}`
-      : product === 'freebuff-cli' && os !== 'not_reported'
+      : product === 'fuckbuff-cli' && os !== 'not_reported'
         ? `cli_${os}`
         : 'not_reported'
   return {

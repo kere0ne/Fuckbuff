@@ -1,10 +1,10 @@
 import { z } from 'zod/v4'
 
-import { FreebuffSession } from './freebuff-session'
+import { FuckbuffSession } from './fuckbuff-session'
 
 import type { ZodType } from 'zod/v4'
 
-interface FreebuffToolDefinition {
+interface FuckbuffToolDefinition {
   toolName: string
   description: string
   inputSchema: ZodType
@@ -17,27 +17,27 @@ type ToolOutput = { type: 'json'; value: Record<string, unknown> }[]
 
 /**
  * Creates custom tool definitions that allow a Codebuff SDK agent
- * to interact with a Freebuff CLI binary via tmux.
+ * to interact with a Fuckbuff CLI binary via tmux.
  *
  * Returns the tools array and a cleanup function to call in afterEach.
  *
  * Usage:
  * ```ts
- * const { tools, cleanup } = createFreebuffTmuxTools(binaryPath)
+ * const { tools, cleanup } = createFuckbuffTmuxTools(binaryPath)
  * // ... pass tools to client.run({ customToolDefinitions: tools })
  * // ... in afterEach: await cleanup()
  * ```
  */
-export function createFreebuffTmuxTools(binaryPath: string): {
-  tools: FreebuffToolDefinition[]
+export function createFuckbuffTmuxTools(binaryPath: string): {
+  tools: FuckbuffToolDefinition[]
   cleanup: () => Promise<void>
 } {
-  let session: FreebuffSession | null = null
+  let session: FuckbuffSession | null = null
 
-  const startTool: FreebuffToolDefinition = {
-    toolName: 'start_freebuff',
+  const startTool: FuckbuffToolDefinition = {
+    toolName: 'start_fuckbuff',
     description:
-      'Start the Freebuff CLI binary in a tmux terminal session. Call this first before interacting with Freebuff.',
+      'Start the Fuckbuff CLI binary in a tmux terminal session. Call this first before interacting with Fuckbuff.',
     inputSchema: z.object({}),
     endsAgentStep: true,
     exampleInputs: [{}],
@@ -53,7 +53,7 @@ export function createFreebuffTmuxTools(binaryPath: string): {
           },
         ]
       }
-      session = await FreebuffSession.start(binaryPath)
+      session = await FuckbuffSession.start(binaryPath)
       await session.waitForReady()
       const initialOutput = await session.capture()
       return [
@@ -69,12 +69,12 @@ export function createFreebuffTmuxTools(binaryPath: string): {
     },
   }
 
-  const sendInputTool: FreebuffToolDefinition = {
-    toolName: 'send_to_freebuff',
+  const sendInputTool: FuckbuffToolDefinition = {
+    toolName: 'send_to_fuckbuff',
     description:
-      'Send text input to the running Freebuff CLI. The text is sent as if typed by the user and Enter is pressed.',
+      'Send text input to the running Fuckbuff CLI. The text is sent as if typed by the user and Enter is pressed.',
     inputSchema: z.object({
-      text: z.string().describe('Text to send to Freebuff'),
+      text: z.string().describe('Text to send to Fuckbuff'),
     }),
     endsAgentStep: false,
     exampleInputs: [{ text: '/help' }],
@@ -84,7 +84,7 @@ export function createFreebuffTmuxTools(binaryPath: string): {
         return [
           {
             type: 'json',
-            value: { error: 'No session running. Call start_freebuff first.' },
+            value: { error: 'No session running. Call start_fuckbuff first.' },
           },
         ]
       }
@@ -93,10 +93,10 @@ export function createFreebuffTmuxTools(binaryPath: string): {
     },
   }
 
-  const captureOutputTool: FreebuffToolDefinition = {
-    toolName: 'capture_freebuff_output',
+  const captureOutputTool: FuckbuffToolDefinition = {
+    toolName: 'capture_fuckbuff_output',
     description:
-      'Capture the current terminal output from the running Freebuff CLI session. ' +
+      'Capture the current terminal output from the running Fuckbuff CLI session. ' +
       'Use waitSeconds to wait before capturing (useful after sending a command).',
     inputSchema: z.object({
       waitSeconds: z
@@ -112,7 +112,7 @@ export function createFreebuffTmuxTools(binaryPath: string): {
         return [
           {
             type: 'json',
-            value: { error: 'No session running. Call start_freebuff first.' },
+            value: { error: 'No session running. Call start_fuckbuff first.' },
           },
         ]
       }
@@ -121,10 +121,10 @@ export function createFreebuffTmuxTools(binaryPath: string): {
     },
   }
 
-  const stopTool: FreebuffToolDefinition = {
-    toolName: 'stop_freebuff',
+  const stopTool: FuckbuffToolDefinition = {
+    toolName: 'stop_fuckbuff',
     description:
-      'Stop the running Freebuff CLI session and clean up resources. Always call this when done testing.',
+      'Stop the running Fuckbuff CLI session and clean up resources. Always call this when done testing.',
     inputSchema: z.object({}),
     endsAgentStep: true,
     exampleInputs: [{}],

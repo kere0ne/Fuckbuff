@@ -46,12 +46,12 @@ export const bunGitRunner: GitRunner = async (args, cwd) => {
 
 /**
  * The run's private `HOME`/`TMPDIR`: the same place Desktop puts it
- * (`freebuff-desktop/src/server/services/turn.ts`), under the project's own
- * `.freebuff/`, which the capability probe and the user's review both ignore.
+ * (`fuckbuff-desktop/src/server/services/turn.ts`), under the project's own
+ * `.fuckbuff/`, which the capability probe and the user's review both ignore.
  */
 export function sponsoredRuntimeDir(
   projectRoot: string,
   runId: string,
 ): string {
-  return join(projectRoot, '.freebuff', 'sponsored-runtime', runId)
+  return join(projectRoot, '.fuckbuff', 'sponsored-runtime', runId)
 }

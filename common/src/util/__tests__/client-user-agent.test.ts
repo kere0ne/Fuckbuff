@@ -9,8 +9,8 @@ import {
 describe('normalizeClientUserAgent', () => {
   it('parses the official CLI agent', () => {
     // What getCliAdRequestUserAgent() emits.
-    expect(normalizeClientUserAgent('Freebuff-CLI/0.0.138')).toEqual({
-      product: 'freebuff-cli',
+    expect(normalizeClientUserAgent('Fuckbuff-CLI/0.0.138')).toEqual({
+      product: 'fuckbuff-cli',
       version: '0.0.138',
     })
     expect(normalizeClientUserAgent('Codebuff-CLI/1.0.685')).toEqual({
@@ -138,8 +138,8 @@ describe('normalizeClientUserAgent', () => {
     expect(clientUserAgentFields('someclient')).toEqual({
       client_ua_product: 'someclient',
     })
-    expect(clientUserAgentFields('Freebuff-CLI/0.0.138')).toEqual({
-      client_ua_product: 'freebuff-cli',
+    expect(clientUserAgentFields('Fuckbuff-CLI/0.0.138')).toEqual({
+      client_ua_product: 'fuckbuff-cli',
       client_ua_version: '0.0.138',
     })
   })

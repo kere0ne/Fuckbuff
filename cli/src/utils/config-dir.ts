@@ -14,11 +14,11 @@ import { getCliEnv } from './env'
  * otherwise create an import cycle.
  */
 export const getConfigDir = (): string => {
-  const configuredDir = getCliEnv().FREEBUFF_CONFIG_DIR
+  const configuredDir = getCliEnv().FUCKBUFF_CONFIG_DIR
   if (configuredDir) {
     if (!path.isAbsolute(configuredDir)) {
       throw new Error(
-        'FREEBUFF_CONFIG_DIR must be an absolute path so CLI settings cannot be written relative to the current project.',
+        'FUCKBUFF_CONFIG_DIR must be an absolute path so CLI settings cannot be written relative to the current project.',
       )
     }
     return configuredDir

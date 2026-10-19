@@ -5,11 +5,11 @@ import path from 'node:path'
 
 import { describe, expect, test } from 'bun:test'
 
-import { requireFreebuffBinary } from '../utils'
+import { requireFuckbuffBinary } from '../utils'
 
-describe('Freebuff: --version', () => {
+describe('Fuckbuff: --version', () => {
   test('outputs a version string', () => {
-    const binary = requireFreebuffBinary()
+    const binary = requireFuckbuffBinary()
     const output = execFileSync(binary, ['--version'], {
       encoding: 'utf-8',
       timeout: 10_000,
@@ -20,14 +20,14 @@ describe('Freebuff: --version', () => {
   })
 
   test('exits with code 0', () => {
-    const binary = requireFreebuffBinary()
+    const binary = requireFuckbuffBinary()
     // execFileSync throws on non-zero exit codes, so if this doesn't throw, it exited 0
     execFileSync(binary, ['--version'], { encoding: 'utf-8', timeout: 10_000 })
   })
 
   test('ignores project bunfig.toml preloads', () => {
-    const binary = requireFreebuffBinary()
-    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-bunfig-'))
+    const binary = requireFuckbuffBinary()
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-bunfig-'))
 
     try {
       fs.writeFileSync(

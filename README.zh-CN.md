@@ -1,36 +1,36 @@
-# Freebuff
+# Fuckbuff
 
 [English](./README.md) | 简体中文
 
 **面向编程、构建和研究的五款免费 AI 产品。** 无需订阅、积分或 API 密钥。
 
-[Freebuff](https://freebuff.com) 将专业化智能体和多种领先模型带到你的终端、桌面、浏览器和 GitHub 仓库中。内置模型由文字广告支持。
+Fuckbuff 将专业化智能体和多种领先模型带到你的终端、桌面、浏览器和 GitHub 仓库中。内置模型由文字广告支持。
 
-## 选择适合你的 Freebuff
+## 选择适合你的 Fuckbuff
 
 | 产品                 | 功能                         | 开始使用                                                        |
 | -------------------- | ---------------------------- | --------------------------------------------------------------- |
-| **Freebuff Desktop** | 在本地并行运行多个智能体     | [下载 macOS、Windows 或 Linux 版](https://freebuff.com/desktop) |
-| **Freebuff CLI**     | 从终端编程                   | [安装 CLI](https://freebuff.com/cli)                            |
-| **Freebuff Web**     | 构建和发布全栈应用           | [构建应用](https://freebuff.com/web)                            |
-| **Freebuff Cloud**   | 在任意 GitHub 仓库运行智能体 | [连接仓库](https://freebuff.com/cloud)                          |
-| **Freebuff Chat**    | 使用 AI 进行研究和思考       | [开始对话](https://freebuff.com/chat)                           |
+| **Fuckbuff Desktop** | 在本地并行运行多个智能体     | 下载 macOS、Windows 或 Linux 版 |
+| **Fuckbuff CLI**     | 从终端编程                   | 安装 CLI                            |
+| **Fuckbuff Web**     | 构建和发布全栈应用           | 构建应用                            |
+| **Fuckbuff Cloud**   | 在任意 GitHub 仓库运行智能体 | 连接仓库                          |
+| **Fuckbuff Chat**    | 使用 AI 进行研究和思考       | 开始对话                           |
 
 ## 快速开始
 
-在任意项目中从终端运行 Freebuff：
+在任意项目中从终端运行 Fuckbuff：
 
 ```bash
-npm install -g freebuff
+npm install -g fuckbuff
 cd ~/my-project
-freebuff
+fuckbuff
 ```
 
-然后描述你想完成的任务。Freebuff 会找到相关文件、进行修改，并运行适合该项目的检查。
+然后描述你想完成的任务。Fuckbuff 会找到相关文件、进行修改，并运行适合该项目的检查。
 
 ## 模型
 
-Freebuff 提供经过筛选的模型目录。常规模型选择器目前包括：
+Fuckbuff 提供经过筛选的模型目录。常规模型选择器目前包括：
 
 | 模型                        | 访问范围       | 适用场景                                         |
 | --------------------------- | -------------- | ------------------------------------------------ |
@@ -56,11 +56,11 @@ DeepSeek V4 Pro 已从模型目录中下线，由 GLM 5.3 Flash 接替其深度�
 - **推荐好友与悬赏任务**可在每日免费额度之外赚取额外会话。
 - **Gemini 3.1 Flash Lite** 用于查找文件和研究等专业任务，不会出现在主模型选择器中。
 
-可用模型和限制取决于你的访问级别、所用产品和当前容量。Freebuff Desktop 还可以通过你现有的提供商账户运行本地安装的 Claude Code 和 Codex 智能体；这些连接的模型不属于 Freebuff 的内置模型目录。
+可用模型和限制取决于你的访问级别、所用产品和当前容量。Fuckbuff Desktop 还可以通过你现有的提供商账户运行本地安装的 Claude Code 和 Codex 智能体；这些连接的模型不属于 Fuckbuff 的内置模型目录。
 
-## Freebuff 的工作原理
+## Fuckbuff 的工作原理
 
-Freebuff 使用专业化智能体，而不是把所有任务都交给同一个模型和同一条提示词。根据任务需要，智能体会收集上下文、制定计划、编辑或研究、运行工具并审查结果。
+Fuckbuff 使用专业化智能体，而不是把所有任务都交给同一个模型和同一条提示词。根据任务需要，智能体会收集上下文、制定计划、编辑或研究、运行工具并审查结果。
 
 - **代码库上下文** —— 文件查找智能体会在编辑前定位项目中的相关部分。
 - **实现与审查** —— 智能体可以拆分工作、修改文件、运行命令并检查结果。
@@ -70,25 +70,25 @@ Freebuff 使用专业化智能体，而不是把所有任务都交给同一个�
 
 ## 免费访问
 
-Freebuff 在所有国家和地区均可使用。受支持的地区提供完整访问；其他地区以及使用 VPN 的用户获得受限访问，包括 DeepSeek V4.1 Flash、GLM 5.3 Flash、MiMo v2.6 Flash Fast、Solar Mini 4 和 Solar Pro 4。所有模型均按选择器中显示的倍数以小时计费：MiMo v2.6 Flash Slow 每小时用掉 1 小时额度，3x 模型用掉 3 小时。受限访问的免费额度为每天 5 小时（使用 VPN 或代理时为 4 小时），所有模型（包括 GLM）都会先使用当天额度；赚取的小时存入钱包，在当天额度用完后使用。（自 2026-10-15 起余额以小时显示；1 小时 = 5 Freebucks。）
+Fuckbuff 在所有国家和地区均可使用。受支持的地区提供完整访问；其他地区以及使用 VPN 的用户获得受限访问，包括 DeepSeek V4.1 Flash、GLM 5.3 Flash、MiMo v2.6 Flash Fast、Solar Mini 4 和 Solar Pro 4。所有模型均按选择器中显示的倍数以小时计费：MiMo v2.6 Flash Slow 每小时用掉 1 小时额度，3x 模型用掉 3 小时。受限访问的免费额度为每天 5 小时（使用 VPN 或代理时为 4 小时），所有模型（包括 GLM）都会先使用当天额度；赚取的小时存入钱包，在当天额度用完后使用。（自 2026-10-15 起余额以小时显示；1 小时 = 5 Freebucks。）
 
-内置模型由文字广告支持。开始前，Freebuff 会显示适用的会话限制以及模型特定的数据使用提示。
+内置模型由文字广告支持。开始前，Fuckbuff 会显示适用的会话限制以及模型特定的数据使用提示。
 
 ## 数据使用与隐私
 
-**我的数据会用于训练 AI 吗？** 只有当模型或功能明确说明数据可能用于 AI 训练时才会。届时，Freebuff 或模型提供商可能保留提交内容，用于开发、训练、测试、评估、微调和改进 AI 模型或产品。
+**我的数据会用于训练 AI 吗？** 只有当模型或功能明确说明数据可能用于 AI 训练时才会。届时，Fuckbuff 或模型提供商可能保留提交内容，用于开发、训练、测试、评估、微调和改进 AI 模型或产品。
 
-**我的数据会如何使用和存储？** 我们会使用提示词、消息、代码、文件和仓库数据来提供服务。我们可能会分析提示词和消息（包括粘贴的内容），通过 Freebuff 系统及代表我们行事的服务提供商来个性化广告。单独上传的文件和已连接的仓库不会提供给广告服务商。在法律要求的地区，我们提供广告选择并遵循公认的退出信号；在其他地区，此类处理可能是使用免费服务的必要条件。留存期限与完整详情请参阅隐私政策。
+**我的数据会如何使用和存储？** 我们会使用提示词、消息、代码、文件和仓库数据来提供服务。我们可能会分析提示词和消息（包括粘贴的内容），通过 Fuckbuff 系统及代表我们行事的服务提供商来个性化广告。单独上传的文件和已连接的仓库不会提供给广告服务商。在法律要求的地区，我们提供广告选择并遵循公认的退出信号；在其他地区，此类处理可能是使用免费服务的必要条件。留存期限与完整详情请参阅隐私政策。
 
-完整详情请参阅[隐私政策](https://freebuff.com/privacy-policy)。
+完整详情请参阅隐私政策。
 
 ## 参与贡献
 
-Freebuff 是一个使用 Bun 构建的 TypeScript monorepo。欢迎为产品、智能体、工具、文档和底层运行时贡献代码。
+Fuckbuff 是一个使用 Bun 构建的 TypeScript monorepo。欢迎为产品、智能体、工具、文档和底层运行时贡献代码。
 
 ```bash
-git clone https://github.com/CodebuffAI/freebuff.git
-cd freebuff
+git clone https://github.com/kere0ne/Fuckbuff.git
+cd fuckbuff
 bun install
 bun up
 ```
@@ -103,12 +103,12 @@ bun start-cli
 
 ## 基于 Codebuff 构建
 
-Freebuff 基于开放的多智能体框架 [Codebuff](https://codebuff.com) 构建，其编排、工具和 SDK 均由 Codebuff 提供。若要创建自定义智能体或将其嵌入其他应用，请参阅 [Codebuff 文档](https://codebuff.com/docs)和 [`@codebuff/sdk`](https://www.npmjs.com/package/@codebuff/sdk)。
+Fuckbuff 基于开放的多智能体框架 Codebuff 构建，其编排、工具和 SDK 均由 Codebuff 提供。若要创建自定义智能体或将其嵌入其他应用，请参阅 Codebuff 文档和 [`@codebuff/sdk`](https://www.npmjs.com/package/@codebuff/sdk)。
 
 ## 链接
 
-- [官网](https://freebuff.com)
-- [GitHub](https://github.com/CodebuffAI/freebuff)
+- 官网
+- [GitHub](https://github.com/kere0ne/Fuckbuff)
 - [Discord](https://discord.gg/yXG3w7wxfs)
-- [隐私政策](https://freebuff.com/privacy-policy)
+- 隐私政策
 - [许可证](./LICENSE)

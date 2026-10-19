@@ -1,10 +1,10 @@
 {
-  "name": "freebuff",
+  "name": "fuckbuff",
   "version": "0.2.30",
   "description": "The world's strongest free coding agent",
   "license": "MIT",
   "bin": {
-    "freebuff": "index.js"
+    "fuckbuff": "index.js"
   },
   "scripts": {
     "prepack": "node ../../../cli/release-core/prepare-package.js",
@@ -33,11 +33,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CodebuffAI/freebuff-private.git"
+    "url": "git+https://github.com/kere0ne/Fuckbuff-private.git"
   },
   "homepage": "https://freebuff.com",
   "bugs": {
-    "url": "https://github.com/CodebuffAI/freebuff/issues"
+    "url": "https://github.com/kere0ne/Fuckbuff/issues"
   },
   "publishConfig": {
     "access": "public",

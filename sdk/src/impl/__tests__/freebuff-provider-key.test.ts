@@ -23,7 +23,7 @@ afterEach(() => {
   else process.env[BYOK_OPENROUTER_ENV_VAR] = originalKey
 })
 
-describe('Freebuff provider credentials', () => {
+describe('Fuckbuff provider credentials', () => {
   test('an explicitly selected BYOK connection still uses its selected key and endpoint', async () => {
     const requests: Array<{ url: string; headers: Headers }> = []
     const fetchSpy = spyOn(globalThis, 'fetch').mockImplementation(
@@ -41,7 +41,7 @@ describe('Freebuff provider credentials', () => {
     try {
       const response = streamText({
         model: getModelForRequest({
-          apiKey: 'freebuff-login-token',
+          apiKey: 'fuckbuff-login-token',
           model: 'ignored/model',
           costMode: 'free',
           byok: {
@@ -112,7 +112,7 @@ describe('Freebuff provider credentials', () => {
         )
         try {
           const params = {
-            apiKey: 'freebuff-login-token',
+            apiKey: 'fuckbuff-login-token',
             model: 'openai/gpt-6.1-sol',
             costMode,
             runId: 'run',
@@ -148,7 +148,7 @@ describe('Freebuff provider credentials', () => {
           const request = requests[0]!
           expect(new URL(request.url).pathname).toBe('/api/v1/chat/completions')
           expect(request.headers.get('authorization')).toBe(
-            'Bearer freebuff-login-token',
+            'Bearer fuckbuff-login-token',
           )
           expect(JSON.parse(request.body).codebuff_metadata.cost_mode).toBe(
             costMode,

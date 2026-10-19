@@ -1,4 +1,4 @@
-import { FREEBUFF_PROJECT_UNDERSTANDING_AGENT_ID } from '@codebuff/common/constants/free-agents'
+import { FUCKBUFF_PROJECT_UNDERSTANDING_AGENT_ID } from '@codebuff/common/constants/free-agents'
 import {
   buildProjectProfileRequest,
   PROJECT_PROFILE_TOOL_NAME,
@@ -34,7 +34,7 @@ export function shouldOfferProjectProfileTool(params: {
     // completions route holds it to its fixed tool set, which this tool is
     // not in.
     parseAgentId(params.agentId).agentId !==
-      FREEBUFF_PROJECT_UNDERSTANDING_AGENT_ID &&
+      FUCKBUFF_PROJECT_UNDERSTANDING_AGENT_ID &&
     params.toolNames.includes('read_files') &&
     params.getProjectProfile !== undefined &&
     params.reportProjectProfile !== undefined

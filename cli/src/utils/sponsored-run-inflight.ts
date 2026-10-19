@@ -137,7 +137,7 @@ export function orphanedSponsoredRunReport(
   return {
     state: 'failed',
     failureReason:
-      'The sponsored task stopped when Freebuff closed, before it changed anything. Nothing was changed in your project.',
+      'The sponsored task stopped when Fuckbuff closed, before it changed anything. Nothing was changed in your project.',
     diagnosticReason: SPONSORED_ORPHANED_RUN_DIAGNOSTIC,
   }
 }

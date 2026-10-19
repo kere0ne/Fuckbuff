@@ -1011,13 +1011,13 @@ describe('sponsored network access', () => {
 
 /**
  * A REAL project repository with a REAL linked worktree under it, exactly as
- * `freebuff-desktop/src/server/git/worktree.ts` lays one out.
+ * `fuckbuff-desktop/src/server/git/worktree.ts` lays one out.
  *
  * THIS IS THE POINT OF THE WHOLE SECTION. The git test above builds a
  * standalone repository with `git init` inside the sandbox root, so its `.git`
  * is a directory inside the write allowlist — a layout Desktop never produces.
  * Desktop runs every isolated thread in a LINKED worktree at
- * `<project>/.freebuff/worktrees/<threadId>`, whose `.git` is a GITFILE
+ * `<project>/.fuckbuff/worktrees/<threadId>`, whose `.git` is a GITFILE
  * pointing at `<project>/.git/worktrees/<threadId>`, which is outside the
  * sandbox root entirely. With the write roots at `[workspaceRoot, runtimeDir]`
  * every git command in that layout died at repository discovery:
@@ -1068,10 +1068,10 @@ function desktopLayout(): {
   git(['pack-refs', '--all'])
 
   const threadId = 'thread-abc'
-  const branch = `freebuff/sponsored-advertiser-${threadId}`
-  const worktree = path.join(project, '.freebuff', 'worktrees', threadId)
+  const branch = `fuckbuff/sponsored-advertiser-${threadId}`
+  const worktree = path.join(project, '.fuckbuff', 'worktrees', threadId)
   git(['worktree', 'add', '-q', '-b', branch, worktree, 'main'])
-  const runtime = path.join(project, '.freebuff', 'sponsored-runtime', threadId)
+  const runtime = path.join(project, '.fuckbuff', 'sponsored-runtime', threadId)
   fs.mkdirSync(runtime, { recursive: true })
 
   const resolve = (target: string) => {
@@ -1098,7 +1098,7 @@ function desktopLayout(): {
     linkedWorktree: {
       commonDir: ask('--git-common-dir'),
       gitDir: ask('--git-dir'),
-      branchNamespace: 'freebuff',
+      branchNamespace: 'fuckbuff',
     },
   }
 }
@@ -1231,7 +1231,7 @@ describe('sponsored git in the layout Desktop actually creates', () => {
           ['info', `${common}/info/exclude`],
           ['packed-refs', `${common}/packed-refs`],
           ['common-root', `${common}/a-new-file`],
-          // Another branch's tip: the grant is scoped to `refs/heads/freebuff`,
+          // Another branch's tip: the grant is scoped to `refs/heads/fuckbuff`,
           // so the user's own branches are out of reach. Granting `refs/`
           // wholesale would let a run rewrite or delete every branch they have.
           ['other-branch', `${common}/refs/heads/main`],
@@ -1368,7 +1368,7 @@ describe('sponsored git in the layout Desktop actually creates', () => {
       try {
         spawnSync('git', ['-C', layout.project, 'pack-refs', '--all'])
         expect(
-          fs.existsSync(path.join(common, 'refs', 'heads', 'freebuff')),
+          fs.existsSync(path.join(common, 'refs', 'heads', 'fuckbuff')),
         ).toBe(false)
         const { exitCode, out, err } = await runInSandbox(
           {
@@ -1566,7 +1566,7 @@ describe('which git a contained macOS shell runs', () => {
   })
 
   it('puts stand-ins for every /usr/bin shim right before /usr/bin, whichever git wins', () => {
-    const SHIMS = '/Users/u/.freebuff/sponsored-runtime/r/developer-shims'
+    const SHIMS = '/Users/u/.fuckbuff/sponsored-runtime/r/developer-shims'
     const shims = () => SHIMS
     // Finder PATH: the stand-ins (their `git` is the developer git) win, and
     // the whole Command Line Tools bin is never put on PATH.

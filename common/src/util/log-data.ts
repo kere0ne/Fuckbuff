@@ -6,7 +6,7 @@ import type { LogLevel } from '../types/contracts/logs'
 /**
  * Shared pieces of the Axiom log-row pipeline used by every producer that
  * ingests rows — the long-lived sink (packages/logging/src/sink.ts) and the
- * Convex direct-ingest helper (freebuff/web/convex/lib/axiom_log.ts). Living
+ * Convex direct-ingest helper (fuckbuff/web/convex/lib/axiom_log.ts). Living
  * here keeps the serialized `data` contract and level ordering identical
  * across producers, so APL queries behave the same regardless of which
  * service emitted a row. Deliberately light on imports (the schemas module
@@ -46,7 +46,7 @@ function clip(text: string, max: number): string {
  * An Error as plain JSON. `name`, `message` and `stack` are non-enumerable, so
  * `JSON.stringify(error)` is `{}`: every `logger.error({ error }, ...)` whose
  * error reached this serializer arrived in Axiom with no reason attached (on
- * 2026-09-27, 119 error/warn rows a day on freebuff-web alone, and the
+ * 2026-09-27, 119 error/warn rows a day on fuckbuff-web alone, and the
  * Imprezia ingest's refusals for nine days). Enumerable fields a library adds
  * (`code`, `status`, a driver's `query`) are kept, and `cause` is walked by the
  * same replacer.

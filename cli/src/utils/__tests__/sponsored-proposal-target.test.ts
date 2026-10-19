@@ -27,8 +27,8 @@ function folder(withId: boolean): string {
   const root = mkdtempSync(join(tmpdir(), 'sponsored-target-'))
   roots.push(root)
   if (withId) {
-    mkdirSync(join(root, '.freebuff'))
-    writeFileSync(join(root, '.freebuff', 'project-id'), `${ID}\n`)
+    mkdirSync(join(root, '.fuckbuff'))
+    writeFileSync(join(root, '.fuckbuff', 'project-id'), `${ID}\n`)
   }
   return root
 }

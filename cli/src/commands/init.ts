@@ -12,12 +12,12 @@ import toolsSource from '../../../common/src/templates/initial-agents-dir/types/
 import utilTypesSource from '../../../common/src/templates/initial-agents-dir/types/util-types' with { type: 'text' }
 import { getProjectRoot } from '../project-files'
 import { trackEvent } from '../utils/analytics'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { getSystemMessage } from '../utils/message-history'
 
 import type { PostUserMessageFn } from '../types/contracts/send-message'
 
-const brandName = IS_FREEBUFF ? 'Freebuff' : 'Codebuff'
+const brandName = IS_FUCKBUFF ? 'Fuckbuff' : 'Codebuff'
 
 const INITIAL_KNOWLEDGE_FILE = `# Project knowledge
 

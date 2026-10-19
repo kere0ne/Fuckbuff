@@ -1,12 +1,12 @@
 import {
-  freebuffChatAdmissionMayStart,
-  useFreebuffChatAdmission,
-} from '../hooks/use-freebuff-chat-admission'
+  fuckbuffChatAdmissionMayStart,
+  useFuckbuffChatAdmission,
+} from '../hooks/use-fuckbuff-chat-admission'
 import {
-  useFreebuffChatStore,
-  freebuffChatNeedsAdmission,
-  requestFreebuffChatAdmission,
-} from '../state/freebuff-chat-store'
+  useFuckbuffChatStore,
+  fuckbuffChatNeedsAdmission,
+  requestFuckbuffChatAdmission,
+} from '../state/fuckbuff-chat-store'
 import {
   createContext,
   useCallback,
@@ -18,7 +18,7 @@ import {
 
 import { useAgentValidation } from '../hooks/use-agent-validation'
 import { useElapsedTime } from '../hooks/use-elapsed-time'
-import { holdsLiveFreebuffSlot } from '../utils/freebuff-session-api'
+import { holdsLiveFuckbuffSlot } from '../utils/fuckbuff-session-api'
 import {
   useMessageQueue,
   type QueuedMessage,
@@ -30,13 +30,13 @@ import {
   type SubscriptionResponse,
 } from '../hooks/use-subscription-query'
 import { useChatStore } from '../state/chat-store'
-import { useFreebuffSessionStore } from '../state/freebuff-session-store'
+import { useFuckbuffSessionStore } from '../state/fuckbuff-session-store'
 import {
   sponsoredTurnHoldsQueue,
   useSponsoredRunStore,
 } from '../state/sponsored-run-store'
 import { useByokSelectionStore } from '../utils/byok'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { logger } from '../utils/logger'
 import { getSystemMessage } from '../utils/message-history'
 import { setPendingSponsoredBrief } from '../utils/sponsored-brief'
@@ -89,7 +89,7 @@ const ChatRuntimeContext = createContext<ChatRuntime | null>(null)
 
 /**
  * Owns everything tied to the active chat run. It remains mounted while
- * history and Freebuff session-gate views replace the Chat surface.
+ * history and Fuckbuff session-gate views replace the Chat surface.
  */
 export const ChatRuntimeProvider = ({
   agentId,
@@ -133,37 +133,37 @@ export const ChatRuntimeProvider = ({
     }
   }, [askUserState, mainAgentTimer])
 
-  const freebuffSession = useFreebuffSessionStore((state) => state.session)
+  const fuckbuffSession = useFuckbuffSessionStore((state) => state.session)
   const hasSelectedByokConnection = useByokSelectionStore(
     (state) => state.selected !== undefined,
   )
-  const chatAdmission = useFreebuffChatStore((s) => s.admission)
-  const nextModel = useFreebuffChatStore((s) => s.nextModel)
-  const pickerOpen = useFreebuffChatStore((s) => s.pickerOpen)
-  const freebuffSessionOver =
-    IS_FREEBUFF &&
+  const chatAdmission = useFuckbuffChatStore((s) => s.admission)
+  const nextModel = useFuckbuffChatStore((s) => s.nextModel)
+  const pickerOpen = useFuckbuffChatStore((s) => s.pickerOpen)
+  const fuckbuffSessionOver =
+    IS_FUCKBUFF &&
     !hasSelectedByokConnection &&
-    (!holdsLiveFreebuffSlot(freebuffSession) ||
+    (!holdsLiveFuckbuffSlot(fuckbuffSession) ||
       chatAdmission !== null ||
       pickerOpen ||
-      (freebuffSession?.status === 'active' &&
+      (fuckbuffSession?.status === 'active' &&
         nextModel !== null &&
-        nextModel !== freebuffSession.model))
+        nextModel !== fuckbuffSession.model))
   // An accepted sponsored task runs NEXT, ahead of anything the user queued
   // after approving it, and nothing they type steers it: it has no steering
   // mailbox, so their messages land in this queue and wait for its verdict.
   const sponsoredSnapshot = useSponsoredRunStore((state) => state.snapshot)
   const sponsoredHold = sponsoredTurnHoldsQueue(sponsoredSnapshot)
-  const sendBlocked = freebuffSessionOver || sponsoredHold
+  const sendBlocked = fuckbuffSessionOver || sponsoredHold
 
   useEffect(() => {
-    if (freebuffSessionOver) {
+    if (fuckbuffSessionOver) {
       logger.info(
         {},
-        '[chat-runtime] Freebuff session over; holding queued messages until rejoin',
+        '[chat-runtime] Fuckbuff session over; holding queued messages until rejoin',
       )
     }
-  }, [freebuffSessionOver])
+  }, [fuckbuffSessionOver])
 
   const queue = useMessageQueue(
     (message) =>
@@ -198,7 +198,7 @@ export const ChatRuntimeProvider = ({
           reason === 'logout' ||
           reason === 'session-transition'
         ) {
-          useFreebuffChatStore.setState({ admission: null, pickerOpen: false })
+          useFuckbuffChatStore.setState({ admission: null, pickerOpen: false })
         }
       }),
     [],
@@ -242,10 +242,10 @@ export const ChatRuntimeProvider = ({
     subscriptionData,
   })
 
-  useFreebuffChatAdmission(
-    IS_FREEBUFF &&
+  useFuckbuffChatAdmission(
+    IS_FUCKBUFF &&
       !hasSelectedByokConnection &&
-      freebuffChatAdmissionMayStart({
+      fuckbuffChatAdmissionMayStart({
         chainInProgress: isChainInProgress,
         streamStatus: queue.streamStatus,
         queuedCount: queue.queuedMessages.length,
@@ -314,11 +314,11 @@ export const ChatRuntimeProvider = ({
     addToQueue: (content, attachments) => {
       queue.addToQueue(content, attachments)
       if (
-        IS_FREEBUFF &&
+        IS_FUCKBUFF &&
         !hasSelectedByokConnection &&
-        freebuffChatNeedsAdmission()
+        fuckbuffChatNeedsAdmission()
       )
-        requestFreebuffChatAdmission()
+        requestFuckbuffChatAdmission()
     },
     addToQueueFront: queue.addToQueueFront,
     editQueuedMessage: queue.editQueuedMessage,

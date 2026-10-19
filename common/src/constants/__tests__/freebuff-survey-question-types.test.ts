@@ -3,7 +3,7 @@ import {
   isValidSponsoredSurveyAnswer,
   sponsoredSurveyQuestionSchema,
   SPONSORED_SURVEY_LIMITS,
-} from '../freebuff-sponsored-survey'
+} from '../fuckbuff-sponsored-survey'
 
 const ranking = {
   prompt: 'Rank these features',

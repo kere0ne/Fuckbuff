@@ -8,18 +8,18 @@ import {
 describe('sponsoredClientVersionFromUserAgent', () => {
   test('maps the Desktop and CLI user agents', () => {
     expect(
-      sponsoredClientVersionFromUserAgent('Freebuff-Desktop/0.0.151'),
+      sponsoredClientVersionFromUserAgent('Fuckbuff-Desktop/0.0.151'),
     ).toBe('desktop/0.0.151')
     expect(
-      sponsoredClientVersionFromUserAgent('Freebuff-Desktop/0.0.151 (win32)'),
+      sponsoredClientVersionFromUserAgent('Fuckbuff-Desktop/0.0.151 (win32)'),
     ).toBe('desktop/0.0.151')
-    expect(sponsoredClientVersionFromUserAgent('Freebuff-CLI/1.0.700')).toBe(
+    expect(sponsoredClientVersionFromUserAgent('Fuckbuff-CLI/1.0.700')).toBe(
       'cli/1.0.700',
     )
   })
 
   test('keeps dev builds', () => {
-    expect(sponsoredClientVersionFromUserAgent('Freebuff-Desktop/dev')).toBe(
+    expect(sponsoredClientVersionFromUserAgent('Fuckbuff-Desktop/dev')).toBe(
       'desktop/dev',
     )
   })
@@ -31,9 +31,9 @@ describe('sponsoredClientVersionFromUserAgent', () => {
       '',
       'Mozilla/5.0',
       'Codebuff-CLI/1.0.0',
-      'Freebuff-Desktop/',
-      `Freebuff-CLI/${'9'.repeat(40)}`,
-      'Freebuff-Desktop/1.0;rm',
+      'Fuckbuff-Desktop/',
+      `Fuckbuff-CLI/${'9'.repeat(40)}`,
+      'Fuckbuff-Desktop/1.0;rm',
     ]) {
       expect(sponsoredClientVersionFromUserAgent(ua)).toBeNull()
     }
@@ -41,7 +41,7 @@ describe('sponsoredClientVersionFromUserAgent', () => {
 
   test('every value it returns matches the stored pattern', () => {
     const value = sponsoredClientVersionFromUserAgent(
-      'Freebuff-CLI/1.2.3-beta+4',
+      'Fuckbuff-CLI/1.2.3-beta+4',
     )
     expect(value).toBe('cli/1.2.3-beta+4')
     expect(SPONSORED_CLIENT_VERSION_PATTERN.test(value!)).toBe(true)

@@ -50,7 +50,7 @@ function connection(
 
 const options: LanguageModelV2CallOptions = {
   prompt: [
-    { role: 'system', content: 'You are Freebuff.' },
+    { role: 'system', content: 'You are Fuckbuff.' },
     { role: 'user', content: [{ type: 'text', text: 'List the files.' }] },
   ],
   maxOutputTokens: 4096,
@@ -155,10 +155,10 @@ describe('ChatGPT plan model', () => {
     expect(request!.url).toBe('https://chatgpt.com/backend-api/codex/responses')
     expect(request!.headers.get('authorization')).toBe(`Bearer ${token}`)
     expect(request!.headers.get('chatgpt-account-id')).toBe('acct_fixture')
-    expect(request!.headers.get('originator')).toBe('freebuff')
+    expect(request!.headers.get('originator')).toBe('fuckbuff')
     expect(request!.body).toMatchObject({
       model: 'gpt-6-sol',
-      instructions: 'You are Freebuff.',
+      instructions: 'You are Fuckbuff.',
       stream: true,
       store: false,
       reasoning: { effort: 'high', summary: 'auto' },

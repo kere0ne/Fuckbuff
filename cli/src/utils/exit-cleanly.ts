@@ -1,9 +1,9 @@
 import { withTimeoutOr } from '@codebuff/common/util/promise'
 import { flushAdEngagementOnExit } from '../ads/use-ad-engagement'
 import { flushAnalytics } from './analytics'
-import { IS_FREEBUFF } from './constants'
+import { IS_FUCKBUFF } from './constants'
 import { stopEngagementTracking } from './engagement'
-import { useFreebuffSessionStore } from '../state/freebuff-session-store'
+import { useFuckbuffSessionStore } from '../state/fuckbuff-session-store'
 import { drainClientLogs } from './log-shipper'
 import { settleInterruptedSponsoredRun } from './sponsored-run-exit'
 import { flushSurveyEventsOnExit } from './survey-events'
@@ -11,7 +11,7 @@ import { flushSurveyEventsOnExit } from './survey-events'
 const EXIT_CLEANUP_TIMEOUT_MS = 1_000
 
 type ExitCliDependencies = {
-  isFreebuff: boolean
+  isFuckbuff: boolean
   cleanupLocal: () => void
   stopEngagementTracking: () => void
   flushAnalytics: () => Promise<void>
@@ -24,7 +24,7 @@ type ExitCliDependencies = {
   flushAdEngagement: () => Promise<void>
   /** Survey funnel pings (COD-837): an open survey reports `abandoned`. */
   flushSurveyEvents?: () => Promise<void>
-  endFreebuffSession: () => Promise<void>
+  endFuckbuffSession: () => Promise<void>
   /**
    * Bring a sponsored run to a TERMINAL state, and say what it left behind.
    *
@@ -88,7 +88,7 @@ export function createExitCliCleanly(deps: ExitCliDependencies) {
       } catch {
         // Cleanup is best-effort; never strand the process in a half-exited UI.
       }
-      if (deps.isFreebuff) {
+      if (deps.isFuckbuff) {
         try {
           deps.stopEngagementTracking()
         } catch {}
@@ -105,8 +105,8 @@ export function createExitCliCleanly(deps: ExitCliDependencies) {
           if (notice) deps.writeNotice(notice)
         }),
       ]
-      if (deps.isFreebuff) {
-        remoteTasks.push(Promise.resolve().then(deps.endFreebuffSession))
+      if (deps.isFuckbuff) {
+        remoteTasks.push(Promise.resolve().then(deps.endFuckbuffSession))
       }
 
       try {
@@ -121,14 +121,14 @@ export function createExitCliCleanly(deps: ExitCliDependencies) {
 }
 
 export const exitCliCleanly = createExitCliCleanly({
-  isFreebuff: IS_FREEBUFF,
+  isFuckbuff: IS_FUCKBUFF,
   cleanupLocal: () => localExitCleanup?.(),
   stopEngagementTracking,
   flushAnalytics,
   drainClientLogs,
   flushAdEngagement: () => flushAdEngagementOnExit(),
   flushSurveyEvents: flushSurveyEventsOnExit,
-  endFreebuffSession: () => useFreebuffSessionStore.getState().releaseSlot(),
+  endFuckbuffSession: () => useFuckbuffSessionStore.getState().releaseSlot(),
   settleSponsoredRun: settleInterruptedSponsoredRun,
   // `process.stdout.write`, not the logger and not the renderer: the renderer is
   // gone by now, and a line about a directory that exists on the user's disk is

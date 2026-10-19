@@ -29,7 +29,7 @@
  * loopback, so commands can use the host's DNS, downloads and service APIs.
  *
  * Known limits are tracked privately
- * (`docs/freebuff-sponsored-local-execution.md` §9).
+ * (`docs/fuckbuff-sponsored-local-execution.md` §9).
  *
  * ## Refuse, never downgrade
  *
@@ -192,8 +192,8 @@ export function sponsoredContainment(
  * Where a LINKED worktree keeps the repository it belongs to.
  *
  * Desktop runs a sponsored turn in a linked worktree at
- * `~/.freebuff/worktrees/<short-id>/<repo-name>` (older releases:
- * `<project>/.freebuff/worktrees/<threadId>`), whose `.git` is a gitfile
+ * `~/.fuckbuff/worktrees/<short-id>/<repo-name>` (older releases:
+ * `<project>/.fuckbuff/worktrees/<threadId>`), whose `.git` is a gitfile
  * pointing at `<project>/.git/worktrees/<threadId>` — OUTSIDE the workspace.
  * With the write roots at `[workspaceRoot, runtimeDir]` and nothing granting
  * the common dir, every git command died at repository discovery:
@@ -232,8 +232,8 @@ export interface SponsoredLinkedWorktree {
   /**
    * The ref namespace the run's own branch lives in, WITHOUT a trailing slash.
    *
-   * `freebuff` on Desktop, because every branch the app cuts is
-   * `freebuff/<slug>-<threadId>`. It is a namespace rather than the exact
+   * `fuckbuff` on Desktop, because every branch the app cuts is
+   * `fuckbuff/<slug>-<threadId>`. It is a namespace rather than the exact
    * branch so that the grant is a directory — git updates a ref by writing
    * `<ref>.lock` beside it and renaming, which a grant on the ref file alone
    * does not cover.
@@ -260,7 +260,7 @@ export interface SponsoredSandboxOptions {
   /** Extra trees the run may READ (a toolchain, a shared cache). Never write. */
   additionalReadRoots?: string[]
   /**
-   * Toolchains Freebuff installed for runs (`sponsored-managed-node.ts`):
+   * Toolchains Fuckbuff installed for runs (`sponsored-managed-node.ts`):
    * each `root` is granted READ-ONLY like `additionalReadRoots`, and each
    * `binDir` goes at the END of the run's `PATH`, so the user's own install
    * of the same tool is always found first.
@@ -280,7 +280,7 @@ export interface SponsoredSandboxOptions {
   linkedWorktree?: SponsoredLinkedWorktree
   /**
    * The run edits the user's working copy IN PLACE and delivers no commit
-   * (`docs/freebuff-sponsored-local-execution.md`, 2026-09-24), so
+   * (`docs/fuckbuff-sponsored-local-execution.md`, 2026-09-24), so
    * `<workspaceRoot>/.git` is carved out of the write root and left readable.
    *
    * The INVERSE of `linkedWorktree`: that one exists so a sandboxed run CAN
@@ -752,7 +752,7 @@ function spawnSponsoredRipgrepDirectly(
  *    program, so the kernel still bounds what ripgrep can open.
  *  - Windows: the bundled binary where it is installed, with an empty
  *    environment and the working directory re-checked against the worktree.
- *    See `docs/freebuff-sponsored-local-execution.md`, "The file layer
+ *    See `docs/fuckbuff-sponsored-local-execution.md`, "The file layer
  *    without a shell (COD-642)".
  *
  * Every other executable goes to {@link createSponsoredTerminalBroker}
@@ -1054,7 +1054,7 @@ const SPONSORED_DEVICE_WRITE_SUBPATHS: readonly string[] = ['/dev/fd']
  *
  * Without it `getaddrinfo` answers `ENOTFOUND` for every name, so `curl
  * https://example.com` and `git ls-remote https://…` fail. See
- * `docs/freebuff-sponsored-local-execution.md` §9.
+ * `docs/fuckbuff-sponsored-local-execution.md` §9.
  *
  * Bisected to this one literal on macOS 26.5: the resolver reads the `/var`
  * SYMLINK, and the profile's ancestor grants only ever cover `/private/var`
@@ -1181,7 +1181,7 @@ function underSystemReadRoot(target: string): boolean {
  * And the shim is what a sponsored shell found. `runTerminalCommand` hands the
  * broker the orchestrator's own PATH, and the scrub keeps it verbatim. A
  * Finder-launched Desktop starts from launchd's `/usr/bin:/bin:/usr/sbin:/sbin`,
- * and its login-shell repair (`freebuff-desktop/electron/shell-path.cjs`)
+ * and its login-shell repair (`fuckbuff-desktop/electron/shell-path.cjs`)
  * APPENDS, so `/usr/bin` precedes Homebrew and `git` is the shim. Where another
  * git does come first the sandbox may still not see it: an entry outside the
  * readable set (anything under HOME, or the temp dir) fails `stat` with
@@ -1212,7 +1212,7 @@ function underSystemReadRoot(target: string): boolean {
  * The profile is unchanged by this: no read grant, no write grant, no new
  * environment variable, so choosing which binary `git` names changes nothing
  * the sandbox decides. A grant on the data link was measured and
- * rejected; `docs/freebuff-sponsored-local-execution.md` §9 has why.
+ * rejected; `docs/fuckbuff-sponsored-local-execution.md` §9 has why.
  *
  * What else moves, measured on the Command Line Tools: the stand-ins re-resolve
  * the 77 names both directories hold, and every one of them is an
@@ -1437,7 +1437,7 @@ const SPONSORED_MAC_GIT_HOST: SponsoredMacGitDependencies = {
  * request to be openable from it.
  *
  * Known limits are tracked privately
- * (`docs/freebuff-sponsored-local-execution.md` §9).
+ * (`docs/fuckbuff-sponsored-local-execution.md` §9).
  */
 export function sponsoredLinkedWorktreeGrants(
   linked: SponsoredLinkedWorktree,
@@ -1623,7 +1623,7 @@ export function sponsoredMacProfile(
   writeLiterals: string[] = [],
   /**
    * Carved OUT of the write roots above, for an in-place run
-   * (`docs/freebuff-sponsored-local-execution.md`, 2026-09-24): the
+   * (`docs/fuckbuff-sponsored-local-execution.md`, 2026-09-24): the
    * workspace's own `.git`, which such a run may read and must not write.
    * Seatbelt takes the LAST matching rule, so these denies are emitted after
    * the `file-write*` allow that covers the workspace.
@@ -1683,7 +1683,7 @@ export function sponsoredMacProfile(
     '(allow mach-lookup)',
     // LOOPBACK IS DENIED. The Desktop orchestrator listens on loopback and its
     // API acts with the user's own credentials, so the run must not reach it.
-    // Network policy beyond that: `docs/freebuff-sponsored-local-execution.md`
+    // Network policy beyond that: `docs/fuckbuff-sponsored-local-execution.md`
     // §9.
     //
     // The `deny` has to come AFTER the `allow`: seatbelt takes the LAST
@@ -2105,7 +2105,7 @@ function windowsTaskkillPath(): string {
  *    `npm.ps1`/`npx.ps1` shims are local scripts, and under the Windows client
  *    default (`Restricted`) `npm pkg get name` would fail before npm started.
  *    A policy set by Group Policy still wins over this switch. Why this is
- *    acceptable is in `docs/freebuff-sponsored-local-execution.md`, "The
+ *    acceptable is in `docs/fuckbuff-sponsored-local-execution.md`, "The
  *    Desktop half (COD-642, 2026-09-24)".
  *  - `-Command`, then the command as ONE argument.
  */

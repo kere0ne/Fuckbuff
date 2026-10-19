@@ -68,7 +68,7 @@ describe('ThinkTagStream — paired tags', () => {
   })
 })
 
-// CodebuffAI/freebuff#1155: an explicit open tag used to send the rest of the
+// CodebuffAI/fuckbuff#1155: an explicit open tag used to send the rest of the
 // step to the thinking box, so a model that wrote the tag as prose, or never
 // closed it, showed the user an empty or cut-short reply.
 describe('ThinkTagStream — explicit open that may not be a thought', () => {

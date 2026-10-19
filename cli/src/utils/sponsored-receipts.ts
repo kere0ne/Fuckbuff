@@ -3,7 +3,7 @@
  *
  * An in-place run edits the user's working copy directly, so the worktree that
  * used to be the write boundary is gone (the 2026-09-24 amendment in
- * `docs/freebuff-sponsored-local-execution.md`). What replaces it is a
+ * `docs/fuckbuff-sponsored-local-execution.md`). What replaces it is a
  * RECOVERY mechanism: every file the run's own tools write is snapshotted
  * before and after, and `/ads:undo` reverse-applies those snapshots.
  *
@@ -58,7 +58,7 @@ import { getConfigDir } from './config-dir'
 
 import type { SponsoredDiffFile } from '@codebuff/common/ads/sponsored-run-outcomes'
 
-/** Desktop's receipt cap (`freebuff-desktop/src/server/git/receipts.ts`). */
+/** Desktop's receipt cap (`fuckbuff-desktop/src/server/git/receipts.ts`). */
 export const SPONSORED_SNAPSHOT_MAX_BYTES = 5 * 1024 * 1024
 
 /** A file's contents at one moment, or null for "did not exist". */

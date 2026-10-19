@@ -1,22 +1,22 @@
 import { describe, test, expect } from 'bun:test'
 import {
-  FREEBUFF_PROVIDER_USAGE_MESSAGE,
-  FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
-  FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
-} from '@codebuff/common/constants/freebuff-errors'
+  FUCKBUFF_PROVIDER_USAGE_MESSAGE,
+  FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
+  FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
+} from '@codebuff/common/constants/fuckbuff-errors'
 
 import {
-  getFreebuffGateErrorKind,
-  getFreebuffRateLimitErrorMessage,
-  getFreebuffSupersededReason,
+  getFuckbuffGateErrorKind,
+  getFuckbuffRateLimitErrorMessage,
+  getFuckbuffSupersededReason,
   getFreeModeUnavailableErrorMessage,
   isOutOfCreditsError,
   isFreeModeUnavailableError,
   getCountryBlockFromFreeModeError,
   OUT_OF_CREDITS_MESSAGE,
   FREE_MODE_UNAVAILABLE_MESSAGE,
-  FREEBUFF_RATE_LIMIT_MESSAGE,
-  isFreebuffProviderUsageError,
+  FUCKBUFF_RATE_LIMIT_MESSAGE,
+  isFuckbuffProviderUsageError,
   createErrorMessage,
 } from '../error-handling'
 
@@ -96,7 +96,7 @@ describe('error-handling', () => {
           statusCode: 403,
           responseBody: JSON.stringify({
             error: 'free_mode_unavailable',
-            message: 'Freebuff cannot be used from VPN traffic.',
+            message: 'Fuckbuff cannot be used from VPN traffic.',
           }),
         }),
       ).toBe(true)
@@ -138,55 +138,55 @@ describe('error-handling', () => {
     })
   })
 
-  describe('getFreebuffRateLimitErrorMessage', () => {
+  describe('getFuckbuffRateLimitErrorMessage', () => {
     test('shows the per-turn spend breaker copy verbatim, not a rate-limit framing', () => {
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           type: 'error',
           statusCode: 429,
-          error: FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
-          message: FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
+          error: FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
+          message: FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
         }),
-      ).toBe(FREEBUFF_TURN_SPEND_LIMIT_MESSAGE)
+      ).toBe(FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE)
     })
 
     test('returns the generic message for untyped 429 errors', () => {
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           statusCode: 429,
           message: 'Too Many Requests',
         }),
-      ).toBe(FREEBUFF_RATE_LIMIT_MESSAGE)
+      ).toBe(FUCKBUFF_RATE_LIMIT_MESSAGE)
     })
 
     test('returns the generic message for thrown API errors with status 429', () => {
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           status: 429,
           message: 'Too Many Requests',
         }),
-      ).toBe(FREEBUFF_RATE_LIMIT_MESSAGE)
+      ).toBe(FUCKBUFF_RATE_LIMIT_MESSAGE)
     })
 
     test('returns the generic message for retry-wrapped untyped 429 errors', () => {
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           message: 'Failed after 4 attempts. Last error: Too Many Requests',
           lastError: {
             statusCode: 429,
             message: 'Too Many Requests',
           },
         }),
-      ).toBe(FREEBUFF_RATE_LIMIT_MESSAGE)
+      ).toBe(FUCKBUFF_RATE_LIMIT_MESSAGE)
     })
 
     test('returns null for non-429 status codes', () => {
-      expect(getFreebuffRateLimitErrorMessage({ statusCode: 402 })).toBe(null)
-      expect(getFreebuffRateLimitErrorMessage({ statusCode: 500 })).toBe(null)
+      expect(getFuckbuffRateLimitErrorMessage({ statusCode: 402 })).toBe(null)
+      expect(getFuckbuffRateLimitErrorMessage({ statusCode: 500 })).toBe(null)
     })
 
     test('returns null for string statusCode', () => {
-      expect(getFreebuffRateLimitErrorMessage({ statusCode: '429' })).toBe(
+      expect(getFuckbuffRateLimitErrorMessage({ statusCode: '429' })).toBe(
         null,
       )
     })
@@ -196,7 +196,7 @@ describe('error-handling', () => {
         'Free mode rate limit exceeded (1 minute limit). Try again in 30 seconds.'
 
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           statusCode: 429,
           error: 'free_mode_rate_limited',
           message,
@@ -209,7 +209,7 @@ describe('error-handling', () => {
         'Free mode rate limit exceeded (1 minute limit). Try again in 30 seconds.'
 
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           statusCode: 429,
           message: 'Too Many Requests',
           responseBody: JSON.stringify({
@@ -225,7 +225,7 @@ describe('error-handling', () => {
         'Free mode rate limit exceeded (1 minute limit). Try again in 30 seconds.'
 
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           message: 'Failed after 4 attempts. Last error: Too Many Requests',
           lastError: {
             statusCode: 429,
@@ -241,28 +241,28 @@ describe('error-handling', () => {
 
     test('falls back to the generic message when typed quota errors have no message', () => {
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           statusCode: 429,
           error: 'free_mode_rate_limited',
         }),
-      ).toBe(FREEBUFF_RATE_LIMIT_MESSAGE)
+      ).toBe(FUCKBUFF_RATE_LIMIT_MESSAGE)
     })
 
     test('appends detail from agent-run output objects for untyped 429s', () => {
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           type: 'error',
           statusCode: 429,
           message: 'Model is at capacity. Please try again later.',
         }),
       ).toBe(
-        `${FREEBUFF_RATE_LIMIT_MESSAGE} (Model is at capacity. Please try again later.)`,
+        `${FUCKBUFF_RATE_LIMIT_MESSAGE} (Model is at capacity. Please try again later.)`,
       )
     })
 
     test('appends detail from OpenAI-style nested provider error bodies', () => {
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           statusCode: 429,
           message: 'Too Many Requests',
           responseBody: JSON.stringify({
@@ -274,23 +274,23 @@ describe('error-handling', () => {
           }),
         }),
       ).toBe(
-        `${FREEBUFF_RATE_LIMIT_MESSAGE} (Model is at capacity. Please try again later.)`,
+        `${FUCKBUFF_RATE_LIMIT_MESSAGE} (Model is at capacity. Please try again later.)`,
       )
     })
 
     test('does not echo bare HTTP status text from output objects', () => {
       expect(
-        getFreebuffRateLimitErrorMessage({
+        getFuckbuffRateLimitErrorMessage({
           type: 'error',
           statusCode: 429,
           message: 'Too Many Requests',
         }),
-      ).toBe(FREEBUFF_RATE_LIMIT_MESSAGE)
+      ).toBe(FUCKBUFF_RATE_LIMIT_MESSAGE)
     })
   })
 
-  describe('isFreebuffProviderUsageError', () => {
-    test('recognizes Freebuff provider usage failures across upstream shapes', () => {
+  describe('isFuckbuffProviderUsageError', () => {
+    test('recognizes Fuckbuff provider usage failures across upstream shapes', () => {
       for (const error of [
         {
           statusCode: 402,
@@ -310,7 +310,7 @@ describe('error-handling', () => {
           }),
         },
       ]) {
-        expect(isFreebuffProviderUsageError(error)).toBe(true)
+        expect(isFuckbuffProviderUsageError(error)).toBe(true)
       }
     })
 
@@ -332,13 +332,13 @@ describe('error-handling', () => {
             'Out of credits. Please add credits at https://www.codebuff.com/usage.',
         },
       ]) {
-        expect(isFreebuffProviderUsageError(error)).toBe(false)
+        expect(isFuckbuffProviderUsageError(error)).toBe(false)
       }
     })
 
     test('does not rewrite unrelated failures', () => {
       expect(
-        isFreebuffProviderUsageError({
+        isFuckbuffProviderUsageError({
           statusCode: 500,
           message: 'Internal server error',
         }),
@@ -464,19 +464,19 @@ describe('error-handling', () => {
     })
   })
 
-  describe('FREEBUFF_RATE_LIMIT_MESSAGE', () => {
+  describe('FUCKBUFF_RATE_LIMIT_MESSAGE', () => {
     test('encourages retry without mentioning credits or payment', () => {
-      const message = FREEBUFF_RATE_LIMIT_MESSAGE.toLowerCase()
+      const message = FUCKBUFF_RATE_LIMIT_MESSAGE.toLowerCase()
       expect(message).toContain('try again')
       expect(message).not.toContain('credit')
       expect(message).not.toContain('pay')
     })
   })
 
-  describe('FREEBUFF_PROVIDER_USAGE_MESSAGE', () => {
+  describe('FUCKBUFF_PROVIDER_USAGE_MESSAGE', () => {
     test('owns the refill without blaming the user account', () => {
-      const message = FREEBUFF_PROVIDER_USAGE_MESSAGE.toLowerCase()
-      expect(message).toContain('freebuff ran out of provider usage')
+      const message = FUCKBUFF_PROVIDER_USAGE_MESSAGE.toLowerCase()
+      expect(message).toContain('fuckbuff ran out of provider usage')
       expect(message).toContain('needs a refill')
       expect(message).toContain('not your account')
       expect(message).not.toContain('add credits')
@@ -696,23 +696,23 @@ describe('error-handling', () => {
   })
 })
 
-describe('getFreebuffGateErrorKind', () => {
+describe('getFuckbuffGateErrorKind', () => {
   test('classifies a 410 model_unavailable refusal', () => {
     expect(
-      getFreebuffGateErrorKind({ error: 'model_unavailable', statusCode: 410 }),
+      getFuckbuffGateErrorKind({ error: 'model_unavailable', statusCode: 410 }),
     ).toBe('model_unavailable')
   })
 
   test('requires the code and its status to match', () => {
     expect(
-      getFreebuffGateErrorKind({ error: 'model_unavailable', statusCode: 409 }),
+      getFuckbuffGateErrorKind({ error: 'model_unavailable', statusCode: 409 }),
     ).toBe(null)
-    expect(getFreebuffGateErrorKind({ error: 'model_unavailable' })).toBe(null)
+    expect(getFuckbuffGateErrorKind({ error: 'model_unavailable' })).toBe(null)
   })
 
   test('leaves session_limit_reached to its own handler', () => {
     expect(
-      getFreebuffGateErrorKind({
+      getFuckbuffGateErrorKind({
         error: 'session_limit_reached',
         statusCode: 409,
       }),
@@ -720,11 +720,11 @@ describe('getFreebuffGateErrorKind', () => {
   })
 })
 
-describe('getFreebuffSupersededReason', () => {
+describe('getFuckbuffSupersededReason', () => {
   // The three messages the server sends with 409 session_superseded.
   test('a refunded start (chat/completions, beginDesktopStart refunded)', () => {
     expect(
-      getFreebuffSupersededReason(
+      getFuckbuffSupersededReason(
         'This model purchase was refunded. Start a new session to try again.',
       ),
     ).toBe('refunded_start')
@@ -732,7 +732,7 @@ describe('getFreebuffSupersededReason', () => {
 
   test('an hour that closed before the request (RefundAdmissionClosedError)', () => {
     expect(
-      getFreebuffSupersededReason(
+      getFuckbuffSupersededReason(
         'Your session ended before this request started. Send your message again to start a new one.',
       ),
     ).toBe('session_closed')
@@ -740,20 +740,20 @@ describe('getFreebuffSupersededReason', () => {
 
   test('a takeover, and any message naming neither, stays a takeover', () => {
     expect(
-      getFreebuffSupersededReason(
-        'Another instance of freebuff has taken over this session. Only one instance per account is allowed.',
+      getFuckbuffSupersededReason(
+        'Another instance of fuckbuff has taken over this session. Only one instance per account is allowed.',
       ),
     ).toBe('taken_over')
-    expect(getFreebuffSupersededReason(undefined)).toBe('taken_over')
+    expect(getFuckbuffSupersededReason(undefined)).toBe('taken_over')
   })
 })
 
 describe('model_at_capacity is not a session gate', () => {
   test('neither the 503 nor the in-band shape classifies as a gate code', () => {
     expect(
-      getFreebuffGateErrorKind({ error: 'model_at_capacity', statusCode: 503 }),
+      getFuckbuffGateErrorKind({ error: 'model_at_capacity', statusCode: 503 }),
     ).toBe(null)
-    expect(getFreebuffGateErrorKind({ error: 'model_at_capacity' })).toBe(null)
+    expect(getFuckbuffGateErrorKind({ error: 'model_at_capacity' })).toBe(null)
   })
 
   test('a 503 capacity refusal is not mistaken for a rate limit or provider billing', () => {
@@ -764,7 +764,7 @@ describe('model_at_capacity is not a session gate', () => {
       message:
         'Space Bunny is at capacity right now. Please try again in a few minutes or pick another model.',
     }
-    expect(getFreebuffRateLimitErrorMessage(output)).toBe(null)
-    expect(isFreebuffProviderUsageError(output)).toBe(false)
+    expect(getFuckbuffRateLimitErrorMessage(output)).toBe(null)
+    expect(isFuckbuffProviderUsageError(output)).toBe(false)
   })
 })

@@ -31,7 +31,7 @@ export function getAdUserAgent(platform: string = process.platform): string {
  * Deliberately a shape test rather than an allowlist: the question is only
  * "will the provider's device classifier recognise this", and every string it
  * recognises starts with the `Mozilla/` token. A native runtime UA
- * (`Bun/1.3.14`) and a product UA (`Freebuff-CLI/0.0.140`) both fail it, which
+ * (`Bun/1.3.14`) and a product UA (`Fuckbuff-CLI/0.0.140`) both fail it, which
  * is the point — they are the two ways we have actually leaked a non-browser
  * UA to Gravity.
  */

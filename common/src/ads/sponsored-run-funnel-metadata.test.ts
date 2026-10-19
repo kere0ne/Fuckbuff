@@ -120,7 +120,7 @@ describe('buildSponsoredRunFunnelMetadata', () => {
     expect('llm_called' in local).toBe(false)
   })
 
-  test('a Freebuff Web run is `cloud` on Linux, client `web`, with no Convex project id', () => {
+  test('a Fuckbuff Web run is `cloud` on Linux, client `web`, with no Convex project id', () => {
     const delivered = buildSponsoredRunFunnelMetadata({
       eventType: 'run_delivered',
       row: {
@@ -232,7 +232,7 @@ test('a session that never started is not claimed to have called a model', () =>
     row: {
       in_place_execution: true,
       diagnostic_reason:
-        'turn error: Could not start a Freebuff session for deepseek/deepseek-v4-flash; the turn recorded no file edits of its own',
+        'turn error: Could not start a Fuckbuff session for deepseek/deepseek-v4-flash; the turn recorded no file edits of its own',
     },
     fromState: 'running',
   })
@@ -242,7 +242,7 @@ test('a session that never started is not claimed to have called a model', () =>
 
 describe('sponsoredRunFailureCode', () => {
   const cases: Array<[string, string]> = [
-    ['accept-failed: Freebuff returned 500', 'accept_failed'],
+    ['accept-failed: Fuckbuff returned 500', 'accept_failed'],
     [
       'accept-identity-changed: the accepted advertiser differs',
       'accept_identity_changed',
@@ -251,7 +251,7 @@ describe('sponsoredRunFailureCode', () => {
       'containment-mismatch: this machine is on the floor',
       'containment_mismatch',
     ],
-    ['resume-declined: approved before Freebuff closed', 'resume_declined'],
+    ['resume-declined: approved before Fuckbuff closed', 'resume_declined'],
     ['stale-sweep: no report for 1440 minutes', 'timed_out'],
     ['app-quit: resumed at boot without a compute grant; x', 'app_quit'],
     ['interrupted: turn outcome `stopped`; HEAD', 'interrupted'],
@@ -268,11 +268,11 @@ describe('sponsoredRunFailureCode', () => {
     ['turn completed; the turn recorded no file edits of its own', 'no_edits'],
     ['turn completed; HEAD is still the base commit', 'no_commit'],
     [
-      'turn error: Could not start a Freebuff session; the turn recorded no file edits of its own',
+      'turn error: Could not start a Fuckbuff session; the turn recorded no file edits of its own',
       'turn_error',
     ],
     [
-      'turn error: Could not start a Freebuff session; HEAD moved',
+      'turn error: Could not start a Fuckbuff session; HEAD moved',
       'turn_error',
     ],
     ['something we never wrote', 'unclassified'],
@@ -514,7 +514,7 @@ describe('the execution surface the builder records', () => {
     { surface: 'desktop_macos' },
   ]
 
-  test('a Freebuff Web run in its Freestyle VM is recorded as cloud_linux on Linux', () => {
+  test('a Fuckbuff Web run in its Freestyle VM is recorded as cloud_linux on Linux', () => {
     const metadata = buildSponsoredRunFunnelMetadata({
       eventType: 'run_delivered',
       row: {
@@ -683,7 +683,7 @@ describe('every diagnostic authored on main is classified', () => {
       'turn error; the model never ran (no response, tool call or tool edit)',
       'turn_error',
     ],
-    ['accept-failed: Freebuff returned 500', 'accept_failed'],
+    ['accept-failed: Fuckbuff returned 500', 'accept_failed'],
     [
       'accept-identity-changed: the accepted advertiser differs',
       'accept_identity_changed',
@@ -692,7 +692,7 @@ describe('every diagnostic authored on main is classified', () => {
       'containment-mismatch: this machine is on the floor',
       'containment_mismatch',
     ],
-    ['resume-declined: approved before Freebuff closed', 'resume_declined'],
+    ['resume-declined: approved before Fuckbuff closed', 'resume_declined'],
     ['app-quit: resumed at boot without a compute grant', 'app_quit'],
     ['stale-sweep: no report for 1440 minutes', 'timed_out'],
     [

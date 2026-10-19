@@ -131,7 +131,7 @@ describe('folding a polled row into the transcript', () => {
     const next = applyPolledProposal(
       first,
       TARGET,
-      present(proposal({ state: 'committed', branch: 'freebuff/x' })),
+      present(proposal({ state: 'committed', branch: 'fuckbuff/x' })),
     )
     expect(next).not.toBe(first)
     expect(findProposalBlock(next)?.proposal.state).toBe('committed')
@@ -193,7 +193,7 @@ describe('folding a polled row into the transcript', () => {
       why_this: 'Updated reason',
       steps: [{ text: 'New step', state: 'done' }],
       thread_ref: 'thread-new',
-      branch: 'freebuff/new',
+      branch: 'fuckbuff/new',
       failure_reason: 'Updated failure',
     })
     const next = applyPolledProposal(before, TARGET, present(updated))

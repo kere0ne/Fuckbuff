@@ -17,7 +17,7 @@
  */
 
 /** The app's report of the user's choice. Absent means `unknown`. */
-export const AD_SIGNALS_CONSENT_HEADER = 'x-freebuff-ad-signals'
+export const AD_SIGNALS_CONSENT_HEADER = 'x-fuckbuff-ad-signals'
 export const AD_SIGNALS_CONSENT_VALUES = [
   'granted',
   'denied',

@@ -1,9 +1,9 @@
 import { z } from 'zod/v4'
 
 /**
- * Claude Code and Codex running inside a Cloud chat's VM (docs/freebuff-desktop-cloud.md,
+ * Claude Code and Codex running inside a Cloud chat's VM (docs/fuckbuff-desktop-cloud.md,
  * "Claude Code and Codex in Cloud"). A run request names one with `agent`; without it the
- * run is the Freebuff agent, as before.
+ * run is the Fuckbuff agent, as before.
  *
  * The CLI runs in the VM, but no credential does: it calls the Cloud API's agent proxy with
  * a token that is valid only while its run is running, and the proxy adds the account's own
@@ -21,7 +21,7 @@ export const CLOUD_CLI_AGENT_LABELS: Record<CloudCliAgent, string> = {
 
 export type CloudCliModel = { id: string; label: string; tagline: string }
 
-/** Same ids as Desktop's local Claude Code picker (freebuff-desktop/src/shared/models.ts). */
+/** Same ids as Desktop's local Claude Code picker (fuckbuff-desktop/src/shared/models.ts). */
 export const CLOUD_CLAUDE_MODELS: readonly CloudCliModel[] = [
   {
     id: 'claude-opus-5-5',
@@ -73,7 +73,7 @@ export function isCloudCliModel(agent: CloudCliAgent, model: string): boolean {
 }
 
 /**
- * A picker value for a CLI agent's model, kept apart from Freebuff catalog ids and
+ * A picker value for a CLI agent's model, kept apart from Fuckbuff catalog ids and
  * `byok:` provider ids: `agent:<agent>:<model>`.
  */
 export function cloudCliModelValue(agent: CloudCliAgent, model: string) {
@@ -129,7 +129,7 @@ export function isOpenAiApiKey(value: string): boolean {
 }
 
 /**
- * A Freebuff connection's current credential, for Desktop's local runs of the
+ * A Fuckbuff connection's current credential, for Desktop's local runs of the
  * same agent (`POST /api/v1/cloud/agent-credentials/:agent/access`). One login,
  * owned and refreshed by the server, runs both Cloud and this computer; the
  * local CLI's own login is the fallback when there is no connection. Never

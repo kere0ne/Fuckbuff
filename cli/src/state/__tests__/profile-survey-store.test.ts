@@ -3,7 +3,7 @@ import { afterEach, describe, expect, test } from 'bun:test'
 import {
   profileSurveyQuestion,
   profileSurveyVersion,
-} from '@codebuff/common/constants/freebuff-profile-survey'
+} from '@codebuff/common/constants/fuckbuff-profile-survey'
 
 import { createFakeProfileSurveyClient } from '../../utils/profile-survey-api'
 import {
@@ -22,7 +22,7 @@ import type {
   ProfileSurveyQuestion,
   ProfileSurveyQuestionId,
   ProfileSurveyStateResponse,
-} from '@codebuff/common/constants/freebuff-profile-survey'
+} from '@codebuff/common/constants/fuckbuff-profile-survey'
 import type { CliProfileSurveyRequest } from '../../utils/profile-survey-api'
 
 /** Version 1's ten questions: the CLI is version-agnostic, and these pin its copy. */

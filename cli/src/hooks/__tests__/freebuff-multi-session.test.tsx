@@ -1,14 +1,14 @@
-import { freebucksFixture } from '@codebuff/common/testing/freebuff'
+import { freebucksFixture } from '@codebuff/common/testing/fuckbuff'
 import {
-  useFreebuffChatStore,
-  selectFreebuffChatModel,
-  requestFreebuffChatAdmission,
-  freebuffChatNeedsAdmission,
-} from '../../state/freebuff-chat-store'
+  useFuckbuffChatStore,
+  selectFuckbuffChatModel,
+  requestFuckbuffChatAdmission,
+  fuckbuffChatNeedsAdmission,
+} from '../../state/fuckbuff-chat-store'
 import {
-  beginFreebuffChatAdmission,
-  useFreebuffChatAdmission,
-} from '../use-freebuff-chat-admission'
+  beginFuckbuffChatAdmission,
+  useFuckbuffChatAdmission,
+} from '../use-fuckbuff-chat-admission'
 import { registerActiveRunStopHandler } from '../../utils/active-run'
 import { afterEach, beforeEach, expect, spyOn, test } from 'bun:test'
 import {
@@ -24,24 +24,24 @@ import { createTestRenderer } from '@opentui/core/testing'
 import { createRoot, flushSync } from '@opentui/react'
 import React from 'react'
 import {
-  FREEBUFF_MIMO_V25_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+} from '@codebuff/common/constants/fuckbuff-models'
 import * as auth from '../../utils/auth'
-import { useFreebuffSessionStore } from '../../state/freebuff-session-store'
-import { useFreebuffModelStore } from '../../state/freebuff-model-store'
-import { freebuffSessionMetadata } from '../../utils/freebuff-session-identity'
-import { consumeFreebuffSessionRelaunch } from '../../utils/freebuff-session-relaunch'
-import * as cli from '../use-freebuff-session'
+import { useFuckbuffSessionStore } from '../../state/fuckbuff-session-store'
+import { useFuckbuffModelStore } from '../../state/fuckbuff-model-store'
+import { fuckbuffSessionMetadata } from '../../utils/fuckbuff-session-identity'
+import { consumeFuckbuffSessionRelaunch } from '../../utils/fuckbuff-session-relaunch'
+import * as cli from '../use-fuckbuff-session'
 
-// IS_FREEBUFF is a build-time constant. Run the controller in its own Freebuff
+// IS_FUCKBUFF is a build-time constant. Run the controller in its own Fuckbuff
 // process instead of mocking an already-imported constant in other CLI suites.
 if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
-  test('multi-instance CLI lifecycle (isolated Freebuff build)', async () => {
+  test('multi-instance CLI lifecycle (isolated Fuckbuff build)', async () => {
     const child = Bun.spawn([process.execPath, 'test', import.meta.path], {
       env: {
         ...process.env,
-        FREEBUFF_MODE: 'true',
+        FUCKBUFF_MODE: 'true',
         CLI_MULTI_SESSION_TEST: '1',
       },
       stdout: 'pipe',
@@ -91,7 +91,7 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
   }
 
   beforeEach(() => {
-    useFreebuffChatStore.setState({
+    useFuckbuffChatStore.setState({
       admission: null,
       nextModel: null,
       pickerOpen: false,
@@ -111,10 +111,10 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
       token: 'fixture',
       source: 'environment',
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_MIMO_V25_MODEL_ID)
-    useFreebuffSessionStore.getState().setSession(null)
+      .setSelectedModel(FUCKBUFF_MIMO_V25_MODEL_ID)
+    useFuckbuffSessionStore.getState().setSession(null)
     fetchSpy = spyOn(globalThis, 'fetch').mockImplementation((async (
       input: RequestInfo | URL,
       init?: RequestInit,
@@ -129,8 +129,8 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
       requests.push({ method, headers, path })
       // Exercise the real hook and transport against an independently keyed
       // session service. A global GET or DELETE would affect the sibling row.
-      expect(headers.get('x-freebuff-multi-session')).toBe('1')
-      const id = headers.get('x-freebuff-instance-id')!
+      expect(headers.get('x-fuckbuff-multi-session')).toBe('1')
+      const id = headers.get('x-fuckbuff-instance-id')!
       expect(id).toStartWith('cli:')
       if (method === 'GET')
         return Response.json(
@@ -140,7 +140,7 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
             freebucks: meter,
           },
         )
-      expect(headers.get('x-freebuff-desktop-attempt-id')).toBe(id.slice(4))
+      expect(headers.get('x-fuckbuff-desktop-attempt-id')).toBe(id.slice(4))
       if (method === 'DELETE') {
         expect(path).toEndWith('/session/attempt')
         rows.delete(id)
@@ -152,10 +152,10 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
       }
       if (rejectAdmission)
         return Response.json({ error: 'test refusal' }, { status: 403 })
-      const model = headers.get('x-freebuff-model')!
+      const model = headers.get('x-fuckbuff-model')!
       const holder = [...rows.keys()].find((key) => key !== id)
       if (!rows.has(id) && rows.size >= capacity && holder) {
-        if (headers.get('x-freebuff-takeover-instance-id') !== holder)
+        if (headers.get('x-fuckbuff-takeover-instance-id') !== holder)
           return Response.json(
             {
               status: 'purchase_capacity',
@@ -188,14 +188,14 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
     fetchSpy.mockRestore()
     authSpy.mockRestore()
     configSpy.mockRestore()
-    useFreebuffSessionStore.getState().setSession(null)
-    useFreebuffSessionStore.getState().setFailure(null)
+    useFuckbuffSessionStore.getState().setSession(null)
+    useFuckbuffSessionStore.getState().setFailure(null)
     rmSync(configDir, { recursive: true, force: true })
   })
 
   function active(
     instanceId: string,
-    model: string = FREEBUFF_MIMO_V25_MODEL_ID,
+    model: string = FUCKBUFF_MIMO_V25_MODEL_ID,
   ): Active {
     return {
       status: 'active',
@@ -213,8 +213,8 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
     const setup = await createTestRenderer({ width: 30, height: 2 })
     const root = createRoot(setup.renderer)
     function Controller() {
-      cli.useFreebuffSession()
-      useFreebuffChatAdmission(true)
+      cli.useFuckbuffSession()
+      useFuckbuffChatAdmission(true)
       return null
     }
     close = () => {
@@ -224,7 +224,7 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
     flushSync(() => root.render(<Controller />))
     await until(
       () =>
-        useFreebuffSessionStore.getState().session?.status === expectedStatus,
+        useFuckbuffSessionStore.getState().session?.status === expectedStatus,
     )
   }
 
@@ -232,66 +232,66 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
     rows.set('desktop-sibling', active('desktop-sibling'))
     await mount()
     expect(requests.every((r) => r.method === 'GET')).toBe(true)
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    const first = cli.getFreebuffInstanceId()!
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    const first = cli.getFuckbuffInstanceId()!
     expect(rows.size).toBe(2)
-    expect(freebuffSessionMetadata(first)).toEqual({
-      freebuff_instance_id: first,
-      freebuff_multi_session: '1',
+    expect(fuckbuffSessionMetadata(first)).toEqual({
+      fuckbuff_instance_id: first,
+      fuckbuff_multi_session: '1',
       surface: 'cli',
     })
-    await cli.startFreebuffSession(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
-    const second = cli.getFreebuffInstanceId()!
+    await cli.startFuckbuffSession(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    const second = cli.getFuckbuffInstanceId()!
     expect(second).not.toBe(first)
     expect(rows.has(first)).toBe(false)
-    expect(rows.get(second)?.model).toBe(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
-    await cli.returnToFreebuffLanding()
+    expect(rows.get(second)?.model).toBe(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    await cli.returnToFuckbuffLanding()
     expect([...rows.keys()]).toEqual(['desktop-sibling'])
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    expect(cli.getFreebuffInstanceId()).not.toBe(second)
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    expect(cli.getFuckbuffInstanceId()).not.toBe(second)
     expect(purchases).toBe(3)
   })
 
   test('choosing a model never buys a session; the first send admits once', async () => {
     await mount()
-    selectFreebuffChatModel(FREEBUFF_MIMO_V25_MODEL_ID)
+    selectFuckbuffChatModel(FUCKBUFF_MIMO_V25_MODEL_ID)
     expect(purchases).toBe(0)
     expect(requests.every((r) => r.method === 'GET')).toBe(true)
-    expect(freebuffChatNeedsAdmission()).toBe(true)
-    requestFreebuffChatAdmission()
-    requestFreebuffChatAdmission()
+    expect(fuckbuffChatNeedsAdmission()).toBe(true)
+    requestFuckbuffChatAdmission()
+    requestFuckbuffChatAdmission()
     await until(
       () =>
-        purchases === 1 && useFreebuffChatStore.getState().admission === null,
+        purchases === 1 && useFuckbuffChatStore.getState().admission === null,
     )
-    expect(freebuffChatNeedsAdmission()).toBe(false)
+    expect(fuckbuffChatNeedsAdmission()).toBe(false)
     expect(requests.filter((r) => r.method === 'POST')).toHaveLength(1)
   })
 
   test('switching models waits for send and confirmation and preserves the queued prompt', async () => {
     await mount()
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
     let queueCleared = false
     const unregister = registerActiveRunStopHandler(() => {
       queueCleared = true
     })
     try {
-      selectFreebuffChatModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+      selectFuckbuffChatModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
       expect(purchases).toBe(1)
-      expect(cli.getFreebuffInstanceId()).toBeDefined()
-      requestFreebuffChatAdmission()
+      expect(cli.getFuckbuffInstanceId()).toBeDefined()
+      requestFuckbuffChatAdmission()
       await until(
-        () => useFreebuffChatStore.getState().admission?.phase === 'confirm',
+        () => useFuckbuffChatStore.getState().admission?.phase === 'confirm',
       )
       expect(purchases).toBe(1)
-      await beginFreebuffChatAdmission(
-        useFreebuffChatStore.getState().admission!,
+      await beginFuckbuffChatAdmission(
+        useFuckbuffChatStore.getState().admission!,
       )
-      await until(() => useFreebuffChatStore.getState().admission === null)
+      await until(() => useFuckbuffChatStore.getState().admission === null)
       expect(purchases).toBe(2)
       expect(queueCleared).toBe(false)
       expect(rows.size).toBe(1)
-      expect(freebuffChatNeedsAdmission()).toBe(false)
+      expect(fuckbuffChatNeedsAdmission()).toBe(false)
     } finally {
       unregister()
     }
@@ -299,66 +299,66 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
 
   test('wallet consent is asked on send before the admission POST', async () => {
     meter = {
-      ...freebucksFixture(0, { [FREEBUFF_MIMO_V25_MODEL_ID]: 5 }),
+      ...freebucksFixture(0, { [FUCKBUFF_MIMO_V25_MODEL_ID]: 5 }),
       balance: 10,
       wallet: { balance: 10, monthlyBonus: 0 },
     }
     await mount()
-    selectFreebuffChatModel(FREEBUFF_MIMO_V25_MODEL_ID)
+    selectFuckbuffChatModel(FUCKBUFF_MIMO_V25_MODEL_ID)
     expect(purchases).toBe(0)
-    requestFreebuffChatAdmission()
+    requestFuckbuffChatAdmission()
     await until(
-      () => useFreebuffChatStore.getState().admission?.phase === 'confirm',
+      () => useFuckbuffChatStore.getState().admission?.phase === 'confirm',
     )
     expect(purchases).toBe(0)
-    expect(useFreebuffChatStore.getState().admission?.message).toContain(
+    expect(useFuckbuffChatStore.getState().admission?.message).toContain(
       '1 hour from your wallet',
     )
-    await beginFreebuffChatAdmission(useFreebuffChatStore.getState().admission!)
-    await until(() => useFreebuffChatStore.getState().admission === null)
+    await beginFuckbuffChatAdmission(useFuckbuffChatStore.getState().admission!)
+    await until(() => useFuckbuffChatStore.getState().admission === null)
     expect(purchases).toBe(1)
     expect(
       requests
         .find((r) => r.method === 'POST')
-        ?.headers.get('x-freebuff-wallet-spend-limit'),
+        ?.headers.get('x-fuckbuff-wallet-spend-limit'),
     ).toBe('session')
   })
 
   test('a lost model-switch reply can cancel the new claim without orphaning a purchase', async () => {
     await mount()
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    selectFreebuffChatModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
-    requestFreebuffChatAdmission()
-    await until(() => useFreebuffChatStore.getState().admission?.phase === 'confirm')
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    selectFuckbuffChatModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    requestFuckbuffChatAdmission()
+    await until(() => useFuckbuffChatStore.getState().admission?.phase === 'confirm')
     losePostResponse = true
-    await beginFreebuffChatAdmission(useFreebuffChatStore.getState().admission!)
-    await until(() => useFreebuffChatStore.getState().admission?.phase === 'failed')
+    await beginFuckbuffChatAdmission(useFuckbuffChatStore.getState().admission!)
+    await until(() => useFuckbuffChatStore.getState().admission?.phase === 'failed')
     expect(rows.size).toBe(1)
-    expect(cli.getFreebuffInstanceId()).toBeUndefined()
-    await cli.returnToFreebuffLanding({ preserveQueue: true })
+    expect(cli.getFuckbuffInstanceId()).toBeUndefined()
+    await cli.returnToFuckbuffLanding({ preserveQueue: true })
     expect(rows.size).toBe(0)
   })
 
   test('first send refreshes an idle balance before deciding it cannot afford a session', async () => {
-    meter = freebucksFixture(0, { [FREEBUFF_MIMO_V25_MODEL_ID]: 5 })
+    meter = freebucksFixture(0, { [FUCKBUFF_MIMO_V25_MODEL_ID]: 5 })
     await mount()
-    meter = freebucksFixture(25, { [FREEBUFF_MIMO_V25_MODEL_ID]: 5 })
-    requestFreebuffChatAdmission()
-    await until(() => purchases === 1 && useFreebuffChatStore.getState().admission === null)
+    meter = freebucksFixture(25, { [FUCKBUFF_MIMO_V25_MODEL_ID]: 5 })
+    requestFuckbuffChatAdmission()
+    await until(() => purchases === 1 && useFuckbuffChatStore.getState().admission === null)
     expect(purchases).toBe(1)
   })
 
   test('failed admission stays held until the user retries', async () => {
     await mount()
     rejectAdmission = true
-    requestFreebuffChatAdmission()
+    requestFuckbuffChatAdmission()
     await until(
-      () => useFreebuffChatStore.getState().admission?.phase === 'failed',
+      () => useFuckbuffChatStore.getState().admission?.phase === 'failed',
     )
     expect(purchases).toBe(0)
     rejectAdmission = false
-    requestFreebuffChatAdmission()
-    await until(() => useFreebuffChatStore.getState().admission === null)
+    requestFuckbuffChatAdmission()
+    await until(() => useFuckbuffChatStore.getState().admission === null)
     expect(purchases).toBe(1)
   })
 
@@ -368,27 +368,27 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
     try {
       rows.set('desktop-sibling', active('desktop-sibling'))
       await mount()
-      await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-      const original = cli.getFreebuffInstanceId()!
-      useFreebuffSessionStore.getState().keepSlotForRelaunch()
-      await useFreebuffSessionStore.getState().releaseSlot()
+      await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+      const original = cli.getFuckbuffInstanceId()!
+      useFuckbuffSessionStore.getState().keepSlotForRelaunch()
+      await useFuckbuffSessionStore.getState().releaseSlot()
       close!()
       close = undefined
       expect(rows.has(original)).toBe(true)
       expect(requests.filter((r) => r.method === 'DELETE')).toHaveLength(0)
 
       process.env.CODEBUFF_LAUNCHER_PID = '54321'
-      expect(consumeFreebuffSessionRelaunch('fixture')).toBeUndefined()
+      expect(consumeFuckbuffSessionRelaunch('fixture')).toBeUndefined()
       process.env.CODEBUFF_LAUNCHER_PID = '12345'
-      useFreebuffSessionStore.getState().setSession(null)
-      useFreebuffSessionStore.setState({ slotKeptForRelaunch: false })
+      useFuckbuffSessionStore.getState().setSession(null)
+      useFuckbuffSessionStore.setState({ slotKeptForRelaunch: false })
       await mount('active')
-      expect(cli.getFreebuffInstanceId()).toBe(original)
+      expect(cli.getFuckbuffInstanceId()).toBe(original)
       expect(purchases).toBe(1)
       expect(rows.has('desktop-sibling')).toBe(true)
-      expect(consumeFreebuffSessionRelaunch('fixture')).toBeUndefined()
+      expect(consumeFuckbuffSessionRelaunch('fixture')).toBeUndefined()
     } finally {
-      useFreebuffSessionStore.setState({ slotKeptForRelaunch: false })
+      useFuckbuffSessionStore.setState({ slotKeptForRelaunch: false })
       if (previousPid === undefined) delete process.env.CODEBUFF_LAUNCHER_PID
       else process.env.CODEBUFF_LAUNCHER_PID = previousPid
     }
@@ -401,9 +401,9 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
   test('a relaunch after a crash resumes the unexpired hour instead of buying another', async () => {
     rows.set('desktop-sibling', active('desktop-sibling'))
     await mount()
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    const original = cli.getFreebuffInstanceId()!
-    const ownRecord = join(configDir, `freebuff-live-${process.pid}.json`)
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    const original = cli.getFuckbuffInstanceId()!
+    const ownRecord = join(configDir, `fuckbuff-live-${process.pid}.json`)
     await until(() => existsSync(ownRecord))
     expect(JSON.parse(readFileSync(ownRecord, 'utf8')).instanceId).toBe(
       original,
@@ -413,67 +413,67 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
     const deadPid = Bun.spawnSync(['true']).pid
     const record = JSON.parse(readFileSync(ownRecord, 'utf8'))
     writeFileSync(
-      join(configDir, `freebuff-live-${deadPid}.json`),
+      join(configDir, `fuckbuff-live-${deadPid}.json`),
       JSON.stringify({ ...record, ownerPid: deadPid }),
     )
     rmSync(ownRecord)
-    useFreebuffSessionStore.setState({ slotKeptForRelaunch: true })
+    useFuckbuffSessionStore.setState({ slotKeptForRelaunch: true })
     close!()
     close = undefined
     expect(requests.filter((r) => r.method === 'DELETE')).toHaveLength(0)
 
     try {
-      useFreebuffSessionStore.getState().setSession(null)
-      useFreebuffSessionStore.setState({ slotKeptForRelaunch: false })
+      useFuckbuffSessionStore.getState().setSession(null)
+      useFuckbuffSessionStore.setState({ slotKeptForRelaunch: false })
       await mount('active')
-      expect(cli.getFreebuffInstanceId()).toBe(original)
+      expect(cli.getFuckbuffInstanceId()).toBe(original)
       expect(purchases).toBe(1)
       expect(rows.has('desktop-sibling')).toBe(true)
       // Resumed exactly once: the dead record is gone, this process holds it now.
-      expect(existsSync(join(configDir, `freebuff-live-${deadPid}.json`))).toBe(
+      expect(existsSync(join(configDir, `fuckbuff-live-${deadPid}.json`))).toBe(
         false,
       )
       await until(() => existsSync(ownRecord))
     } finally {
-      useFreebuffSessionStore.setState({ slotKeptForRelaunch: false })
+      useFuckbuffSessionStore.setState({ slotKeptForRelaunch: false })
     }
   })
 
   test('an explicit end leaves nothing for a later launch to resume', async () => {
     await mount()
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    const ownRecord = join(configDir, `freebuff-live-${process.pid}.json`)
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    const ownRecord = join(configDir, `fuckbuff-live-${process.pid}.json`)
     await until(() => existsSync(ownRecord))
-    await cli.returnToFreebuffLanding()
+    await cli.returnToFuckbuffLanding()
     expect(existsSync(ownRecord)).toBe(false)
   })
 
   test('an ambiguous POST retries the same purchase identity', async () => {
     await mount()
     losePostResponse = true
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    expect(useFreebuffSessionStore.getState().failure?.outcomeUnknown).toBe(
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    expect(useFuckbuffSessionStore.getState().failure?.outcomeUnknown).toBe(
       true,
     )
     const firstId = [...rows.keys()][0]
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    expect(cli.getFreebuffInstanceId()).toBe(firstId)
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    expect(cli.getFuckbuffInstanceId()).toBe(firstId)
     expect(purchases).toBe(1)
   })
 
   test('changing models after a lost POST ends that exact attempt before purchasing', async () => {
     await mount()
     losePostResponse = true
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
     const firstId = [...rows.keys()][0]!
-    await cli.startFreebuffSession(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    await cli.startFuckbuffSession(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
     expect(rows.has(firstId)).toBe(false)
     expect(rows.size).toBe(1)
-    expect(cli.getFreebuffInstanceId()).not.toBe(firstId)
+    expect(cli.getFuckbuffInstanceId()).not.toBe(firstId)
     expect(
       requests
         .filter((r) => r.method === 'DELETE')[0]
-        ?.headers.get('x-freebuff-instance-id'),
+        ?.headers.get('x-fuckbuff-instance-id'),
     ).toBe(firstId)
   })
 
@@ -482,31 +482,31 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
     capacity = 1
     rows.set('desktop-sibling', active('desktop-sibling'))
     await mount()
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    expect(useFreebuffSessionStore.getState().session).toMatchObject({
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    expect(useFuckbuffSessionStore.getState().session).toMatchObject({
       status: 'takeover_prompt',
       currentInstanceId: 'desktop-sibling',
     })
     expect(purchases).toBe(0)
     expect(rows.has('desktop-sibling')).toBe(true)
-    await cli.takeOverFreebuffSession()
-    expect(useFreebuffSessionStore.getState().session?.status).toBe('active')
+    await cli.takeOverFuckbuffSession()
+    expect(useFuckbuffSessionStore.getState().session?.status).toBe('active')
     expect(rows.has('desktop-sibling')).toBe(false)
     expect(
-      requests.at(-1)?.headers.get('x-freebuff-takeover-instance-id'),
+      requests.at(-1)?.headers.get('x-fuckbuff-takeover-instance-id'),
     ).toBe('desktop-sibling')
   })
 
   test('failed end keeps its identity for retry and cannot close a new purchase', async () => {
     await mount()
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    const first = cli.getFreebuffInstanceId()!
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    const first = cli.getFuckbuffInstanceId()!
     loseDeleteResponse = true
-    await expect(cli.returnToFreebuffLanding()).rejects.toThrow('response lost')
-    expect(cli.getFreebuffInstanceId()).toBe(first)
-    await cli.returnToFreebuffLanding()
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    expect(cli.getFreebuffInstanceId()).not.toBe(first)
+    await expect(cli.returnToFuckbuffLanding()).rejects.toThrow('response lost')
+    expect(cli.getFuckbuffInstanceId()).toBe(first)
+    await cli.returnToFuckbuffLanding()
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    expect(cli.getFuckbuffInstanceId()).not.toBe(first)
     expect(rows.size).toBe(1)
   })
 
@@ -514,7 +514,7 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
     rows.set('desktop-sibling', active('desktop-sibling'))
     await mount()
     losePostResponse = true
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
     close!()
     close = undefined
     await until(() => rows.size === 1)
@@ -524,21 +524,21 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
   test('clean exit cancels an unacknowledged purchase before the hook unmounts', async () => {
     await mount()
     losePostResponse = true
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
     expect(rows.size).toBe(1)
-    await useFreebuffSessionStore.getState().releaseSlot()
+    await useFuckbuffSessionStore.getState().releaseSlot()
     expect(rows.size).toBe(0)
-    expect(useFreebuffSessionStore.getState().pendingAdmission).toBeNull()
+    expect(useFuckbuffSessionStore.getState().pendingAdmission).toBeNull()
   })
 
   test('a missing/expired session rejoins on a fresh claim after retiring the old attempt', async () => {
     await mount()
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    const first = cli.getFreebuffInstanceId()!
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    const first = cli.getFuckbuffInstanceId()!
     rows.delete(first)
-    cli.markFreebuffSessionEnded()
-    await cli.refreshFreebuffSession()
-    expect(cli.getFreebuffInstanceId()).not.toBe(first)
+    cli.markFuckbuffSessionEnded()
+    await cli.refreshFuckbuffSession()
+    expect(cli.getFuckbuffInstanceId()).not.toBe(first)
     expect(rows.size).toBe(1)
     expect(purchases).toBe(2)
   })
@@ -550,19 +550,19 @@ if (process.env.CLI_MULTI_SESSION_TEST !== '1') {
   // every retry failing the same way until the CLI was restarted.
   test('the send after a session ended mid-run is admitted, not refused', async () => {
     await mount()
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    const first = cli.getFreebuffInstanceId()!
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    const first = cli.getFuckbuffInstanceId()!
     rows.delete(first)
-    cli.markFreebuffSessionEnded()
-    expect(freebuffChatNeedsAdmission()).toBe(true)
-    requestFreebuffChatAdmission()
+    cli.markFuckbuffSessionEnded()
+    expect(fuckbuffChatNeedsAdmission()).toBe(true)
+    requestFuckbuffChatAdmission()
     await until(() => {
-      const admission = useFreebuffChatStore.getState().admission
+      const admission = useFuckbuffChatStore.getState().admission
       return admission === null || admission.phase === 'failed'
     })
-    expect(useFreebuffChatStore.getState().admission).toBeNull()
-    expect(useFreebuffSessionStore.getState().session?.status).toBe('active')
-    expect(freebuffChatNeedsAdmission()).toBe(false)
+    expect(useFuckbuffChatStore.getState().admission).toBeNull()
+    expect(useFuckbuffSessionStore.getState().session?.status).toBe('active')
+    expect(fuckbuffChatNeedsAdmission()).toBe(false)
     expect(rows.size).toBe(1)
     expect(purchases).toBe(2)
   })

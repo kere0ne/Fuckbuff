@@ -18,7 +18,7 @@ import type { CustomToolDefinitions } from '@codebuff/common/util/file'
  * tools/list -> stored definition -> schema served to the model -> argument
  * parsing -> tools/call. The fixture mirrors the Roblox Studio MCP server.
  *
- * The user-visible failure (Discord #help, 2026-10-01, Freebuff CLI 0.1.2;
+ * The user-visible failure (Discord #help, 2026-10-01, Fuckbuff CLI 0.1.2;
  * public #912 / #1306 for other servers): the zero-argument
  * `list_roblox_studios` worked, every other tool failed with
  * "studio_id: expected string, received undefined", because the model was

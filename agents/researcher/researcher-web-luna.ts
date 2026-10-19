@@ -1,4 +1,4 @@
-import { FREEBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import researcherWeb from './researcher-web'
 
@@ -17,13 +17,13 @@ When an answer depends on current or external information that needs more than o
 
 /**
  * researcher-web on GPT-6 Luna: the web researcher Legacy Chat ran, now also
- * spawned by the Freebuff Desktop and Web/Cloud base3 roots. Same id, prompts
+ * spawned by the Fuckbuff Desktop and Web/Cloud base3 roots. Same id, prompts
  * and step cap as the shared definition; only the model differs.
  *
  * A separate binding rather than a change to researcher-web.ts, because the CLI
  * and Codebuff's paid roots spawn that file too and keep Gemini Flash Lite.
  * Free mode admits Luna for this id as helper traffic in any session
- * (FREEBUFF_LUNA_HELPER_AGENT_IDS in common/src/constants/free-agents.ts).
+ * (FUCKBUFF_LUNA_HELPER_AGENT_IDS in common/src/constants/free-agents.ts).
  *
  * Medium effort because, unset, the server pins Luna's catalog `high`, several
  * times slower per research call, and `low` finds less.
@@ -31,7 +31,7 @@ When an answer depends on current or external information that needs more than o
 const definition: SecretAgentDefinition = {
   ...researcherWeb,
   id: WEB_RESEARCHER_AGENT_ID,
-  model: FREEBUFF_GPT_6_LUNA_MODEL_ID,
+  model: FUCKBUFF_GPT_6_LUNA_MODEL_ID,
   reasoningOptions: { enabled: true, effort: 'medium' },
 }
 

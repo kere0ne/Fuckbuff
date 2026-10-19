@@ -13,14 +13,14 @@ import { createTestRenderer } from '@opentui/core/testing'
 import { createRoot, flushSync } from '@opentui/react'
 import React from 'react'
 import {
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-  FREEBUFF_MIMO_V25_MODEL_ID,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+} from '@codebuff/common/constants/fuckbuff-models'
 import * as auth from '../../utils/auth'
-import { useFreebuffSessionStore } from '../../state/freebuff-session-store'
-import { useFreebuffModelStore } from '../../state/freebuff-model-store'
-import * as cli from '../use-freebuff-session'
+import { useFuckbuffSessionStore } from '../../state/fuckbuff-session-store'
+import { useFuckbuffModelStore } from '../../state/fuckbuff-model-store'
+import * as cli from '../use-fuckbuff-session'
 
 // Prod, 2026-09-26 06:26-06:28Z: CLI 0.0.196 (legacy single-session protocol)
 // admitted GLM 5.3 Flash, an old npm launcher SIGTERMed it for an update, the
@@ -29,13 +29,13 @@ import * as cli from '../use-freebuff-session'
 // showed the picker and sold the same model again. These tests drive the real
 // hook against a server that implements both protocols.
 //
-// IS_FREEBUFF is a build-time constant: run in an isolated Freebuff process.
+// IS_FUCKBUFF is a build-time constant: run in an isolated Fuckbuff process.
 if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
-  test('legacy-hour adoption after a cross-protocol update restart (isolated Freebuff build)', async () => {
+  test('legacy-hour adoption after a cross-protocol update restart (isolated Fuckbuff build)', async () => {
     const child = Bun.spawn([process.execPath, 'test', import.meta.path], {
       env: {
         ...process.env,
-        FREEBUFF_MODE: 'true',
+        FUCKBUFF_MODE: 'true',
         CLI_LEGACY_RELAUNCH_TEST: '1',
       },
       stdout: 'pipe',
@@ -68,7 +68,7 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
     token: string
   }
 
-  const OWNER_FILE = 'freebuff-instance-owner.json'
+  const OWNER_FILE = 'fuckbuff-instance-owner.json'
   let close: (() => void) | undefined
   let fetchSpy: ReturnType<typeof spyOn>
   let authSpy: ReturnType<typeof spyOn>
@@ -125,11 +125,11 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
       source: 'environment',
     })
     // The user's saved preference differs from the model they paid for.
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
-    useFreebuffSessionStore.getState().setSession(null)
-    unsubscribe = useFreebuffSessionStore.subscribe((state) => {
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    useFuckbuffSessionStore.getState().setSession(null)
+    unsubscribe = useFuckbuffSessionStore.subscribe((state) => {
       if (state.session) statuses.push(state.session.status)
     })
     fetchSpy = spyOn(globalThis, 'fetch').mockImplementation((async (
@@ -139,10 +139,10 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
       const headers = new Headers(init?.headers)
       const method = init?.method ?? 'GET'
       const token = headers.get('authorization')!.replace('Bearer ', '')
-      const multi = headers.get('x-freebuff-multi-session') === '1'
-      const instanceId = headers.get('x-freebuff-instance-id')
+      const multi = headers.get('x-fuckbuff-multi-session') === '1'
+      const instanceId = headers.get('x-fuckbuff-instance-id')
       requests.push({ method, multi, instanceId, token })
-      const model = headers.get('x-freebuff-model')!
+      const model = headers.get('x-fuckbuff-model')!
       if (!multi) {
         const held = legacy.get(token)
         if (method === 'GET') {
@@ -191,8 +191,8 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
     fetchSpy.mockRestore()
     authSpy.mockRestore()
     configSpy.mockRestore()
-    useFreebuffSessionStore.getState().setSession(null)
-    useFreebuffSessionStore.getState().setFailure(null)
+    useFuckbuffSessionStore.getState().setSession(null)
+    useFuckbuffSessionStore.getState().setFailure(null)
     rmSync(configDir, { recursive: true, force: true })
   })
 
@@ -200,7 +200,7 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
     const setup = await createTestRenderer({ width: 30, height: 2 })
     const root = createRoot(setup.renderer)
     function Controller() {
-      cli.useFreebuffSession()
+      cli.useFuckbuffSession()
       return null
     }
     close = () => {
@@ -210,7 +210,7 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
     flushSync(() => root.render(<Controller />))
     await until(
       () =>
-        useFreebuffSessionStore.getState().session?.status === expectedStatus,
+        useFuckbuffSessionStore.getState().session?.status === expectedStatus,
     )
     // Let any follow-up tick land before asserting on the request log.
     await Bun.sleep(30)
@@ -220,7 +220,7 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
     const expiresAt = new Date(Date.now() + 2_900_000).toISOString()
     legacy.set(
       'fixture',
-      row('ea1559bb-legacy', FREEBUFF_GLM_V53_FLASH_MODEL_ID, expiresAt),
+      row('ea1559bb-legacy', FUCKBUFF_GLM_V53_FLASH_MODEL_ID, expiresAt),
     )
     // Exactly what 0.0.196 writes: no token key.
     writeOwner({ instanceId: 'ea1559bb-legacy', pid: deadPid() })
@@ -230,15 +230,15 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
     expect(purchases).toBe(0)
     // The picker (status none) was never shown.
     expect(statuses).not.toContain('none')
-    const session = useFreebuffSessionStore.getState().session
+    const session = useFuckbuffSessionStore.getState().session
     expect(session).toMatchObject({
       status: 'active',
-      model: FREEBUFF_GLM_V53_FLASH_MODEL_ID,
+      model: FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
       expiresAt,
     })
     // Same server session, rotated to this process.
     const rotated = legacy.get('fixture')!.instanceId
-    expect(cli.getFreebuffInstanceId()).toBe(rotated)
+    expect(cli.getFuckbuffInstanceId()).toBe(rotated)
     expect(rotated).not.toBe('ea1559bb-legacy')
     expect(requests.slice(0, 2)).toEqual([
       {
@@ -258,39 +258,39 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
     expect(owner.tokenKey).toBe(tokenKey('fixture'))
 
     // Ending it releases the legacy row; the next pick is an ordinary claim.
-    await cli.returnToFreebuffLanding()
+    await cli.returnToFuckbuffLanding()
     expect(legacy.has('fixture')).toBe(false)
     expect(requests.find((r) => r.method === 'DELETE')?.multi).toBe(false)
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
-    expect(cli.getFreebuffInstanceId()).toStartWith('cli:')
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
+    expect(cli.getFuckbuffInstanceId()).toStartWith('cli:')
     expect(requests.at(-1)).toMatchObject({ method: 'POST', multi: true })
     expect(purchases).toBe(1)
   })
 
   test('a model switch leaves the adopted hour and buys on a cli: claim', async () => {
-    legacy.set('fixture', row('legacy-a', FREEBUFF_GLM_V53_FLASH_MODEL_ID))
+    legacy.set('fixture', row('legacy-a', FUCKBUFF_GLM_V53_FLASH_MODEL_ID))
     writeOwner({ instanceId: 'legacy-a', pid: deadPid() })
     await mount('active')
-    await cli.startFreebuffSession(FREEBUFF_MIMO_V25_MODEL_ID)
+    await cli.startFuckbuffSession(FUCKBUFF_MIMO_V25_MODEL_ID)
     expect(legacy.has('fixture')).toBe(false)
-    expect(cli.getFreebuffInstanceId()).toStartWith('cli:')
+    expect(cli.getFuckbuffInstanceId()).toStartWith('cli:')
     expect(purchases).toBe(1)
   })
 
   test('re-syncing the adopted hour stays on it instead of buying a cli: claim', async () => {
-    legacy.set('fixture', row('legacy-sync', FREEBUFF_GLM_V53_FLASH_MODEL_ID))
+    legacy.set('fixture', row('legacy-sync', FUCKBUFF_GLM_V53_FLASH_MODEL_ID))
     writeOwner({ instanceId: 'legacy-sync', pid: deadPid() })
     await mount('active')
     // The chat gate's `waiting_room_queued` re-sync: no release, just rejoin.
-    await cli.refreshFreebuffSession()
+    await cli.refreshFuckbuffSession()
     expect(requests.at(-1)).toMatchObject({ method: 'POST', multi: false })
-    expect(useFreebuffSessionStore.getState().session?.status).toBe('active')
+    expect(useFuckbuffSessionStore.getState().session?.status).toBe('active')
     expect(requests.every((r) => !r.multi)).toBe(true)
     expect(purchases).toBe(0)
   })
 
   test('a live owner keeps its hour: nothing is probed or adopted', async () => {
-    legacy.set('fixture', row('legacy-live', FREEBUFF_GLM_V53_FLASH_MODEL_ID))
+    legacy.set('fixture', row('legacy-live', FUCKBUFF_GLM_V53_FLASH_MODEL_ID))
     writeOwner({ instanceId: 'legacy-live', pid: process.ppid })
     await mount('none')
     expect(requests.every((r) => r.multi)).toBe(true)
@@ -314,7 +314,7 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
 
   test("another account's record is never adopted", async () => {
     // A record this binary wrote for a different login: not even probed.
-    legacy.set('fixture', row('legacy-mine', FREEBUFF_GLM_V53_FLASH_MODEL_ID))
+    legacy.set('fixture', row('legacy-mine', FUCKBUFF_GLM_V53_FLASH_MODEL_ID))
     writeOwner({
       instanceId: 'legacy-mine',
       pid: deadPid(),
@@ -325,7 +325,7 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
     expect(legacy.get('fixture')?.instanceId).toBe('legacy-mine')
     close!()
     close = undefined
-    useFreebuffSessionStore.getState().setSession(null)
+    useFuckbuffSessionStore.getState().setSession(null)
 
     // An unscoped 0.0.196 record: the authenticated GET says this account
     // holds a different instance, so the superseded verdict is swallowed and
@@ -343,11 +343,11 @@ if (process.env.CLI_LEGACY_RELAUNCH_TEST !== '1') {
   })
 
   test('an unanswered probe falls back to a fresh claim', async () => {
-    legacy.set('fixture', row('legacy-net', FREEBUFF_GLM_V53_FLASH_MODEL_ID))
+    legacy.set('fixture', row('legacy-net', FUCKBUFF_GLM_V53_FLASH_MODEL_ID))
     writeOwner({ instanceId: 'legacy-net', pid: deadPid() })
     failLegacyGet = true
     await mount('none')
-    expect(useFreebuffSessionStore.getState().failure).toBeNull()
+    expect(useFuckbuffSessionStore.getState().failure).toBeNull()
     expect(requests.slice(1).every((r) => r.multi)).toBe(true)
     expect(purchases).toBe(0)
   })

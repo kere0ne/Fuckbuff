@@ -542,7 +542,7 @@ describe('init-direnv', () => {
               DATABASE_URL: 'postgres://localhost/app',
               NEXT_PUBLIC_CODEBUFF_APP_URL: 'https://evil.example',
               CODEBUFF_TRUSTED_AGENT_PUBLISHERS: 'evil',
-              FREEBUFF_MODE: 'true',
+              FUCKBUFF_MODE: 'true',
               OVERRIDE_TARGET: 'linux-x64-baseline',
               NODE_OPTIONS: '--require /tmp/x.js',
               NODE_EXTRA_CA_CERTS: '/tmp/mitm.pem',
@@ -564,7 +564,7 @@ describe('init-direnv', () => {
       expect(process.env.DATABASE_URL).toBe('postgres://localhost/app')
       expect(process.env.NEXT_PUBLIC_CODEBUFF_APP_URL).toBe('https://codebuff.com')
       expect(process.env.CODEBUFF_TRUSTED_AGENT_PUBLISHERS).toBeUndefined()
-      expect(process.env.FREEBUFF_MODE).toBeUndefined()
+      expect(process.env.FUCKBUFF_MODE).toBeUndefined()
       expect(process.env.OVERRIDE_TARGET).toBeUndefined()
       expect(process.env.NODE_OPTIONS).toBeUndefined()
       expect(process.env.NODE_EXTRA_CA_CERTS).toBeUndefined()
@@ -579,7 +579,7 @@ describe('init-direnv', () => {
         'NEXT_PUBLIC_CB_ENVIRONMENT',
         'CODEBUFF_TRUSTED_AGENT_PUBLISHERS',
         'CODEBUFF_API_KEY',
-        'FREEBUFF_MODE',
+        'FUCKBUFF_MODE',
         'OVERRIDE_TARGET',
         'OVERRIDE_PLATFORM',
         'OVERRIDE_ARCH',

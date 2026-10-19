@@ -193,7 +193,7 @@ describe('what the floor runs', () => {
   })
 
   it('anything else runs directly with no shell, and only by absolute path', () => {
-    const rg = 'C:\\Program Files\\Freebuff\\rg.exe'
+    const rg = 'C:\\Program Files\\Fuckbuff\\rg.exe'
     expect(
       sponsoredWindowsFloorLaunch({
         executable: rg,

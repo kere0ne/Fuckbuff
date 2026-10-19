@@ -102,7 +102,7 @@ async function savedWithFormDefaults(): Promise<ResolvedByokConnection> {
 }
 
 async function longTask(byok: ResolvedByokConnection, fetchImpl: typeof fetch) {
-  const cwd = await mkdtemp(path.join(tmpdir(), 'freebuff-byok-compaction-'))
+  const cwd = await mkdtemp(path.join(tmpdir(), 'fuckbuff-byok-compaction-'))
   for (let i = 1; i <= FILES; i++) {
     // ~2k estimated tokens each: a modest source file.
     await writeFile(path.join(cwd, `file${i}.ts`), `export const value${i} = ${i} // keep this line\n`.repeat(150))

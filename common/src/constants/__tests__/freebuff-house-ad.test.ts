@@ -6,7 +6,7 @@ import {
   PLACEMENT_SLOTS,
   SPONSOR_BREAK_CREATIVE_LIMITS,
   isSponsorBreakPlacement,
-} from '../freebuff-placements'
+} from '../fuckbuff-placements'
 import {
   HOUSE_AD_CREATIVES,
   HOUSE_AD_DESTINATION_URL,
@@ -17,9 +17,9 @@ import {
   HOUSE_AD_VARIATIONS,
   HOUSE_BREAK_AD_PLACEMENT_IDS,
   HOUSE_BREAK_AD_VARIATIONS,
-} from '../freebuff-house-ad'
+} from '../fuckbuff-house-ad'
 
-import type { HouseAdCreative, HouseAdSurface } from '../freebuff-house-ad'
+import type { HouseAdCreative, HouseAdSurface } from '../fuckbuff-house-ad'
 
 /**
  * The subscription promotion's copy.
@@ -45,7 +45,7 @@ const DESCRIPTION_ENFORCED_FROM = 48
 const SURFACES: HouseAdSurface[] = [
   'cli_chat',
   'waiting_room',
-  'freebuff_web_chat',
+  'fuckbuff_web_chat',
   'chat_assistant',
   'chat_assistant_sr',
 ]

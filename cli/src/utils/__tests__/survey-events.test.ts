@@ -3,8 +3,8 @@ import { afterEach, describe, expect, test } from 'bun:test'
 import {
   profileSurveyQuestion,
   profileSurveyVersion,
-} from '@codebuff/common/constants/freebuff-profile-survey'
-import { createFakeSponsoredSurveyClient } from '@codebuff/common/constants/freebuff-sponsored-survey-client'
+} from '@codebuff/common/constants/fuckbuff-profile-survey'
+import { createFakeSponsoredSurveyClient } from '@codebuff/common/constants/fuckbuff-sponsored-survey-client'
 
 import {
   closeProfileSurveyForTyping,
@@ -22,10 +22,10 @@ import {
   setCliSurveyEventSinkForTests,
 } from '../survey-events'
 
-import type { ProfileSurveyStateResponse } from '@codebuff/common/constants/freebuff-profile-survey'
-import type { SurveyEventInput } from '@codebuff/common/constants/freebuff-sponsored-survey'
-import type { SponsoredSurveyOffer } from '@codebuff/common/constants/freebuff-sponsored-survey-client'
-import type { SurveyEventSink } from '@codebuff/common/constants/freebuff-survey-events-client'
+import type { ProfileSurveyStateResponse } from '@codebuff/common/constants/fuckbuff-profile-survey'
+import type { SurveyEventInput } from '@codebuff/common/constants/fuckbuff-sponsored-survey'
+import type { SponsoredSurveyOffer } from '@codebuff/common/constants/fuckbuff-sponsored-survey-client'
+import type { SurveyEventSink } from '@codebuff/common/constants/fuckbuff-survey-events-client'
 
 const QUESTIONS = profileSurveyVersion(1)!.questionIds.map(
   (id) => profileSurveyQuestion(id)!,
@@ -188,7 +188,7 @@ describe('createCliSurveyEventSender', () => {
   test('posts with the bearer to freebuff.com; no token sends nothing; errors are swallowed', async () => {
     const calls: Array<[string, RequestInit]> = []
     const send = createCliSurveyEventSender({
-      baseUrl: 'https://freebuff.test/',
+      baseUrl: 'https://fuckbuff.test/',
       getToken: () => 'tok',
       fetchImpl: (async (url: string, init: RequestInit) => {
         calls.push([url, init])
@@ -205,7 +205,7 @@ describe('createCliSurveyEventSender', () => {
       ],
     }
     await send(batch, { unloading: false })
-    expect(calls[0][0]).toBe('https://freebuff.test/api/survey-events')
+    expect(calls[0][0]).toBe('https://fuckbuff.test/api/survey-events')
     expect(
       (calls[0][1].headers as Record<string, string>).authorization,
     ).toBe('Bearer tok')

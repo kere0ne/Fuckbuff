@@ -1,7 +1,7 @@
 /**
  * The trust boundary for a sponsored run executing on the USER'S OWN MACHINE.
  *
- * COD-336's decision, as code. `docs/freebuff-sponsored-local-execution.md`
+ * COD-336's decision, as code. `docs/fuckbuff-sponsored-local-execution.md`
  * "Decision (2026-09-02)" is the prose; this file is the part that is enforced,
  * and the two are meant to be read together.
  *
@@ -129,14 +129,14 @@ export const SPONSORED_LOCAL_UNAVAILABLE_COPY: Record<
   'containment-probe-failed':
     'Sponsored tasks cannot start because the workspace sandbox is not working on this machine. No paid task has started.',
   // Kept for the surfaces that do not offer the Windows floor (the CLI) and
-  // for an orchestrator older than COD-642. Freebuff Desktop no longer
+  // for an orchestrator older than COD-642. Fuckbuff Desktop no longer
   // produces it: Windows there runs under the floor instead.
   'windows-no-containment':
-    'Sponsored tasks can’t run on Windows yet: Freebuff has no way to keep an advertiser’s commands inside the workspace on this operating system.',
+    'Sponsored tasks can’t run on Windows yet: Fuckbuff has no way to keep an advertiser’s commands inside the workspace on this operating system.',
   'bubblewrap-missing':
     'Sponsored tasks need bubblewrap (`bwrap`) to stay inside the workspace. Install it and reopen this project to accept.',
   'unsupported-platform':
-    'Sponsored tasks can’t run on this operating system: Freebuff has no way to keep an advertiser’s commands inside the workspace here.',
+    'Sponsored tasks can’t run on this operating system: Fuckbuff has no way to keep an advertiser’s commands inside the workspace here.',
   // NOT a property of the operating system, and it must not borrow the
   // operating system's sentence. `unsupported-platform` used to carry this
   // case too, so a Mac with no desktop shell behind its orchestrator told its
@@ -147,7 +147,7 @@ export const SPONSORED_LOCAL_UNAVAILABLE_COPY: Record<
   // because the first is permanent and the second is fixed by opening the
   // app.
   'no-consent-bridge':
-    'Sponsored tasks need the Freebuff desktop app, which is what asks you to approve the task before it runs. Open this project in the app to accept.',
+    'Sponsored tasks need the Fuckbuff desktop app, which is what asks you to approve the task before it runs. Open this project in the app to accept.',
   // About THIS offer, not the machine: another offer can still run here.
   'offered-for-another-os':
     'This sponsored task was offered for a different kind of computer, so it can’t run on this one.',
@@ -194,7 +194,7 @@ export type SponsoredLocalAvailability =
 
 /**
  * `offersFloor` is the SURFACE's declaration that it carries the Windows floor
- * broker and the Windows consent (Freebuff Desktop, COD-642). Without it the
+ * broker and the Windows consent (Fuckbuff Desktop, COD-642). Without it the
  * floor arm reads as the refusal it was before COD-642, so a surface that was
  * never taught the floor (the CLI) keeps refusing Windows rather than offering
  * an Accept it cannot contain.
@@ -236,14 +236,14 @@ export function sponsoredLocalUnavailableReason(
  * the user's repository.
  *
  * SHARED because two surfaces cut these branches and one sandbox grants them.
- * Desktop's `BRANCH_PREFIX`/`BRANCH_NAMESPACE` (`freebuff-desktop/src/server/
+ * Desktop's `BRANCH_PREFIX`/`BRANCH_NAMESPACE` (`fuckbuff-desktop/src/server/
  * git/worktree.ts`) are deliberately NOT re-pointed at this constant — that
  * module names every branch the app cuts, sponsored or not, and coupling all
  * of Desktop's isolated-tab naming to an ads module would be the wrong
  * dependency. They are held equal by a parity test on Desktop's side instead,
  * so the two cannot drift without something going red.
  */
-export const SPONSORED_LOCAL_BRANCH_NAMESPACE = 'freebuff'
+export const SPONSORED_LOCAL_BRANCH_NAMESPACE = 'fuckbuff'
 
 /**
  * A title reduced to something that is legal in a ref.
@@ -266,7 +266,7 @@ export function sponsoredLocalSlug(
   return base || fallback
 }
 
-/** `freebuff/<slug>-<runId>` — the one branch a local sponsored run may write. */
+/** `fuckbuff/<slug>-<runId>` — the one branch a local sponsored run may write. */
 export function sponsoredLocalBranchName(
   titleSlug: string,
   runId: string,
@@ -726,7 +726,7 @@ export const SPONSORED_LOCAL_INSTALL_REFUSAL =
 
 /**
  * The git subcommands an IN-PLACE run may not use
- * (`docs/freebuff-sponsored-local-execution.md`, 2026-09-24).
+ * (`docs/fuckbuff-sponsored-local-execution.md`, 2026-09-24).
  *
  * Such a run delivers EDITS IN THE WORKING COPY, and the user's undo is the
  * rewind over the turn's own receipts. Anything that moves history moves work

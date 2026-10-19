@@ -35,7 +35,7 @@ import { SPONSORED_IN_PLACE_VERSION } from '@codebuff/common/ads/sponsored-in-pl
 import { SPONSORED_RUN_SPEC_VERSION } from '@codebuff/common/ads/sponsored-run-spec'
 import { env } from '@codebuff/common/env'
 
-import { FREEBUFF_WEB_URL } from '../login/constants'
+import { FUCKBUFF_WEB_URL } from '../login/constants'
 import { getAdDeviceInfo, getCliAdRequestUserAgent } from './ad-client-identity'
 import { getCliEnv } from './env'
 import { getAuthToken } from './auth'
@@ -194,7 +194,7 @@ export function cliLocalTestCampaign(): string | null {
     NODE_ENV: cli.NODE_ENV,
     NEXT_PUBLIC_CB_ENVIRONMENT: env.NEXT_PUBLIC_CB_ENVIRONMENT,
     NEXT_PUBLIC_CODEBUFF_APP_URL: env.NEXT_PUBLIC_CODEBUFF_APP_URL,
-    NEXT_PUBLIC_FREEBUFF_APP_URL: FREEBUFF_WEB_URL,
+    NEXT_PUBLIC_FUCKBUFF_APP_URL: FUCKBUFF_WEB_URL,
   })
 }
 

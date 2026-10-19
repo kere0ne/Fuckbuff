@@ -22,7 +22,7 @@ type WorkerResult = {
 }
 
 const worker = path.join(import.meta.dir, 'qualify-byok-credentials-worker.ts')
-const directory = await mkdtemp(path.join(tmpdir(), 'freebuff-byok-native-'))
+const directory = await mkdtemp(path.join(tmpdir(), 'fuckbuff-byok-native-'))
 const compiledWorker = path.join(
   directory,
   process.platform === 'win32' ? 'byok-native-worker.exe' : 'byok-native-worker',

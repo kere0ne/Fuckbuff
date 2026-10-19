@@ -1097,7 +1097,7 @@ describe('consecutive assistant messages', () => {
 describe('non-image file parts', () => {
   // The fixture's base64 string is 20 chars; the placeholder estimates raw
   // bytes as round(20 * 3 / 4) = 15.
-  const GZIP_FIXTURE_BASE64 = Buffer.from('Hello freebuff!').toString('base64')
+  const GZIP_FIXTURE_BASE64 = Buffer.from('Hello fuckbuff!').toString('base64')
   const EXPECTED_BYTE_ESTIMATE = 15
 
   it('degrades non-image file part to text placeholder instead of throwing', () => {

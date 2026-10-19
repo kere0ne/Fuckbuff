@@ -1,14 +1,14 @@
 /**
  * Who FIRES each platform Convex cron whose data stays in Convex for now —
  * the checked-in switch for moving their scheduling off Convex (COD-742,
- * docs/freebuff-jobs.md). In either mode the same code reads and writes the
+ * docs/fuckbuff-jobs.md). In either mode the same code reads and writes the
  * same Convex tables; only the process that starts it changes. Moving the
  * data is each domain's own work and brings its own switch.
  *
  * - `convex`   (default): today. The Convex cron fires; the graphile task logs
  *              and returns.
- * - `graphile` The freebuff-jobs crontab fires the task, which asks
- *              freebuff-web (`POST /api/admin/convex-cron-jobs`) to run the job
+ * - `graphile` The fuckbuff-jobs crontab fires the task, which asks
+ *              fuckbuff-web (`POST /api/admin/convex-cron-jobs`) to run the job
  *              over the Convex admin client; the Convex cron returns at once.
  *
  * Exactly one runner per job, as in ./sandbox-jobs-runner.ts: both sides read
@@ -16,16 +16,16 @@
  *
  * How a Convex function tells the two apart: the cron passes
  * `trigger: 'cron'` and returns at once unless Convex owns the job;
- * freebuff-web passes `trigger: 'graphile'` and the function refuses unless
+ * fuckbuff-web passes `trigger: 'graphile'` and the function refuses unless
  * graphile owns it. A call with no trigger (a self-scheduled next page, an
  * admin's manual run) always runs.
  *
  * DEPLOY ORDER for a flip to `graphile`: the jobs worker must already run with
- * `FREEBUFF_WEB_INTERNAL_URL` and `SPEND_ROLLUP_CRON_SECRET`, and freebuff-web
+ * `FUCKBUFF_WEB_INTERNAL_URL` and `SPEND_ROLLUP_CRON_SECRET`, and fuckbuff-web
  * must carry the env any job body it runs itself reads (for
  * `reconcile_pr_delivery`: the GitHub App id, slug and private key, and
  * `CLOUD_PR_BACKSTOP_MAX` if Convex sets it). The other jobs still run inside
- * Convex and need nothing new. In the gap between the Convex and freebuff-web
+ * Convex and need nothing new. In the gap between the Convex and fuckbuff-web
  * deploys a job may run twice or skip a tick; every job here re-checks each
  * row, so either is harmless for one tick.
  */
@@ -47,14 +47,14 @@ export const CONVEX_CRON_JOB_NAMES = [
   /** Convex cron `audit fleet usage from axiom` (Wed 09:00 UTC): the pooled
    *  month judgement from Axiom; PAUSES owners. */
   'audit_fleet_usage',
-  /** Convex cron `sweep timed out freebuff agent runs` (1 min): reaps runs
+  /** Convex cron `sweep timed out fuckbuff agent runs` (1 min): reaps runs
    *  past their claim, heartbeat or turn deadline and finalizes their
-   *  messages. NOT a Convex-data job: under `graphile` freebuff-web runs the
-   *  POSTGRES sweep (freebuff/web src/server/agent-core-writes/
+   *  messages. NOT a Convex-data job: under `graphile` fuckbuff-web runs the
+   *  POSTGRES sweep (fuckbuff/web src/server/agent-core-writes/
    *  run-sweep-runtime.ts), so this entry moves only with the agent core
    *  writer (`AGENT_CORE_WRITER_FOR_CONVEX`, ./agent-core-writer.ts); a test
    *  holds the two together. */
-  'sweep_freebuff_runs',
+  'sweep_fuckbuff_runs',
   /** Convex cron `sweep timed out codex and claude agent runs` (1 min):
    *  clears Codex / Claude Code threads stuck processing past the idle
    *  window. Convex's agent_thread rows, as `enforce_processing_deadlines`. */
@@ -62,7 +62,7 @@ export const CONVEX_CRON_JOB_NAMES = [
   /** Convex cron `rotate expiring github tokens` (60 min): renews OAuth
    *  refresh tokens near their lapse, against Convex's `github_connections`.
    *  Only the trigger moves: Convex's action still rotates, so exactly one
-   *  system rotates in either position (docs/freebuff-github-postgres.md,
+   *  system rotates in either position (docs/fuckbuff-github-postgres.md,
    *  "Rotation"). The Postgres rotation replaces this job, not this switch. */
   'rotate_github_tokens',
   /** Convex cron `sweep expired request-intent evaluation cohorts` (15 min):
@@ -72,11 +72,11 @@ export const CONVEX_CRON_JOB_NAMES = [
   'sweep_request_intent_eval_cohorts',
   /** The automations' schedules (the @convex-dev/crons registrations
    *  `automations.ts` makes, each firing `fireAutomation`). NOT a Convex-data
-   *  job: under `graphile` freebuff-web fires due automations from Postgres
-   *  `cloud_automation` once a minute (freebuff/web
+   *  job: under `graphile` fuckbuff-web fires due automations from Postgres
+   *  `cloud_automation` once a minute (fuckbuff/web
    *  src/server/agent-core-writes/automations.ts), and `fireAutomation`
    *  no-ops. Moves only with the agent core writer, like
-   *  `sweep_freebuff_runs`; a test holds the two together. */
+   *  `sweep_fuckbuff_runs`; a test holds the two together. */
   'fire_automations',
 ] as const
 
@@ -92,7 +92,7 @@ export const CONVEX_CRON_JOB_RUNNERS: ConvexCronJobRunners = {
   reconcile_usage_limits: 'graphile',
   enforce_legacy_usage_limits: 'graphile',
   audit_fleet_usage: 'graphile',
-  sweep_freebuff_runs: 'convex',
+  sweep_fuckbuff_runs: 'convex',
   sweep_cli_agent_runs: 'graphile',
   rotate_github_tokens: 'graphile',
   sweep_request_intent_eval_cohorts: 'graphile',

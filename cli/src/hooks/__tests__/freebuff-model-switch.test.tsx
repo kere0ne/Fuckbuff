@@ -4,11 +4,11 @@ import { createRoot, flushSync } from '@opentui/react'
 import React from 'react'
 
 import { useChatStore } from '../../state/chat-store'
-import { useFreebuffModelStore } from '../../state/freebuff-model-store'
-import { useFreebuffSessionStore } from '../../state/freebuff-session-store'
+import { useFuckbuffModelStore } from '../../state/fuckbuff-model-store'
+import { useFuckbuffSessionStore } from '../../state/fuckbuff-session-store'
 import * as auth from '../../utils/auth'
-import { IS_FREEBUFF } from '../../utils/constants'
-import { startFreebuffSession, useFreebuffSession } from '../use-freebuff-session'
+import { IS_FUCKBUFF } from '../../utils/constants'
+import { startFuckbuffSession, useFuckbuffSession } from '../use-fuckbuff-session'
 
 const GLM = 'z-ai/glm-5.3-flash'
 const DEEPSEEK = 'deepseek/deepseek-v4-flash'
@@ -27,9 +27,9 @@ const DEEPSEEK = 'deepseek/deepseek-v4-flash'
  * the locked row is frequently a stale one from a CLI that crashed, whose
  * instance this process never saw.
  *
- * Run with: FREEBUFF_MODE=true bun test src/hooks/__tests__/freebuff-model-switch.test.tsx
+ * Run with: FUCKBUFF_MODE=true bun test src/hooks/__tests__/fuckbuff-model-switch.test.tsx
  */
-describe.skipIf(!IS_FREEBUFF)('freebuff model switch', () => {
+describe.skipIf(!IS_FUCKBUFF)('fuckbuff model switch', () => {
   let authSpy: ReturnType<typeof spyOn>
   let fetchSpy: ReturnType<typeof spyOn>
 
@@ -49,14 +49,14 @@ describe.skipIf(!IS_FREEBUFF)('freebuff model switch', () => {
       source: 'environment',
     })
     useChatStore.getState().reset()
-    useFreebuffModelStore.getState().setSelectedModel(GLM)
+    useFuckbuffModelStore.getState().setSelectedModel(GLM)
   })
 
   afterEach(() => {
     authSpy.mockRestore()
     fetchSpy?.mockRestore()
-    useFreebuffSessionStore.getState().setSession(null)
-    useFreebuffSessionStore.getState().setFailure(null)
+    useFuckbuffSessionStore.getState().setSession(null)
+    useFuckbuffSessionStore.getState().setFailure(null)
     useChatStore.getState().reset()
   })
 
@@ -71,7 +71,7 @@ describe.skipIf(!IS_FREEBUFF)('freebuff model switch', () => {
       (async (_url: string, init: RequestInit = {}) => {
         const method = (init.method ?? 'GET').toUpperCase()
         const instanceId = new Headers(init.headers).get(
-          'x-freebuff-instance-id',
+          'x-fuckbuff-instance-id',
         )
         calls.push({ method, instanceId })
 
@@ -110,8 +110,8 @@ describe.skipIf(!IS_FREEBUFF)('freebuff model switch', () => {
     )
 
     const Harness = () => {
-      useFreebuffSession()
-      return <text>freebuff</text>
+      useFuckbuffSession()
+      return <text>fuckbuff</text>
     }
     const setup = await createTestRenderer({ width: 20, height: 2 })
     const root = createRoot(setup.renderer)
@@ -119,7 +119,7 @@ describe.skipIf(!IS_FREEBUFF)('freebuff model switch', () => {
     await setup.renderOnce()
 
     try {
-      await startFreebuffSession(DEEPSEEK)
+      await startFuckbuffSession(DEEPSEEK)
       // Bounded: a switch that never lands is the regression, and it should
       // report as a failed assertion on the DELETE below rather than as a
       // test-runner timeout with nothing to read.

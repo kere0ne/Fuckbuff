@@ -6,7 +6,7 @@ import {
 /**
  * The placements ad rail — first-party text ads in our own inventory.
  *
- * Distinct from the engagement marketplace in `freebuff-ads.ts`, which sells a
+ * Distinct from the engagement marketplace in `fuckbuff-ads.ts`, which sells a
  * real developer engaging with an advertiser's social post. These two share an
  * advertiser, a Stripe customer, a review queue and a login, and share nothing
  * about delivery or billing. They are two tabs of one console, not two
@@ -17,14 +17,14 @@ import {
  * dashboard, and the definitions below are the only ones any surface may use.
  */
 
-import { AD_CAMPAIGN_STATUSES } from './freebuff-ads'
+import { AD_CAMPAIGN_STATUSES } from './fuckbuff-ads'
 import { IOS_AD_PLACEMENTS, IOS_AD_SURFACE } from '../ads/ios-placements'
 import {
   ANDROID_AD_PLACEMENTS,
   ANDROID_AD_SURFACE,
 } from '../ads/android-placements'
 
-import type { AdCampaignStatus } from './freebuff-ads'
+import type { AdCampaignStatus } from './fuckbuff-ads'
 
 /**
  * The bare-bones placements control and delivery planes are wired: campaigns
@@ -32,9 +32,9 @@ import type { AdCampaignStatus } from './freebuff-ads'
  * and clicks settle through the spend ledger.
  *
  * **This constant no longer decides who can reach the console.** That is the
- * `FREEBUFF_PLACEMENTS_AUDIENCE` env knob (`off` | `admin` | `all`, default
+ * `FUCKBUFF_PLACEMENTS_AUDIENCE` env knob (`off` | `admin` | `all`, default
  * `off`), read by `placementsAudience()` in
- * `freebuff/web/src/server/advertisers/placements/access.ts`. What survives
+ * `fuckbuff/web/src/server/advertisers/placements/access.ts`. What survives
  * here is the implementation-state assertion the knob is set against. Delivery
  * rollups expose coverage alongside delivery; an uncovered day is unknown,
  * not a zero and never fixture data.
@@ -411,13 +411,13 @@ const ORIGINAL_PLACEMENT_SLOTS = [
   },
   {
     id: 'Web-Chat-After-User-Message',
-    surface: 'freebuff_web_chat',
+    surface: 'fuckbuff_web_chat',
     available: true,
     format: 'inline',
   },
   {
     id: 'Web-Chat-After-Assistant-Message',
-    surface: 'freebuff_web_chat',
+    surface: 'fuckbuff_web_chat',
     available: true,
     format: 'inline',
   },
@@ -434,7 +434,7 @@ export const PLACEMENT_SLOTS = [
   ...ORIGINAL_PLACEMENT_SLOTS,
   ...ORIGINAL_PLACEMENT_SLOTS.flatMap((slot) => {
     const id = webDesktopPlacement(slot.id)
-    return id ? [{ ...slot, id, surface: 'freebuff_web_chat' as const }] : []
+    return id ? [{ ...slot, id, surface: 'fuckbuff_web_chat' as const }] : []
   }),
 ] as const
 
@@ -442,7 +442,7 @@ export const PLACEMENT_SLOTS = [
  * The surface a placement id belongs to, or `undefined` for an id the registry
  * does not describe.
  *
- * Exists because a client may name a placement and omit its surface (Freebuff
+ * Exists because a client may name a placement and omit its surface (Fuckbuff
  * Desktop's `Desktop-Below-Chat` slot does -- deliberately left that way, since
  * the request surface also steers third-party providers: Gravity reads
  * `cli_chat` as `inline_response`, and below-chat is not inline), and a first-party
@@ -480,7 +480,7 @@ export function placementSurface(
  *
  * Both serving rails call this after placement resolution. The operator
  * catalog in Convex may override a seeded placement's format; the loader in
- * `freebuff/web/src/server/ad-serving/placement-catalog.ts` carries that value
+ * `fuckbuff/web/src/server/ad-serving/placement-catalog.ts` carries that value
  * through, and this function is the static fallback it degrades to.
  */
 export function placementFormat(placementId: string): PlacementFormat {
@@ -551,7 +551,7 @@ export const BILLBOARD_PLACEMENT_IDS: readonly string[] =
  * cap two ways.
  *
  * Deliberately not a number. The cap itself is server-side and operator-owned
- * (`FREEBUFF_SPONSOR_BREAK_DAILY_CAP`); printing a figure here would be a
+ * (`FUCKBUFF_SPONSOR_BREAK_DAILY_CAP`); printing a figure here would be a
  * second copy of it, free to drift, in the one place an advertiser would
  * quote it back to us.
  */

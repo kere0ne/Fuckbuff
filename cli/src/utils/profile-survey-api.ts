@@ -3,7 +3,7 @@
  * `/api/profile-survey` on freebuff.com, wire types from the shared contract.
  *
  * Same origin, auth and User-Agent as the sponsored-proposal calls
- * (`sponsored-proposal-api.ts`): `FREEBUFF_WEB_URL` (localhost:3002 in a dev
+ * (`sponsored-proposal-api.ts`): `FUCKBUFF_WEB_URL` (localhost:3002 in a dev
  * build), the CLI's session token as a Bearer, and the product User-Agent.
  *
  * Fails soft. A survey is optional; a network error reads as "don't show" on
@@ -12,7 +12,7 @@
 
 import { sanitizeTerminalStrings } from '@codebuff/common/util/terminal-safe-text'
 
-import { FREEBUFF_WEB_URL } from '../login/constants'
+import { FUCKBUFF_WEB_URL } from '../login/constants'
 
 import { getCliAdRequestUserAgent } from './ad-client-identity'
 import { getAuthToken } from './auth'
@@ -22,7 +22,7 @@ import type {
   ProfileSurveyRequest,
   ProfileSurveyResponse,
   ProfileSurveyStateResponse,
-} from '@codebuff/common/constants/freebuff-profile-survey'
+} from '@codebuff/common/constants/fuckbuff-profile-survey'
 
 export const PROFILE_SURVEY_PATH = '/api/profile-survey'
 const REQUEST_TIMEOUT_MS = 10_000
@@ -54,7 +54,7 @@ type HttpClientDeps = {
 export function createHttpProfileSurveyClient(
   deps: HttpClientDeps = {},
 ): ProfileSurveyClient {
-  const base = (deps.baseUrl ?? FREEBUFF_WEB_URL).replace(/\/+$/, '')
+  const base = (deps.baseUrl ?? FUCKBUFF_WEB_URL).replace(/\/+$/, '')
   const getToken = deps.getToken ?? getAuthToken
   const fetchImpl = deps.fetchImpl ?? fetch
 

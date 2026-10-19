@@ -1,4 +1,4 @@
-import { FREEBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GPT_6_LUNA_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { publisher } from '../constants'
 import { type SecretAgentDefinition } from '../types/secret-agent-definition'
@@ -6,7 +6,7 @@ import { type SecretAgentDefinition } from '../types/secret-agent-definition'
 export const createFileLister = (): Omit<SecretAgentDefinition, 'id'> => ({
   displayName: 'Liszt the File Lister',
   publisher,
-  model: FREEBUFF_GPT_6_LUNA_MODEL_ID,
+  model: FUCKBUFF_GPT_6_LUNA_MODEL_ID,
   reasoningOptions: {
     effort: 'none',
     exclude: true,

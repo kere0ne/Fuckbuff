@@ -51,7 +51,7 @@ describe('resolveProjectKey', () => {
 describe('projectProfileSurface', () => {
   test('reads the surface the host already reports', () => {
     expect(projectProfileSurface({ surface: 'cloud' })).toBe('cloud')
-    expect(projectProfileSurface({ freebuff_multi_session: '1' })).toBe(
+    expect(projectProfileSurface({ fuckbuff_multi_session: '1' })).toBe(
       'desktop',
     )
     expect(projectProfileSurface(undefined)).toBe('cli')

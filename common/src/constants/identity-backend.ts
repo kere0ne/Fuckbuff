@@ -1,7 +1,7 @@
 /**
  * Which store answers identity reads — the Convex `users` document behind
  * `users:viewer` and the admin-role gate — for the move off platform Convex
- * (COD-742 roadmap §6 C, second half; docs/freebuff-identity-postgres.md).
+ * (COD-742 roadmap §6 C, second half; docs/fuckbuff-identity-postgres.md).
  * FULL tier: `convex` → `shadow` (7 days, zero mismatches) → `postgres`, then
  * a 14-day zero-call soak.
  *
@@ -57,7 +57,7 @@ export function identityReadBackend(
 
 /**
  * Who WRITES identity — the Convex `users` writers listed in
- * docs/freebuff-identity-postgres.md ("Writes") — a separate stage from
+ * docs/fuckbuff-identity-postgres.md ("Writes") — a separate stage from
  * reads because writes flip late: about 110 `v.id('users')` fields and 514
  * `getAuthUser` call sites inside Convex still read Convex `users`, so Convex
  * keeps the document every reader sees, and stays the id minter, in every

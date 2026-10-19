@@ -35,10 +35,10 @@ export const SPONSORED_RUNTIME_PROBE_SCRIPT = [
   'for c in python3 python; do',
   '  if command -v "$c" >/dev/null 2>&1 && "$c" --version >/dev/null 2>&1; then echo python; break; fi',
   'done',
-  'echo __freebuff_runtimes_done__',
+  'echo __fuckbuff_runtimes_done__',
 ].join('\n')
 
-const DONE = '__freebuff_runtimes_done__'
+const DONE = '__fuckbuff_runtimes_done__'
 
 /** The probe's stdout, parsed; `undefined` when it did not run to the end. */
 export function parseSponsoredRuntimeProbe(

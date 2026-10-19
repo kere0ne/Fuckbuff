@@ -3,7 +3,7 @@ import {
   AGENT_TRUST_GATE_HEADER_VALUE,
   MAX_AGENT_STEP_ROWS,
 } from '@codebuff/common/constants/agents'
-import { FREEBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/fuckbuff-models'
 import { validateSingleAgent } from '@codebuff/common/templates/agent-validation'
 import { DynamicAgentTemplateSchema } from '@codebuff/common/types/dynamic-agent-template'
 import { getErrorObject } from '@codebuff/common/util/error'
@@ -419,7 +419,7 @@ export async function startAgentRun(
         method: 'POST',
         headers: {
           Authorization: `Bearer ${apiKey}`,
-          ...(userId ? { [FREEBUFF_ACTING_USER_HEADER]: userId } : {}),
+          ...(userId ? { [FUCKBUFF_ACTING_USER_HEADER]: userId } : {}),
         },
         body: JSON.stringify({
           action: 'START',
@@ -435,7 +435,7 @@ export async function startAgentRun(
       const bodyText = await response.text().catch(() => '<unreadable body>')
       logger.error({ response }, 'startAgentRun request failed')
       // The passed-in `logger` may silently drop unallowlisted error events
-      // (see freebuff/web/src/server/agent-runner/logger.ts), which turns a
+      // (see fuckbuff/web/src/server/agent-runner/logger.ts), which turns a
       // real failure here into an opaque "Failed to start agent run" with no
       // way to diagnose it. Always surface the raw HTTP status/body too.
       console.error('[startAgentRun] request failed', {
@@ -498,7 +498,7 @@ export async function finishAgentRun(
         method: 'POST',
         headers: {
           Authorization: `Bearer ${apiKey}`,
-          ...(userId ? { [FREEBUFF_ACTING_USER_HEADER]: userId } : {}),
+          ...(userId ? { [FUCKBUFF_ACTING_USER_HEADER]: userId } : {}),
         },
         body: JSON.stringify({
           action: 'FINISH',

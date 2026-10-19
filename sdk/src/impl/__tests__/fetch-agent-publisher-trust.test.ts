@@ -313,7 +313,7 @@ describe('fetchAgentFromDatabase publisher trust', () => {
   })
 
   test('disableAgentRegistry refuses every registry fetch, even a trusted publisher', async () => {
-    // The embedded Freebuff Web runner bundles every agent it runs; a missing
+    // The embedded Fuckbuff Web runner bundles every agent it runs; a missing
     // spawnable id must be "not found", never a fetch of codebuff/<id>@latest.
     let fetched = 0
     globalThis.fetch = (async () => {

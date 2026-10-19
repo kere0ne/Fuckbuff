@@ -63,7 +63,7 @@ const defaultCheckConnection = async (): Promise<boolean> => {
 
 /**
  * Creates one health-check loop. Dependency-injected (mirrors
- * `freebuff-desktop/src/server/services/reachability.ts`'s `createReachability`) so tests can
+ * `fuckbuff-desktop/src/server/services/reachability.ts`'s `createReachability`) so tests can
  * swap `checkConnection` instead of mocking the `codebuff-client` module.
  *
  * Production code does not call this directly — see the singleton helpers below. The loop here

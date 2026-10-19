@@ -4,7 +4,7 @@
  * "Purchase credits" is OpenRouter's own newer wording and the only credit
  * phrase in one of its 402 bodies: "Free BYOK request cap exceeded for this
  * month. Purchase credits at https://openrouter.ai/settings/credits". None of
- * the verbs here matched it. Measured while Freebuff's OpenRouter balance sat
+ * the verbs here matched it. Measured while Fuckbuff's OpenRouter balance sat
  * at zero on 2026-10-14 (17:42:03Z-17:54:39Z): 915 of the window's 2,002 402s
  * carried exactly that sentence, across 10 model ids, and not one of those
  * requests had a user key — so there was no account any of those users could
@@ -14,7 +14,7 @@
  * what a surface should test when it has one; this alternation is for the
  * surfaces that only ever see the body.
  */
-export const FREEBUFF_PROVIDER_USAGE_ERROR_PATTERN =
+export const FUCKBUFF_PROVIDER_USAGE_ERROR_PATTERN =
   /\b(?:(?:not enough|insufficient|out of)\s+credits?|(?:add|purchase|refill|top up)\s+(?:more\s+)?credits?)\b/i
 
 /**
@@ -22,22 +22,22 @@ export const FREEBUFF_PROVIDER_USAGE_ERROR_PATTERN =
  * balance page: "Out of credits. Please add credits at
  * https://www.codebuff.com/usage." That is the USER'S account running dry, so it
  * must reach the ordinary out-of-credits flow; it also matches
- * FREEBUFF_PROVIDER_USAGE_ERROR_PATTERN ("add credits"), which told a paying
+ * FUCKBUFF_PROVIDER_USAGE_ERROR_PATTERN ("add credits"), which told a paying
  * user "this is on us, not your account" (2026-09-26, CLI, lite mode).
  */
 export const CODEBUFF_OWN_CREDITS_ERROR_PATTERN = /codebuff\.com\/usage/i
 
-/** Shared copy keeps every Freebuff surface clear that the user is not billed. */
-export const FREEBUFF_PROVIDER_USAGE_MESSAGE =
-  'Freebuff ran out of provider usage and needs a refill. This is on us, not your account.'
+/** Shared copy keeps every Fuckbuff surface clear that the user is not billed. */
+export const FUCKBUFF_PROVIDER_USAGE_MESSAGE =
+  'Fuckbuff ran out of provider usage and needs a refill. This is on us, not your account.'
 
 /** Final for the request's turn: the SDK does not retry it. The per-turn spend
  * breaker that introduced it is gone; servers now send it only to a subagent
  * whose research budget is spent (web/.../chat-subagent-budget.ts and
  * free-mode-subagent-budget.ts), which fails that subagent, not the turn. */
-export const FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE = 'turn_spend_limit'
+export const FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE = 'turn_spend_limit'
 
-export const FREEBUFF_TURN_SPEND_LIMIT_MESSAGE =
+export const FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE =
   'This turn reached its model usage limit. Your session is still available — send a new message to continue from here.'
 
 /**
@@ -47,12 +47,12 @@ export const FREEBUFF_TURN_SPEND_LIMIT_MESSAGE =
  * because clients re-send the whole history, a conversation that trips it
  * keeps tripping it on DeepSeek.
  */
-export const FREEBUFF_PROVIDER_CONTENT_FILTER_ERROR_PATTERN =
+export const FUCKBUFF_PROVIDER_CONTENT_FILTER_ERROR_PATTERN =
   /\bcontent exists risk\b/i
 
 /** Says what to DO: the raw string reads like our bug, and the same request
  *  will be refused again, so the only way forward is a different model. */
-export const FREEBUFF_PROVIDER_CONTENT_FILTER_MESSAGE =
+export const FUCKBUFF_PROVIDER_CONTENT_FILTER_MESSAGE =
   "DeepSeek's provider declined this request (content filter). Retrying on DeepSeek will be declined again, since the whole conversation is re-sent. Try again with another model, e.g. GLM 5.3 Flash or MiMo."
 
 /**
@@ -61,13 +61,13 @@ export const FREEBUFF_PROVIDER_CONTENT_FILTER_MESSAGE =
  * apply for Daybreak access …". Seen on GPT-6.1 Sol (2026-09-30). Applied to
  * the request's content, so the same conversation is refused again on retry.
  */
-export const FREEBUFF_PROVIDER_CYBER_RISK_ERROR_PATTERN =
+export const FUCKBUFF_PROVIDER_CYBER_RISK_ERROR_PATTERN =
   /flagged for possible cybersecurity risk/i
 
 /** Says what happened and what to DO. OpenAI's own text points at an
- *  organization-access form a Freebuff user cannot use, and after a fallback
+ *  organization-access form a Fuckbuff user cannot use, and after a fallback
  *  it used to surface as an unrelated "organization" 401 instead. */
-export const FREEBUFF_PROVIDER_CYBER_RISK_MESSAGE =
+export const FUCKBUFF_PROVIDER_CYBER_RISK_MESSAGE =
   "OpenAI declined this request: it was flagged as a possible cybersecurity risk. The same conversation will be declined again, so rephrase the request (for example, say what you are securing and why), or continue with another model such as DeepSeek V4.1 Flash or GLM 5.3 Flash."
 
 /**
@@ -85,20 +85,20 @@ export const FREEBUFF_PROVIDER_CYBER_RISK_MESSAGE =
  * MiMo (Xiaomi). **None of them had sent their own provider key**, so the
  * link's advice could not work for a single one of them.
  */
-export const FREEBUFF_PROVIDER_UPSTREAM_RATE_LIMIT_ERROR_PATTERN =
+export const FUCKBUFF_PROVIDER_UPSTREAM_RATE_LIMIT_ERROR_PATTERN =
   /\brate-limited upstream\b|\badd your own key to accumulate your rate limits\b/i
 
 /**
  * Says whose problem it is and what to DO. The provider's own sentence points
  * at an account page on a gateway the user has no relationship with — the same
- * defect as {@link FREEBUFF_PROVIDER_CYBER_RISK_MESSAGE}'s Daybreak link — and
+ * defect as {@link FUCKBUFF_PROVIDER_CYBER_RISK_MESSAGE}'s Daybreak link — and
  * its only advice, "retry shortly", is what a user does for an hour while
  * every attempt is refused for the same reason.
  *
  * Names no model, so it is also correct for a presented (bait) request, where
  * the served model's id may never be shown.
  */
-export const FREEBUFF_PROVIDER_UPSTREAM_RATE_LIMIT_MESSAGE =
+export const FUCKBUFF_PROVIDER_UPSTREAM_RATE_LIMIT_MESSAGE =
   'The provider serving this model is rate-limiting requests right now — this is not a problem with your account. Wait a minute and send it again, or continue with another model such as GLM 5.3 Flash or DeepSeek V4.1 Flash.'
 
 /**
@@ -125,5 +125,5 @@ export const FREEBUFF_PROVIDER_UPSTREAM_RATE_LIMIT_MESSAGE =
  * Says whose problem it is and what to DO, and names no upstream or served
  * model id, so it is also correct for a presented (bait) request.
  */
-export const FREEBUFF_PROVIDER_UNREACHABLE_MESSAGE =
-  'Freebuff could not get a response from the provider serving this model — the request timed out or the connection was dropped before any reply arrived. This is not a problem with your internet connection or your account. Send the message again, or continue with another model such as GLM 5.3 Flash or DeepSeek V4.1 Flash.'
+export const FUCKBUFF_PROVIDER_UNREACHABLE_MESSAGE =
+  'Fuckbuff could not get a response from the provider serving this model — the request timed out or the connection was dropped before any reply arrived. This is not a problem with your internet connection or your account. Send the message again, or continue with another model such as GLM 5.3 Flash or DeepSeek V4.1 Flash.'

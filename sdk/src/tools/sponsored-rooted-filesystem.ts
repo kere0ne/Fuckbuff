@@ -43,7 +43,7 @@ const READ_LIMIT_BYTES = 16 * 1024 * 1024
  *    links and silently follows the rest. Spellings Win32 would reinterpret
  *    (trailing dot or space, `:`, an 8.3 short name) are refused before any
  *    of that; see `sponsored-windows-paths.ts`. READ
- *    `docs/freebuff-sponsored-local-execution.md`, "The file layer without a
+ *    `docs/fuckbuff-sponsored-local-execution.md`, "The file layer without a
  *    shell (COD-642)", before giving Windows an OS sandbox.
  *
  * Every other platform is refused: there is no mechanism, so there is no run.
@@ -261,7 +261,7 @@ export function probeSponsoredFileLayer(
  * Directory enumeration reads the pinned directory, never the pathname.
  *
  * The measurements behind this, and what it does not stop, are in
- * `docs/freebuff-sponsored-local-execution.md`, "The file layer without a
+ * `docs/fuckbuff-sponsored-local-execution.md`, "The file layer without a
  * shell (COD-642)" — private, for the reason `sponsored-sandbox.ts` gives.
  */
 export function createSponsoredRootedFileSystem(options: {

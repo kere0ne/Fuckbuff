@@ -1,7 +1,7 @@
 import { createHash } from 'crypto'
 import path from 'path'
 
-import { FREEBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/fuckbuff-models'
 import z from 'zod/v4'
 
 import { getWebsiteUrl } from './constants'
@@ -48,7 +48,7 @@ export function projectProfileSurface(
 ): string {
   return (
     extraCodebuffMetadata?.surface ??
-    (extraCodebuffMetadata?.freebuff_multi_session === '1' ? 'desktop' : 'cli')
+    (extraCodebuffMetadata?.fuckbuff_multi_session === '1' ? 'desktop' : 'cli')
   )
 }
 
@@ -64,7 +64,7 @@ export function createProjectProfileClient(params: {
   const headers = {
     Authorization: `Bearer ${params.apiKey}`,
     'Content-Type': 'application/json',
-    ...(params.userId ? { [FREEBUFF_ACTING_USER_HEADER]: params.userId } : {}),
+    ...(params.userId ? { [FUCKBUFF_ACTING_USER_HEADER]: params.userId } : {}),
   }
   return {
     getProjectProfile: async ({ logger, signal }) => {

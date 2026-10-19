@@ -1,5 +1,5 @@
 /**
- * Where the Freebuff CLI keeps its auth token: the operating system's
+ * Where the Fuckbuff CLI keeps its auth token: the operating system's
  * credential store (macOS Keychain, Windows Credential Manager, the Linux
  * Secret Service) through `Bun.secrets`, instead of `credentials.json`.
  *
@@ -8,7 +8,7 @@
  * leaked into a public dotfiles repo (2026-09-30). The keychain item belongs
  * to this binary; on macOS another program reading it prompts the user.
  *
- * Freebuff only. The Codebuff CLI shares `~/.config/manicode/credentials.json`
+ * Fuckbuff only. The Codebuff CLI shares `~/.config/manicode/credentials.json`
  * with the public SDK's `getUserCredentials()`, which runs under Node (no
  * `Bun.secrets`) and would lose the token; free mode through the SDK is
  * refused server-side anyway.
@@ -98,13 +98,13 @@ export function setSecretStoreForTests(
  * login keychain.
  */
 export function resolveSecretStore(params: {
-  isFreebuff: boolean
+  isFuckbuff: boolean
   credentialsPath: string
 }): SecretStore | null {
   if (storeOverride !== undefined) return storeOverride
-  if (!params.isFreebuff) return null
+  if (!params.isFuckbuff) return null
   if (getCliEnv().NODE_ENV === 'test') return null
-  // One item per credentials file, so FREEBUFF_CONFIG_DIR profiles and dev
+  // One item per credentials file, so FUCKBUFF_CONFIG_DIR profiles and dev
   // stacks never share a token.
-  return bunSecretStore('freebuff-cli', params.credentialsPath)
+  return bunSecretStore('fuckbuff-cli', params.credentialsPath)
 }

@@ -1,4 +1,4 @@
-import { FREEBUFF_WEB_URL_PROD } from './hosts'
+import { FUCKBUFF_WEB_URL_PROD } from './hosts'
 
 /**
  * Platform Convex's prod HTTP-action origin (`harmless-tapir-303`), which is
@@ -11,7 +11,7 @@ export const PLATFORM_CONVEX_SITE_URL_PROD =
 export const CONVEX_HTTP_EDGE_PREFIX = '/api/edge'
 
 /** The freebuff.com base that non-`/api/` Convex HTTP paths hang off. */
-export const CONVEX_HTTP_EDGE_BASE_URL_PROD = `${FREEBUFF_WEB_URL_PROD}${CONVEX_HTTP_EDGE_PREFIX}`
+export const CONVEX_HTTP_EDGE_BASE_URL_PROD = `${FUCKBUFF_WEB_URL_PROD}${CONVEX_HTTP_EDGE_PREFIX}`
 
 /**
  * The freebuff.com path a Convex HTTP path is served at
@@ -37,6 +37,6 @@ export function edgePathForConvexPath(convexPath: string): string {
 export function convexHttpUrl(convexSiteUrl: string, convexPath: string): string {
   const origin = convexSiteUrl.replace(/\/+$/, '')
   return origin === PLATFORM_CONVEX_SITE_URL_PROD
-    ? `${FREEBUFF_WEB_URL_PROD}${edgePathForConvexPath(convexPath)}`
+    ? `${FUCKBUFF_WEB_URL_PROD}${edgePathForConvexPath(convexPath)}`
     : `${origin}${convexPath}`
 }

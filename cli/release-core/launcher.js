@@ -185,7 +185,7 @@ function createLauncher(productConfig) {
     startupBanner = [],
     telemetryEvent = 'cli.update_codebuff_failed',
     telemetryProperties = {},
-    // Freebuff sessions remain open between turns. The launcher cannot know
+    // Fuckbuff sessions remain open between turns. The launcher cannot know
     // when a restart is safe, so keep the process alive until the user exits.
     deferUpdatesUntilExit = false,
     tempDownloadDirName = `.${packageName}-download-temp`,
@@ -452,7 +452,7 @@ function createLauncher(productConfig) {
     }
   }
 
-  // target key -> release archive filename, e.g. freebuff-darwin-arm64.tar.gz.
+  // target key -> release archive filename, e.g. fuckbuff-darwin-arm64.tar.gz.
   // The same key indexes the published `binaryChecksums` map.
   const PLATFORM_TARGETS = Object.fromEntries(
     PLATFORM_TARGET_KEYS.map((targetKey) => [

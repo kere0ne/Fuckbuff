@@ -67,7 +67,7 @@ const RESERVED_PREFIXES: readonly string[] = Object.freeze([
   'SSH_',
   'GCM_',
   'CODEBUFF_',
-  'FREEBUFF_',
+  'FUCKBUFF_',
 ])
 
 /** Whether `name` may be declared, injected and redacted as a run credential. */

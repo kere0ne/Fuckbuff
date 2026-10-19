@@ -41,9 +41,9 @@ export function clientRunsSponsoredRunSpec(value: unknown): boolean {
  */
 export const SPONSORED_RUN_SPEC_SLOTS = {
   /** The user's own recent messages, rendered as the read-only background section. */
-  taskContext: '{{FREEBUFF_TASK_CONTEXT}}',
+  taskContext: '{{FUCKBUFF_TASK_CONTEXT}}',
   /** The credentials connected for this run, rendered as the credentials section. */
-  credentials: '{{FREEBUFF_CREDENTIALS}}',
+  credentials: '{{FUCKBUFF_CREDENTIALS}}',
 } as const
 
 export type SponsoredRunSpec = Readonly<{

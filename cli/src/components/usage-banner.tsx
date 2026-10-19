@@ -1,4 +1,4 @@
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { TextAttributes } from '@opentui/core'
 import { safeOpen } from '../utils/open-url'
 import React, { useEffect, useMemo } from 'react'
@@ -43,7 +43,7 @@ const formatRenewalDate = (dateStr: string | null): string => {
 }
 
 export const UsageBanner = ({ showTime }: { showTime: number }) => {
-  if (IS_FREEBUFF) return null
+  if (IS_FUCKBUFF) return null
 
   const sessionCreditsUsed = useChatStore((state) => state.sessionCreditsUsed)
   const setInputMode = useChatStore((state) => state.setInputMode)

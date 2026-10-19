@@ -4,17 +4,17 @@
  * The subscription rule is the reason this file exists. A subscription-backed
  * row's `limit` is a private allowance that REPLACES the shared pool for one
  * model, so a header taken from it advertises sessions that every other row in
- * the section is unable to spend. `docs/freebuff-model-subscriptions.md`
+ * the section is unable to spend. `docs/fuckbuff-model-subscriptions.md`
  * described this skip as already shipped while no client implemented it.
  */
 import { describe, expect, it } from 'bun:test'
 
 import {
-  getFreebuffSectionQuotas,
-  getFreebuffSharedPoolQuota,
-} from '../freebuff-session-pools'
+  getFuckbuffSectionQuotas,
+  getFuckbuffSharedPoolQuota,
+} from '../fuckbuff-session-pools'
 
-import type { FreebuffSessionRateLimit } from '../../types/freebuff-session'
+import type { FuckbuffSessionRateLimit } from '../../types/fuckbuff-session'
 
 function quota(
   model: string,
@@ -25,8 +25,8 @@ function quota(
     resetAt?: string
     subscription?: number
   } = {},
-): FreebuffSessionRateLimit {
-  const row: FreebuffSessionRateLimit = {
+): FuckbuffSessionRateLimit {
+  const row: FuckbuffSessionRateLimit = {
     model,
     pool: opts.pool,
     limit: opts.limit ?? 5,
@@ -54,7 +54,7 @@ describe('a subscription-backed row', () => {
       pro: quota('pro', { pool: 'premium', limit: 4, recentCount: 1 }),
       kimi: quota('kimi', { pool: 'premium', limit: 4, recentCount: 1 }),
     }
-    const { header, perModel } = getFreebuffSectionQuotas(
+    const { header, perModel } = getFuckbuffSectionQuotas(
       ['luna', 'pro', 'kimi'],
       quotas,
     )
@@ -69,7 +69,7 @@ describe('a subscription-backed row', () => {
     const quotas = {
       luna: quota('luna', { pool: 'subscription:tier2', limit: 40, subscription: 40 }),
     }
-    const { header } = getFreebuffSectionQuotas(['luna'], quotas)
+    const { header } = getFuckbuffSectionQuotas(['luna'], quotas)
 
     // No shared pool exists for a header to describe, so showing the
     // subscriber's real number beats showing nothing.
@@ -81,14 +81,14 @@ describe('a subscription-backed row', () => {
       luna: quota('luna', { limit: 40, subscription: 40 }),
       pro: quota('pro', { limit: 4 }),
     }
-    const { header, perModel } = getFreebuffSectionQuotas(['luna', 'pro'], quotas)
+    const { header, perModel } = getFuckbuffSectionQuotas(['luna', 'pro'], quotas)
 
     expect(header?.model).toBe('pro')
     expect(perModel.luna?.limit).toBe(40)
   })
 })
 
-describe('getFreebuffSharedPoolQuota', () => {
+describe('getFuckbuffSharedPoolQuota', () => {
   const isPremium = (id: string) => id === 'luna' || id === 'pro'
 
   it('resolves the preferred section rather than the first key', () => {
@@ -98,7 +98,7 @@ describe('getFreebuffSharedPoolQuota', () => {
       pro: quota('pro', { pool: 'premium', limit: 4 }),
     }
 
-    expect(getFreebuffSharedPoolQuota(quotas, isPremium)?.pool).toBe('premium')
+    expect(getFuckbuffSharedPoolQuota(quotas, isPremium)?.pool).toBe('premium')
   })
 
   it('falls back to every row when the section has none', () => {
@@ -106,12 +106,12 @@ describe('getFreebuffSharedPoolQuota', () => {
     // leave it with no counter instead of its own pool.
     const quotas = { glm: quota('glm', { pool: 'glm', limit: 3 }) }
 
-    expect(getFreebuffSharedPoolQuota(quotas, isPremium)?.pool).toBe('glm')
+    expect(getFuckbuffSharedPoolQuota(quotas, isPremium)?.pool).toBe('glm')
   })
 
   it('has nothing to report without a snapshot', () => {
-    expect(getFreebuffSharedPoolQuota(undefined)).toBeUndefined()
-    expect(getFreebuffSharedPoolQuota({})).toBeUndefined()
+    expect(getFuckbuffSharedPoolQuota(undefined)).toBeUndefined()
+    expect(getFuckbuffSharedPoolQuota({})).toBeUndefined()
   })
 
   it('carries the reset of the pool it picked', () => {
@@ -125,7 +125,7 @@ describe('getFreebuffSharedPoolQuota', () => {
     }
 
     // The countdown printed beside a count must come from that count's pool.
-    expect(getFreebuffSharedPoolQuota(quotas, isPremium)?.resetAt).toBe(
+    expect(getFuckbuffSharedPoolQuota(quotas, isPremium)?.resetAt).toBe(
       '2026-08-26T07:00:00.000Z',
     )
   })

@@ -22,8 +22,8 @@ const TERMINAL_COMMAND_BROKER_PROTOCOL_ENV =
 
 const MAX_REQUEST_BYTES = 4 * 1024 * 1024
 const MAX_PROTOCOL_BYTES = 64 * 1024
-const PROTOCOL_FILE_PREFIX = 'freebuff-terminal-command-broker-'
-const TERMINAL_COMMAND_BROKER_RECOVERY = 'Restart Freebuff and try again.'
+const PROTOCOL_FILE_PREFIX = 'fuckbuff-terminal-command-broker-'
+const TERMINAL_COMMAND_BROKER_RECOVERY = 'Restart Fuckbuff and try again.'
 const INCOMPLETE_RESPONSE_MESSAGE =
   'terminal command broker returned an invalid response: the result file was empty or cut off'
 
@@ -116,7 +116,7 @@ export function probeTempDirectory(
 }
 
 function tempDirectoryRecovery(problem: string): string {
-  return `${problem} Free up space there (or set TMPDIR to a writable directory), then run the command again. Freebuff does not need to be restarted.`
+  return `${problem} Free up space there (or set TMPDIR to a writable directory), then run the command again. Fuckbuff does not need to be restarted.`
 }
 
 function brokerFailure(
@@ -236,7 +236,7 @@ export function writeProtocolResponse(
     removeFile(protocolPath)
     try {
       writeDiagnostic(
-        `\nFreebuff could not record this command's result in ${path.dirname(protocolPath)}: ${errorMessage(error)}\n`,
+        `\nFuckbuff could not record this command's result in ${path.dirname(protocolPath)}: ${errorMessage(error)}\n`,
       )
     } catch {
       // The diagnostic is best-effort; the parent still reports the failure.

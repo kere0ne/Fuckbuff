@@ -209,7 +209,7 @@ describe('environment scripts', () => {
       expect(result.exitCode).toBe(0)
     }
     const rc = readFileSync(join(home, '.bashrc'), 'utf8')
-    expect(rc.match(/# freebuff-lab toolchain/g)).toHaveLength(1)
+    expect(rc.match(/# fuckbuff-lab toolchain/g)).toHaveLength(1)
     expect(rc).toContain('eval "$("$MISE_DATA_DIR/bin/mise" activate bash)"')
     const node = bash('node --version', home)
     expect(node.exitCode).toBe(127)
@@ -219,12 +219,12 @@ describe('environment scripts', () => {
   test('the collision probe reports the writer’s last edit against package.json', () => {
     const home = mkdtempSync(join(tmpdir(), 'lab-home-'))
     const repo = join(home, 'repo')
-    mkdirSync(join(home, '.cache/freebuff-lab'), { recursive: true })
+    mkdirSync(join(home, '.cache/fuckbuff-lab'), { recursive: true })
     mkdirSync(repo)
-    writeFileSync(join(home, '.cache/freebuff-lab/edits'), '1\n2\n3\n')
+    writeFileSync(join(home, '.cache/fuckbuff-lab/edits'), '1\n2\n3\n')
     writeFileSync(
       join(repo, 'package.json'),
-      JSON.stringify({ name: 'x', freebuffLabConcurrentEdit: 2 }),
+      JSON.stringify({ name: 'x', fuckbuffLabConcurrentEdit: 2 }),
     )
     const result = bash(
       LAB_ENVIRONMENTS['concurrent-package-json'].probe,

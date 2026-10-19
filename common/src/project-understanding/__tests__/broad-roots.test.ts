@@ -70,7 +70,7 @@ describe('isBroadProjectRoot on macOS', () => {
     for (const root of [
       `${home}/Documents/my-app`,
       `${home}/Desktop/site`,
-      `${home}/code/freebuff`,
+      `${home}/code/fuckbuff`,
       `${home}/Library/Mobile Documents/com~apple~CloudDocs/app`,
       `${home}/Dropbox/work/api`,
       '/tmp/scratch-app',

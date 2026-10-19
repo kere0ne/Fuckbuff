@@ -227,7 +227,7 @@ function compareAppVersionsDescending(a: string, b: string): number {
  *
  * GitHub Desktop is last. It bundles a complete Git it never puts on PATH, and it is how plenty of
  * people who have never typed `git` came to have a cloned folder at all — the exact user who opens
- * that folder in Freebuff and is told git is missing. Newest bundled version first.
+ * that folder in Fuckbuff and is told git is missing. Newest bundled version first.
  */
 export function windowsGitCandidates(
   env: NodeJS.ProcessEnv,

@@ -1,7 +1,7 @@
 /**
  * Which store owns the GitHub domain (`github_connections`,
  * `github_sync_state`) — the checked-in switch for moving it off platform
- * Convex (COD-742 batch 6, track E3; docs/freebuff-github-postgres.md). Full
+ * Convex (COD-742 batch 6, track E3; docs/fuckbuff-github-postgres.md). Full
  * tier: shadow for 7 days with zero mismatches, then a 14-day zero-call soak.
  *
  * - `convex`   Convex is the writer and the reader. Nothing in the Postgres
@@ -50,7 +50,7 @@ export function githubShadowEnabled(
  * - `convex_proxy`: the Next route is a transparent proxy to the
  *              Convex httpAction, byte for byte (signature included).
  * - `next`     the Next route verifies the HMAC on the raw body itself, drops
- *              what Convex would drop, and enqueues ONE freebuff-jobs job per
+ *              what Convex would drop, and enqueues ONE fuckbuff-jobs job per
  *              event it owns (push, installation, pull_request). Everything
  *              else Convex still acts on (feedback hub events, CI signals) is
  *              forwarded raw, so Convex re-verifies the same signature.

@@ -1,7 +1,7 @@
 /**
  * What a sponsored proposal in this terminal is ABOUT (COD-339, #3989).
  *
- * The folder's opaque id (`.freebuff/project-id`) when it has one, because an
+ * The folder's opaque id (`.fuckbuff/project-id`) when it has one, because an
  * in-place offer is keyed to the checkout it will edit; otherwise `owner/name`
  * from the `origin` remote through the shared normalizer. A folder with
  * neither gets no card at all — without a stable key there is nothing to hang
@@ -113,11 +113,11 @@ async function resolve(
   return repo ? { kind: 'repo', repoFullName: repo } : null
 }
 
-/** `.freebuff/project-id`, when it holds a well-formed id. Read, never written. */
+/** `.fuckbuff/project-id`, when it holds a well-formed id. Read, never written. */
 export function sponsoredWorkspaceId(root: string): string | null {
   try {
     const workspaceId = readFileSync(
-      join(root, '.freebuff', 'project-id'),
+      join(root, '.fuckbuff', 'project-id'),
       'utf8',
     )
       .trim()

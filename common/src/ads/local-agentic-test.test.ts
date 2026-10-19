@@ -10,11 +10,11 @@ const local = {
   NODE_ENV: 'development',
   NEXT_PUBLIC_CB_ENVIRONMENT: 'dev',
   NEXT_PUBLIC_CODEBUFF_APP_URL: 'http://localhost:3300',
-  NEXT_PUBLIC_FREEBUFF_APP_URL: 'http://localhost:3302',
+  NEXT_PUBLIC_FUCKBUFF_APP_URL: 'http://localhost:3302',
   DATABASE_URL:
-    'postgres://user:password@127.0.0.1:55432/freebuff_agentic_test',
+    'postgres://user:password@127.0.0.1:55432/fuckbuff_agentic_test',
   DIRECT_DATABASE_URL:
-    'postgres://user:password@127.0.0.1:55432/freebuff_agentic_test',
+    'postgres://user:password@127.0.0.1:55432/fuckbuff_agentic_test',
   NEXT_PUBLIC_CONVEX_URL: 'http://127.0.0.1:3320',
   REDIS_URL: 'redis://127.0.0.1:56379',
 }
@@ -37,13 +37,13 @@ describe('local agentic test authority', () => {
     ['NEXT_PUBLIC_CB_ENVIRONMENT', 'prod'],
     ['TEST_AGENTIC_ADS_CAMPAIGN', ''],
     ['NEXT_PUBLIC_CODEBUFF_APP_URL', 'https://www.codebuff.com'],
-    ['NEXT_PUBLIC_FREEBUFF_APP_URL', 'https://freebuff.com'],
-    ['DATABASE_URL', 'postgres://prod/freebuff_agentic_test'],
-    ['DIRECT_DATABASE_URL', 'postgres://prod/freebuff_agentic_test'],
+    ['NEXT_PUBLIC_FUCKBUFF_APP_URL', 'https://freebuff.com'],
+    ['DATABASE_URL', 'postgres://prod/fuckbuff_agentic_test'],
+    ['DIRECT_DATABASE_URL', 'postgres://prod/fuckbuff_agentic_test'],
     ['DATABASE_URL', 'postgres://127.0.0.1/another_database'],
     [
       'DATABASE_URL',
-      'postgres://localhost.attacker.test/freebuff_agentic_test',
+      'postgres://localhost.attacker.test/fuckbuff_agentic_test',
     ],
     ['NEXT_PUBLIC_CONVEX_URL', 'https://example.convex.cloud'],
     ['REDIS_URL', 'redis://remote:6379'],

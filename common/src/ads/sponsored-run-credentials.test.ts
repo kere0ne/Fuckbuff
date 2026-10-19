@@ -106,7 +106,7 @@ describe('parseRunCredentialDeclaration: strict', () => {
     ['npm token', 'env=NPM_TOKEN label=x'],
     ['OpenAI key', 'env=OPENAI_API_KEY label=x'],
     ['git config', 'env=GIT_ASKPASS_TOKEN label=x'],
-    ['our own', 'env=FREEBUFF_API_KEY label=x'],
+    ['our own', 'env=FUCKBUFF_API_KEY label=x'],
     ['http url', 'env=SIEVE_API_KEY label=x get_url=http://sieve.example'],
     ['javascript url', 'env=SIEVE_API_KEY label=x get_url=javascript:alert(1)'],
     ['userinfo in url', 'env=SIEVE_API_KEY label=x get_url=https://u:p@sieve.example'],

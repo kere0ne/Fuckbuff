@@ -1,11 +1,11 @@
 import { afterEach, describe, expect, test } from 'bun:test'
 
-import { FreebuffSession, requireFreebuffBinary } from '../utils'
+import { FuckbuffSession, requireFuckbuffBinary } from '../utils'
 
 const STARTUP_TIMEOUT = 60_000
 
-describe('Freebuff: Startup', () => {
-  let session: FreebuffSession | null = null
+describe('Fuckbuff: Startup', () => {
+  let session: FuckbuffSession | null = null
 
   afterEach(async () => {
     if (session) {
@@ -17,8 +17,8 @@ describe('Freebuff: Startup', () => {
   test(
     'binary renders its boot screen',
     async () => {
-      const binary = requireFreebuffBinary()
-      session = await FreebuffSession.start(binary)
+      const binary = requireFuckbuffBinary()
+      session = await FuckbuffSession.start(binary)
 
       // CI can land on multiple post-init screens; accept any known boot marker.
       const output = await session.waitForBootSignal()
@@ -38,8 +38,8 @@ describe('Freebuff: Startup', () => {
   test(
     'responds to Ctrl+C gracefully',
     async () => {
-      const binary = requireFreebuffBinary()
-      session = await FreebuffSession.start(binary)
+      const binary = requireFuckbuffBinary()
+      session = await FuckbuffSession.start(binary)
       await session.waitForReady()
 
       await session.sendKey('C-c')

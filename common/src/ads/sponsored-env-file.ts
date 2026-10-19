@@ -162,7 +162,7 @@ export async function saveSponsoredCredentialsToEnvFile(input: {
       const gitDir = await input.stagingDir?.(workspace).catch(() => null)
       const staged =
         gitDir && (await entry(gitDir))?.isDirectory()
-          ? join(gitDir, `freebuff-${name}`)
+          ? join(gitDir, `fuckbuff-${name}`)
           : (await input.isIgnored(workspace, name))
             ? join(workspace, name)
             : null

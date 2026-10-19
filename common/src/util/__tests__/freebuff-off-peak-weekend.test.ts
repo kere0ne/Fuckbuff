@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test'
 
-import { freebucksOffPeakCopy } from '../freebuff-off-peak-price'
-import { offPeakPriceAt } from '../freebuff-price-changes'
+import { freebucksOffPeakCopy } from '../fuckbuff-off-peak-price'
+import { offPeakPriceAt } from '../fuckbuff-price-changes'
 
 // DeepSeek's clock as the fast row publishes it: peak on Beijing weekdays
 // 00:00-10:00 UTC, off-peak the rest of the day and all weekend.

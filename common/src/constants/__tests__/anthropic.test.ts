@@ -104,7 +104,7 @@ describe('resolveRetiredClaudeModel', () => {
 })
 
 describe('toAnthropicModelId', () => {
-  test('maps the Freebuff Claude models to ids Anthropic accepts', () => {
+  test('maps the Fuckbuff Claude models to ids Anthropic accepts', () => {
     expect(toAnthropicModelId('anthropic/claude-opus-5.5')).toBe(
       'claude-opus-5-5',
     )

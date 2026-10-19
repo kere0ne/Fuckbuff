@@ -1,7 +1,7 @@
 /**
  * THE fit oracle: whether a sponsored skill's preflight would refuse a
  * repository, decided from the repository's FACTS before anything is
- * offered. Pure, no I/O: serving (freebuff-web), Desktop, the Web worker, the
+ * offered. Pure, no I/O: serving (fuckbuff-web), Desktop, the Web worker, the
  * CLI and the bench all call it, over facts built by the one builder here
  * ({@link sponsoredRepoFacts}).
  *
@@ -359,7 +359,7 @@ export type SponsoredFitInput = {
   /** The device OS the run would execute on, as `requirements.os` names it; null is unknown. */
   os?: SponsoredSkillOs | null
   repo?: SponsoredRepoFacts | null
-  /** A Freebuff Web (browser workspace) request: folds in `sponsoredSkillWebRefusal`. */
+  /** A Fuckbuff Web (browser workspace) request: folds in `sponsoredSkillWebRefusal`. */
   web?: boolean
 }
 

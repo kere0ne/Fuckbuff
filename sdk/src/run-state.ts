@@ -71,7 +71,7 @@ export type RunState = {
 
 /** Result of indexing `projectFiles`: the file tree plus tree-sitter token
  *  scores. Deterministic for a given file set, so hosts that run many
- *  sessions over the same files (e.g. the Freebuff web runner, one process
+ *  sessions over the same files (e.g. the Fuckbuff web runner, one process
  *  serving consecutive turns of a thread) can compute it once with
  *  `computeProjectIndexFromFiles` and pass it back via the `projectIndex`
  *  option instead of paying the tree-sitter parse (CPU + wasm memory) on
@@ -91,9 +91,9 @@ export type InitialSessionStateOptions = {
    *
    * Required by any host that embeds this runner in a DIFFERENT process from
    * the repo it is acting on, because the default loader is `fs`-based and
-   * would read THIS machine's disk. Freebuff Cloud is exactly that shape: the
-   * runner lives in the freebuff/web server process while the repo lives in a
-   * Daytona sandbox (freebuff/web/src/server/agent-runner/runTurn.ts:1346
+   * would read THIS machine's disk. Fuckbuff Cloud is exactly that shape: the
+   * runner lives in the fuckbuff/web server process while the repo lives in a
+   * Daytona sandbox (fuckbuff/web/src/server/agent-runner/runTurn.ts:1346
    * passes a sandbox `cwd` that does not exist on the web server), so it
    * injects a loader that reads the sandbox. CLI and Desktop run alongside
    * their repo and correctly leave this unset.

@@ -10,7 +10,7 @@ import { createBase3CliRoot } from './base3'
 const definition = {
   ...createBase3CliRoot({
     model: 'anthropic/claude-haiku-5.5',
-    isFreebuff: true,
+    isFuckbuff: true,
     noAskUser: true,
     noWeb: true,
     modelLabel: 'Claude Haiku 5.5',

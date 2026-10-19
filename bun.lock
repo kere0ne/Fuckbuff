@@ -108,8 +108,8 @@
         "@types/async": "^3.2.24",
       },
     },
-    "freebuff": {
-      "name": "@codebuff/freebuff",
+    "fuckbuff": {
+      "name": "@codebuff/fuckbuff",
       "version": "1.0.0",
     },
     "packages/agent-runtime": {
@@ -209,7 +209,7 @@
 
     "@codebuff/evals": ["@codebuff/evals@workspace:evals"],
 
-    "@codebuff/freebuff": ["@codebuff/freebuff@workspace:freebuff"],
+    "@codebuff/fuckbuff": ["@codebuff/fuckbuff@workspace:fuckbuff"],
 
     "@codebuff/llm-providers": ["@codebuff/llm-providers@workspace:packages/llm-providers"],
 

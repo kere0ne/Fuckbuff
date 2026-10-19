@@ -5,10 +5,10 @@ import { TerminalLink } from './terminal-link'
 import { useTheme } from '../hooks/use-theme'
 import {
   DISCORD_AFTER_LOGIN_TEXT,
-  FREEBUFF_DISCORD_INVITE_URL,
+  FUCKBUFF_DISCORD_INVITE_URL,
 } from '../login/discord-invite'
 import { useChatStore } from '../state/chat-store'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import type { TopBannerType } from '../types/store'
 import { safeOpen } from '../utils/open-url'
 import { formatCwd } from '../utils/path-helpers'
@@ -61,7 +61,7 @@ const TOP_BANNER_REGISTRY: Record<NonNullable<TopBannerType>, BannerConfig> = {
       return (
         <>
           <text style={{ wrapMode: 'word', fg: textColor }}>
-            You started {IS_FREEBUFF ? 'Freebuff' : 'Codebuff'} in a subdirectory of a git repo.
+            You started {IS_FUCKBUFF ? 'Fuckbuff' : 'Codebuff'} in a subdirectory of a git repo.
           </text>
           {gitRoot && onSwitchToGitRoot ? (
             <TerminalLink
@@ -87,8 +87,8 @@ const TOP_BANNER_REGISTRY: Record<NonNullable<TopBannerType>, BannerConfig> = {
           {DISCORD_AFTER_LOGIN_TEXT}
         </text>
         <TerminalLink
-          text={FREEBUFF_DISCORD_INVITE_URL}
-          onActivate={() => safeOpen(FREEBUFF_DISCORD_INVITE_URL)}
+          text={FUCKBUFF_DISCORD_INVITE_URL}
+          onActivate={() => safeOpen(FUCKBUFF_DISCORD_INVITE_URL)}
           underlineOnHover={true}
           lineWrap={true}
           containerStyle={{ alignItems: 'flex-start' }}

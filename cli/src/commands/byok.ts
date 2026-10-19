@@ -29,16 +29,16 @@ import type {
 import type { RouterParams } from './command-registry'
 
 export const BYOK_USAGE = [
-  'Use your own AI provider with BYOK. Freebuff saves the key variable name, not the key.',
+  'Use your own AI provider with BYOK. Fuckbuff saves the key variable name, not the key.',
   '',
   '**1. Set your API key in the terminal.**',
-  'Close Freebuff first. Use one command below. Replace `<your-provider-api-key>` with your key.',
+  'Close Fuckbuff first. Use one command below. Replace `<your-provider-api-key>` with your key.',
   "Bash / Zsh: `export PROVIDER_API_KEY='<your-provider-api-key>'`",
   "Fish: `set -gx PROVIDER_API_KEY '<your-provider-api-key>'`",
   "PowerShell: `$env:PROVIDER_API_KEY = '<your-provider-api-key>'`",
   '',
   '**2. Add your provider.**',
-  'Run `freebuff` in the same terminal. Then enter the command for your provider:',
+  'Run `fuckbuff` in the same terminal. Then enter the command for your provider:',
   'OpenRouter: `/byok add my-provider openrouter openai/gpt-oss-120b PROVIDER_API_KEY`',
   'Ollama Cloud: `/byok add my-provider openai-compatible gpt-oss:120b PROVIDER_API_KEY https://ollama.com/v1`',
   'Use `PROVIDER_API_KEY` as shown. Do not put your key in `/byok` commands.',
@@ -62,7 +62,7 @@ export const BYOK_USAGE = [
 ].join('\n')
 
 /**
- * Entry from a Freebuff wall (hours spent, daily cap reached). Those
+ * Entry from a Fuckbuff wall (hours spent, daily cap reached). Those
  * screens have no input, so without this a user who ran out could never type
  * `/byok` — the one route that does not need hours at all.
  */
@@ -77,7 +77,7 @@ export function enterByokSetup(): void {
           '',
           BYOK_USAGE,
           '',
-          'Add a connection, then `/byok select <name>` to start. `/byok off` returns to Freebuff.',
+          'Add a connection, then `/byok select <name>` to start. `/byok off` returns to Fuckbuff.',
         ].join('\n'),
       ),
     ])
@@ -298,7 +298,7 @@ function incompleteCommandMessage(usage: string, missing: string[]): string {
 }
 
 const KEY_REFERENCE_HELP =
-  'The key reference must be an environment-variable name such as PROVIDER_API_KEY. Use the NAME only, without `$`, `${...}`, `$env:`, `env:` or `=value`. Correct the name and retry; if it was already exported before Freebuff started, no restart is needed. Run `/byok help` for shell setup examples.'
+  'The key reference must be an environment-variable name such as PROVIDER_API_KEY. Use the NAME only, without `$`, `${...}`, `$env:`, `env:` or `=value`. Correct the name and retry; if it was already exported before Fuckbuff started, no restart is needed. Run `/byok help` for shell setup examples.'
 
 export async function handleByokCommand(
   params: RouterParams,
@@ -565,7 +565,7 @@ export async function handleByokCommand(
       }
       saveSelectedByokConnection(undefined)
       resetTranscriptForSourceChange(params)
-      post(params, 'BYOK is off. New runs use the Freebuff session you select.')
+      post(params, 'BYOK is off. New runs use the Fuckbuff session you select.')
       return
     }
 

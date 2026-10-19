@@ -1,7 +1,7 @@
 /**
  * One Agentic Ads Lab batch run as a reviewer reads it: what the agent said,
  * each tool call and its output, the step checks, friction reports and the
- * grade. Built from the run's `freebuff_cloud_event` rows on the server
+ * grade. Built from the run's `fuckbuff_cloud_event` rows on the server
  * (`labRunTraceEntries`), shown on the Batch runs list and written as a folder
  * of Markdown files by `agentic-ad-lab-batch.ts traces`.
  * Doc: docs/agentic-ads-lab.md, "Traces".

@@ -33,7 +33,7 @@ const LN_BASE = Math.log(TTFT_HISTOGRAM_BASE)
 /**
  * Bucket index for a TTFT sample in milliseconds.
  *
- * Mirrors the SQL in scripts/rollup-freebuff-latency.ts — keep the two in step.
+ * Mirrors the SQL in scripts/rollup-fuckbuff-latency.ts — keep the two in step.
  * Sub-millisecond and zero samples land in bucket 0 rather than at -Infinity.
  */
 export function ttftBucketIndex(ttftMs: number): number {

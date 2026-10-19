@@ -93,7 +93,7 @@ describe('containment availability, as the card reads it', () => {
     )
     // COD-642: Windows is the floor arm. A surface that has not declared it
     // offers the floor (the CLI) still reads it as the refusal it always was;
-    // Freebuff Desktop, which carries the floor broker and its consent, says so.
+    // Fuckbuff Desktop, which carries the floor broker and its consent, says so.
     expect(sponsoredLocalAvailability(sponsoredLocalContainment('win32'))).toBe(
       'unavailable:windows-no-containment',
     )
@@ -238,7 +238,7 @@ describe('the Windows floor (COD-642)', () => {
 })
 
 describe('the environment a Windows floor run gets', () => {
-  const RUN = 'C:\\Users\\u\\proj\\.freebuff\\sponsored-runtime\\run'
+  const RUN = 'C:\\Users\\u\\proj\\.fuckbuff\\sponsored-runtime\\run'
   const PATHS = {
     home: `${RUN}\\home`,
     tmp: `${RUN}\\tmp`,
@@ -290,10 +290,10 @@ describe('the environment a Windows floor run gets', () => {
   it('spells HOMEDRIVE and HOMEPATH for a project on a network share too', () => {
     // Left unset, the process-spawning layer would put the user's own pair
     // back, and PowerShell 5.1's `$HOME` would be the real home.
-    const share = '\\\\nas\\projects\\app\\.freebuff\\sponsored-runtime\\run\\home'
+    const share = '\\\\nas\\projects\\app\\.fuckbuff\\sponsored-runtime\\run\\home'
     const env = scrubSponsoredWindowsEnv(USER_ENV, { ...PATHS, home: share })
     expect(env.HOMEDRIVE).toBe('\\\\nas\\projects')
-    expect(env.HOMEPATH).toBe('\\app\\.freebuff\\sponsored-runtime\\run\\home')
+    expect(env.HOMEPATH).toBe('\\app\\.fuckbuff\\sponsored-runtime\\run\\home')
     expect(`${env.HOMEDRIVE}${env.HOMEPATH}`).toBe(share)
   })
 
@@ -488,7 +488,7 @@ describe('no dependency installs in v1', () => {
  */
 describe('the sponsored branch namespace', () => {
   test('has no trailing slash, because the grant is built by joining onto it', () => {
-    expect(SPONSORED_LOCAL_BRANCH_NAMESPACE).toBe('freebuff')
+    expect(SPONSORED_LOCAL_BRANCH_NAMESPACE).toBe('fuckbuff')
     expect(SPONSORED_LOCAL_BRANCH_NAMESPACE).not.toContain('/')
   })
 
@@ -503,7 +503,7 @@ describe('the sponsored branch namespace', () => {
   })
 
   test('the slug is ref-legal, capped, and never empty', () => {
-    // Never empty is the one that matters: `freebuff/-run-1` is a legal ref and
+    // Never empty is the one that matters: `fuckbuff/-run-1` is a legal ref and
     // an unreadable one, and a title of pure punctuation is a real advertiser
     // name away.
     expect(sponsoredLocalSlug('Sponsored: Acme Deploys')).toBe(

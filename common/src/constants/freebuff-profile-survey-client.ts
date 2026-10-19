@@ -16,7 +16,7 @@ import {
   type ProfileSurveyRequest,
   type ProfileSurveyResponse,
   type ProfileSurveyStateResponse,
-} from './freebuff-profile-survey'
+} from './fuckbuff-profile-survey'
 
 /**
  * The one seam every survey surface talks through (COD-779). Desktop and Web

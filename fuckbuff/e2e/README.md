@@ -1,6 +1,6 @@
-# Freebuff E2E Tests
+# Fuckbuff E2E Tests
 
-End-to-end tests for the Freebuff CLI binary. Tests verify that the compiled binary works correctly by interacting with it via tmux.
+End-to-end tests for the Fuckbuff CLI binary. Tests verify that the compiled binary works correctly by interacting with it via tmux.
 
 ## Architecture
 
@@ -8,14 +8,14 @@ Two testing approaches are supported:
 
 ### 1. Direct tmux tests (fast, deterministic)
 
-Use the `FreebuffSession` class to start the binary in tmux, send commands, capture output, and assert directly.
+Use the `FuckbuffSession` class to start the binary in tmux, send commands, capture output, and assert directly.
 
 ```typescript
 import { describe, test, expect, afterEach } from 'bun:test'
-import { FreebuffSession, requireFreebuffBinary } from '../utils'
+import { FuckbuffSession, requireFuckbuffBinary } from '../utils'
 
 describe('My Feature', () => {
-  let session: FreebuffSession | null = null
+  let session: FuckbuffSession | null = null
 
   afterEach(async () => {
     if (session) await session.stop()
@@ -23,8 +23,8 @@ describe('My Feature', () => {
   })
 
   test('works correctly', async () => {
-    const binary = requireFreebuffBinary()
-    session = await FreebuffSession.start(binary)
+    const binary = requireFuckbuffBinary()
+    session = await FuckbuffSession.start(binary)
 
     await session.send('/help')
     const output = await session.capture(2)
@@ -36,13 +36,13 @@ describe('My Feature', () => {
 
 ### 2. SDK agent-driven tests (AI-powered verification)
 
-Use the Codebuff SDK to run a testing agent that interacts with Freebuff via custom tmux tools. The agent reasons about the CLI output and verifies complex behaviors.
+Use the Codebuff SDK to run a testing agent that interacts with Fuckbuff via custom tmux tools. The agent reasons about the CLI output and verifies complex behaviors.
 
 ```typescript
 import { describe, test, expect, afterEach } from 'bun:test'
 import { CodebuffClient } from '@codebuff/sdk'
-import { freebuffTesterAgent } from '../agent/freebuff-tester'
-import { createFreebuffTmuxTools, requireFreebuffBinary } from '../utils'
+import { fuckbuffTesterAgent } from '../agent/fuckbuff-tester'
+import { createFuckbuffTmuxTools, requireFuckbuffBinary } from '../utils'
 
 describe('Agent Test', () => {
   let cleanup: (() => Promise<void>) | null = null
@@ -56,15 +56,15 @@ describe('Agent Test', () => {
     const apiKey = process.env.CODEBUFF_API_KEY
     if (!apiKey) return // Skip if no API key
 
-    const binary = requireFreebuffBinary()
-    const tmuxTools = createFreebuffTmuxTools(binary)
+    const binary = requireFuckbuffBinary()
+    const tmuxTools = createFuckbuffTmuxTools(binary)
     cleanup = tmuxTools.cleanup
 
     const client = new CodebuffClient({ apiKey })
     const result = await client.run({
-      agent: freebuffTesterAgent.id,
-      prompt: 'Start Freebuff and verify the branding is correct.',
-      agentDefinitions: [freebuffTesterAgent],
+      agent: fuckbuffTesterAgent.id,
+      prompt: 'Start Fuckbuff and verify the branding is correct.',
+      agentDefinitions: [fuckbuffTesterAgent],
       customToolDefinitions: tmuxTools.tools,
       handleEvent: () => {},
     })
@@ -79,26 +79,26 @@ describe('Agent Test', () => {
 `tests/live-turn.e2e.test.ts` is the one file here that talks to the real backend:
 it navigates the landing picker to DeepSeek V4.1 Flash, starts a session, sends a
 prompt, waits for the answer, then runs `/end-session` and checks the backend shows
-no open session. It skips unless `FREEBUFF_SMOKE_API_KEY` (or
+no open session. It skips unless `FUCKBUFF_SMOKE_API_KEY` (or
 `CODEBUFF_API_KEY`) is set, and needs a binary built with the production public
-env. It is not in `freebuff-e2e.yml` — `.github/workflows/prod-smoke.yml`
+env. It is not in `fuckbuff-e2e.yml` — `.github/workflows/prod-smoke.yml`
 runs it on a schedule and before each release.
 
 ```bash
 NEXT_PUBLIC_CB_ENVIRONMENT=prod NEXT_PUBLIC_CODEBUFF_APP_URL=https://www.codebuff.com \
-NEXT_PUBLIC_FREEBUFF_APP_URL=https://freebuff.com NEXT_PUBLIC_SUPPORT_EMAIL=support@freebuff.com \
+NEXT_PUBLIC_FUCKBUFF_APP_URL=https://freebuff.com NEXT_PUBLIC_SUPPORT_EMAIL=support@freebuff.com \
 NEXT_PUBLIC_POSTHOG_API_KEY=test NEXT_PUBLIC_POSTHOG_HOST_URL=http://127.0.0.1:9 \
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=test NEXT_PUBLIC_STRIPE_CUSTOMER_PORTAL=http://127.0.0.1:9 \
-NEXT_PUBLIC_WEB_PORT=3000 bun freebuff/cli/build.ts 0.0.0-smoke
-CODEBUFF_API_KEY=<your token> bun test freebuff/e2e/tests/live-turn.e2e.test.ts --timeout=300000
+NEXT_PUBLIC_WEB_PORT=3000 bun fuckbuff/cli/build.ts 0.0.0-smoke
+CODEBUFF_API_KEY=<your token> bun test fuckbuff/e2e/tests/live-turn.e2e.test.ts --timeout=300000
 ```
 
-The CLI runs with its own `FREEBUFF_CONFIG_DIR`, so your real profile is untouched.
+The CLI runs with its own `FUCKBUFF_CONFIG_DIR`, so your real profile is untouched.
 
 ## Prerequisites
 
 - **tmux** must be installed: `brew install tmux` (macOS) or `sudo apt-get install tmux` (Ubuntu)
-- **Freebuff binary** must be built: `bun freebuff/cli/build.ts 0.0.0-dev`
+- **Fuckbuff binary** must be built: `bun fuckbuff/cli/build.ts 0.0.0-dev`
 - **SDK built** (for agent tests): `cd sdk && bun run build`
 - **CODEBUFF_API_KEY** (for agent tests only): Set this environment variable
 
@@ -107,57 +107,57 @@ The CLI runs with its own `FREEBUFF_CONFIG_DIR`, so your real profile is untouch
 ### Build the binary first
 
 ```bash
-bun freebuff/cli/build.ts 0.0.0-dev
+bun fuckbuff/cli/build.ts 0.0.0-dev
 ```
 
 ### Run all tests
 
 ```bash
-bun test freebuff/e2e/tests/
+bun test fuckbuff/e2e/tests/
 ```
 
 ### Run a specific test
 
 ```bash
-bun test freebuff/e2e/tests/version.e2e.test.ts
-bun test freebuff/e2e/tests/startup.e2e.test.ts
-bun test freebuff/e2e/tests/help-command.e2e.test.ts
-bun test freebuff/e2e/tests/agent-startup.e2e.test.ts
+bun test fuckbuff/e2e/tests/version.e2e.test.ts
+bun test fuckbuff/e2e/tests/startup.e2e.test.ts
+bun test fuckbuff/e2e/tests/help-command.e2e.test.ts
+bun test fuckbuff/e2e/tests/agent-startup.e2e.test.ts
 ```
 
 ### Use a custom binary path
 
 ```bash
-FREEBUFF_BINARY=/path/to/freebuff bun test freebuff/e2e/tests/
+FUCKBUFF_BINARY=/path/to/fuckbuff bun test fuckbuff/e2e/tests/
 ```
 
 ## Adding New Tests
 
-1. Create a new file in `freebuff/e2e/tests/` with the naming convention `<feature>.e2e.test.ts`
-2. Add an `e2e - <name>` step to the `build-and-e2e-freebuff` job in
-   `.github/workflows/freebuff-e2e.yml`, with the same `if:` as its siblings so it
+1. Create a new file in `fuckbuff/e2e/tests/` with the naming convention `<feature>.e2e.test.ts`
+2. Add an `e2e - <name>` step to the `build-and-e2e-fuckbuff` job in
+   `.github/workflows/fuckbuff-e2e.yml`, with the same `if:` as its siblings so it
    still runs when another suite fails. Keep it off the network: that job has no
    credentials, so anything that needs a real backend belongs in `prod-smoke.yml`.
 
 ## CI Workflow
 
-The `.github/workflows/freebuff-e2e.yml` workflow:
+The `.github/workflows/fuckbuff-e2e.yml` workflow:
 
-1. **Builds** the Freebuff binary once (linux-x64) and smoke-boots it
+1. **Builds** the Fuckbuff binary once (linux-x64) and smoke-boots it
 2. **Runs each suite as its own step** in that same job, against that binary
 3. **Uploads tmux session logs** on failure for debugging
 4. **Builds and smoke-boots on Windows** in a separate job (no tmux there)
 
 Triggers: pull requests to `main` or `great-db-merge-v2`, pushes to `main`, manual
-`workflow_dispatch`, and `freebuff-release.yml` before each release.
+`workflow_dispatch`, and `fuckbuff-release.yml` before each release.
 
 ## Utilities Reference
 
-### `FreebuffSession`
+### `FuckbuffSession`
 
 | Method | Description |
 |--------|-------------|
-| `FreebuffSession.start(binaryPath)` | Start binary in tmux, returns session |
+| `FuckbuffSession.start(binaryPath)` | Start binary in tmux, returns session |
 | `session.send(text)` | Send text input (presses Enter) |
 | `session.sendKey(key)` | Send special key (e.g. `'C-c'`, `'Escape'`) |
 | `session.capture(waitSec?)` | Capture terminal output |
@@ -165,17 +165,17 @@ Triggers: pull requests to `main` or `great-db-merge-v2`, pushes to `main`, manu
 | `session.waitForText(pattern, timeoutMs?)` | Poll until text appears |
 | `session.stop()` | Stop session and clean up |
 
-### `createFreebuffTmuxTools(binaryPath)`
+### `createFuckbuffTmuxTools(binaryPath)`
 
 Creates SDK custom tools for agent-driven testing:
-- `start_freebuff` - Launch the CLI
-- `send_to_freebuff` - Send text input
-- `capture_freebuff_output` - Capture terminal output
-- `stop_freebuff` - Stop and clean up
+- `start_fuckbuff` - Launch the CLI
+- `send_to_fuckbuff` - Send text input
+- `capture_fuckbuff_output` - Capture terminal output
+- `stop_fuckbuff` - Stop and clean up
 
 ### Helper functions
 
 | Function | Description |
 |----------|-------------|
-| `requireFreebuffBinary()` | Get binary path, throws if not found |
-| `getFreebuffBinaryPath()` | Get binary path (may not exist) |
+| `requireFuckbuffBinary()` | Get binary path, throws if not found |
+| `getFuckbuffBinaryPath()` | Get binary path (may not exist) |

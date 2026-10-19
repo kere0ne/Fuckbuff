@@ -3,16 +3,16 @@ import {
   PROFILE_SURVEY_MAX_DISMISSALS,
   type ProfileSurveyAnswer,
   type ProfileSurveyQuestion,
-} from './freebuff-profile-survey'
-import { formatHoursWithUnit } from '../util/freebuff-hours'
+} from './fuckbuff-profile-survey'
+import { formatHoursWithUnit } from '../util/fuckbuff-hours'
 
 /**
  * The profile survey's pure half (COD-779): what a tap does, what the card
  * says, and what to send. Shared by Desktop's card, the Web card and the
  * account page's editor, so the three cannot differ in what they post or
- * promise. The wire contract itself is `freebuff-profile-survey.ts`.
+ * promise. The wire contract itself is `fuckbuff-profile-survey.ts`.
  *
- * Mirrors the onboarding form's helpers (`freebuff-onboarding-form.ts`) for
+ * Mirrors the onboarding form's helpers (`fuckbuff-onboarding-form.ts`) for
  * the survey's own question type rather than importing them: onboarding's
  * `OnboardingQuestion` carries its "other" text field and kinds, which the
  * survey deliberately does not have.

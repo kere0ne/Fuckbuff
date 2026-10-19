@@ -6,7 +6,7 @@ import { LOGIN_WEBSITE_URL } from '../login/constants'
 import { generateLoginUrl } from '../login/login-flow'
 import { trackEvent } from '../utils/analytics'
 import { logger } from '../utils/logger'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 
 interface UseFetchLoginUrlParams {
   setLoginUrl: (url: string | null) => void
@@ -39,7 +39,7 @@ export function useFetchLoginUrl({
           baseUrl: LOGIN_WEBSITE_URL,
           fingerprintId,
           via: 'modal',
-          cliFlowId: IS_FREEBUFF ? randomUUID() : undefined,
+          cliFlowId: IS_FUCKBUFF ? randomUUID() : undefined,
         },
       )
     },

@@ -492,7 +492,7 @@ describe('the toolset the run is actually offered', () => {
     // toolNames of the definition are the only place they can be removed.
     const definition = sponsoredAgentDefinition({
       agentId: 'base3',
-      isFreebuff: true,
+      isFuckbuff: true,
     })
     expect(definition.toolNames?.length).toBeGreaterThan(0)
     for (const tool of definition.toolNames ?? []) {
@@ -505,7 +505,7 @@ describe('the toolset the run is actually offered', () => {
   test('the four tools the CLI root adds beyond the grant are gone', () => {
     const definition = sponsoredAgentDefinition({
       agentId: 'base3',
-      isFreebuff: true,
+      isFuckbuff: true,
     })
     for (const tool of [
       'ask_user',
@@ -523,10 +523,10 @@ describe('the toolset the run is actually offered', () => {
 
   test('the system prompt is APPENDED to, never prepended', () => {
     // The canonical opening must stay first (see
-    // FREEBUFF_ROOT_SYSTEM_PROMPT_OPENINGS and docs/freebuff-base3-harness.md).
+    // FUCKBUFF_ROOT_SYSTEM_PROMPT_OPENINGS and docs/fuckbuff-base3-harness.md).
     const plain = sponsoredAgentDefinition({
       agentId: 'base3',
-      isFreebuff: true,
+      isFuckbuff: true,
     })
     expect(plain.systemPrompt?.startsWith('You are Buffy')).toBe(true)
     expect(plain.systemPrompt).toContain('UNCOMMITTED')
@@ -535,13 +535,13 @@ describe('the toolset the run is actually offered', () => {
   test('report_friction is offered, and named in the prompt, only when asked for', () => {
     const plain = sponsoredAgentDefinition({
       agentId: 'base3',
-      isFreebuff: true,
+      isFuckbuff: true,
     })
     expect(plain.toolNames).not.toContain('report_friction')
     expect(plain.systemPrompt).not.toContain('report_friction')
     const reporting = sponsoredAgentDefinition({
       agentId: 'base3',
-      isFreebuff: true,
+      isFuckbuff: true,
       reportFriction: true,
     })
     expect(reporting.toolNames).toContain('report_friction')
@@ -558,7 +558,7 @@ describe('the toolset the run is actually offered', () => {
     // The sponsored definition is the caller's own root, never a new agent id
     // (see FREE_MODE_AGENT_MODELS).
     expect(
-      sponsoredAgentDefinition({ agentId: 'base3-free-mimo', isFreebuff: true })
+      sponsoredAgentDefinition({ agentId: 'base3-free-mimo', isFuckbuff: true })
         .id,
     ).toBe('base3-free-mimo')
   })

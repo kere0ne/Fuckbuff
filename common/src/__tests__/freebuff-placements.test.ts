@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 
-import { AD_CAMPAIGN_STATUSES } from '../constants/freebuff-ads'
+import { AD_CAMPAIGN_STATUSES } from '../constants/fuckbuff-ads'
 import {
   ACTIVATION_ATTRIBUTION_WINDOW_DAYS,
   clampPlacementDailyCapCents,
@@ -45,9 +45,9 @@ import {
   isServing,
   placementDisplayStatus,
   spendUsd,
-} from '../constants/freebuff-placements'
+} from '../constants/fuckbuff-placements'
 
-import type { PlacementTotals } from '../constants/freebuff-placements'
+import type { PlacementTotals } from '../constants/fuckbuff-placements'
 
 function totals(overrides: Partial<PlacementTotals> = {}): PlacementTotals {
   return {
@@ -173,7 +173,7 @@ describe('display status', () => {
 
   it('covers every ad_campaign_status with a label', () => {
     // Mirrors the "status unions mirror the database enums" test in
-    // freebuff-ads.test.ts. A status added to the pg enum and not here renders
+    // fuckbuff-ads.test.ts. A status added to the pg enum and not here renders
     // as a blank cell rather than an error.
     for (const status of AD_CAMPAIGN_STATUSES) {
       expect(PLACEMENT_STATUS_LABELS[status]).toBeTruthy()
@@ -250,7 +250,7 @@ describe('copy and configuration', () => {
     // surface costs a house creative and a pinned rollup row.
     expect(bySurface('cli_chat')).toBe(15)
     expect(bySurface('waiting_room')).toBe(4)
-    expect(bySurface('freebuff_web_chat')).toBe(12)
+    expect(bySurface('fuckbuff_web_chat')).toBe(12)
     expect(bySurface('chat_assistant')).toBe(1)
   })
 
@@ -283,7 +283,7 @@ describe('copy and configuration', () => {
     expect(placementFormat('Desktop-Showcase')).toBe('showcase')
     expect(placementFormat('Desktop-Intermission')).toBe('intermission')
     // Resolvable as slots, exactly like every other sellable id.
-    for (const id of breaks) expect(placementSurface(id)).toBe(id.endsWith(':web') ? 'freebuff_web_chat' : 'cli_chat')
+    for (const id of breaks) expect(placementSurface(id)).toBe(id.endsWith(':web') ? 'fuckbuff_web_chat' : 'cli_chat')
     expect(SPONSOR_BREAK_FORMATS).toEqual([
       'showcase',
       'spotlight',
@@ -312,7 +312,7 @@ describe('copy and configuration', () => {
       expect([id, isPartnerPlacement(id)]).toEqual([id, true])
       expect([id, isSponsorBreakPlacement(id)]).toEqual([id, false])
       expect([id, isInterruptingBreakPlacement(id)]).toEqual([id, false])
-      expect([id, placementSurface(id)]).toEqual([id, id.endsWith(':web') ? 'freebuff_web_chat' : 'cli_chat'])
+      expect([id, placementSurface(id)]).toEqual([id, id.endsWith(':web') ? 'fuckbuff_web_chat' : 'cli_chat'])
     }
     expect(isPartnerFormat('inline')).toBe(false)
     expect(isSponsorBreakFormat('partner')).toBe(false)

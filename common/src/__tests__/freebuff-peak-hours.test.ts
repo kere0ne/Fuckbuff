@@ -13,7 +13,7 @@ import {
   isDeepSeekExpensiveWindow,
   isSupportedTimeZone,
   resolveWindowTimeZone,
-} from '../constants/freebuff-peak-hours'
+} from '../constants/fuckbuff-peak-hours'
 
 /**
  * Runs `body` in a runtime that reports `zone` as its own, the way a device

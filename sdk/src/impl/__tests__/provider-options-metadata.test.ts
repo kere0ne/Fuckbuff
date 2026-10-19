@@ -21,13 +21,13 @@ describe('getProviderOptions — codebuff_metadata', () => {
   it('merges extraCodebuffMetadata into codebuff_metadata', () => {
     const opts = getProviderOptions({
       ...baseParams,
-      extraCodebuffMetadata: { freebuff_instance_id: 'abc-123' },
+      extraCodebuffMetadata: { fuckbuff_instance_id: 'abc-123' },
     })
     const meta = (opts.codebuff as any).codebuff_metadata
     expect(meta).toMatchObject({
       run_id: 'run-1',
       client_id: 'session-1',
-      freebuff_instance_id: 'abc-123',
+      fuckbuff_instance_id: 'abc-123',
     })
   })
 
@@ -37,19 +37,19 @@ describe('getProviderOptions — codebuff_metadata', () => {
     expect(Object.keys(meta)).toEqual(
       expect.arrayContaining(['run_id', 'client_id']),
     )
-    expect(meta.freebuff_instance_id).toBeUndefined()
+    expect(meta.fuckbuff_instance_id).toBeUndefined()
   })
 
   it('cost_mode passes through alongside extra metadata', () => {
     const opts = getProviderOptions({
       ...baseParams,
       costMode: 'free',
-      extraCodebuffMetadata: { freebuff_instance_id: 'uuid-xyz' },
+      extraCodebuffMetadata: { fuckbuff_instance_id: 'uuid-xyz' },
     })
     const meta = (opts.codebuff as any).codebuff_metadata
     expect(meta).toMatchObject({
       cost_mode: 'free',
-      freebuff_instance_id: 'uuid-xyz',
+      fuckbuff_instance_id: 'uuid-xyz',
     })
   })
 
@@ -58,15 +58,15 @@ describe('getProviderOptions — codebuff_metadata', () => {
       ...baseParams,
       costMode: 'free',
       extraCodebuffMetadata: {
-        freebuff_client_env: 'v1;in=1',
-        freebuff_input_profile: 'v1;tc=3',
+        fuckbuff_client_env: 'v1;in=1',
+        fuckbuff_input_profile: 'v1;tc=3',
         client_id: 'evil-client',
         cost_mode: 'normal',
       },
     })
     const meta = (opts.codebuff as any).codebuff_metadata
-    expect(meta.freebuff_client_env).toBe('v1;in=1')
-    expect(meta.freebuff_input_profile).toBe('v1;tc=3')
+    expect(meta.fuckbuff_client_env).toBe('v1;in=1')
+    expect(meta.fuckbuff_input_profile).toBe('v1;tc=3')
     expect(meta.client_id).toBe('session-1')
     expect(meta.cost_mode).toBe('free')
   })

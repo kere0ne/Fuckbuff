@@ -3,7 +3,7 @@ export type IntegrationApp = {
   /** Catalog slug, e.g. `gmail`. */
   slug: string
   name: string
-  /** Served from Freebuff's logo route, never a third-party host. */
+  /** Served from Fuckbuff's logo route, never a third-party host. */
   logo: string
 }
 
@@ -40,12 +40,12 @@ export type IntegrationsClient = {
   disconnect(accountId: string): Promise<void>
 }
 
-/** Freebuff web page that finishes a connection for the signed-in account. */
+/** Fuckbuff web page that finishes a connection for the signed-in account. */
 export const INTEGRATIONS_CALLBACK_PATH = '/integrations/callback'
-/** Freebuff web route that serves an app's logo by slug. */
+/** Fuckbuff web route that serves an app's logo by slug. */
 export const INTEGRATION_LOGO_PATH = '/api/integrations/logo'
 /** BroadcastChannel the callback page posts to, so an open Settings tab updates at once. */
-export const INTEGRATIONS_CHANNEL = 'freebuff-integrations'
+export const INTEGRATIONS_CHANNEL = 'fuckbuff-integrations'
 
 export const MAX_INTEGRATION_ACCOUNTS_PER_APP = 5
 export const MAX_INTEGRATION_SEARCH_CHARS = 80

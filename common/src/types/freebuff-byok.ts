@@ -1,5 +1,5 @@
 /**
- * Account-level "bring your own key" providers: stored with the Freebuff
+ * Account-level "bring your own key" providers: stored with the Fuckbuff
  * account and used by Cloud runs from Desktop and the web. Distinct from
  * Desktop's device-local providers, whose keys never leave the computer.
  *
@@ -60,7 +60,7 @@ export function byokConnectionLabel(name: string) {
 export const ACCOUNT_BYOK_MAX_CONNECTIONS = 20
 
 /** Browser writes carry this header, which a cross-site form cannot send. */
-export const ACCOUNT_BYOK_REQUEST_HEADER = 'x-freebuff-byok'
+export const ACCOUNT_BYOK_REQUEST_HEADER = 'x-fuckbuff-byok'
 
 export interface AccountByokConnection {
   id: string

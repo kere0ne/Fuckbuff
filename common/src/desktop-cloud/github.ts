@@ -34,7 +34,7 @@ export type GitHubStatus = {
   connected: boolean
   login?: string
 }
-/** Freebuff web page that finishes a GitHub connection for the signed-in
+/** Fuckbuff web page that finishes a GitHub connection for the signed-in
  * account; the Cloud API's GitHub callback relays the OAuth code to it. */
 export const GITHUB_CONNECT_COMPLETE_PATH = '/cloud/github/callback'
 /** An account or organization a new repository can be created under. */
@@ -42,7 +42,7 @@ export type GitHubOwner = { login: string; organization: boolean }
 export type GitHubOwners = {
   /** The connected GitHub account. */
   login: string
-  /** Accounts where the Freebuff GitHub App is installed with write access; the user's own first. */
+  /** Accounts where the Fuckbuff GitHub App is installed with write access; the user's own first. */
   owners: GitHubOwner[]
   /** Where the user installs the app on another account. */
   installUrl: string

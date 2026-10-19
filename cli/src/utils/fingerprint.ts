@@ -53,7 +53,7 @@ async function loadSystemInformation(): Promise<SystemInformation> {
  * Linux that native read throws `Failed to get CPU information` when
  * /proc/stat and /proc/cpuinfo list different CPU counts. proot-distro (Termux)
  * binds a hardcoded 8-core /proc/stat over the real one, so on a 9-core phone
- * the mismatch is permanent (CodebuffAI/freebuff#1374).
+ * the mismatch is permanent (CodebuffAI/fuckbuff#1374).
  *
  * systeminformation's `cpu()` reads `os.cpus()[0].model` inside a
  * `process.nextTick` callback, where no caller try/catch can reach it: the

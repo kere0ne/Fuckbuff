@@ -1,38 +1,38 @@
 import { beforeAll, expect, test } from 'bun:test'
 import { createTestRenderer } from '@opentui/core/testing'
 import { createRoot, flushSync } from '@opentui/react'
-import { FREEBUFF_GLM_V53_FLASH_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
-import { FreebuffChatFooter } from '../freebuff-chat-footer'
+import { FUCKBUFF_GLM_V53_FLASH_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
+import { FuckbuffChatFooter } from '../fuckbuff-chat-footer'
 import { initializeThemeStore } from '../../hooks/use-theme'
 import { useChatStore } from '../../state/chat-store'
-import { useFreebuffModelStore } from '../../state/freebuff-model-store'
-import { useFreebuffChatStore } from '../../state/freebuff-chat-store'
+import { useFuckbuffModelStore } from '../../state/fuckbuff-model-store'
+import { useFuckbuffChatStore } from '../../state/fuckbuff-chat-store'
 
 beforeAll(initializeThemeStore)
 
 test.each([120, 42])(
   'footer reflects model, reasoning and chat name at %s columns',
   async (width) => {
-    const previousModel = useFreebuffModelStore.getState()
-    const previousNext = useFreebuffChatStore.getState().nextModel
+    const previousModel = useFuckbuffModelStore.getState()
+    const previousNext = useFuckbuffChatStore.getState().nextModel
     const previousMessages = useChatStore.getState().messages
     const setup = await createTestRenderer({ width, height: 5 })
     const root = createRoot(setup.renderer)
     try {
-      useFreebuffModelStore.setState({
-        selectedModel: FREEBUFF_GLM_V53_FLASH_MODEL_ID,
+      useFuckbuffModelStore.setState({
+        selectedModel: FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
         reasoningEffortByModel: {},
       })
-      useFreebuffChatStore.setState({ nextModel: null })
+      useFuckbuffChatStore.setState({ nextModel: null })
       useChatStore.setState({ messages: [] })
       flushSync(() =>
-        root.render(<FreebuffChatFooter projectRoot="/tmp/project" />),
+        root.render(<FuckbuffChatFooter projectRoot="/tmp/project" />),
       )
       await setup.renderOnce()
       expect(setup.captureCharFrame().replace(/\s+/g, ' ')).toContain('Chat: New chat')
       flushSync(() => {
-        useFreebuffModelStore.setState({
-          reasoningEffortByModel: { [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: 'low' },
+        useFuckbuffModelStore.setState({
+          reasoningEffortByModel: { [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: 'low' },
         })
         useChatStore.setState({
           messages: [
@@ -53,8 +53,8 @@ test.each([120, 42])(
     } finally {
       flushSync(() => root.unmount())
       setup.renderer.destroy()
-      useFreebuffModelStore.setState(previousModel)
-      useFreebuffChatStore.setState({ nextModel: previousNext })
+      useFuckbuffModelStore.setState(previousModel)
+      useFuckbuffChatStore.setState({ nextModel: previousNext })
       useChatStore.setState({ messages: previousMessages })
     }
   },

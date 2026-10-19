@@ -1,11 +1,11 @@
-import { FREEBUFF_WEB_URL_PROD } from './hosts'
+import { FUCKBUFF_WEB_URL_PROD } from './hosts'
 import {
-  FREEBUFF_FREE_TIER_ALLOWANCE,
-  FREEBUFF_SUBSCRIPTION_TIERS,
-} from './freebuff-subscriptions'
+  FUCKBUFF_FREE_TIER_ALLOWANCE,
+  FUCKBUFF_SUBSCRIPTION_TIERS,
+} from './fuckbuff-subscriptions'
 
 /**
- * Copy for the Freebuff subscription promotion.
+ * Copy for the Fuckbuff subscription promotion.
  *
  * TWO CONSUMERS, ONE CATALOG. {@link HOUSE_AD_VARIATIONS} is the creative set
  * the house CAMPAIGN is seeded from (`scripts/seed-house-subscription-campaign.ts`),
@@ -39,9 +39,9 @@ import {
  * price we print on the pricing page anyway -- but do not reach for anything
  * server-owned when editing it.
  *
- * DEPLOY GOTCHA: a `common/`-only change does NOT redeploy `freebuff-web`
- * (Render treats its `rootDir: freebuff/web` as an auto-deploy path filter).
- * After editing copy here, check BOTH `web` and `freebuff-web` by commit
+ * DEPLOY GOTCHA: a `common/`-only change does NOT redeploy `fuckbuff-web`
+ * (Render treats its `rootDir: fuckbuff/web` as an auto-deploy path filter).
+ * After editing copy here, check BOTH `web` and `fuckbuff-web` by commit
  * ancestry and trigger the one that skipped. Campaign creative edits are
  * database rows and need no deploy at all -- that is the point of running the
  * promotion as a campaign.
@@ -57,13 +57,13 @@ import {
  */
 export type HouseAdSurface =
   | 'waiting_room'
-  | 'freebuff_web_chat'
+  | 'fuckbuff_web_chat'
   | 'chat_assistant'
   | 'chat_assistant_sr'
   | 'cli_chat'
 
 /** Where every house ad sends the reader. */
-export const HOUSE_AD_DESTINATION_URL = `${FREEBUFF_WEB_URL_PROD}/plans`
+export const HOUSE_AD_DESTINATION_URL = `${FUCKBUFF_WEB_URL_PROD}/plans`
 
 /**
  * The entry price, read from the subscription catalog rather than typed in.
@@ -75,16 +75,16 @@ export const HOUSE_AD_DESTINATION_URL = `${FREEBUFF_WEB_URL_PROD}/plans`
  * A price change also moves every string's LENGTH, which is why the width
  * budget below is asserted in a test rather than eyeballed once.
  */
-const ENTRY_TIER = FREEBUFF_SUBSCRIPTION_TIERS[0]
+const ENTRY_TIER = FUCKBUFF_SUBSCRIPTION_TIERS[0]
 const PRICE = `$${ENTRY_TIER?.priceUsd ?? 8}/mo`
 
 /**
  * What the plan actually BUYS, read from the same catalog as the price.
  *
- * These are the only claims this promotion may make. A Freebuff subscription
+ * These are the only claims this promotion may make. A Fuckbuff subscription
  * grants SESSIONS -- it does not remove ads and it does not skip a queue.
  * Nothing on any serve path reads subscription status: `_post.ts`, the
- * Freebuff web route and the Desktop display route all serve a subscriber
+ * Fuckbuff web route and the Desktop display route all serve a subscriber
  * exactly what they serve everybody else, and the `waiting_room` surface is
  * the CLI landing screen rather than an admission queue.
  *
@@ -109,14 +109,14 @@ const SESSIONS_PER_MONTH = ENTRY_TIER?.monthlySessions ?? 50
 /**
  * THE TIER'S OWN NAME, because the copy used to get it wrong.
  *
- * Every line here read "Freebuff Pro" while `PRICE` and `SESSIONS_PER_DAY`
- * interpolated `FREEBUFF_SUBSCRIPTION_TIERS[0]` -- Starter, $8, 3 sessions.
+ * Every line here read "Fuckbuff Pro" while `PRICE` and `SESSIONS_PER_DAY`
+ * interpolated `FUCKBUFF_SUBSCRIPTION_TIERS[0]` -- Starter, $8, 3 sessions.
  * `Pro` is a REAL and DIFFERENT tier at $60 with 11, so the promotion sold Pro
  * at Starter's price and Starter's allowance, and `/plans` contradicted it the
  * moment the reader arrived. Read from the catalog for the same reason the
  * price is: a name typed here drifts from the thing being sold.
  *
- * Most titles now say plain `Freebuff` -- the tier is named in the body where
+ * Most titles now say plain `Fuckbuff` -- the tier is named in the body where
  * there is room for it, and the title's job at 12 columns is to say who is
  * talking.
  */
@@ -138,7 +138,7 @@ const TIER_NAME = ENTRY_TIER?.displayName ?? 'Starter'
  * increment beside it is what keeps the display line honest for both readers;
  * inline there is no room to, so inline stays on the increment.
  */
-const FREE_PER_DAY = FREEBUFF_FREE_TIER_ALLOWANCE.dailySessions
+const FREE_PER_DAY = FUCKBUFF_FREE_TIER_ALLOWANCE.dailySessions
 const TOTAL_PER_DAY = SESSIONS_PER_DAY + FREE_PER_DAY
 
 export interface HouseAdCreative {
@@ -167,7 +167,7 @@ export interface HouseAdCreative {
  * The materializer falls back to this instead, which also means the promotion
  * looks the same whichever mechanism filled the slot.
  */
-export const HOUSE_AD_FAVICON_URL = `${FREEBUFF_WEB_URL_PROD}/favicon/favicon-32x32.ico`
+export const HOUSE_AD_FAVICON_URL = `${FUCKBUFF_WEB_URL_PROD}/favicon/favicon-32x32.ico`
 
 const FAVICON = HOUSE_AD_FAVICON_URL
 
@@ -228,7 +228,7 @@ const inline = (title: string, adText: string): HouseAdCreative => ({
  * deactivating the superseded rows in the console, or the gate re-arms and the
  * measurement never finishes.
  *
- * SAY THE UNIT. `freebuffPlanHrs` exists because "3/day" left people guessing at
+ * SAY THE UNIT. `fuckbuffPlanHrs` exists because "3/day" left people guessing at
  * the unit -- 3 what? -- and `/plans` therefore says "7 hours a day". This copy
  * said "3 more a day" on the surface where the reader has the LEAST context, so
  * every line now carries `hours`/`hrs`. Where the abbreviation appears it is the
@@ -247,15 +247,15 @@ export const HOUSE_AD_VARIATIONS: Readonly<
   // The transcript. Width-constrained and read mid-task, so the claim has to
   // land in one glance.
   cli_chat: Object.freeze([
-    inline('Freebuff', `+${SESSIONS_PER_DAY} hours a day. ${PRICE}`),
+    inline('Fuckbuff', `+${SESSIONS_PER_DAY} hours a day. ${PRICE}`),
     // The BENEFIT, not the count. Every other line here leads with a number,
     // which quietly invites the reader to decide whether that number is
     // enough -- a question an ad cannot win mid-task, and one `/plans` is the
     // right place to answer. This one leads with what they get and lets the
     // price close.
-    inline('Freebuff', `Get more usage. ${PRICE}.`),
-    inline('Freebuff', `Every model. +${SESSIONS_PER_DAY} hrs a day.`),
-    inline('Freebuff', `+${SESSIONS_PER_MONTH} hours a month. ${PRICE}`),
+    inline('Fuckbuff', `Get more usage. ${PRICE}.`),
+    inline('Fuckbuff', `Every model. +${SESSIONS_PER_DAY} hrs a day.`),
+    inline('Fuckbuff', `+${SESSIONS_PER_MONTH} hours a month. ${PRICE}`),
   ]),
   // The CLI landing screen -- where somebody is choosing a model, and where
   // running out of sessions is the thing actually on their mind. So this is
@@ -263,36 +263,36 @@ export const HOUSE_AD_VARIATIONS: Readonly<
   // the offer. "Out of runs?" said it in a word the product uses nowhere;
   // an hour is the unit the allowance is actually counted in.
   waiting_room: Object.freeze([
-    inline('Freebuff', `+${SESSIONS_PER_DAY} hours a day. ${PRICE}`),
+    inline('Fuckbuff', `+${SESSIONS_PER_DAY} hours a day. ${PRICE}`),
     inline('Out of time?', `${TIER_NAME} adds ${SESSIONS_PER_DAY} hrs a day.`),
     // The one claim on this surface that is about the SHAPE of an hour rather
     // than the count of them -- `/plans` promises "unlimited usage inside each
     // hour" and no ad has ever said it, though it is the first thing somebody
     // staring at a session counter wants to know.
-    inline('Freebuff', `Unlimited use in each hour.`),
+    inline('Fuckbuff', `Unlimited use in each hour.`),
     inline('Need more?', `Get more usage. ${PRICE}.`),
   ]),
-  freebuff_web_chat: Object.freeze([
-    inline('Freebuff', `+${SESSIONS_PER_DAY} hours a day. ${PRICE}`),
+  fuckbuff_web_chat: Object.freeze([
+    inline('Fuckbuff', `+${SESSIONS_PER_DAY} hours a day. ${PRICE}`),
     // The BENEFIT, not the count. Every other line here leads with a number,
     // which quietly invites the reader to decide whether that number is
     // enough -- a question an ad cannot win mid-task, and one `/plans` is the
     // right place to answer. This one leads with what they get and lets the
     // price close.
-    inline('Freebuff', `Get more usage. ${PRICE}.`),
-    inline('Freebuff', `Every model. +${SESSIONS_PER_DAY} hrs a day.`),
-    inline('Freebuff', `+${SESSIONS_PER_MONTH} hours a month. ${PRICE}`),
+    inline('Fuckbuff', `Get more usage. ${PRICE}.`),
+    inline('Fuckbuff', `Every model. +${SESSIONS_PER_DAY} hrs a day.`),
+    inline('Fuckbuff', `+${SESSIONS_PER_MONTH} hours a month. ${PRICE}`),
   ]),
   chat_assistant: Object.freeze([
-    inline('Freebuff', `+${SESSIONS_PER_DAY} hours a day. ${PRICE}`),
+    inline('Fuckbuff', `+${SESSIONS_PER_DAY} hours a day. ${PRICE}`),
     // The BENEFIT, not the count. Every other line here leads with a number,
     // which quietly invites the reader to decide whether that number is
     // enough -- a question an ad cannot win mid-task, and one `/plans` is the
     // right place to answer. This one leads with what they get and lets the
     // price close.
-    inline('Freebuff', `Get more usage. ${PRICE}.`),
-    inline('Freebuff', `Every model. +${SESSIONS_PER_DAY} hrs a day.`),
-    inline('Freebuff', `+${SESSIONS_PER_MONTH} hours a month. ${PRICE}`),
+    inline('Fuckbuff', `Get more usage. ${PRICE}.`),
+    inline('Fuckbuff', `Every model. +${SESSIONS_PER_DAY} hrs a day.`),
+    inline('Fuckbuff', `+${SESSIONS_PER_MONTH} hours a month. ${PRICE}`),
   ]),
   // DRAFT (COD-407). The server-rendered-ads experiment arm of
   // `chat_assistant`: the SAME slot above the composer under a distinct
@@ -303,9 +303,9 @@ export const HOUSE_AD_VARIATIONS: Readonly<
   // total over `AD_SURFACES`; there is no sellable slot for it in
   // `PLACEMENT_SLOTS`, so only the FLOOR ever serves it, never the campaign.
   chat_assistant_sr: Object.freeze([
-    inline('Freebuff Pro', `${SESSIONS_PER_DAY} more a day. ${PRICE}`),
-    inline('Freebuff Pro', `${SESSIONS_PER_MONTH} more a month. ${PRICE}`),
-    inline('Freebuff Pro', `Every model, +${SESSIONS_PER_DAY} a day.`),
+    inline('Fuckbuff Pro', `${SESSIONS_PER_DAY} more a day. ${PRICE}`),
+    inline('Fuckbuff Pro', `${SESSIONS_PER_MONTH} more a month. ${PRICE}`),
+    inline('Fuckbuff Pro', `Every model, +${SESSIONS_PER_DAY} a day.`),
     inline('Need more?', `Pro starts at ${PRICE}.`),
   ]),
 })
@@ -323,7 +323,7 @@ export const HOUSE_AD_CREATIVES: Readonly<
 > = Object.freeze({
   cli_chat: HOUSE_AD_VARIATIONS.cli_chat[0]!,
   waiting_room: HOUSE_AD_VARIATIONS.waiting_room[0]!,
-  freebuff_web_chat: HOUSE_AD_VARIATIONS.freebuff_web_chat[0]!,
+  fuckbuff_web_chat: HOUSE_AD_VARIATIONS.fuckbuff_web_chat[0]!,
   chat_assistant: HOUSE_AD_VARIATIONS.chat_assistant[0]!,
   chat_assistant_sr: HOUSE_AD_VARIATIONS.chat_assistant_sr[0]!,
 })
@@ -422,12 +422,12 @@ export const HOUSE_BREAK_AD_VARIATIONS: Readonly<
 export const HOUSE_AD_DISPLAY_VARIATIONS: readonly HouseAdCreative[] =
   Object.freeze([
     {
-      title: `Freebuff ${TIER_NAME}`,
+      title: `Fuckbuff ${TIER_NAME}`,
       adText: `${SESSIONS_PER_DAY} more hours a day on every model — ${TOTAL_PER_DAY} a day in total, from ${PRICE}.`,
       cta: 'See plans',
       url: HOUSE_AD_DESTINATION_URL,
       favicon: FAVICON,
-      imageUrl: `${FREEBUFF_WEB_URL_PROD}/opengraph-image.png`,
+      imageUrl: `${FUCKBUFF_WEB_URL_PROD}/opengraph-image.png`,
     },
     {
       title: 'Out of time today?',
@@ -435,7 +435,7 @@ export const HOUSE_AD_DISPLAY_VARIATIONS: readonly HouseAdCreative[] =
       cta: 'See plans',
       url: HOUSE_AD_DESTINATION_URL,
       favicon: FAVICON,
-      imageUrl: `${FREEBUFF_WEB_URL_PROD}/opengraph-image.png`,
+      imageUrl: `${FUCKBUFF_WEB_URL_PROD}/opengraph-image.png`,
     },
     {
       title: 'Every model, everywhere',
@@ -443,7 +443,7 @@ export const HOUSE_AD_DISPLAY_VARIATIONS: readonly HouseAdCreative[] =
       cta: 'See plans',
       url: HOUSE_AD_DESTINATION_URL,
       favicon: FAVICON,
-      imageUrl: `${FREEBUFF_WEB_URL_PROD}/opengraph-image.png`,
+      imageUrl: `${FUCKBUFF_WEB_URL_PROD}/opengraph-image.png`,
     },
   ])
 

@@ -1,6 +1,6 @@
 /**
  * Which skill versions are the "same offer" for an open card
- * (docs/freebuff-agentic-ads.md, "Skill versions: the merge is the review").
+ * (docs/fuckbuff-agentic-ads.md, "Skill versions: the merge is the review").
  *
  * A card freezes the procedure hash it was offered with. When the rollout
  * moves its campaign to a later version of the same skill, the card stays

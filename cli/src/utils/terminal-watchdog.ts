@@ -9,7 +9,7 @@
  *
  * POSIX:
  * - We spawn a detached `/bin/sh` whose stdin is a pipe from this process.
- *   `sh` isn't named node/bun/codebuff/freebuff, so process-name kill sweeps
+ *   `sh` isn't named node/bun/codebuff/fuckbuff, so process-name kill sweeps
  *   miss it, and `detached` puts it in its own session so process-group kills
  *   miss it too.
  * - The watchdog blocks on `cat` until the pipe hits EOF — which only happens
@@ -178,7 +178,7 @@ function psQuote(value: string): string {
  * Placeholder the bootstrap replaces with the owner's creation time (a Windows
  * FILETIME) before launching the grandchild. Only digits ever replace it.
  */
-const OWNER_START_TOKEN = '__FREEBUFF_OWNER_START__'
+const OWNER_START_TOKEN = '__FUCKBUFF_OWNER_START__'
 
 /** Two reads of one creation time agree exactly; 1ms of slack absorbs rounding. */
 const OWNER_START_TOLERANCE_TICKS = 10_000

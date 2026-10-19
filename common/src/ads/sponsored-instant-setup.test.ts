@@ -11,7 +11,7 @@ import {
 const CREDENTIAL =
   'requires-credential: env=SIEVE_API_KEY label="Sieve API key" get_url=https://sieve.example/signup?bfcid={bfcid}'
 const SETUP =
-  'instant-setup: env=SIEVE_API_KEY endpoint=https://api.sieve.example/freebuff/instant-setup'
+  'instant-setup: env=SIEVE_API_KEY endpoint=https://api.sieve.example/fuckbuff/instant-setup'
 
 describe('declaredInstantSetup', () => {
   test('reads one declaration matching the one declared credential', () => {
@@ -19,7 +19,7 @@ describe('declaredInstantSetup', () => {
       declaredInstantSetup(['Step 1', CREDENTIAL, SETUP].join('\n')),
     ).toEqual({
       env: 'SIEVE_API_KEY',
-      endpoint: 'https://api.sieve.example/freebuff/instant-setup',
+      endpoint: 'https://api.sieve.example/fuckbuff/instant-setup',
     })
   })
 

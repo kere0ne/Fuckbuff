@@ -1,7 +1,7 @@
 import {
   AD_PLATFORM_HOSTS,
   type AdPlatform,
-} from '../constants/freebuff-ads'
+} from '../constants/fuckbuff-ads'
 
 /**
  * Deterministic validation of a link to the comment somebody left.

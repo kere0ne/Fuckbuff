@@ -13,20 +13,20 @@
  * per-model pool rows, any of which crossing the threshold is worth a word.
  */
 import type {
-  FreebuffSessionRateLimit,
-  FreebuffSubscriptionInfo,
-} from '../types/freebuff-session'
+  FuckbuffSessionRateLimit,
+  FuckbuffSubscriptionInfo,
+} from '../types/fuckbuff-session'
 
-export const FREEBUFF_NEAR_LIMIT_FRACTION = 0.8
+export const FUCKBUFF_NEAR_LIMIT_FRACTION = 0.8
 
-export type FreebuffLimitNudgeState =
+export type FuckbuffLimitNudgeState =
   | { kind: 'near'; label: string; used: number; limit: number }
   | { kind: 'wall'; label: string }
 
-export function resolveFreebuffLimitNudge(params: {
-  subscription?: Pick<FreebuffSubscriptionInfo, 'tierId' | 'usage' | 'blockedBy'> | null
-  rateLimits?: Record<string, Pick<FreebuffSessionRateLimit, 'recentCount' | 'limit' | 'poolLabel'> | undefined> | null
-}): FreebuffLimitNudgeState | null {
+export function resolveFuckbuffLimitNudge(params: {
+  subscription?: Pick<FuckbuffSubscriptionInfo, 'tierId' | 'usage' | 'blockedBy'> | null
+  rateLimits?: Record<string, Pick<FuckbuffSessionRateLimit, 'recentCount' | 'limit' | 'poolLabel'> | undefined> | null
+}): FuckbuffLimitNudgeState | null {
   const subscription = params.subscription
   if (subscription?.tierId && subscription.usage) {
     if (subscription.blockedBy) {
@@ -41,7 +41,7 @@ export function resolveFreebuffLimitNudge(params: {
     for (const [label, used, limit] of windows) {
       if (
         limit > 0 &&
-        used / limit >= FREEBUFF_NEAR_LIMIT_FRACTION &&
+        used / limit >= FUCKBUFF_NEAR_LIMIT_FRACTION &&
         used < limit
       ) {
         return { kind: 'near', label, used, limit }
@@ -51,13 +51,13 @@ export function resolveFreebuffLimitNudge(params: {
   }
   const rateLimits = params.rateLimits
   if (!rateLimits) return null
-  let best: FreebuffLimitNudgeState | null = null
+  let best: FuckbuffLimitNudgeState | null = null
   for (const row of Object.values(rateLimits)) {
     if (!row || !(row.limit > 0)) continue
     if (row.recentCount >= row.limit) {
       return { kind: 'wall', label: 'your free sessions' }
     }
-    if (row.recentCount / row.limit >= FREEBUFF_NEAR_LIMIT_FRACTION && !best) {
+    if (row.recentCount / row.limit >= FUCKBUFF_NEAR_LIMIT_FRACTION && !best) {
       best = {
         kind: 'near',
         label: row.poolLabel

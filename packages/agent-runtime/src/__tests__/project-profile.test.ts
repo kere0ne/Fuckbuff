@@ -56,8 +56,8 @@ describe('shouldOfferProjectProfileTool', () => {
 
   test('skips the project-understanding agent, which reports its own profile', () => {
     for (const agentId of [
-      'freebuff-project-understanding',
-      'codebuff/freebuff-project-understanding@1.0.0',
+      'fuckbuff-project-understanding',
+      'codebuff/fuckbuff-project-understanding@1.0.0',
     ]) {
       expect(shouldOfferProjectProfileTool({ ...base, agentId })).toBe(false)
     }

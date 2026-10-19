@@ -13,7 +13,7 @@ import {
   isValidTopUpCents,
   statementKindForReason,
   topUpAmountError,
-} from '../freebuff-topups'
+} from '../fuckbuff-topups'
 
 describe('the entry rule', () => {
   it('accepts every preset', () => {
@@ -49,7 +49,7 @@ describe('the entry rule', () => {
     // There is deliberately no normalizeTopUpCents. Snapping-and-clamping is
     // right for a slider and catastrophic for money: it would turn a $20,000
     // top-up into the cap with no error anywhere.
-    const constants = require('../freebuff-topups') as Record<string, unknown>
+    const constants = require('../fuckbuff-topups') as Record<string, unknown>
     expect(constants.normalizeTopUpCents).toBeUndefined()
   })
 

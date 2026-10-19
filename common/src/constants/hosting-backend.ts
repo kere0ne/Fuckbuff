@@ -1,7 +1,7 @@
 /**
- * Which store owns Freebuff hosting (the `deployments`, `domain` and
+ * Which store owns Fuckbuff hosting (the `deployments`, `domain` and
  * `project_domain` tables) — the checked-in switch for moving hosting off
- * platform Convex (COD-742 batch 5, track E4; docs/freebuff-hosting-postgres.md).
+ * platform Convex (COD-742 batch 5, track E4; docs/fuckbuff-hosting-postgres.md).
  *
  * - `convex`   (default): Convex is the writer and the reader. Nothing in the
  *              Postgres port runs: no job is enqueued, the graphile cron for

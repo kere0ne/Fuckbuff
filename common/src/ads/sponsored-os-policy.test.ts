@@ -23,10 +23,10 @@ describe('per-OS switches (COD-642 Windows, COD-655 Linux)', () => {
   test('one table: each switched OS names its own env knob and Desktop surface', () => {
     expect(SPONSORED_OS_SWITCHES).toEqual({
       windows: {
-        env: 'FREEBUFF_SPONSORED_WINDOWS',
+        env: 'FUCKBUFF_SPONSORED_WINDOWS',
         surface: 'desktop_windows',
       },
-      linux: { env: 'FREEBUFF_SPONSORED_LINUX', surface: 'desktop_linux' },
+      linux: { env: 'FUCKBUFF_SPONSORED_LINUX', surface: 'desktop_linux' },
     })
   })
 
@@ -53,13 +53,13 @@ describe('per-OS switches (COD-642 Windows, COD-655 Linux)', () => {
     for (const value of [undefined, '', 'off', 'on'])
       readSponsoredOsPolicy(
         'linux',
-        { FREEBUFF_SPONSORED_LINUX: value },
+        { FUCKBUFF_SPONSORED_LINUX: value },
         { onUnrecognised },
       )
     expect(seen).toEqual([])
     readSponsoredOsPolicy(
       'linux',
-      { FREEBUFF_SPONSORED_LINUX: ' on ' },
+      { FUCKBUFF_SPONSORED_LINUX: ' on ' },
       { onUnrecognised },
     )
     expect(seen).toEqual([' on '])
@@ -108,9 +108,9 @@ describe('the Windows names are views of the per-OS policy, unchanged', () => {
   test('reader, state, constants and capability agree with the generic ones', () => {
     for (const value of [undefined, 'on', ...CLOSED]) {
       expect(
-        readSponsoredWindowsPolicy({ FREEBUFF_SPONSORED_WINDOWS: value }),
+        readSponsoredWindowsPolicy({ FUCKBUFF_SPONSORED_WINDOWS: value }),
       ).toBe(
-        readSponsoredOsPolicy('windows', { FREEBUFF_SPONSORED_WINDOWS: value }),
+        readSponsoredOsPolicy('windows', { FUCKBUFF_SPONSORED_WINDOWS: value }),
       )
       expect(sponsoredWindowsSwitchState(value)).toBe(
         sponsoredOsSwitchState(value),

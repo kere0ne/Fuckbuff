@@ -241,13 +241,13 @@ export function byokRequestTransform(connection: ResolvedByokConnection) {
     endpoint === 'https://openrouter.ai/api/v1/chat/completions' &&
     connection.model.startsWith('openai/')
 
-  // Standalone BYOK has no required Freebuff account. Attribute to the provider
+  // Standalone BYOK has no required Fuckbuff account. Attribute to the provider
   // credential, not a connection UUID/revision that changes on re-creation.
   // Domain separation keeps this fingerprint specific to this purpose; the key
   // itself must never enter the request body or its diagnostic metadata.
   const identifier = openRouterOpenAI
     ? createHash('sha256')
-        .update('freebuff-byok:openrouter:user:')
+        .update('fuckbuff-byok:openrouter:user:')
         .update(connection.apiKey)
         .digest('hex')
     : undefined

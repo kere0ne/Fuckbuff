@@ -1,6 +1,6 @@
 /**
  * The project-understanding template: the sections the project-understanding agent fills in
- * about the project a session is working in (docs/freebuff-project-understanding.md).
+ * about the project a session is working in (docs/fuckbuff-project-understanding.md).
  *
  * The backend owns the template and serves it with the "is a run due"
  * answer, so a section can be added or reworded with a web deploy and no

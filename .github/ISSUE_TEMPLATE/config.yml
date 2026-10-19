@@ -17,9 +17,9 @@ contact_links:
     about: Usage questions get answered much faster in Discord than in the tracker.
 
   - name: Documentation
-    url: https://codebuff.com/docs
+    url: https://github.com/kere0ne/Fuckbuff
     about: Check the docs before filing - especially for setup and configuration.
 
   - name: Security vulnerability
-    url: https://github.com/CodebuffAI/freebuff/security/policy
+    url: https://github.com/kere0ne/Fuckbuff/security/policy
     about: Please report privately. Do not open a public issue.

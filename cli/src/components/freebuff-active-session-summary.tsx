@@ -1,28 +1,28 @@
 import React from 'react'
-import { getFreebucksInfo } from '@codebuff/common/types/freebuff-session'
-import { getFreebuffModelMeter } from '@codebuff/common/util/freebuff-session-pools'
+import { getFreebucksInfo } from '@codebuff/common/types/fuckbuff-session'
+import { getFuckbuffModelMeter } from '@codebuff/common/util/fuckbuff-session-pools'
 
-import { useFreebuffSessionProgress } from '../hooks/use-freebuff-session-progress'
+import { useFuckbuffSessionProgress } from '../hooks/use-fuckbuff-session-progress'
 import { useNow } from '../hooks/use-now'
 import { useTheme } from '../hooks/use-theme'
-import { formatFreebuffPremiumResetCountdown } from '../utils/freebuff-premium-reset'
+import { formatFuckbuffPremiumResetCountdown } from '../utils/fuckbuff-premium-reset'
 import { formatSessionUnits } from '../utils/format-session-units'
 
-import type { FreebuffSessionResponse } from '../types/freebuff-session'
+import type { FuckbuffSessionResponse } from '../types/fuckbuff-session'
 
-interface FreebuffActiveSessionSummaryProps {
-  session: FreebuffSessionResponse | null
+interface FuckbuffActiveSessionSummaryProps {
+  session: FuckbuffSessionResponse | null
 }
 
-export const FreebuffActiveSessionSummary: React.FC<
-  FreebuffActiveSessionSummaryProps
+export const FuckbuffActiveSessionSummary: React.FC<
+  FuckbuffActiveSessionSummaryProps
 > = ({ session }) => {
   const theme = useTheme()
   const now = useNow(60_000, session?.status === 'active')
-  const progress = useFreebuffSessionProgress(session)
+  const progress = useFuckbuffSessionProgress(session)
   if (session?.status !== 'active' || !progress) return null
 
-  const { quota } = getFreebuffModelMeter({
+  const { quota } = getFuckbuffModelMeter({
     model: session.model,
     freebucks: getFreebucksInfo(session),
     quota: session.rateLimit,
@@ -32,7 +32,7 @@ export const FreebuffActiveSessionSummary: React.FC<
     return null
   }
 
-  const resetCountdown = formatFreebuffPremiumResetCountdown(
+  const resetCountdown = formatFuckbuffPremiumResetCountdown(
     new Date(quota.resetAt),
     now,
   )

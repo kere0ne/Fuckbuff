@@ -10,15 +10,15 @@ describe('repoFullNameFromRemote', () => {
   // one key, or the same repository is two targets depending on how it was
   // cloned.
   for (const remote of [
-    'https://github.com/codebuff/freebuff.git',
-    'https://github.com/codebuff/freebuff',
-    'git@github.com:codebuff/freebuff.git',
-    'ssh://git@github.com/codebuff/freebuff.git',
-    'https://user:token@github.com/codebuff/freebuff.git',
-    '  git@github.com:Codebuff/Freebuff.git  ',
+    'https://github.com/codebuff/fuckbuff.git',
+    'https://github.com/codebuff/fuckbuff',
+    'git@github.com:codebuff/fuckbuff.git',
+    'ssh://git@github.com/codebuff/fuckbuff.git',
+    'https://user:token@github.com/codebuff/fuckbuff.git',
+    '  git@github.com:Codebuff/Fuckbuff.git  ',
   ]) {
     test(`resolves ${remote.trim()}`, () => {
-      expect(repoFullNameFromRemote(remote)).toBe('codebuff/freebuff')
+      expect(repoFullNameFromRemote(remote)).toBe('codebuff/fuckbuff')
     })
   }
 
@@ -60,14 +60,14 @@ describe('repoFullNameFromRemote', () => {
 
 describe('normalizeRepoFullName', () => {
   test('lowercases, so one repository is never two targets', () => {
-    expect(normalizeRepoFullName('Codebuff/Freebuff')).toBe(
-      'codebuff/freebuff',
+    expect(normalizeRepoFullName('Codebuff/Fuckbuff')).toBe(
+      'codebuff/fuckbuff',
     )
   })
 
   test('drops a trailing .git and surrounding slashes', () => {
-    expect(normalizeRepoFullName('/codebuff/freebuff.git/')).toBe(
-      'codebuff/freebuff',
+    expect(normalizeRepoFullName('/codebuff/fuckbuff.git/')).toBe(
+      'codebuff/fuckbuff',
     )
   })
 
@@ -75,7 +75,7 @@ describe('normalizeRepoFullName', () => {
   // shape is a gate rather than a formatting nicety.
   for (const raw of [
     'codebuff',
-    'codebuff/freebuff/extra',
+    'codebuff/fuckbuff/extra',
     '../../etc/passwd',
     // `.` is inside the character class, so a dot-only segment matched the
     // shape test whole and a traversal reached the index key wearing exactly
@@ -83,9 +83,9 @@ describe('normalizeRepoFullName', () => {
     '../..',
     './.',
     'codebuff/..',
-    '../freebuff',
+    '../fuckbuff',
     'codebuff/free buff',
-    'https://github.com/codebuff/freebuff',
+    'https://github.com/codebuff/fuckbuff',
     '',
   ]) {
     test(`refuses ${JSON.stringify(raw)}`, () => {

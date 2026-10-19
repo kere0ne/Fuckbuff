@@ -1,4 +1,4 @@
-import { FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase3FastWorker } from './base3-fast'
 
@@ -11,7 +11,7 @@ import { createBase3FastWorker } from './base3-fast'
  * provider. Never registered for free mode.
  */
 const definition = {
-  ...createBase3FastWorker(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID),
+  ...createBase3FastWorker(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID),
   id: 'base3-fast-worker-deepseek-flash-evals',
   displayName: 'Buffy Worker on DeepSeek Flash (evals)',
 }

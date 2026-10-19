@@ -633,7 +633,7 @@ describe('getAxiomOnlyLogEvent', () => {
         surface: 'cli',
         placement_id: 'CLI-Chat-Inline',
         duration_ms: 42,
-        client_ua_product: 'freebuff-cli',
+        client_ua_product: 'fuckbuff-cli',
         client_ua_version: '1.2.3',
         yield_actual_attempt_chain: 'gravity>first_party',
         // Arrays must be producer-encoded as attempted_provider_chain.
@@ -697,7 +697,7 @@ describe('getAxiomOnlyLogEvent', () => {
         surface: 'cli',
         placement_id: 'CLI-Chat-Inline',
         duration_ms: 42,
-        client_ua_product: 'freebuff-cli',
+        client_ua_product: 'fuckbuff-cli',
         client_ua_version: '1.2.3',
         yield_actual_attempt_chain: 'gravity>first_party',
       },

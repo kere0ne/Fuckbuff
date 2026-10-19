@@ -2,13 +2,13 @@ import fs from 'fs'
 import path from 'path'
 
 import {
-  DEFAULT_FREEBUFF_MODEL_ID,
-  FREEBUFF_MODELS,
-  PREVIOUS_DEFAULT_FREEBUFF_MODEL_ID,
-  getFreebuffModelEfforts,
-  isFreebuffModelId,
-  migrateSupersededFreebuffModelPreference,
-} from '@codebuff/common/constants/freebuff-models'
+  DEFAULT_FUCKBUFF_MODEL_ID,
+  FUCKBUFF_MODELS,
+  PREVIOUS_DEFAULT_FUCKBUFF_MODEL_ID,
+  getFuckbuffModelEfforts,
+  isFuckbuffModelId,
+  migrateSupersededFuckbuffModelPreference,
+} from '@codebuff/common/constants/fuckbuff-models'
 import {
   isByokReasoningEffort,
   isReasoningEffort,
@@ -16,7 +16,7 @@ import {
 import {
   migrateSavedDefaultModel,
   type SavedModelStore,
-} from '@codebuff/common/util/freebuff-default-model-migration'
+} from '@codebuff/common/util/fuckbuff-default-model-migration'
 
 import { getConfigDir } from './auth'
 import { AGENT_MODES } from './constants'
@@ -30,7 +30,7 @@ import type {
 
 /** The admin config's key rule (lowercase, digits, `-`), loosened only in
  *  length. A value that fails it cannot be a key the server minted. */
-const FREEBUFF_CATALOG_KEY_PATTERN = /^[a-z0-9][a-z0-9-]{1,63}$/
+const FUCKBUFF_CATALOG_KEY_PATTERN = /^[a-z0-9][a-z0-9-]{1,63}$/
 
 const DEFAULT_SETTINGS: Settings = {
   mode: 'DEFAULT' as const,
@@ -45,30 +45,30 @@ const DEFAULT_SETTINGS: Settings = {
 export interface Settings {
   mode?: AgentMode
   adsEnabled?: boolean
-  /** Last model the user picked in the freebuff model selector. Restored on
-   *  next freebuff launch so users land in the queue for their preferred
+  /** Last model the user picked in the fuckbuff model selector. Restored on
+   *  next fuckbuff launch so users land in the queue for their preferred
    *  model without re-picking. Persisted as the canonical model id. */
-  freebuffModel?: string
-  /** Which default flip `freebuffModel` has been migrated through — see
-   *  FREEBUFF_DEFAULT_MODEL_MIGRATION_ID. */
-  freebuffModelDefaultMigration?: string
+  fuckbuffModel?: string
+  /** Which default flip `fuckbuffModel` has been migrated through — see
+   *  FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID. */
+  fuckbuffModelDefaultMigration?: string
   /** Reasoning effort the user picked per model, keyed by canonical model id.
    *  Per-model rather than a single value because the ladders differ: DeepSeek
    *  V4 offers low/high/max while Luna offers low..max, so one shared value
    *  would silently become a different rung on every model switch. A model
    *  absent from this map runs its catalog default, which is also what the
    *  server does when the client sends nothing. */
-  freebuffReasoningEfforts?: Record<string, ReasoningEffort>
+  fuckbuffReasoningEfforts?: Record<string, ReasoningEffort>
   /** The server-catalog row the user last picked, by its public KEY
-   *  (docs/freebuff-model-catalog.md). Kept beside `freebuffModel` rather than
+   *  (docs/fuckbuff-model-catalog.md). Kept beside `fuckbuffModel` rather than
    *  in it so neither mode loses the other's pick: fallback mode reads
-   *  `freebuffModel` exactly as before, and a pick made there clears this so
+   *  `fuckbuffModel` exactly as before, and a pick made there clears this so
    *  the newer pick wins when the catalog comes back. Never a handle. */
-  freebuffModelKey?: string
-  /** `freebuffReasoningEfforts` for catalog rows, keyed by row key. Separate
+  fuckbuffModelKey?: string
+  /** `fuckbuffReasoningEfforts` for catalog rows, keyed by row key. Separate
    *  because the load-time ladder check below only knows compiled models: a
    *  key would be dropped there. Checked against the row's ladder on read. */
-  freebuffCatalogReasoningEfforts?: Record<string, ReasoningEffort>
+  fuckbuffCatalogReasoningEfforts?: Record<string, ReasoningEffort>
   /** The run-scoped BYOK connection selected in this CLI. Credentials remain
    * in the OS keychain or an explicitly named environment variable. */
   byokConnection?: {
@@ -164,45 +164,45 @@ const validateSettings = (parsed: unknown): Settings => {
     settings.adsEnabled = obj.adsEnabled
   }
 
-  // Validate freebuffModel against the current picker catalog. Server support
+  // Validate fuckbuffModel against the current picker catalog. Server support
   // may intentionally outlive client visibility during a staged model
   // retirement, but an updated client must not restore a retired selection.
   if (
-    typeof obj.freebuffModel === 'string' &&
-    isFreebuffModelId(obj.freebuffModel)
+    typeof obj.fuckbuffModel === 'string' &&
+    isFuckbuffModelId(obj.fuckbuffModel)
   ) {
-    settings.freebuffModel = obj.freebuffModel
+    settings.fuckbuffModel = obj.fuckbuffModel
   }
 
   // Steer off a model that has since been superseded (MiniMax M3, MiMo 2.5 →
-  // V4 Flash) on EVERY load, so each new freebuff session starts
+  // V4 Flash) on EVERY load, so each new fuckbuff session starts
   // on the better model instead of a pick made before it existed. Picking a
   // superseded model still works for the session you are in; it just stops
   // being what the next launch opens on.
-  const replacement = migrateSupersededFreebuffModelPreference(
-    settings.freebuffModel,
-    FREEBUFF_MODELS.map((model) => model.id),
+  const replacement = migrateSupersededFuckbuffModelPreference(
+    settings.fuckbuffModel,
+    FUCKBUFF_MODELS.map((model) => model.id),
   )
-  if (replacement) settings.freebuffModel = replacement
-  if (typeof obj.freebuffModelDefaultMigration === 'string') {
-    settings.freebuffModelDefaultMigration = obj.freebuffModelDefaultMigration
+  if (replacement) settings.fuckbuffModel = replacement
+  if (typeof obj.fuckbuffModelDefaultMigration === 'string') {
+    settings.fuckbuffModelDefaultMigration = obj.fuckbuffModelDefaultMigration
   }
 
   // Validate saved efforts against BOTH the effort vocabulary and each model's
   // own ladder. A rung dropped from a catalog row (or a model that stopped
   // offering a choice at all) must not survive in the file and get sent as a
   // request the server would only have to clamp.
-  if (obj.freebuffReasoningEfforts && typeof obj.freebuffReasoningEfforts === 'object') {
+  if (obj.fuckbuffReasoningEfforts && typeof obj.fuckbuffReasoningEfforts === 'object') {
     const efforts: Record<string, ReasoningEffort> = {}
     for (const [modelId, effort] of Object.entries(
-      obj.freebuffReasoningEfforts as Record<string, unknown>,
+      obj.fuckbuffReasoningEfforts as Record<string, unknown>,
     )) {
       if (!isReasoningEffort(effort)) continue
-      if (!getFreebuffModelEfforts(modelId)?.includes(effort)) continue
+      if (!getFuckbuffModelEfforts(modelId)?.includes(effort)) continue
       efforts[modelId] = effort
     }
     if (Object.keys(efforts).length > 0) {
-      settings.freebuffReasoningEfforts = efforts
+      settings.fuckbuffReasoningEfforts = efforts
     }
   }
 
@@ -210,25 +210,25 @@ const validateSettings = (parsed: unknown): Settings => {
   // only the shape is checked here; an unknown key falls to the catalog's
   // recommendation when it is read.
   if (
-    typeof obj.freebuffModelKey === 'string' &&
-    FREEBUFF_CATALOG_KEY_PATTERN.test(obj.freebuffModelKey)
+    typeof obj.fuckbuffModelKey === 'string' &&
+    FUCKBUFF_CATALOG_KEY_PATTERN.test(obj.fuckbuffModelKey)
   ) {
-    settings.freebuffModelKey = obj.freebuffModelKey
+    settings.fuckbuffModelKey = obj.fuckbuffModelKey
   }
   if (
-    obj.freebuffCatalogReasoningEfforts &&
-    typeof obj.freebuffCatalogReasoningEfforts === 'object'
+    obj.fuckbuffCatalogReasoningEfforts &&
+    typeof obj.fuckbuffCatalogReasoningEfforts === 'object'
   ) {
     const efforts: Record<string, ReasoningEffort> = {}
     for (const [key, effort] of Object.entries(
-      obj.freebuffCatalogReasoningEfforts as Record<string, unknown>,
+      obj.fuckbuffCatalogReasoningEfforts as Record<string, unknown>,
     )) {
-      if (!FREEBUFF_CATALOG_KEY_PATTERN.test(key)) continue
+      if (!FUCKBUFF_CATALOG_KEY_PATTERN.test(key)) continue
       if (!isReasoningEffort(effort)) continue
       efforts[key] = effort
     }
     if (Object.keys(efforts).length > 0) {
-      settings.freebuffCatalogReasoningEfforts = efforts
+      settings.fuckbuffCatalogReasoningEfforts = efforts
     }
   }
 
@@ -326,78 +326,78 @@ export const saveModePreference = (mode: AgentMode): void => {
 
 /** The settings file, as the store the shared default migration runs over. */
 const settingsModelStore: SavedModelStore = {
-  readPick: () => loadSettings().freebuffModel,
-  writePick: (freebuffModel) => saveSettings({ freebuffModel }),
-  readStamp: () => loadSettings().freebuffModelDefaultMigration,
-  writeStamp: (freebuffModelDefaultMigration) =>
-    saveSettings({ freebuffModelDefaultMigration }),
+  readPick: () => loadSettings().fuckbuffModel,
+  writePick: (fuckbuffModel) => saveSettings({ fuckbuffModel }),
+  readStamp: () => loadSettings().fuckbuffModelDefaultMigration,
+  writeStamp: (fuckbuffModelDefaultMigration) =>
+    saveSettings({ fuckbuffModelDefaultMigration }),
 }
 
 /**
- * Load the saved freebuff model preference, through the one-time default
+ * Load the saved fuckbuff model preference, through the one-time default
  * migration (migrateSavedDefaultModel). Returns undefined if none is saved —
- * callers should fall back to DEFAULT_FREEBUFF_MODEL_ID.
+ * callers should fall back to DEFAULT_FUCKBUFF_MODEL_ID.
  */
-export const loadFreebuffModelPreference = (): string | undefined =>
+export const loadFuckbuffModelPreference = (): string | undefined =>
   migrateSavedDefaultModel(settingsModelStore, {
-    previous: PREVIOUS_DEFAULT_FREEBUFF_MODEL_ID,
-    current: DEFAULT_FREEBUFF_MODEL_ID,
+    previous: PREVIOUS_DEFAULT_FUCKBUFF_MODEL_ID,
+    current: DEFAULT_FUCKBUFF_MODEL_ID,
   }) ?? undefined
 
 /**
- * Save an ordinary freebuff picker preference so the next launch defaults to
+ * Save an ordinary fuckbuff picker preference so the next launch defaults to
  * it. Referral-only and retired session models are deliberately not
  * rememberable: they may be valid for the current session without being
  * selectable on the next landing screen.
  */
-export const saveFreebuffModelPreference = (model: string): void => {
-  if (!isFreebuffModelId(model)) return
+export const saveFuckbuffModelPreference = (model: string): void => {
+  if (!isFuckbuffModelId(model)) return
   // A compiled pick is the newest pick: drop any saved catalog key so the
   // catalog, when it returns, migrates this id rather than restoring an
   // older row.
-  saveSettings({ freebuffModel: model, freebuffModelKey: undefined })
+  saveSettings({ fuckbuffModel: model, fuckbuffModelKey: undefined })
 }
 
 /** The saved catalog row key, if any. Validated for shape only. */
-export const loadFreebuffModelKeyPreference = (): string | undefined =>
-  loadSettings().freebuffModelKey
+export const loadFuckbuffModelKeyPreference = (): string | undefined =>
+  loadSettings().fuckbuffModelKey
 
-/** Persist a catalog-mode pick. `freebuffModel` is left alone, so fallback
+/** Persist a catalog-mode pick. `fuckbuffModel` is left alone, so fallback
  *  mode still opens on the last compiled pick. */
-export const saveFreebuffModelKeyPreference = (key: string): void => {
-  if (!FREEBUFF_CATALOG_KEY_PATTERN.test(key)) return
-  saveSettings({ freebuffModelKey: key })
+export const saveFuckbuffModelKeyPreference = (key: string): void => {
+  if (!FUCKBUFF_CATALOG_KEY_PATTERN.test(key)) return
+  saveSettings({ fuckbuffModelKey: key })
 }
 
 /** Every saved per-row effort, keyed by catalog key. */
-export const loadFreebuffCatalogReasoningEfforts = (): Record<
+export const loadFuckbuffCatalogReasoningEfforts = (): Record<
   string,
   ReasoningEffort
-> => loadSettings().freebuffCatalogReasoningEfforts ?? {}
+> => loadSettings().fuckbuffCatalogReasoningEfforts ?? {}
 
-/** `saveFreebuffReasoningEffort` for a catalog row; same absence rule. */
-export const saveFreebuffCatalogReasoningEffort = (
+/** `saveFuckbuffReasoningEffort` for a catalog row; same absence rule. */
+export const saveFuckbuffCatalogReasoningEffort = (
   key: string,
   effort: ReasoningEffort | undefined,
 ): void => {
-  const next = { ...(loadSettings().freebuffCatalogReasoningEfforts ?? {}) }
+  const next = { ...(loadSettings().fuckbuffCatalogReasoningEfforts ?? {}) }
   if (effort === undefined) {
     delete next[key]
   } else {
     next[key] = effort
   }
-  saveSettings({ freebuffCatalogReasoningEfforts: next })
+  saveSettings({ fuckbuffCatalogReasoningEfforts: next })
 }
 
 /**
  * Load every saved per-model reasoning effort. Already validated against the
  * current catalog by `loadSettings`.
  */
-export const loadFreebuffReasoningEfforts = (): Record<
+export const loadFuckbuffReasoningEfforts = (): Record<
   string,
   ReasoningEffort
 > => {
-  return loadSettings().freebuffReasoningEfforts ?? {}
+  return loadSettings().fuckbuffReasoningEfforts ?? {}
 }
 
 /**
@@ -408,18 +408,18 @@ export const loadFreebuffReasoningEfforts = (): Record<
  * then sends no effort at all and the catalog default applies, exactly as it
  * does for a user who never touched the control.
  */
-export const saveFreebuffReasoningEffort = (
+export const saveFuckbuffReasoningEffort = (
   model: string,
   effort: ReasoningEffort | undefined,
 ): void => {
-  const existing = loadSettings().freebuffReasoningEfforts ?? {}
+  const existing = loadSettings().fuckbuffReasoningEfforts ?? {}
   const next = { ...existing }
   if (effort === undefined) {
     delete next[model]
   } else {
     next[model] = effort
   }
-  saveSettings({ freebuffReasoningEfforts: next })
+  saveSettings({ fuckbuffReasoningEfforts: next })
 }
 
 /**

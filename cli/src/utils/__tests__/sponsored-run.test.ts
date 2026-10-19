@@ -137,7 +137,7 @@ function fakes(over: Partial<SponsoredRunDeps> = {}) {
             proposalId,
             runId: binding!.runId,
             procedureSha256: PROCEDURE_SHA,
-            modelId: 'freebuff/deepseek-v4-flash',
+            modelId: 'fuckbuff/deepseek-v4-flash',
             expiresAtMs: now + 3_600_000,
             allowanceUsdMicros: 500_000,
           },
@@ -348,7 +348,7 @@ describe('the funded accept', () => {
       accept: async (proposalId, token, binding) => {
         attempts += 1
         if (attempts < 3) {
-          return { ok: false, status: 0, message: 'Could not reach Freebuff.' }
+          return { ok: false, status: 0, message: 'Could not reach Fuckbuff.' }
         }
         return fakes().deps.accept(proposalId, token, binding)
       },
@@ -416,15 +416,15 @@ describe('the turn', () => {
     if (!consent.ok) throw new Error('refused')
     expect(plan.cwd).toBe(f.root)
     expect(plan.extraCodebuffMetadata).toEqual({
-      freebuff_sponsored_proposal_id: 'proposal-1',
-      freebuff_sponsored_run_id: consent.runId,
-      freebuff_sponsored_procedure_sha256: PROCEDURE_SHA,
-      freebuff_sponsored_compute_token: `scg_1_${'a'.repeat(43)}`,
-      freebuff_sponsored_surface: 'cli',
+      fuckbuff_sponsored_proposal_id: 'proposal-1',
+      fuckbuff_sponsored_run_id: consent.runId,
+      fuckbuff_sponsored_procedure_sha256: PROCEDURE_SHA,
+      fuckbuff_sponsored_compute_token: `scg_1_${'a'.repeat(43)}`,
+      fuckbuff_sponsored_surface: 'cli',
     })
-    // No Freebuff session rides beside the grant: the user does not pay.
+    // No Fuckbuff session rides beside the grant: the user does not pay.
     expect(plan.extraCodebuffMetadata).not.toHaveProperty(
-      'freebuff_instance_id',
+      'fuckbuff_instance_id',
     )
     expect(plan.prompt).toContain(PROCEDURE)
     expect(plan.prompt).toContain('What database should I set up?')

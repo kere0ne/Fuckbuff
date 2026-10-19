@@ -1,86 +1,86 @@
-import { FREEBUFF_ENABLE_STREAK_IN_UI } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_ENABLE_STREAK_IN_UI } from '@codebuff/common/constants/fuckbuff-models'
 import {
   getReferralInfo,
   getGlmPromo,
   getSubscriptionInfo,
   getFreeWindowsInfo,
-} from '@codebuff/common/types/freebuff-session'
+} from '@codebuff/common/types/fuckbuff-session'
 import {
-  freebuffPlanSummary,
-  freebuffFreeWindowsSummary,
+  fuckbuffPlanSummary,
+  fuckbuffFreeWindowsSummary,
   formatPlanWindows,
-} from '@codebuff/common/util/freebuff-plan-summary'
+} from '@codebuff/common/util/fuckbuff-plan-summary'
 
-import { FreebuffPausedPlanNotice } from './freebuff-paused-plan-notice'
-import { FreebuffReferralBanner } from './freebuff-referral-banner'
+import { FuckbuffPausedPlanNotice } from './fuckbuff-paused-plan-notice'
+import { FuckbuffReferralBanner } from './fuckbuff-referral-banner'
 import {
-  FREEBUFF_WORDMARK,
-  FREEBUFF_WORDMARK_COMPACT,
-} from '../utils/freebuff-wordmark'
+  FUCKBUFF_WORDMARK,
+  FUCKBUFF_WORDMARK_COMPACT,
+} from '../utils/fuckbuff-wordmark'
 import { useTheme } from '../hooks/use-theme'
 import { useTerminalDimensions } from '../hooks/use-terminal-dimensions'
-import { useFreebuffStreakQuery } from '../hooks/use-freebuff-streak-query'
-import { useFreebuffModelDirectory } from '../state/freebuff-catalog-store'
-import { useFreebuffModelStore } from '../state/freebuff-model-store'
+import { useFuckbuffStreakQuery } from '../hooks/use-fuckbuff-streak-query'
+import { useFuckbuffModelDirectory } from '../state/fuckbuff-catalog-store'
+import { useFuckbuffModelStore } from '../state/fuckbuff-model-store'
 import {
-  useFreebuffChatStore,
-  selectFreebuffChatModel,
-} from '../state/freebuff-chat-store'
-import { formatHours } from '@codebuff/common/util/freebuff-hours'
+  useFuckbuffChatStore,
+  selectFuckbuffChatModel,
+} from '../state/fuckbuff-chat-store'
+import { formatHours } from '@codebuff/common/util/fuckbuff-hours'
 import { freebucksOf, freebucksRefundLine } from '../utils/freebucks'
-import { getFreebuffStreakBonusNoteForLayout } from '../utils/freebuff-streak-line'
-import { getFreebuffModelAvailabilityNotice } from '@codebuff/common/util/freebuff-model-availability'
-import type { FreebuffSessionResponse } from '../types/freebuff-session'
+import { getFuckbuffStreakBonusNoteForLayout } from '../utils/fuckbuff-streak-line'
+import { getFuckbuffModelAvailabilityNotice } from '@codebuff/common/util/fuckbuff-model-availability'
+import type { FuckbuffSessionResponse } from '../types/fuckbuff-session'
 
 const ignoreFocusTargets = () => {}
 
-const wordmarkVariants = [FREEBUFF_WORDMARK, FREEBUFF_WORDMARK_COMPACT].map(
+const wordmarkVariants = [FUCKBUFF_WORDMARK, FUCKBUFF_WORDMARK_COMPACT].map(
   (text) => ({
     text,
     width: Math.max(...text.split('\n').map((line) => line.length)),
   }),
 )
 
-export function FreebuffChatHeader({
+export function FuckbuffChatHeader({
   session,
   lastRefund = null,
   refundPending = false,
 }: {
   projectRoot: string
-  session: FreebuffSessionResponse | null
-  /** The ended hour's receipt, from `useFreebuffSession`. */
+  session: FuckbuffSessionResponse | null
+  /** The ended hour's receipt, from `useFuckbuffSession`. */
   lastRefund?: number | null
   refundPending?: boolean
 }) {
   const theme = useTheme()
   const { terminalWidth, terminalHeight } = useTerminalDimensions()
-  const selected = useFreebuffModelStore((s) => s.selectedModel)
-  const nextModel = useFreebuffChatStore((s) => s.nextModel)
-  const directory = useFreebuffModelDirectory()
+  const selected = useFuckbuffModelStore((s) => s.selectedModel)
+  const nextModel = useFuckbuffChatStore((s) => s.nextModel)
+  const directory = useFuckbuffModelDirectory()
   const model = directory.get(nextModel ?? selected)
   const freebucks = freebucksOf(session)
   // The session store clears the receipt the moment a new session goes
   // active, so this only ever describes the hour just finished.
   const refund = freebucksRefundLine(lastRefund, refundPending)
-  const plan = freebuffPlanSummary(getSubscriptionInfo(session))
-  const windows = freebuffFreeWindowsSummary(getFreeWindowsInfo(session))
-  const streak = useFreebuffStreakQuery({
-    enabled: FREEBUFF_ENABLE_STREAK_IN_UI,
+  const plan = fuckbuffPlanSummary(getSubscriptionInfo(session))
+  const windows = fuckbuffFreeWindowsSummary(getFreeWindowsInfo(session))
+  const streak = useFuckbuffStreakQuery({
+    enabled: FUCKBUFF_ENABLE_STREAK_IN_UI,
   })
   const width = Math.max(16, Math.min(68, terminalWidth - 5))
   // Use the panel's padded width budget so the wordmark stays whole on resize.
   const wordmark =
-    wordmarkVariants.find((variant) => variant.width <= width)?.text ?? 'Freebuff'
+    wordmarkVariants.find((variant) => variant.width <= width)?.text ?? 'Fuckbuff'
   const tier =
     session && 'accessTier' in session ? (session.accessTier ?? 'full') : 'full'
   const referral = getReferralInfo(session)
   const availability =
     freebucks === undefined
-      ? getFreebuffModelAvailabilityNotice(
+      ? getFuckbuffModelAvailabilityNotice(
           session && 'countryBlockReason' in session ? session : null,
         )
       : ''
-  const streakBonus = getFreebuffStreakBonusNoteForLayout({
+  const streakBonus = getFuckbuffStreakBonusNoteForLayout({
     streak: streak.data?.streak ?? 0,
     accessTier: tier,
     freebucksDailyBonus: streak.data?.freebucksDailyBonus,
@@ -109,7 +109,7 @@ export function FreebuffChatHeader({
           flexDirection: 'column',
         }}
       >
-        <FreebuffPausedPlanNotice session={session} />
+        <FuckbuffPausedPlanNotice session={session} />
         {model.warning && (
           <text style={{ fg: theme.secondary, wrapMode: 'word' }}>
             {model.warning}
@@ -154,7 +154,7 @@ export function FreebuffChatHeader({
             {availability}
           </text>
         )}
-        {FREEBUFF_ENABLE_STREAK_IN_UI && Boolean(streak.data?.streak) && (
+        {FUCKBUFF_ENABLE_STREAK_IN_UI && Boolean(streak.data?.streak) && (
           <text
             style={{ fg: theme.primary }}
           >{`${streak.data!.streak} day streak`}</text>
@@ -165,7 +165,7 @@ export function FreebuffChatHeader({
           </text>
         )}
         {referral && (
-          <FreebuffReferralBanner
+          <FuckbuffReferralBanner
             width={width - 4}
             referral={referral}
             glmPromo={getGlmPromo(session)}
@@ -173,7 +173,7 @@ export function FreebuffChatHeader({
             metered={freebucks !== undefined}
             focusedId=""
             onFocusTargetsChange={ignoreFocusTargets}
-            onSelectModel={selectFreebuffChatModel}
+            onSelectModel={selectFuckbuffChatModel}
           />
         )}
       </box>

@@ -3,12 +3,12 @@ import type { ToolName } from '@codebuff/sdk'
 import { getCliEnv } from './env'
 
 /**
- * Freebuff build-time flag. When true, the CLI is built as Freebuff (free-only variant).
+ * Fuckbuff build-time flag. When true, the CLI is built as Fuckbuff (free-only variant).
  * Injected via --define at compile time; enables dead-code elimination by the bundler.
  */
-export const IS_FREEBUFF = getCliEnv().FREEBUFF_MODE === 'true'
+export const IS_FUCKBUFF = getCliEnv().FUCKBUFF_MODE === 'true'
 
-/** Message shown when the user ends a freebuff session early. */
+/** Message shown when the user ends a fuckbuff session early. */
 export const END_SESSION_MESSAGE =
   'Ending session. Your next message starts a new one; /model changes the model.'
 
@@ -137,13 +137,13 @@ export const isMultiPromptEditor = (agentType: string): boolean => {
 /**
  * Which harness the CLI's DEFAULT and LITE modes run.
  *
- * base3 runs Codebuff DEFAULT and LITE plus every Freebuff picker model. MAX
+ * base3 runs Codebuff DEFAULT and LITE plus every Fuckbuff picker model. MAX
  * and PLAN remain on their purpose-built base2 roots below.
  *
  * Unlike Web and Cloud, the CLI has no server-side base3 kill switch: changing
  * this routing after release requires another CLI release. The earlier Flash
  * benchmark and rollback rationale remain documented in
- * docs/freebuff-base3-harness.md so future harness changes preserve that
+ * docs/fuckbuff-base3-harness.md so future harness changes preserve that
  * context.
  */
 export const CLI_HARNESS: 'base2' | 'base3' = 'base3'
@@ -160,7 +160,7 @@ const HARNESS_MODE_IDS = {
  * Mapping from agent mode to agent ID.
  * Single source of truth for all agent modes (order = cycling order).
  *
- * Freebuff resolves LITE through the selected freebuff model at send time;
+ * Fuckbuff resolves LITE through the selected fuckbuff model at send time;
  * this fallback stays on base2-free for non-runtime callers. Regular
  * Codebuff maps LITE to a paid lite root which charges credits normally.
  *
@@ -169,11 +169,11 @@ const HARNESS_MODE_IDS = {
  * fan-out — the ceremony IS the product there. PLAN never touches a file, so
  * windowed reads and single-loop-instead-of-subagents buy it nothing, and its
  * `<PLAN>` flow (see sdk-event-handlers.ts) is tuned against base2's plan-only
- * prompt. Same reasoning that kept the Freebuff Cloud planner on base2.
+ * prompt. Same reasoning that kept the Fuckbuff Cloud planner on base2.
  */
 export const AGENT_MODE_TO_ID = {
   DEFAULT: HARNESS_MODE_IDS[CLI_HARNESS].DEFAULT,
-  LITE: IS_FREEBUFF ? 'base2-free' : HARNESS_MODE_IDS[CLI_HARNESS].LITE,
+  LITE: IS_FUCKBUFF ? 'base2-free' : HARNESS_MODE_IDS[CLI_HARNESS].LITE,
   MAX: 'base2-max',
   PLAN: 'base2-plan',
 } as const
@@ -184,13 +184,13 @@ export const AGENT_MODES = Object.keys(AGENT_MODE_TO_ID) as AgentMode[]
 /**
  * Maps CLI agent mode to cost mode for billing.
  *
- * Freebuff's LITE maps to 'free' cost mode (session gate, rate limits, 0 credits
+ * Fuckbuff's LITE maps to 'free' cost mode (session gate, rate limits, 0 credits
  * for allowlisted agent+model combos). Regular Codebuff's LITE maps to 'lite' —
  * a normal paid mode (charges credits, no session gate, no country restrictions).
  */
 export const AGENT_MODE_TO_COST_MODE = {
   DEFAULT: 'normal',
-  LITE: IS_FREEBUFF ? 'free' : 'lite',
+  LITE: IS_FUCKBUFF ? 'free' : 'lite',
   MAX: 'max',
   PLAN: 'normal',
 } as const satisfies Record<

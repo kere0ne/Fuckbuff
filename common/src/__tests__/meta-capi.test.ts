@@ -54,7 +54,7 @@ describe('Meta conversion payload and attribution', () => {
       eventName: 'Purchase',
       surface: 'desktop',
       conversionValue: { value: 11.25, currency: 'USD' },
-      contentName: 'freebuff_active_day_3',
+      contentName: 'fuckbuff_active_day_3',
     }).data[0]
     expect(event?.event_name).toBe('Purchase')
     expect(event?.action_source).toBe('other')
@@ -63,7 +63,7 @@ describe('Meta conversion payload and attribution', () => {
       surface: 'desktop',
       value: 11.25,
       currency: 'USD',
-      content_name: 'freebuff_active_day_3',
+      content_name: 'fuckbuff_active_day_3',
     })
     // Value and milestone belong to Purchase alone.
     expect(
@@ -72,15 +72,15 @@ describe('Meta conversion payload and attribution', () => {
         eventName: 'CodingActivation',
         surface: 'desktop',
         conversionValue: { value: 10, currency: 'USD' },
-        contentName: 'freebuff_active_day_1',
+        contentName: 'fuckbuff_active_day_1',
       }).data[0]?.custom_data,
     ).toEqual({ surface: 'desktop' })
   })
   test('refuses a Purchase without a positive USD value or a closed milestone name', () => {
     for (const [conversionValue, contentName] of [
-      [undefined, 'freebuff_active_day_1'],
-      [{ value: 0, currency: 'USD' }, 'freebuff_active_day_1'],
-      [{ value: 10, currency: 'EUR' }, 'freebuff_active_day_1'],
+      [undefined, 'fuckbuff_active_day_1'],
+      [{ value: 0, currency: 'USD' }, 'fuckbuff_active_day_1'],
+      [{ value: 10, currency: 'EUR' }, 'fuckbuff_active_day_1'],
       [{ value: 10, currency: 'USD' }, undefined],
       [{ value: 10, currency: 'USD' }, 'Free text from a request'],
     ] as const) {

@@ -2,11 +2,11 @@ import { execFile } from 'child_process'
 
 import { resetTerminalTitle } from './terminal-title'
 import { stopActiveRun } from './active-run'
-import { IS_FREEBUFF } from './constants'
+import { IS_FUCKBUFF } from './constants'
 import { getCliEnv } from './env'
 import { exitCliCleanly, registerExitCleanup } from './exit-cleanly'
 import { recordFatalCrashSync } from './fatal-crash-report'
-import { holdsLiveFreebuffSlot } from './freebuff-session-api'
+import { holdsLiveFuckbuffSlot } from './fuckbuff-session-api'
 import { isLauncherUpdateTermination } from './launcher-update-restart'
 import { logger } from './logger'
 import { trackHelperProcess } from './helper-process-telemetry'
@@ -14,7 +14,7 @@ import { flushLiveChatState } from './run-state-storage'
 import { reportFatalErrorSync, writeTerminalControlSync } from './terminal-io'
 import { TERMINAL_RESET_SEQUENCES } from './terminal-reset-sequences'
 import { stopTerminalWatchdog } from './terminal-watchdog'
-import { useFreebuffSessionStore } from '../state/freebuff-session-store'
+import { useFuckbuffSessionStore } from '../state/fuckbuff-session-store'
 
 import type { CliRenderer } from '@opentui/core'
 
@@ -183,13 +183,13 @@ function cleanup(): boolean {
 export function exitCliWithFatalError(label: string, error: unknown): never {
   // Before teardown, while the store still says whether an hour is live. The
   // next launch ships this as `cli.fatal_crash` (see fatal-crash-report.ts).
-  let heldFreebuffSession = false
+  let heldFuckbuffSession = false
   try {
-    heldFreebuffSession =
-      IS_FREEBUFF &&
-      holdsLiveFreebuffSlot(useFreebuffSessionStore.getState().session)
+    heldFuckbuffSession =
+      IS_FUCKBUFF &&
+      holdsLiveFuckbuffSlot(useFuckbuffSessionStore.getState().session)
   } catch {}
-  recordFatalCrashSync(label, error, { heldFreebuffSession })
+  recordFatalCrashSync(label, error, { heldFuckbuffSession })
   const resetCompletedSynchronously = cleanup() || resetTerminalState()
   if (resetCompletedSynchronously) {
     stopTerminalWatchdog()
@@ -224,18 +224,18 @@ export function installProcessCleanupHandlers(cliRenderer: CliRenderer): void {
 
   // A signal from OUTSIDE the app — the terminal window closed (SIGHUP), a
   // kill/shutdown (SIGTERM), the npm launcher gone — is not the user choosing
-  // to end their Freebuff hour. It is usually how they get out of a CLI that
+  // to end their Fuckbuff hour. It is usually how they get out of a CLI that
   // froze or went blank. Ending the hour there was a pure loss: no early-end
   // refund settles, and a multi-session (`cli:`) relaunch is never covered by
   // the earlier debit, so the next launch bought the same hour again ("the CLI
   // crashed ... when manually opened again the Freebucks are deducted"). Keep
   // the hour exactly as a crash does: the live record survives, and the next
-  // launch resumes it (consumeCrashedFreebuffSession). Quitting from inside
+  // launch resumes it (consumeCrashedFuckbuffSession). Quitting from inside
   // the app (Ctrl+C, /exit) still ends it.
   const handleExternalExit = () => {
-    if (IS_FREEBUFF) {
+    if (IS_FUCKBUFF) {
       try {
-        useFreebuffSessionStore.getState().keepSlotForResume()
+        useFuckbuffSessionStore.getState().keepSlotForResume()
       } catch {
         // Never let session bookkeeping block the exit.
       }
@@ -267,11 +267,11 @@ export function installProcessCleanupHandlers(cliRenderer: CliRenderer): void {
   }
 
   // SIGTERM - Default kill signal (e.g., `kill <pid>`), and the launcher's
-  // update restart. For the latter, keep the Freebuff session the user may
+  // update restart. For the latter, keep the Fuckbuff session the user may
   // have just paid for so the relaunched binary resumes it.
   process.on('SIGTERM', () => {
     if (
-      IS_FREEBUFF &&
+      IS_FUCKBUFF &&
       process.platform !== 'win32' &&
       isLauncherUpdateTermination({
         launcherPid,
@@ -279,15 +279,15 @@ export function installProcessCleanupHandlers(cliRenderer: CliRenderer): void {
         isProcessRunning: isProcessRunningSync,
       })
     ) {
-      const { session } = useFreebuffSessionStore.getState()
-      useFreebuffSessionStore.getState().keepSlotForRelaunch()
-      if (holdsLiveFreebuffSlot(session)) {
+      const { session } = useFuckbuffSessionStore.getState()
+      useFuckbuffSessionStore.getState().keepSlotForRelaunch()
+      if (holdsLiveFuckbuffSlot(session)) {
         logger.info(
           {
-            metric: 'freebuff_session_kept_for_update_restart',
+            metric: 'fuckbuff_session_kept_for_update_restart',
             model: session && 'model' in session ? session.model : undefined,
           },
-          '[freebuff-session] launcher update restart; keeping the session for the relaunch',
+          '[fuckbuff-session] launcher update restart; keeping the session for the relaunch',
         )
       }
     }

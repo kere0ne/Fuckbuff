@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test'
 
-import { isServableLandingUrl } from '../freebuff-ads'
+import { isServableLandingUrl } from '../fuckbuff-ads'
 
 describe('isServableLandingUrl', () => {
   it('accepts a bare domain once normalizeUrlInput adds the scheme', () => {
@@ -8,7 +8,7 @@ describe('isServableLandingUrl', () => {
   })
 
   it('accepts a URL that already carries https', () => {
-    expect(isServableLandingUrl('https://neon.tech/freebuff')).toBe(true)
+    expect(isServableLandingUrl('https://neon.tech/fuckbuff')).toBe(true)
   })
 
   it('rejects localhost, which parses fine but is not a public destination', () => {

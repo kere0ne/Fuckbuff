@@ -1,7 +1,7 @@
 import {
   AD_EVENT_SAMPLE_RATE,
-  FREEBUFF_EVENT_ID_HEADER,
-  FREEBUFF_RENDER_DELAY_HEADER,
+  FUCKBUFF_EVENT_ID_HEADER,
+  FUCKBUFF_RENDER_DELAY_HEADER,
 } from './ad-event-hygiene'
 
 /** The only acknowledgement outcomes permitted in privacy-safe telemetry. */
@@ -34,7 +34,7 @@ export type FirstPartyViewAckObservation = {
   duration_ms: number
   client_family: FirstPartyViewAckClientFamily
   /**
-   * The `X-Freebuff-Event-Id` every attempt of this sequence carried
+   * The `X-Fuckbuff-Event-Id` every attempt of this sequence carried
    * (COD-365). Axiom-only client telemetry is deduped at read on
    * (client_event_id, attempt). Absent only on observations from a build
    * that predates the header.
@@ -54,7 +54,7 @@ export type FirstPartyViewAckRequest = {
   init?: RequestInit
   /**
    * The id minted for this logical event. Omit and the transport mints one;
-   * either way it is captured once and sent as `X-Freebuff-Event-Id` on every
+   * either way it is captured once and sent as `X-Fuckbuff-Event-Id` on every
    * attempt, so the server can tell the retry that lost a race from a fresh
    * event. Pass it only to coordinate with a client-side event you already
    * emitted under the same id.
@@ -62,7 +62,7 @@ export type FirstPartyViewAckRequest = {
   clientEventId?: string
   /**
    * Milliseconds from auction-response receipt to card mount on the client's
-   * monotonic clock. Sent as `X-Freebuff-Render-Delay-Ms`; omitted when the
+   * monotonic clock. Sent as `X-Fuckbuff-Render-Delay-Ms`; omitted when the
    * caller could not measure (the server stores NULL, never a derived value).
    */
   renderDelayMs?: number
@@ -108,7 +108,7 @@ function timeoutSignal(timeoutMs: number): {
 function isDedupedResponse(response: Response, body: unknown): boolean {
   return (
     response.status === 208 ||
-    response.headers.get('X-Freebuff-Ack-Outcome') === 'deduped' ||
+    response.headers.get('X-Fuckbuff-Ack-Outcome') === 'deduped' ||
     (typeof body === 'object' &&
       body !== null &&
       ((body as { acknowledgement?: unknown }).acknowledgement === 'deduped' ||
@@ -159,13 +159,13 @@ export function acknowledgeFirstPartyView(
   // free -- a retry is the same logical event, and the header says so.
   const clientEventId = request.clientEventId ?? crypto.randomUUID()
   const headers = new Headers(request.init?.headers)
-  headers.set(FREEBUFF_EVENT_ID_HEADER, clientEventId)
+  headers.set(FUCKBUFF_EVENT_ID_HEADER, clientEventId)
   if (
     typeof request.renderDelayMs === 'number' &&
     Number.isFinite(request.renderDelayMs)
   ) {
     headers.set(
-      FREEBUFF_RENDER_DELAY_HEADER,
+      FUCKBUFF_RENDER_DELAY_HEADER,
       String(Math.max(0, Math.round(request.renderDelayMs))),
     )
   }

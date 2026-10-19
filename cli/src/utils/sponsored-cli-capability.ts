@@ -98,7 +98,7 @@ function framework(
 
 function workspaceId(root: string): string | null {
   try {
-    const value = readFileSync(join(root, '.freebuff', 'project-id'), 'utf8')
+    const value = readFileSync(join(root, '.fuckbuff', 'project-id'), 'utf8')
       .trim()
       .toLowerCase()
     return UUID.test(value) ? value : null

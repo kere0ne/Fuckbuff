@@ -1,11 +1,11 @@
-import { SUPPORTED_FREEBUFF_MODELS } from '../constants/freebuff-models'
-import { freebuffLegacyModelDigest } from '../types/freebuff-model-catalog'
+import { SUPPORTED_FUCKBUFF_MODELS } from '../constants/fuckbuff-models'
+import { fuckbuffLegacyModelDigest } from '../types/fuckbuff-model-catalog'
 
-import type { FreebuffCatalogRow } from '../types/freebuff-model-catalog'
+import type { FuckbuffCatalogRow } from '../types/fuckbuff-model-catalog'
 
 const COMPILED_ID_BY_DIGEST: ReadonlyMap<string, string> = new Map(
-  SUPPORTED_FREEBUFF_MODELS.map((model) => [
-    freebuffLegacyModelDigest(model.id),
+  SUPPORTED_FUCKBUFF_MODELS.map((model) => [
+    fuckbuffLegacyModelDigest(model.id),
     model.id,
   ]),
 )
@@ -16,8 +16,8 @@ const COMPILED_ID_BY_DIGEST: ReadonlyMap<string, string> = new Map(
  * local policy is still keyed by compiled ids (which harness a row runs, the
  * picker's compiled flags), because a row's handle is opaque.
  */
-export function compiledFreebuffModelIdOfRow(
-  row: Pick<FreebuffCatalogRow, 'legacyDigests'>,
+export function compiledFuckbuffModelIdOfRow(
+  row: Pick<FuckbuffCatalogRow, 'legacyDigests'>,
 ): string | undefined {
   for (const digest of row.legacyDigests ?? []) {
     const id = COMPILED_ID_BY_DIGEST.get(digest)

@@ -26,8 +26,8 @@ export const MAX_SPAWN_AGENTS_PER_CALL = 6
  *  on its own, which nesting multiplies (6 agents each spawning 6 is 42 live);
  *  the runtime handler refuses a spawn past this total. An agent counts until
  *  it reports, so a parent waiting on its children keeps its slot too (a
- *  file-picker and its file-lister take two). Freebuff Projects subagents keep
- *  their own count (FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS), and each one gets
+ *  file-picker and its file-lister take two). Fuckbuff Projects subagents keep
+ *  their own count (FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS), and each one gets
  *  this same allowance for its own helpers and their spawns, apart from the
  *  root's. */
 export const MAX_LIVE_SUBAGENTS_PER_ROOT = 20

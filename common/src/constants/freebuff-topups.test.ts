@@ -3,7 +3,7 @@ import { describe, expect, test } from 'bun:test'
 import {
   AD_PLACEMENT_CPC_SELF_SERVE_CEILING_CENTS,
   advertiserPlacementCpcBand,
-} from './freebuff-topups'
+} from './fuckbuff-topups'
 
 describe('advertiserPlacementCpcBand', () => {
   test('uses the conservative $10 ceiling when an operator has not set one', () => {

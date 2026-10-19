@@ -5,7 +5,7 @@
  * Kept zod-free because Convex evaluates a function module's whole import
  * graph on every call, and `ads/proposals:activeProposal` (the deployment's
  * highest-volume query) needs only these lists, never a schema. A test in
- * `freebuff/web/convex/ads/__tests__/` fails if zod re-enters that bundle.
+ * `fuckbuff/web/convex/ads/__tests__/` fails if zod re-enters that bundle.
  */
 
 /**
@@ -37,7 +37,7 @@ export function isSponsoredExecutionSurface(
 }
 
 /**
- * Where a Freebuff Web sponsored run executes: the accepting chat's own
+ * Where a Fuckbuff Web sponsored run executes: the accepting chat's own
  * worktree in its project's Freestyle VM (the browser workspace at `/`,
  * served from `web/src/server/desktop-cloud/`). Contained by the floor in
  * `web/src/server/desktop-cloud/sponsored-floor.ts`, not an OS sandbox.

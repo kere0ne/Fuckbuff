@@ -1,14 +1,14 @@
 import { describe, expect, test } from 'bun:test'
 
 import {
-  formatFreebuffPremiumResetCountdown,
-  getFreebuffPremiumResetAt,
-} from '../freebuff-premium-reset'
+  formatFuckbuffPremiumResetCountdown,
+  getFuckbuffPremiumResetAt,
+} from '../fuckbuff-premium-reset'
 
-describe('freebuff premium reset helpers', () => {
+describe('fuckbuff premium reset helpers', () => {
   test('uses server resetAt when it is in the future', () => {
     const nowMs = Date.parse('2026-05-11T20:00:00.000Z')
-    const resetAt = getFreebuffPremiumResetAt({
+    const resetAt = getFuckbuffPremiumResetAt({
       nowMs,
       quota: {
         model: 'test/model',
@@ -25,7 +25,7 @@ describe('freebuff premium reset helpers', () => {
   })
 
   test('falls back to next midnight Pacific when resetAt is absent', () => {
-    const resetAt = getFreebuffPremiumResetAt({
+    const resetAt = getFuckbuffPremiumResetAt({
       nowMs: Date.parse('2026-05-11T20:00:00.000Z'),
     })
 
@@ -34,7 +34,7 @@ describe('freebuff premium reset helpers', () => {
 
   test('keeps expired server resetAt instead of rolling stale quota forward', () => {
     const nowMs = Date.parse('2026-05-12T07:05:00.000Z')
-    const resetAt = getFreebuffPremiumResetAt({
+    const resetAt = getFuckbuffPremiumResetAt({
       nowMs,
       quota: {
         model: 'test/model',
@@ -48,14 +48,14 @@ describe('freebuff premium reset helpers', () => {
     })
 
     expect(resetAt.toISOString()).toBe('2026-05-12T07:00:00.000Z')
-    expect(formatFreebuffPremiumResetCountdown(resetAt, nowMs)).toBe('now')
+    expect(formatFuckbuffPremiumResetCountdown(resetAt, nowMs)).toBe('now')
   })
 
   test('reports the reset of the pool it was handed, not another one', () => {
     // The caller resolves which pool the count belongs to; this helper must
     // not reach past that and pick a different row's reset.
     const nowMs = Date.parse('2026-05-11T20:00:00.000Z')
-    const resetAt = getFreebuffPremiumResetAt({
+    const resetAt = getFuckbuffPremiumResetAt({
       nowMs,
       quota: {
         model: 'premium/model',
@@ -73,7 +73,7 @@ describe('freebuff premium reset helpers', () => {
   })
 
   test('handles Pacific daylight saving time boundaries', () => {
-    const resetAt = getFreebuffPremiumResetAt({
+    const resetAt = getFuckbuffPremiumResetAt({
       nowMs: Date.parse('2026-01-15T20:00:00.000Z'),
     })
 
@@ -84,13 +84,13 @@ describe('freebuff premium reset helpers', () => {
     const nowMs = Date.parse('2026-05-11T20:00:00.000Z')
     const resetAt = new Date('2026-05-12T07:30:00.000Z')
 
-    expect(formatFreebuffPremiumResetCountdown(resetAt, nowMs)).toBe('11h 30m')
+    expect(formatFuckbuffPremiumResetCountdown(resetAt, nowMs)).toBe('11h 30m')
   })
 
   test('formats sub-hour reset countdowns', () => {
     const nowMs = Date.parse('2026-05-12T06:30:00.000Z')
     const resetAt = new Date('2026-05-12T07:00:00.000Z')
 
-    expect(formatFreebuffPremiumResetCountdown(resetAt, nowMs)).toBe('30m')
+    expect(formatFuckbuffPremiumResetCountdown(resetAt, nowMs)).toBe('30m')
   })
 })

@@ -1,10 +1,10 @@
 /** Ads acquisition is a separate dataset and enrollment from the coding product. */
 import { validMetaBrowserId } from './meta-conversions'
 
-export const META_CONSUMER_CLICK_COOKIE = 'freebuff_meta_consumer_fbc'
-export const META_ADS_PERMISSION_COOKIE = 'freebuff_meta_ads_allowed'
-export const META_ADS_CLICK_COOKIE = 'freebuff_meta_ads_fbc'
-export const META_ADS_FUNNEL_COOKIE = 'freebuff_meta_ads_funnel'
+export const META_CONSUMER_CLICK_COOKIE = 'fuckbuff_meta_consumer_fbc'
+export const META_ADS_PERMISSION_COOKIE = 'fuckbuff_meta_ads_allowed'
+export const META_ADS_CLICK_COOKIE = 'fuckbuff_meta_ads_fbc'
+export const META_ADS_FUNNEL_COOKIE = 'fuckbuff_meta_ads_funnel'
 export type MetaAdsEventName =
   | 'CompleteRegistration'
   | 'CampaignSubmitted'

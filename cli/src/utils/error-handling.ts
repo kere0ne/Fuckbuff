@@ -1,22 +1,22 @@
 import {
   CODEBUFF_OWN_CREDITS_ERROR_PATTERN,
-  FREEBUFF_PROVIDER_USAGE_ERROR_PATTERN,
-  FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
-  FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
-} from '@codebuff/common/constants/freebuff-errors'
+  FUCKBUFF_PROVIDER_USAGE_ERROR_PATTERN,
+  FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE,
+  FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
+} from '@codebuff/common/constants/fuckbuff-errors'
 import { env } from '@codebuff/common/env'
 import { extractApiErrorDetails } from '@codebuff/common/util/error'
-import { formatFreebuffHardBlockedPrivacySignals } from '@codebuff/common/util/freebuff-privacy'
-import { getFreebuffGateCode } from '@codebuff/common/types/freebuff-session'
+import { formatFuckbuffHardBlockedPrivacySignals } from '@codebuff/common/util/fuckbuff-privacy'
+import { getFuckbuffGateCode } from '@codebuff/common/types/fuckbuff-session'
 
 import type { ChatMessage } from '../types/chat'
 import type {
-  FreebuffCountryBlockReason,
-  FreebuffGateCode,
-  FreebuffIpPrivacySignal,
-} from '@codebuff/common/types/freebuff-session'
+  FuckbuffCountryBlockReason,
+  FuckbuffGateCode,
+  FuckbuffIpPrivacySignal,
+} from '@codebuff/common/types/fuckbuff-session'
 
-import { IS_FREEBUFF } from './constants'
+import { IS_FUCKBUFF } from './constants'
 
 const defaultAppUrl = env.NEXT_PUBLIC_CODEBUFF_APP_URL || 'https://codebuff.com'
 
@@ -123,7 +123,7 @@ const getCliApiErrorDetails = (error: unknown) => {
   }
 }
 
-export const getFreebuffRateLimitErrorMessage = (
+export const getFuckbuffRateLimitErrorMessage = (
   error: unknown,
 ): string | null => {
   const details = getCliApiErrorDetails(error)
@@ -131,12 +131,12 @@ export const getFreebuffRateLimitErrorMessage = (
   if (details.errorCode === 'free_mode_rate_limited') {
     // Our own rate limiter's message is already user-facing and includes the
     // retry countdown — show it verbatim.
-    return details.message ?? FREEBUFF_RATE_LIMIT_MESSAGE
+    return details.message ?? FUCKBUFF_RATE_LIMIT_MESSAGE
   }
-  if (details.errorCode === FREEBUFF_TURN_SPEND_LIMIT_ERROR_CODE) {
+  if (details.errorCode === FUCKBUFF_TURN_SPEND_LIMIT_ERROR_CODE) {
     // The per-turn spend breaker. Its copy already says what happened and
     // what to do (send a new message); a rate-limit framing would be wrong.
-    return details.message ?? FREEBUFF_TURN_SPEND_LIMIT_MESSAGE
+    return details.message ?? FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE
   }
   // Other 429s (e.g. relayed upstream capacity errors) keep the branded
   // message but include the server detail so users aren't left guessing.
@@ -151,18 +151,18 @@ export const getFreebuffRateLimitErrorMessage = (
     extractApiErrorDetails(error).message ??
     (isRunOutputObject ? details.message : undefined)
   if (detail && !/^too many requests\.?$/i.test(detail)) {
-    return `${FREEBUFF_RATE_LIMIT_MESSAGE} (${detail})`
+    return `${FUCKBUFF_RATE_LIMIT_MESSAGE} (${detail})`
   }
-  return FREEBUFF_RATE_LIMIT_MESSAGE
+  return FUCKBUFF_RATE_LIMIT_MESSAGE
 }
 
 /**
- * Provider billing failures are an operator problem in Freebuff, not a reason
+ * Provider billing failures are an operator problem in Fuckbuff, not a reason
  * to send a free user to Codebuff's credit-purchase flow. Upstreams disagree
  * on the status (observed as both 401 and 402), so retain the status check but
  * also recognize the provider wording that can survive into an agent output.
  */
-export const isFreebuffProviderUsageError = (error: unknown): boolean => {
+export const isFuckbuffProviderUsageError = (error: unknown): boolean => {
   const details = getCliApiErrorDetails(error)
   const message = details.message ?? extractErrorMessage(error, '')
   // The user's own Codebuff balance, not our provider: leave it to the
@@ -170,7 +170,7 @@ export const isFreebuffProviderUsageError = (error: unknown): boolean => {
   if (CODEBUFF_OWN_CREDITS_ERROR_PATTERN.test(message)) return false
   return (
     details.statusCode === 402 ||
-    FREEBUFF_PROVIDER_USAGE_ERROR_PATTERN.test(message)
+    FUCKBUFF_PROVIDER_USAGE_ERROR_PATTERN.test(message)
   )
 }
 
@@ -178,8 +178,8 @@ export const getCountryBlockFromFreeModeError = (
   error: unknown,
 ): {
   countryCode: string
-  countryBlockReason?: FreebuffCountryBlockReason
-  ipPrivacySignals?: FreebuffIpPrivacySignal[]
+  countryBlockReason?: FuckbuffCountryBlockReason
+  ipPrivacySignals?: FuckbuffIpPrivacySignal[]
 } | null => {
   if (!isFreeModeUnavailableError(error)) return null
   const errorDetails = getCliApiErrorDetails(error)
@@ -193,10 +193,10 @@ export const getCountryBlockFromFreeModeError = (
     countryCode,
     countryBlockReason:
       typeof errorDetails.countryBlockReason === 'string'
-        ? (errorDetails.countryBlockReason as FreebuffCountryBlockReason)
+        ? (errorDetails.countryBlockReason as FuckbuffCountryBlockReason)
         : undefined,
     ipPrivacySignals: errorDetails.ipPrivacySignals as
-      | FreebuffIpPrivacySignal[]
+      | FuckbuffIpPrivacySignal[]
       | undefined,
   }
 }
@@ -207,7 +207,7 @@ export const getFreeModeUnavailableErrorMessage = (
   const details = getCliApiErrorDetails(error)
   const block = getCountryBlockFromFreeModeError(error)
   if (block?.countryBlockReason === 'anonymous_network') {
-    return `${IS_FREEBUFF ? 'Freebuff' : 'Free mode'} cannot be used from ${formatFreebuffHardBlockedPrivacySignals(
+    return `${IS_FUCKBUFF ? 'Fuckbuff' : 'Free mode'} cannot be used from ${formatFuckbuffHardBlockedPrivacySignals(
       block.ipPrivacySignals,
     )} traffic. Please disable it and try again.`
   }
@@ -216,28 +216,28 @@ export const getFreeModeUnavailableErrorMessage = (
 
 /**
  * The subset of the session gate the CLI has a recovery for. The codes and
- * their statuses come from FREEBUFF_GATE_CODES (the shared wire contract, see
- * docs/freebuff-session-admission.md); the narrowing is deliberate —
+ * their statuses come from FUCKBUFF_GATE_CODES (the shared wire contract, see
+ * docs/fuckbuff-session-admission.md); the narrowing is deliberate —
  * `session_limit_reached` is the Desktop concurrent-tab cap, and the CLI runs
  * one session per user, so it can never earn it and has no banner for it.
  *
  * The names keep their legacy waiting-room spelling for wire compatibility.
  */
-export type FreebuffGateErrorKind = Exclude<
-  FreebuffGateCode,
+export type FuckbuffGateErrorKind = Exclude<
+  FuckbuffGateCode,
   'session_limit_reached'
 >
 
-export const getFreebuffGateErrorKind = (
+export const getFuckbuffGateErrorKind = (
   error: unknown,
-): FreebuffGateErrorKind | null => {
+): FuckbuffGateErrorKind | null => {
   if (!error || typeof error !== 'object') return null
   const { error: errorCode, statusCode } = error as {
     error?: unknown
     statusCode?: unknown
   }
   if (typeof errorCode !== 'string') return null
-  const code = getFreebuffGateCode({
+  const code = getFuckbuffGateCode({
     error: errorCode,
     statusCode: typeof statusCode === 'number' ? statusCode : undefined,
   })
@@ -251,20 +251,20 @@ export const getFreebuffGateErrorKind = (
  *    refunded. ..."), usually because the model is busy or down;
  *  - an hour that had already closed when the request arrived ("Your session
  *    ended before this request started. ...", RefundAdmissionClosedError);
- *  - another instance TAKING OVER the session ("Another instance of freebuff
+ *  - another instance TAKING OVER the session ("Another instance of fuckbuff
  *    has taken over this session. ...").
  * Only the last is a takeover. Desktop draws the same refund line
- * (isRefundedStart in freebuff-desktop's session-errors.ts). A message that
+ * (isRefundedStart in fuckbuff-desktop's session-errors.ts). A message that
  * names neither keeps the takeover reading, as before.
  */
-export type FreebuffSupersededReason =
+export type FuckbuffSupersededReason =
   | 'refunded_start'
   | 'session_closed'
   | 'taken_over'
 
-export const getFreebuffSupersededReason = (
+export const getFuckbuffSupersededReason = (
   serverMessage: string | undefined,
-): FreebuffSupersededReason => {
+): FuckbuffSupersededReason => {
   const message = serverMessage ?? ''
   if (/refund/i.test(message)) return 'refunded_start'
   if (/ended before this request started/i.test(message)) return 'session_closed'
@@ -273,20 +273,20 @@ export const getFreebuffSupersededReason = (
 
 /** Appended to the server's refund message: retrying the same model may only
  *  fail again, so name the way out. */
-export const FREEBUFF_REFUNDED_START_HINT =
+export const FUCKBUFF_REFUNDED_START_HINT =
   'The model may be busy or unavailable right now: send your message again to retry, or pick another model with /model.'
 
 export const OUT_OF_CREDITS_MESSAGE =`Out of credits. Please add credits at ${defaultAppUrl}/usage`
 
-export const FREEBUFF_RATE_LIMIT_MESSAGE =
-  'Freebuff is temporarily busy. Please try again in a moment.'
+export const FUCKBUFF_RATE_LIMIT_MESSAGE =
+  'Fuckbuff is temporarily busy. Please try again in a moment.'
 
 /** Fallback for a `model_unavailable` gate refusal without a server message. */
-export const FREEBUFF_MODEL_UNAVAILABLE_MESSAGE =
-  'This model is no longer available in Freebuff. Pick another model with /model and send your message again.'
+export const FUCKBUFF_MODEL_UNAVAILABLE_MESSAGE =
+  'This model is no longer available in Fuckbuff. Pick another model with /model and send your message again.'
 
-export const FREE_MODE_UNAVAILABLE_MESSAGE = IS_FREEBUFF
-  ? 'Freebuff is not available in your country.'
+export const FREE_MODE_UNAVAILABLE_MESSAGE = IS_FUCKBUFF
+  ? 'Fuckbuff is not available in your country.'
   : 'Free mode is not available in your country. You can use another mode to continue.'
 
 export const createErrorMessage = (

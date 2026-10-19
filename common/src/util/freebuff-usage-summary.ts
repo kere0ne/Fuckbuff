@@ -1,17 +1,17 @@
-import { FREEBUFF_USAGE_MAP_DAYS } from '../constants/freebuff-models'
+import { FUCKBUFF_USAGE_MAP_DAYS } from '../constants/fuckbuff-models'
 
 import {
   addDaysToDateKey,
-  calculateFreebuffStreak,
-  FREEBUFF_STREAK_TIME_ZONE,
-} from './freebuff-streak'
+  calculateFuckbuffStreak,
+  FUCKBUFF_STREAK_TIME_ZONE,
+} from './fuckbuff-streak'
 
 import type {
-  FreebuffRecentUsage,
-  FreebuffSessionLedgerEntry,
-  FreebuffUsageSessionsByModel,
-  FreebuffUsageSummary,
-} from '../types/freebuff-usage'
+  FuckbuffRecentUsage,
+  FuckbuffSessionLedgerEntry,
+  FuckbuffUsageSessionsByModel,
+  FuckbuffUsageSummary,
+} from '../types/fuckbuff-usage'
 
 /**
  * The longest run of consecutive active days in `dateKeys`.
@@ -20,7 +20,7 @@ import type {
  * The current streak treats "used yesterday, not yet today" as alive because
  * the day is not over; a historical run has no such ambiguity.
  */
-export function calculateLongestFreebuffStreak(
+export function calculateLongestFuckbuffStreak(
   dateKeys: readonly string[],
 ): number {
   const sorted = [...new Set(dateKeys)].sort()
@@ -46,18 +46,18 @@ export function calculateLongestFreebuffStreak(
  * order and may include days after `todayDateKey` (a client whose clock has run
  * ahead of the Pacific date key); both are normalised here.
  */
-export function buildFreebuffUsageSummary(params: {
+export function buildFuckbuffUsageSummary(params: {
   activeDates: readonly string[]
   todayDateKey: string
-  recent?: FreebuffRecentUsage | null
-  sessionsByModel?: readonly FreebuffUsageSessionsByModel[]
+  recent?: FuckbuffRecentUsage | null
+  sessionsByModel?: readonly FuckbuffUsageSessionsByModel[]
   /** Newest first; omitted entirely when the ledger was not read. */
-  sessionCharges?: readonly FreebuffSessionLedgerEntry[]
+  sessionCharges?: readonly FuckbuffSessionLedgerEntry[]
   sessionChargesDays?: number
   windowDays?: number
   timeZone?: string
-}): FreebuffUsageSummary {
-  const windowDays = Math.max(1, params.windowDays ?? FREEBUFF_USAGE_MAP_DAYS)
+}): FuckbuffUsageSummary {
+  const windowDays = Math.max(1, params.windowDays ?? FUCKBUFF_USAGE_MAP_DAYS)
   const todayDateKey = params.todayDateKey
 
   const allDates = [...new Set(params.activeDates)]
@@ -65,17 +65,17 @@ export function buildFreebuffUsageSummary(params: {
     .sort()
 
   const windowStart = addDaysToDateKey(todayDateKey, -(windowDays - 1))
-  const { streak, todayUsed, lastUsageDate } = calculateFreebuffStreak({
+  const { streak, todayUsed, lastUsageDate } = calculateFuckbuffStreak({
     usageDates: allDates,
     todayDateKey,
   })
 
   return {
-    timeZone: params.timeZone ?? FREEBUFF_STREAK_TIME_ZONE,
+    timeZone: params.timeZone ?? FUCKBUFF_STREAK_TIME_ZONE,
     todayDateKey,
     streak: {
       current: streak,
-      longest: calculateLongestFreebuffStreak(allDates),
+      longest: calculateLongestFuckbuffStreak(allDates),
       todayUsed,
       lastUsageDate,
     },
@@ -99,7 +99,7 @@ export function buildFreebuffUsageSummary(params: {
 }
 
 /** One cell of the activity map: an active day, a quiet day, or padding. */
-export type FreebuffUsageCell =
+export type FuckbuffUsageCell =
   | { date: string; active: boolean }
   | null
 
@@ -112,16 +112,16 @@ export type FreebuffUsageCell =
  * today. Callers render `null` as empty space, not as a quiet day — those days
  * either predate the window or have not happened yet.
  */
-export function buildFreebuffUsageGrid(params: {
+export function buildFuckbuffUsageGrid(params: {
   activeDates: readonly string[]
   todayDateKey: string
   windowDays: number
   /** 0 = Sunday. The weekday `todayDateKey` falls on, resolved by the caller
    *  in the streak time zone rather than from the viewer's clock. */
   todayWeekday: number
-}): FreebuffUsageCell[] {
+}): FuckbuffUsageCell[] {
   const active = new Set(params.activeDates)
-  const cells: FreebuffUsageCell[] = []
+  const cells: FuckbuffUsageCell[] = []
 
   // Pad to whole weeks so the last column ends on today's weekday and every row
   // is one weekday throughout the grid.

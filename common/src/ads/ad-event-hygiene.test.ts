@@ -46,9 +46,9 @@ describe('readClientEventId', () => {
 
 describe('clientFamilyFromUserAgent', () => {
   test('classifies our clients by product token and browsers as web', () => {
-    expect(clientFamilyFromUserAgent('Freebuff-CLI/1.2.3')).toBe('cli')
+    expect(clientFamilyFromUserAgent('Fuckbuff-CLI/1.2.3')).toBe('cli')
     expect(clientFamilyFromUserAgent('codebuff-cli/0.9')).toBe('cli')
-    expect(clientFamilyFromUserAgent('Freebuff-Desktop/2.0 (darwin)')).toBe(
+    expect(clientFamilyFromUserAgent('Fuckbuff-Desktop/2.0 (darwin)')).toBe(
       'desktop',
     )
     expect(

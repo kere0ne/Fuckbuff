@@ -3,7 +3,7 @@ import path from 'path'
 import { runBuffBench } from './run-buffbench'
 
 /**
- * base2 vs base3 on DeepSeek V4 Flash 07/31 — the Freebuff free-tier model.
+ * base2 vs base3 on DeepSeek V4 Flash 07/31 — the Fuckbuff free-tier model.
  *
  * The arms run as two separate sweeps rather than paired per task, so each
  * agent gets the full concurrency to itself. Analysis is off: the trace and

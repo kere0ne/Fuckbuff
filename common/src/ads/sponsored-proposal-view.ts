@@ -24,9 +24,9 @@ import type {
  *
  * This lives in `common` for the same reason {@link ./inline-ad-layout.ts}
  * does: more than one renderer has to agree on it exactly. The web overlay
- * (`freebuff/web/src/vly/components/project-2/agent-chat/SponsoredProposalPanel.tsx`)
+ * (`fuckbuff/web/src/vly/components/project-2/agent-chat/SponsoredProposalPanel.tsx`)
  * is the only one shipping now; a terminal needs the same state machine and
- * cannot reach into `freebuff/web/src`. Deliberately dependency-free apart
+ * cannot reach into `fuckbuff/web/src`. Deliberately dependency-free apart
  * from the destination gate below — no React, no Convex, no DOM.
  *
  * ## The two gates are the point, not the formatting
@@ -41,7 +41,7 @@ import type {
  * raw field, and reading it anyway is the bug.
  *
  * Note this is the SECOND layer for `pr_url`: `setProposalState` in
- * `freebuff/web/convex/ads/proposals.ts` runs the same gate and drops the
+ * `fuckbuff/web/convex/ads/proposals.ts` runs the same gate and drops the
  * field on refusal before it is ever stored. Rows written before that guard
  * existed, dev-seeded rows, and any future write path are why the render side
  * keeps refusing too.
@@ -56,7 +56,7 @@ export type SponsoredProposalState =
   // only the user's own "Create pull request" moves a row there.
   | 'committed'
   // Terminal, and the ordinary success of an IN-PLACE run (the 2026-09-24
-  // amendment in `docs/freebuff-sponsored-local-execution.md`): the edits are
+  // amendment in `docs/fuckbuff-sponsored-local-execution.md`): the edits are
   // in the user's working copy. There is no branch, so nothing reaches
   // `landed` or `merged` from here, and the review is the changes panel.
   | 'delivered'
@@ -200,7 +200,7 @@ export function sponsoredStepsNeedingYou(
  * The fields of a proposal the channel depends on.
  *
  * Structural rather than the Convex document type, so `common` does not depend
- * on `freebuff/web`'s generated model — the same trade
+ * on `fuckbuff/web`'s generated model — the same trade
  * {@link ./inline-ad-layout.ts} makes for the CLI's `AdResponse`. A surface
  * with a richer row (an `Id`-typed `_id`, an `advertiser_id`) passes it
  * straight through.

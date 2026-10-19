@@ -1,4 +1,4 @@
-import { FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase2 } from './base2'
 
@@ -12,7 +12,7 @@ import { createBase2 } from './base2'
 const definition = {
   ...createBase2('free', {
     noReview: true,
-    model: FREEBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
+    model: FUCKBUFF_DEEPSEEK_V4_FLASH_FAST_MODEL_ID,
   }),
   id: 'base2-free-deepseek-flash-fast',
   displayName: 'Buffy the DeepSeek Flash Fast Free Orchestrator',

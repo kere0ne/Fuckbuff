@@ -1,5 +1,5 @@
 /**
- * What account deletion does with the Postgres copies of a Freebuff Web
+ * What account deletion does with the Postgres copies of a Fuckbuff Web
  * account (COD-742 Wave C, full tier; docs/convex-retirement-account-deletion.md).
  *
  * Convex stays the authority in every mode here: the step-up code is checked,

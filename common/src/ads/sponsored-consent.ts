@@ -10,7 +10,7 @@
  * TUI) with our words outside it, so their text can neither become markup nor be read as a promise
  * the product is making.
  *
- * Desktop's `freebuff-desktop/electron/mcp-consent-bridge.cjs` carries its own copy of these two
+ * Desktop's `fuckbuff-desktop/electron/mcp-consent-bridge.cjs` carries its own copy of these two
  * values rather than importing them: it is a plain CJS module loaded by the Electron main process,
  * deliberately free of workspace requires so it unit-tests under Bun and survives packaging
  * untouched. `consent-window.render.test.ts` pins the copies equal to these, so a change here that
@@ -34,7 +34,7 @@ export const SPONSORED_CONSENT_SENTENCE =
  * (`SPONSORED_IN_PLACE_SENTENCE` in `mcp-consent-bridge.cjs`).
  */
 export const SPONSORED_CONSENT_IN_PLACE_SENTENCE =
-  ' is sponsoring this agent run, so it’s free for you. Freebuff’s agent edits the files in the folder below and commits nothing. You can stop it anytime and undo it after.'
+  ' is sponsoring this agent run, so it’s free for you. Fuckbuff’s agent edits the files in the folder below and commits nothing. You can stop it anytime and undo it after.'
 
 /**
  * The second sentence, shown ONLY where the run has no OS sandbox: Windows (COD-642). Plain words

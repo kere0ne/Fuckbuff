@@ -1,7 +1,7 @@
 /**
  * The browser workspace's side of the agentic offer route: the `web` client.
  *
- * Freebuff Web has no local client to inspect a folder, so the Cloud worker
+ * Fuckbuff Web has no local client to inspect a folder, so the Cloud worker
  * asks instead, server to server, after a turn in a project chat whose
  * worktree is ready. It runs one read-only shell command in that chat's
  * worktree (its own Linux user, inside the Freestyle VM) and builds the
@@ -32,10 +32,10 @@ import type {
 } from './sponsored-capability'
 
 /**
- * The Cloud worker's product UA on the offer route. `Freebuff-Cloud/<version>`;
+ * The Cloud worker's product UA on the offer route. `Fuckbuff-Cloud/<version>`;
  * a request bearing it is admitted as `web` only with a workspace token.
  */
-export const WEB_AGENTIC_PRODUCT_UA_PREFIX = 'Freebuff-Cloud/'
+export const WEB_AGENTIC_PRODUCT_UA_PREFIX = 'Fuckbuff-Cloud/'
 
 const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -50,7 +50,7 @@ const UUID =
 export function cloudProjectWorkspaceId(projectId: string): string {
   if (UUID.test(projectId)) return projectId.toLowerCase()
   const bytes = createHash('sha256')
-    .update(`freebuff-cloud-project:${projectId}`)
+    .update(`fuckbuff-cloud-project:${projectId}`)
     .digest()
     .subarray(0, 16)
   bytes[6] = (bytes[6]! & 0x0f) | 0x50
@@ -59,7 +59,7 @@ export function cloudProjectWorkspaceId(projectId: string): string {
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
 }
 
-const SECTION = '@@freebuff-capability:'
+const SECTION = '@@fuckbuff-capability:'
 const MAX_FILES = 20_000
 const MAX_MANIFEST_BYTES = 200_000
 const GIT_STEP_TIMEOUT_S = 3

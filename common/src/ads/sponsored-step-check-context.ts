@@ -3,7 +3,7 @@
  * `SponsoredSkillCheckContext` the step driver (`sponsored-step-driver.ts`)
  * checks a sponsored skill's steps over, for a run that edits the user's own
  * checkout in place. Shared by Desktop's harness
- * (`freebuff-desktop/src/server/harness/sponsored-step-loop.ts`) and the CLI
+ * (`fuckbuff-desktop/src/server/harness/sponsored-step-loop.ts`) and the CLI
  * (`cli/src/utils/sponsored-run.ts`), so "step 3 passed" is measured the same
  * way on both. Each surface supplies its own file system (the sponsored
  * rooted one) and its own sandboxed shell, under the agent's own refusals.
@@ -41,7 +41,7 @@ async function projectFiles(
   fs: CodebuffFileSystem,
   root: string,
 ): Promise<string[]> {
-  // `.freebuff/` is the app's own folder in the project (the run's home,
+  // `.fuckbuff/` is the app's own folder in the project (the run's home,
   // tool caches, the project id). Nothing in it is the run's work, and a
   // package manager's cache there failed scope and secret checks. Skipped
   // during the walk, so a large cache cannot use up the tree's file cap
@@ -49,7 +49,7 @@ async function projectFiles(
   const tree = await getProjectFileTree({
     projectRoot: root,
     fs,
-    extraIgnore: ['/.freebuff/'],
+    extraIgnore: ['/.fuckbuff/'],
   })
   const files = flattenTree(tree)
     .filter((node) => node.type === 'file')

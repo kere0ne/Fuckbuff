@@ -29,7 +29,7 @@ describe('the auction request carries the client context (COD-757)', () => {
       // `srv.uaProduct` is derived server-side from this header, so it must
       // be the CLI's product token and never the fake browser UA in the body.
       const headers = built!.init.headers as Record<string, string>
-      expect(['freebuff-cli', 'codebuff-cli']).toContain(
+      expect(['fuckbuff-cli', 'codebuff-cli']).toContain(
         normalizeClientUserAgent(headers['User-Agent'])!.product,
       )
     } finally {

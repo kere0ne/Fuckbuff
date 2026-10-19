@@ -1,47 +1,47 @@
-import { getFreebucksInfo } from '@codebuff/common/types/freebuff-session'
-import { SOLAR_PRICE_CHANGES } from '@codebuff/common/constants/freebuff-solar-promo'
+import { getFreebucksInfo } from '@codebuff/common/types/fuckbuff-session'
+import { SOLAR_PRICE_CHANGES } from '@codebuff/common/constants/fuckbuff-solar-promo'
 import {
   toLandingSession,
-  resolveFreebuffModelPickForSession,
-} from '../../hooks/use-freebuff-session'
-import { freebucksFixture } from '@codebuff/common/testing/freebuff'
-import { FREEBUFF_EARN_PROMPT_SHORT } from '@codebuff/common/constants/freebuff-earn'
+  resolveFuckbuffModelPickForSession,
+} from '../../hooks/use-fuckbuff-session'
+import { freebucksFixture } from '@codebuff/common/testing/fuckbuff'
+import { FUCKBUFF_EARN_PROMPT_SHORT } from '@codebuff/common/constants/fuckbuff-earn'
 import { afterEach, beforeAll, describe, expect, test, spyOn } from 'bun:test'
 import { createTestRenderer } from '@opentui/core/testing'
 import { createRoot, flushSync } from '@opentui/react'
 import React from 'react'
 
 import * as openUrl from '../../utils/open-url'
-import { FreebuffModelSelector } from '../freebuff-model-selector'
+import { FuckbuffModelSelector } from '../fuckbuff-model-selector'
 import {
-  FREEBUFF_REWARD_MODEL_ID,
-  DEFAULT_FREEBUFF_MODEL_ID,
-  FALLBACK_FREEBUFF_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_MIMO_V25_MODEL_ID,
-  FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
-  FREEBUFF_FABLE_5_1_MODEL_ID,
-  FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
-  FREEBUFF_GLM_V52_MODEL_ID,
-  FREEBUFF_GPT_6_LUNA_MODEL_ID,
-  FREEBUFF_MINIMAX_M3_MODEL_ID,
-  FREEBUFF_MODELS,
-  getFreebuffModelSupersededBy,
-  isFreebuffModelId,
-  FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS,
-  getFreebuffModel,
-  LIMITED_FREEBUFF_HERO_MODEL_ID,
-  LIMITED_FREEBUFF_MODELS,
-  FREEBUFF_ENABLE_FAST_MODE_IN_UI,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_REWARD_MODEL_ID,
+  DEFAULT_FUCKBUFF_MODEL_ID,
+  FALLBACK_FUCKBUFF_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+  FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_FABLE_5_1_MODEL_ID,
+  FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
+  FUCKBUFF_GLM_V52_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+  FUCKBUFF_MINIMAX_M3_MODEL_ID,
+  FUCKBUFF_MODELS,
+  getFuckbuffModelSupersededBy,
+  isFuckbuffModelId,
+  FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS,
+  getFuckbuffModel,
+  LIMITED_FUCKBUFF_HERO_MODEL_ID,
+  LIMITED_FUCKBUFF_MODELS,
+  FUCKBUFF_ENABLE_FAST_MODE_IN_UI,
+} from '@codebuff/common/constants/fuckbuff-models'
 
 import { initializeThemeStore } from '../../hooks/use-theme'
 import {
-  getSelectedFreebuffModel,
-  useFreebuffModelStore,
-} from '../../state/freebuff-model-store'
-import { useFreebuffSessionStore } from '../../state/freebuff-session-store'
+  getSelectedFuckbuffModel,
+  useFuckbuffModelStore,
+} from '../../state/fuckbuff-model-store'
+import { useFuckbuffSessionStore } from '../../state/fuckbuff-session-store'
 
 let cleanupRenderer: (() => void) | undefined
 
@@ -70,9 +70,9 @@ beforeAll(() => {
 afterEach(() => {
   cleanupRenderer?.()
   cleanupRenderer = undefined
-  useFreebuffSessionStore.getState().setSession(null)
-  useFreebuffSessionStore.getState().setFailure(null)
-  useFreebuffModelStore.getState().setSelectedModel(FALLBACK_FREEBUFF_MODEL_ID)
+  useFuckbuffSessionStore.getState().setSession(null)
+  useFuckbuffSessionStore.getState().setFailure(null)
+  useFuckbuffModelStore.getState().setSelectedModel(FALLBACK_FUCKBUFF_MODEL_ID)
 })
 
 const renderSelector = async (
@@ -98,7 +98,7 @@ const renderSelector = async (
   }
   flushSync(() =>
     root.render(
-      <FreebuffModelSelector
+      <FuckbuffModelSelector
         maxHeight={maxHeight}
         nowMs={nowMs}
         startSession={startSession}
@@ -123,9 +123,9 @@ test.each([
     if (ms >= 3_600_000) wake = fn
     return realTimeout(fn, ms, ...args)
   }) as typeof setTimeout)
-  const id = FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
+  const id = FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
   try {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none', accessTier: 'full',
       freebucks: {
         ...freebucksFixture(25, { [id]: before }),
@@ -134,7 +134,7 @@ test.each([
         priceNotices: { [id]: 'Server fallback price notice' },
       },
     })
-    useFreebuffModelStore.getState().setSelectedModel(id)
+    useFuckbuffModelStore.getState().setSelectedModel(id)
     const setup = await renderSelector(40, undefined, 100, now)
     expect(setup.captureCharFrame()).toMatch(new RegExp(`│ +${before / 5}x`))
     // At peak, line 2 says when the off-peak price is back.
@@ -166,9 +166,9 @@ test.each([
   ['peak', 40],
   ['peak', 100],
 ] as const)('legacy %s copy stays hidden at %s columns while Flash remains selectable', async (payload, width) => {
-  const id = FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
+  const id = FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
   const price = payload === 'peak' ? 25 : 10
-  useFreebuffSessionStore.getState().setSession({
+  useFuckbuffSessionStore.getState().setSession({
     status: 'none',
     accessTier: 'full',
     freebucks: {
@@ -183,7 +183,7 @@ test.each([
       } : {}),
     },
   })
-  useFreebuffModelStore.getState().setSelectedModel(id)
+  useFuckbuffModelStore.getState().setSelectedModel(id)
   const requested: string[] = []
   const setup = await renderSelector(40, async (model) => { requested.push(model) }, width)
   const frame = setup.captureCharFrame()
@@ -197,25 +197,25 @@ test.each([
 })
 
 test('a row reads its price as a multiplier, 1x included; a free row carries none', async () => {
-  useFreebuffSessionStore.getState().setSession({
+  useFuckbuffSessionStore.getState().setSession({
     status: 'none',
     accessTier: 'full',
     freebucks: {
       ...freebucksFixture(25, {
-        [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: 0,
-        [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 5,
-        [FREEBUFF_MIMO_V25_MODEL_ID]: 15,
+        [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: 0,
+        [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 5,
+        [FUCKBUFF_MIMO_V25_MODEL_ID]: 15,
       }),
       planRequiredModelIds: [],
     },
   })
   // A non-hero pick, so the picker opens expanded.
-  useFreebuffModelStore.getState().setSelectedModel(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+  useFuckbuffModelStore.getState().setSelectedModel(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
   const frame = (await renderSelector(60)).captureCharFrame()
   const lines = frame.split('\n')
   const detailsOf = (name: string) =>
     lines[lines.findIndex((line) => line.includes(name)) + 1] ?? ''
-  expect(detailsOf(getFreebuffModel(FREEBUFF_MIMO_V25_MODEL_ID).displayName)).toContain('3x')
+  expect(detailsOf(getFuckbuffModel(FUCKBUFF_MIMO_V25_MODEL_ID).displayName)).toContain('3x')
   expect(detailsOf('GLM 5.3 Flash')).not.toMatch(/\dx\b/)
   expect(detailsOf('DeepSeek V4.1 Flash')).toContain('1x')
   expect(frame).not.toContain('0x')
@@ -230,7 +230,7 @@ test('a row reads its price as a multiplier, 1x included; a free row carries non
  * earned selection there for the landing repair to keep or discard.
  */
 const renderSelectorWithGlmRemaining = async (remaining?: number) => {
-  useFreebuffSessionStore.getState().setSession({
+  useFuckbuffSessionStore.getState().setSession({
     status: 'none',
     accessTier: 'limited',
     referral: {
@@ -244,7 +244,7 @@ const renderSelectorWithGlmRemaining = async (remaining?: number) => {
       githubLinked: true,
     },
   })
-  useFreebuffModelStore.getState().setSelectedModel(FREEBUFF_REWARD_MODEL_ID)
+  useFuckbuffModelStore.getState().setSelectedModel(FUCKBUFF_REWARD_MODEL_ID)
 
   const nextSetup = await renderSelector(30)
   await nextSetup.renderOnce()
@@ -255,7 +255,7 @@ const renderSelectorWithGlmRemaining = async (remaining?: number) => {
 test('the Freebucks picker waits after an expired reset and displays a confirmed refill', async () => {
   const meter = freebucksFixture(0)
   const publish = (remaining: number, resetAt: number) => {
-    flushSync(() => useFreebuffSessionStore.getState().setSession({
+    flushSync(() => useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       freebucks: {
@@ -280,10 +280,10 @@ test('the Freebucks picker waits after an expired reset and displays a confirmed
   expect(setup.captureCharFrame()).not.toContain('Updating balance')
 })
 
-describe('FreebuffModelSelector referral selection', () => {
+describe('FuckbuffModelSelector referral selection', () => {
   test('keeps a fractional unlocked reward session selected while its request is pending', async () => {
     await renderSelectorWithGlmRemaining(0.25)
-    expect(getSelectedFreebuffModel()).toBe(FREEBUFF_REWARD_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(FUCKBUFF_REWARD_MODEL_ID)
   })
 
   test('still repairs a locked reward selection to a visible grid model', async () => {
@@ -291,18 +291,18 @@ describe('FreebuffModelSelector referral selection', () => {
     // The LIMITED hero: MiMo 2.6 Flash since 2026-09-30, an always-open row.
     // GLM 5.3 Flash (the reward) is earned-metered at this tier, so repairing
     // onto it would move the user from one locked row to another.
-    expect(getSelectedFreebuffModel()).toBe(LIMITED_FREEBUFF_HERO_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(LIMITED_FUCKBUFF_HERO_MODEL_ID)
   })
 
   test('treats an omitted reward balance as locked', async () => {
     await renderSelectorWithGlmRemaining()
-    expect(getSelectedFreebuffModel()).toBe(LIMITED_FREEBUFF_HERO_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(LIMITED_FUCKBUFF_HERO_MODEL_ID)
   })
 })
 
-describe('FreebuffModelSelector tier layout', () => {
+describe('FuckbuffModelSelector tier layout', () => {
   test('keeps the referral actions on one condensed row', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       referral: {
@@ -314,38 +314,38 @@ describe('FreebuffModelSelector tier layout', () => {
         githubLinked: true,
       },
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_MINIMAX_M3_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_MINIMAX_M3_MODEL_ID)
 
     // 48 rows since 2026-09-23: Solar Mini 4 and Space Bunny Alpha made the
     // full catalog one row taller than a 40-row frame holds with the referral
     // actions beneath it.
     // 52 rows: GPT-6.1 Sol (2026-09-29) made the catalog one row taller again.
-    // 53 rows once FREEBUFF_ENABLE_FAST_MODE_IN_UI lists DeepSeek V4.1 Flash Fast.
+    // 53 rows once FUCKBUFF_ENABLE_FAST_MODE_IN_UI lists DeepSeek V4.1 Flash Fast.
     // Five more for the three section headers and the gaps between them.
-    const frame = (await renderSelector(FREEBUFF_ENABLE_FAST_MODE_IN_UI ? 58 : 57)).captureCharFrame()
+    const frame = (await renderSelector(FUCKBUFF_ENABLE_FAST_MODE_IN_UI ? 58 : 57)).captureCharFrame()
     const actionRow =
       frame.split('\n').find((line) => line.includes('Copy invite link')) ?? ''
 
     // The label is shared with Desktop and the browser
-    // (FREEBUFF_EARN_PROMPT_SHORT), so asserting the constant rather than the
+    // (FUCKBUFF_EARN_PROMPT_SHORT), so asserting the constant rather than the
     // string keeps the three surfaces free to be re-worded together — which is
     // the whole reason it is shared. What this test is really pinning is that
     // it sits on the SAME row as the copy control.
-    expect(actionRow).toContain(FREEBUFF_EARN_PROMPT_SHORT)
+    expect(actionRow).toContain(FUCKBUFF_EARN_PROMPT_SHORT)
     expect(frame).not.toContain('Or earn')
     expect(frame).not.toContain('for small tasks')
   })
 
   test('focuses the saved pick, not the hero', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_SOLAR_MINI_4_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_SOLAR_MINI_4_MODEL_ID)
 
     const setup = await renderSelector()
     // Unlimited is last since 2026-10-14, so the saved pick sits below the
@@ -369,21 +369,21 @@ describe('FreebuffModelSelector tier layout', () => {
    * any particular pair of models, so it runs again automatically the next time
    * a supersedes notice exists rather than being re-derived from a regression.
    */
-  const allModelIds = FREEBUFF_MODELS.map((m) => m.id)
+  const allModelIds = FUCKBUFF_MODELS.map((m) => m.id)
   const supersededModelId = allModelIds.find((id) =>
-    getFreebuffModelSupersededBy(id, allModelIds),
+    getFuckbuffModelSupersededBy(id, allModelIds),
   )
   test.if(Boolean(supersededModelId))(
     'shows the supersedes nudge only on the row the user is on',
     async () => {
-      useFreebuffSessionStore.getState().setSession({
+      useFuckbuffSessionStore.getState().setSession({
         status: 'none',
         accessTier: 'full',
       })
       // Assert against the real copy rather than a hardcoded fragment, so
       // rewording the notice doesn't fail this test for the wrong reason. It
       // must still render on ONE line — the width math reserves its length.
-      const superseded = getFreebuffModelSupersededBy(
+      const superseded = getFuckbuffModelSupersededBy(
         supersededModelId!,
         allModelIds,
       )!
@@ -391,19 +391,19 @@ describe('FreebuffModelSelector tier layout', () => {
       const occurrences = (frame: string) => frame.split(notice).length - 1
 
       // On a superseded model: the nudge appears, once, on that model's card.
-      useFreebuffModelStore.getState().setSelectedModel(supersededModelId!)
+      useFuckbuffModelStore.getState().setSelectedModel(supersededModelId!)
       const onSuperseded = (await renderSelector()).captureCharFrame()
       expect(occurrences(onSuperseded)).toBe(1)
 
       // On a row that is NOT superseded, that notice stays quiet — otherwise
       // the list would repeat it on every row it applies to.
       const otherId = allModelIds.find((id) => id !== supersededModelId)!
-      useFreebuffModelStore.getState().setSelectedModel(otherId)
+      useFuckbuffModelStore.getState().setSelectedModel(otherId)
       const onOther = (await renderSelector()).captureCharFrame()
       expect(occurrences(onOther)).toBe(0)
 
       // And on the replacement itself: no nudge at all.
-      useFreebuffModelStore.getState().setSelectedModel(superseded.modelId)
+      useFuckbuffModelStore.getState().setSelectedModel(superseded.modelId)
       const onCurrent = (await renderSelector()).captureCharFrame()
       expect(occurrences(onCurrent)).toBe(0)
     },
@@ -412,16 +412,16 @@ describe('FreebuffModelSelector tier layout', () => {
   test('draws no NEW pill on a compiled row: only Claude Haiku 5.5 is New', async () => {
     // Product, 2026-10-13: the one New pill is the catalog's, on the two
     // Claude Haiku 5.5 rows; no compiled row carries `newBadge`.
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
     // Selected explicitly: `isNew` sits on the V4 Flash row, and the collapsed
     // view draws only the card the user is on — which is V4 Pro by default
     // since 2026-08-21, and carries no badge.
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
     const frame = (await renderSelector()).captureCharFrame()
     expect(frame).toContain('DeepSeek V4.1 Flash')
     expect(frame).not.toContain('NEW')
@@ -429,12 +429,12 @@ describe('FreebuffModelSelector tier layout', () => {
 
   test('places the exhausted-quota recommendation beneath its section', async () => {
     const resetAt = new Date(FIXED_NOW_MS + 60_000).toISOString()
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       rateLimitsByModel: {
-        [FREEBUFF_GPT_6_LUNA_MODEL_ID]: {
-          model: FREEBUFF_GPT_6_LUNA_MODEL_ID,
+        [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: {
+          model: FUCKBUFF_GPT_6_LUNA_MODEL_ID,
           limit: 6,
           period: 'pacific_day',
           resetTimeZone: 'America/Los_Angeles',
@@ -444,9 +444,9 @@ describe('FreebuffModelSelector tier layout', () => {
         },
       },
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_MINIMAX_M3_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_MINIMAX_M3_MODEL_ID)
 
     const setup = await renderSelector()
     const frame = setup.captureCharFrame()
@@ -474,18 +474,18 @@ describe('FreebuffModelSelector tier layout', () => {
     // premium rows with the recommendation below them.
     //
     // KEYED ON A PREMIUM ROW (Luna), NOT ON THE DEFAULT. It used to key on
-    // DEFAULT_FREEBUFF_MODEL_ID, which was right for as long as every default
+    // DEFAULT_FUCKBUFF_MODEL_ID, which was right for as long as every default
     // was premium — 2026-08-12 to 08-30. The default is now unmetered, so
     // exhausting "its pool" exhausts nothing and the step-down under test never
     // fires. Keying on the row that actually HAS a pool keeps this covering the
     // behaviour rather than passing vacuously.
     const resetAt = new Date(FIXED_NOW_MS + 60_000).toISOString()
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       rateLimitsByModel: {
-        [FREEBUFF_GPT_6_LUNA_MODEL_ID]: {
-          model: FREEBUFF_GPT_6_LUNA_MODEL_ID,
+        [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: {
+          model: FUCKBUFF_GPT_6_LUNA_MODEL_ID,
           limit: 6,
           period: 'pacific_day',
           resetTimeZone: 'America/Los_Angeles',
@@ -495,9 +495,9 @@ describe('FreebuffModelSelector tier layout', () => {
         },
       },
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_GPT_6_LUNA_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_GPT_6_LUNA_MODEL_ID)
 
     const setup = await renderSelector()
     await Promise.resolve()
@@ -508,11 +508,11 @@ describe('FreebuffModelSelector tier layout', () => {
     // version of this test since 2026-08-12 the destination is not the
     // fallback. The user is moved off the row they cannot use and onto the one
     // the picker leads with, rather than being demoted two steps.
-    expect(getSelectedFreebuffModel()).toBe(DEFAULT_FREEBUFF_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(DEFAULT_FUCKBUFF_MODEL_ID)
     const frame = setup.captureCharFrame()
     // `›` is the cursor: it has to be on the row Enter now commits.
     expect(frame).toContain(
-      `› ${getFreebuffModel(DEFAULT_FREEBUFF_MODEL_ID).displayName}`,
+      `› ${getFuckbuffModel(DEFAULT_FUCKBUFF_MODEL_ID).displayName}`,
     )
     // …and that row is the whole screen, exactly as for a user who is already
     // on the recommendation. The spent rows live behind the toggle.
@@ -522,12 +522,12 @@ describe('FreebuffModelSelector tier layout', () => {
 
   test('repairs an invalid selection to the unlimited recommendation when premium is exhausted', async () => {
     const resetAt = new Date(FIXED_NOW_MS + 60_000).toISOString()
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       rateLimitsByModel: {
-        [FREEBUFF_GPT_6_LUNA_MODEL_ID]: {
-          model: FREEBUFF_GPT_6_LUNA_MODEL_ID,
+        [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: {
+          model: FUCKBUFF_GPT_6_LUNA_MODEL_ID,
           limit: 6,
           period: 'pacific_day',
           resetTimeZone: 'America/Los_Angeles',
@@ -537,7 +537,7 @@ describe('FreebuffModelSelector tier layout', () => {
         },
       },
     })
-    useFreebuffModelStore.getState().setSelectedModel(FREEBUFF_GLM_V52_MODEL_ID)
+    useFuckbuffModelStore.getState().setSelectedModel(FUCKBUFF_GLM_V52_MODEL_ID)
 
     const setup = await renderSelector()
     await Promise.resolve()
@@ -547,14 +547,14 @@ describe('FreebuffModelSelector tier layout', () => {
     // Repaired onto the recommendation. Was the fallback while the default was
     // premium; an unmetered default is always joinable, so an invalid selection
     // now lands on the row the picker leads with.
-    expect(getSelectedFreebuffModel()).toBe(DEFAULT_FREEBUFF_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(DEFAULT_FUCKBUFF_MODEL_ID)
     expect(setup.captureCharFrame()).toContain(
-      `› ${getFreebuffModel(DEFAULT_FREEBUFF_MODEL_ID).displayName}`,
+      `› ${getFuckbuffModel(DEFAULT_FUCKBUFF_MODEL_ID).displayName}`,
     )
   })
 
   test('shows every limited-tier model when the access tier arrives after mount', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
@@ -566,14 +566,14 @@ describe('FreebuffModelSelector tier layout', () => {
     // This was GLM 5.3 Flash until 2026-09-05, when GLM became the default and
     // the pick silently became the recommendation. Any joinable non-default row
     // in both catalogs restores the intent.
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
     // Tall enough for the whole limited list, plan rows included (2026-09-30).
     const setup = await renderSelector(80)
 
     flushSync(() => {
-      useFreebuffSessionStore.getState().setSession({
+      useFuckbuffSessionStore.getState().setSession({
         status: 'none',
         accessTier: 'limited',
       })
@@ -585,7 +585,7 @@ describe('FreebuffModelSelector tier layout', () => {
     const frame = setup.captureCharFrame()
     // From the catalog, not a hardcoded list: the point is that NONE of the
     // tier's rows stay hidden when the tier arrives late.
-    for (const model of LIMITED_FREEBUFF_MODELS) {
+    for (const model of LIMITED_FUCKBUFF_MODELS) {
       expect(frame).toContain(model.displayName)
     }
     // The rows a plan unlocks at limited access are LISTED to a planless
@@ -593,8 +593,8 @@ describe('FreebuffModelSelector tier layout', () => {
     // paid-only row: "Paid plan" on the detail line, no price. No plan-lock
     // list arrived with this session, so the tier's own fallback decides.
     const lines = frame.split('\n')
-    const planRows = FREEBUFF_MODELS.filter((m) =>
-      FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS.includes(m.id),
+    const planRows = FUCKBUFF_MODELS.filter((m) =>
+      FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS.includes(m.id),
     )
     expect(planRows.length).toBeGreaterThan(0)
     // The card's own line: a section hint may name a model too.
@@ -606,7 +606,7 @@ describe('FreebuffModelSelector tier layout', () => {
       expect(lines[row + 1] ?? '').toContain('Paid plan')
     }
     // No limited row is locked.
-    for (const model of LIMITED_FREEBUFF_MODELS) {
+    for (const model of LIMITED_FUCKBUFF_MODELS) {
       const row = cardLine(model.displayName)
       expect(lines[row + 1] ?? '').not.toContain('Paid plan')
     }
@@ -616,13 +616,13 @@ describe('FreebuffModelSelector tier layout', () => {
   })
 
   test("on the meter, rows sit in Desktop's sections, Optimized's pick marked Recommended", async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       freebucks: freebucksFixture(100),
     })
     // Not the hero, so the picker opens expanded.
-    useFreebuffModelStore.getState().setSelectedModel(FREEBUFF_GPT_6_LUNA_MODEL_ID)
+    useFuckbuffModelStore.getState().setSelectedModel(FUCKBUFF_GPT_6_LUNA_MODEL_ID)
     const frame = (await renderSelector(100)).captureCharFrame()
     const lines = frame.split('\n')
     const cardLine = (name: string) =>
@@ -636,7 +636,7 @@ describe('FreebuffModelSelector tier layout', () => {
       // GPT-6 Luna sits in Optimized since 2026-10-13.
       cardLine('GPT-6 Luna'),
       lines.findIndex((line) => line.startsWith('POWERFUL · Frontier')),
-      ...(FREEBUFF_ENABLE_FAST_MODE_IN_UI ? [cardLine('DeepSeek V4.1 Flash Fast')] : []),
+      ...(FUCKBUFF_ENABLE_FAST_MODE_IN_UI ? [cardLine('DeepSeek V4.1 Flash Fast')] : []),
       lines.findIndex((line) => line.startsWith('UNLIMITED · Experimental models')),
       cardLine('Solar Pro 4'),
     ]
@@ -645,7 +645,7 @@ describe('FreebuffModelSelector tier layout', () => {
     expect(lines[cardLine('DeepSeek V4.1 Flash') + 1]).toContain('Recommended')
     expect(lines[cardLine('MiMo v2.6 Flash Fast') + 1]).not.toContain('Recommended')
     // Flash Fast is not badged Recommended since 2026-10-07.
-    if (FREEBUFF_ENABLE_FAST_MODE_IN_UI) {
+    if (FUCKBUFF_ENABLE_FAST_MODE_IN_UI) {
       expect(lines[cardLine('DeepSeek V4.1 Flash Fast') + 1]).not.toContain('Recommended')
     }
     expect(lines[cardLine('GPT-6 Luna') + 1]).not.toContain('Recommended')
@@ -658,13 +658,13 @@ describe('FreebuffModelSelector tier layout', () => {
     // Listed rather than hidden since 2026-09-21: Gemini 3.8 Flash says "Paid
     // plan" on its detail line instead of a price. MiMo 2.6 Pro and GPT-6 Luna
     // are open to every full-access account since 2026-09-25, so neither is.
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_MINIMAX_M3_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_MINIMAX_M3_MODEL_ID)
     const lines = (await renderSelector(100)).captureCharFrame().split('\n')
     const gemini = lines.findIndex((line) => line.includes('Gemini 3.8 Flash'))
     expect(gemini).toBeGreaterThanOrEqual(0)
@@ -678,28 +678,28 @@ describe('FreebuffModelSelector tier layout', () => {
   })
 
   test('shows MiMo 2.6 Pro to a paying account, with no price caveat', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       subscription: { tierId: 'starter', tiers: [] },
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_MINIMAX_M3_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_MINIMAX_M3_MODEL_ID)
     const frame = (await renderSelector(100)).captureCharFrame()
     expect(frame).toContain('MiMo 2.6 Pro')
     expect(frame).not.toContain('Price subject to change')
   })
 
   test('badges only natively multimodal rows with Images', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
     // Expanded (a saved non-recommended pick) so every row is on screen.
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_MINIMAX_M3_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_MINIMAX_M3_MODEL_ID)
 
     const rowOf = (frame: string, name: string) =>
       frame.split('\n').find((line) => line.includes(name)) ?? ''
@@ -717,13 +717,13 @@ describe('FreebuffModelSelector tier layout', () => {
   })
 
   test('says the reasoning effort on rows whose catalog entry carries one', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_MINIMAX_M3_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_MINIMAX_M3_MODEL_ID)
 
     // Anchored on taglines: model names also appear in superseded-notice lines
     const rowOf = (frame: string, tagline: string) =>
@@ -739,15 +739,15 @@ describe('FreebuffModelSelector tier layout', () => {
 
   test('off the meter, the rows still sit in the sections, with no pool counts', async () => {
     // No Freebucks block: a quota-exempt account, or a local server whose
-    // FREEBUFF_FREEBUCKS_AUDIENCE leaves this account off the meter.
-    useFreebuffSessionStore.getState().setSession({
+    // FUCKBUFF_FREEBUCKS_AUDIENCE leaves this account off the meter.
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
     // Not the hero, so the picker opens expanded.
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
 
     // Tall enough for Unlimited, the last section since 2026-10-14.
     const frame = (await renderSelector(80)).captureCharFrame()
@@ -758,13 +758,13 @@ describe('FreebuffModelSelector tier layout', () => {
   })
 
   test('sizes the hero card to its content, with no Press-Enter gutter', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
 
     const frame = (await renderSelector()).captureCharFrame()
     // trimEnd drops the terminal's blank columns to the right of the card, so
@@ -811,7 +811,7 @@ describe('FreebuffModelSelector tier layout', () => {
   })
 })
 
-describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model offer (%s)', (accessTier) => {
+describe.each(['full', 'limited'] as const)('FuckbuffModelSelector limited-model offer (%s)', (accessTier) => {
   const offerSession = (
     offer: Partial<{
       remaining: number
@@ -824,7 +824,7 @@ describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model
     accessTier,
     limitedModelOffers: [
       {
-        model: FREEBUFF_FABLE_5_1_MODEL_ID,
+        model: FUCKBUFF_FABLE_5_1_MODEL_ID,
         remaining: 488,
         total: 500,
         userRemaining: 1,
@@ -837,7 +837,7 @@ describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model
   test('renders nothing when the server sends no offer', async () => {
     // The regression that matters most: a user who is not in the wave must see
     // the picker exactly as it was before the offer existed.
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
@@ -847,7 +847,7 @@ describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model
   })
 
   test('renders the offered model with its scarcity and data-use label', async () => {
-    useFreebuffSessionStore.getState().setSession(offerSession())
+    useFuckbuffSessionStore.getState().setSession(offerSession())
     const frame = (await renderSelector()).captureCharFrame()
     expect(frame).toContain('LIMITED TRIAL')
     expect(frame).toContain('488 of 500 sessions left')
@@ -861,8 +861,8 @@ describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model
     // The picker opens collapsed for a user already on the recommended model.
     // A wave nobody sees is a wave nobody joins. Read off the constant so the
     // collapsed state survives the next flip of the recommended default.
-    useFreebuffModelStore.getState().setSelectedModel(DEFAULT_FREEBUFF_MODEL_ID)
-    useFreebuffSessionStore.getState().setSession(offerSession())
+    useFuckbuffModelStore.getState().setSelectedModel(DEFAULT_FUCKBUFF_MODEL_ID)
+    useFuckbuffSessionStore.getState().setSession(offerSession())
     const frame = (await renderSelector()).captureCharFrame()
     expect(frame).toContain('See all')
     expect(frame).toContain('Claude Fable 5.1')
@@ -870,7 +870,7 @@ describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model
   })
 
   test('explains a spent personal allowance instead of hiding the row', async () => {
-    useFreebuffSessionStore
+    useFuckbuffSessionStore
       .getState()
       .setSession(offerSession({ userRemaining: 0 }))
     const frame = (await renderSelector()).captureCharFrame()
@@ -885,21 +885,21 @@ describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model
     async (width) => {
       const starts: string[] = []
       const publish = (userRemaining: number) =>
-        useFreebuffSessionStore.getState().setSession({
+        useFuckbuffSessionStore.getState().setSession({
           ...offerSession({ userRemaining }),
           freebucks: freebucksFixture(0),
         })
       publish(1)
-      useFreebuffModelStore
+      useFuckbuffModelStore
         .getState()
-        .setSelectedModel(FREEBUFF_FABLE_5_1_MODEL_ID)
+        .setSelectedModel(FUCKBUFF_FABLE_5_1_MODEL_ID)
       const setup = await renderSelector(
         40,
         async (model) => {
           starts.push(
-            resolveFreebuffModelPickForSession(
+            resolveFuckbuffModelPickForSession(
               model,
-              useFreebuffSessionStore.getState().session,
+              useFuckbuffSessionStore.getState().session,
             ),
           )
         },
@@ -916,7 +916,7 @@ describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model
       }
       expect(setup.captureCharFrame()).toContain('May use data for AI training')
       await clickFable()
-      expect(starts).toEqual([FREEBUFF_FABLE_5_1_MODEL_ID])
+      expect(starts).toEqual([FUCKBUFF_FABLE_5_1_MODEL_ID])
       publish(0)
       await setup.renderOnce()
       expect(setup.captureCharFrame()).toContain('trial used')
@@ -928,7 +928,7 @@ describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model
   test('drops an offer this build has no catalog entry for', async () => {
     // A server rolling out a model older clients don't know must be a no-op,
     // not a row with a blank name and no data-use warning.
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       limitedModelOffers: [
@@ -947,27 +947,27 @@ describe.each(['full', 'limited'] as const)('FreebuffModelSelector limited-model
   })
 
   test('keeps an offered selection instead of repairing it away', async () => {
-    // The offer model is not in FREEBUFF_MODELS, so the picker's
+    // The offer model is not in FUCKBUFF_MODELS, so the picker's
     // invalid-selection repair would otherwise bounce the user off the row they
     // just picked.
-    useFreebuffSessionStore.getState().setSession(offerSession())
-    useFreebuffModelStore.getState().setSelectedModel(FREEBUFF_FABLE_5_1_MODEL_ID)
+    useFuckbuffSessionStore.getState().setSession(offerSession())
+    useFuckbuffModelStore.getState().setSelectedModel(FUCKBUFF_FABLE_5_1_MODEL_ID)
     await renderSelector()
-    expect(getSelectedFreebuffModel()).toBe(FREEBUFF_FABLE_5_1_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(FUCKBUFF_FABLE_5_1_MODEL_ID)
   })
 
   test('repairs the selection once the wave ends', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
     })
-    useFreebuffModelStore.getState().setSelectedModel(FREEBUFF_FABLE_5_1_MODEL_ID)
+    useFuckbuffModelStore.getState().setSelectedModel(FUCKBUFF_FABLE_5_1_MODEL_ID)
     await renderSelector()
-    expect(isFreebuffModelId(getSelectedFreebuffModel())).toBe(true)
+    expect(isFuckbuffModelId(getSelectedFuckbuffModel())).toBe(true)
   })
 })
 
-describe('FreebuffModelSelector plan line', () => {
+describe('FuckbuffModelSelector plan line', () => {
   const PLAN_SESSION = {
     status: 'none',
     accessTier: 'full',
@@ -1008,7 +1008,7 @@ describe('FreebuffModelSelector plan line', () => {
   } as never
 
   test('a subscriber sees their plan windows under the catalog', async () => {
-    useFreebuffSessionStore.getState().setSession(PLAN_SESSION)
+    useFuckbuffSessionStore.getState().setSession(PLAN_SESSION)
     const frame = (await renderSelector(48)).captureCharFrame()
     expect(frame).toContain('STARTER PLAN')
     expect(frame).toContain('today 1.3 of 2')
@@ -1017,7 +1017,7 @@ describe('FreebuffModelSelector plan line', () => {
   })
 
   test('a blocking limit names itself and its reset', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       ...(PLAN_SESSION as Record<string, unknown>),
       subscription: {
         ...(PLAN_SESSION as { subscription: Record<string, unknown> })
@@ -1032,7 +1032,7 @@ describe('FreebuffModelSelector plan line', () => {
   })
 
   test('a free account sees its own three windows in the same shape', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       freeWindows: {
@@ -1055,7 +1055,7 @@ describe('FreebuffModelSelector plan line', () => {
   })
 
   test('no plan means no plan line', async () => {
-    useFreebuffSessionStore
+    useFuckbuffSessionStore
       .getState()
       .setSession({ status: 'none', accessTier: 'full' } as never)
     const frame = (await renderSelector()).captureCharFrame()
@@ -1067,13 +1067,13 @@ describe('GLM selection uses the applicable meter', () => {
   test.each([0, 4, 5, 25])(
     'Freebucks balance %s wins over a contradictory earned quota',
     async (balance) => {
-      useFreebuffSessionStore.getState().setSession({
+      useFuckbuffSessionStore.getState().setSession({
         status: 'none',
         accessTier: 'limited',
         freebucks: freebucksFixture(balance),
         rateLimitsByModel: {
-          [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: {
-            model: FREEBUFF_GLM_V53_FLASH_MODEL_ID,
+          [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: {
+            model: FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
             limit: balance >= 5 ? 0 : 1,
             recentCount: 0,
             period: 'pacific_day',
@@ -1083,17 +1083,17 @@ describe('GLM selection uses the applicable meter', () => {
           },
         },
       })
-      useFreebuffModelStore
+      useFuckbuffModelStore
         .getState()
-        .setSelectedModel(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+        .setSelectedModel(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
       const setup = await renderSelector()
       await setup.renderOnce()
       // The LIMITED hero (MiMo 2.6 Flash since 2026-09-30) when the balance
       // cannot cover GLM.
-      expect(getSelectedFreebuffModel()).toBe(
+      expect(getSelectedFuckbuffModel()).toBe(
         balance >= 5
-          ? FREEBUFF_GLM_V53_FLASH_MODEL_ID
-          : LIMITED_FREEBUFF_HERO_MODEL_ID,
+          ? FUCKBUFF_GLM_V53_FLASH_MODEL_ID
+          : LIMITED_FUCKBUFF_HERO_MODEL_ID,
       )
       if (balance >= 5) {
         // GLM is the 1x row, and reads "1x". The balance lives in the header
@@ -1106,7 +1106,7 @@ describe('GLM selection uses the applicable meter', () => {
 
   test('fresh balances and leaving the audience update selection without remounting', async () => {
     const setBalance = (balance?: number) =>
-      useFreebuffSessionStore.getState().setSession({
+      useFuckbuffSessionStore.getState().setSession({
         status: 'none',
         accessTier: 'limited',
         ...(balance === undefined
@@ -1114,28 +1114,28 @@ describe('GLM selection uses the applicable meter', () => {
           : { freebucks: freebucksFixture(balance) }),
       })
     setBalance(25)
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
     const setup = await renderSelector()
     await setup.renderOnce()
-    expect(getSelectedFreebuffModel()).toBe(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
     setBalance(4)
     await setup.renderOnce()
     await setup.renderOnce()
     // The LIMITED hero — see the note in the case above.
-    expect(getSelectedFreebuffModel()).toBe(LIMITED_FREEBUFF_HERO_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(LIMITED_FUCKBUFF_HERO_MODEL_ID)
     setBalance(5)
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
     await setup.renderOnce()
     await setup.renderOnce()
-    expect(getSelectedFreebuffModel()).toBe(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
     setBalance()
     await setup.renderOnce()
     await setup.renderOnce()
-    expect(getSelectedFreebuffModel()).toBe(LIMITED_FREEBUFF_HERO_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(LIMITED_FUCKBUFF_HERO_MODEL_ID)
   })
 })
 
@@ -1145,10 +1145,10 @@ test('GLM Enter submits the exact selected model once while admission is pending
     accessTier: 'limited' as const,
     freebucks: freebucksFixture(5),
   }
-  useFreebuffSessionStore.getState().setSession(session)
-  useFreebuffModelStore
+  useFuckbuffSessionStore.getState().setSession(session)
+  useFuckbuffModelStore
     .getState()
-    .setSelectedModel(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+    .setSelectedModel(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
   const requested: string[] = []
   let finish!: () => void
   const pending = new Promise<void>((resolve) => {
@@ -1156,9 +1156,9 @@ test('GLM Enter submits the exact selected model once while admission is pending
   })
   const setup = await renderSelector(40, async (model) => {
     requested.push(
-      resolveFreebuffModelPickForSession(
+      resolveFuckbuffModelPickForSession(
         model,
-        useFreebuffSessionStore.getState().session,
+        useFuckbuffSessionStore.getState().session,
       ),
     )
     await pending
@@ -1168,8 +1168,8 @@ test('GLM Enter submits the exact selected model once while admission is pending
     await setup.renderOnce()
     await setup.mockInput.pressEnter()
     await setup.renderOnce()
-    expect(getSelectedFreebuffModel()).toBe(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
-    expect(requested).toEqual([FREEBUFF_GLM_V53_FLASH_MODEL_ID])
+    expect(getSelectedFuckbuffModel()).toBe(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
+    expect(requested).toEqual([FUCKBUFF_GLM_V53_FLASH_MODEL_ID])
   } finally {
     finish()
     await pending
@@ -1185,11 +1185,11 @@ test('returning to the landing picker keeps the currency until the fresh probe',
   })
   expect(landing.freebucks).toEqual(freebucks)
   expect(
-    resolveFreebuffModelPickForSession(
-      FREEBUFF_GLM_V53_FLASH_MODEL_ID,
+    resolveFuckbuffModelPickForSession(
+      FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
       landing,
     ),
-  ).toBe(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+  ).toBe(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
 })
 
 test.each([
@@ -1198,7 +1198,7 @@ test.each([
 ] as const)(
   'clicking unfunded GLM makes no admission request (%s)',
   async (_label, balance) => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'limited',
       ...(balance === undefined
@@ -1207,9 +1207,9 @@ test.each([
     })
     // A non-hero pick, so the picker opens expanded with GLM on screen. MiMo
     // 2.6 Flash was that pick until it became the limited hero (2026-09-30).
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
     const requested: string[] = []
     const setup = await renderSelector(40, async (model) => {
       requested.push(model)
@@ -1222,7 +1222,7 @@ test.each([
     await setup.mockMouse.click(15, y)
     await setup.renderOnce()
     expect(requested).toEqual([])
-    expect(getSelectedFreebuffModel()).toBe(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    expect(getSelectedFuckbuffModel()).toBe(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
   },
 )
 
@@ -1267,20 +1267,20 @@ describe('a paid-only row on an account without a plan', () => {
     },
   }
   const renderOnGemini = async (withPlan: boolean) => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       freebucks: freebucksFixture(1_000, {
-        [FREEBUFF_GEMINI_38_FLASH_MODEL_ID]: 80,
-        [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 10,
+        [FUCKBUFF_GEMINI_38_FLASH_MODEL_ID]: 80,
+        [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 10,
       }),
       ...(withPlan ? { subscription: STARTER_PLAN } : {}),
     } as never)
     // A non-default pick, so the picker opens expanded (MiMo 2.6 Flash, the
     // pick here until 2026-09-30, is the default now and opens collapsed).
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
     const requested: string[] = []
     const setup = await renderSelector(40, async (model) => {
       requested.push(model)
@@ -1328,8 +1328,8 @@ describe('a paid-only row on an account without a plan', () => {
       await setup.renderOnce()
       expect(openSpy).toHaveBeenCalledWith('https://freebuff.com/plans')
       expect(requested).toEqual([])
-      expect(getSelectedFreebuffModel()).toBe(
-        FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+      expect(getSelectedFuckbuffModel()).toBe(
+        FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
       )
     } finally {
       openSpy.mockRestore()
@@ -1343,7 +1343,7 @@ describe('a paid-only row on an account without a plan', () => {
     expect(details).toContain('16x')
     flushSync(() => setup.mockInput.pressEnter())
     await setup.renderOnce()
-    expect(requested).toEqual([FREEBUFF_GEMINI_38_FLASH_MODEL_ID])
+    expect(requested).toEqual([FUCKBUFF_GEMINI_38_FLASH_MODEL_ID])
   })
 })
 
@@ -1356,7 +1356,7 @@ describe('a paid-only row on an account without a plan', () => {
 // answer.
 describe('a row the balance cannot cover', () => {
   const renderUnaffordableLuna = async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       freebucks: {
@@ -1364,15 +1364,15 @@ describe('a row the balance cannot cover', () => {
         // in-principle for the balance message to be what the press explains.
         planRequiredModelIds: [],
         ...freebucksFixture(10, {
-          [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 20,
-          [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 10,
+          [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 20,
+          [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 10,
         }),
       },
     })
     // A non-default pick, so the picker opens expanded.
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
     const requested: string[] = []
     const setup = await renderSelector(40, async (model) => {
       requested.push(model)
@@ -1409,8 +1409,8 @@ describe('a row the balance cannot cover', () => {
       await setup.renderOnce()
       expect(openSpy).toHaveBeenCalledWith('https://freebuff.com/plans')
       expect(requested).toEqual([])
-      expect(getSelectedFreebuffModel()).toBe(
-        FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+      expect(getSelectedFuckbuffModel()).toBe(
+        FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
       )
     } finally {
       openSpy.mockRestore()
@@ -1424,15 +1424,15 @@ describe('a row the balance cannot cover', () => {
     expect(setup.captureCharFrame()).toContain('Not enough hours')
     expect(requested).toEqual([])
 
-    flushSync(() => useFreebuffSessionStore.getState().setSession({
+    flushSync(() => useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       freebucks: {
         // Same viewer as the fixture above: nothing plan-locked for them.
         planRequiredModelIds: [],
         ...freebucksFixture(25, {
-          [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 20,
-          [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 10,
+          [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 20,
+          [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 10,
         }),
       },
     }))
@@ -1445,20 +1445,20 @@ describe('a row the balance cannot cover', () => {
 
     flushSync(() => setup.mockInput.pressEnter())
     await setup.renderOnce()
-    expect(requested).toEqual([FREEBUFF_GPT_6_LUNA_MODEL_ID])
+    expect(requested).toEqual([FUCKBUFF_GPT_6_LUNA_MODEL_ID])
   })
 
   test('a row closed for the hour stays inert — no wall to raise', async () => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       freebucks: freebucksFixture(10, {
-        [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 20,
+        [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 20,
       }),
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_MIMO_V25_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_MIMO_V25_MODEL_ID)
     const setup = await renderSelector()
     await setup.renderOnce()
     // Nothing is asking anything before a press; the assertion above is what
@@ -1472,23 +1472,23 @@ describe('a row the balance cannot cover', () => {
 test.each([false, true])(
   'Freebucks does not change Luna plan access (paid=%s)',
   async (paid) => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'limited',
-      freebucks: freebucksFixture(25, { [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 20 }),
+      freebucks: freebucksFixture(25, { [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 20 }),
       ...(paid ? { subscription: { tierId: 'starter', tiers: [] } } : {}),
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_GPT_6_LUNA_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_GPT_6_LUNA_MODEL_ID)
     const setup = await renderSelector()
     await setup.renderOnce()
     // Unpaid at limited access repairs onto the LIMITED hero: Luna is listed
     // there since 2026-09-30, but LOCKED (no plan-lock list arrived here, so
-    // the tier's own fallback, FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS,
+    // the tier's own fallback, FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS,
     // decides), and a locked row is never a selection the picker keeps.
-    expect(getSelectedFreebuffModel()).toBe(
-      paid ? FREEBUFF_GPT_6_LUNA_MODEL_ID : LIMITED_FREEBUFF_HERO_MODEL_ID,
+    expect(getSelectedFuckbuffModel()).toBe(
+      paid ? FUCKBUFF_GPT_6_LUNA_MODEL_ID : LIMITED_FUCKBUFF_HERO_MODEL_ID,
     )
     if (paid) expect(setup.captureCharFrame()).toContain('GPT-6 Luna')
     else expect(setup.captureCharFrame()).not.toContain('› GPT-6 Luna')
@@ -1496,50 +1496,50 @@ test.each([false, true])(
 )
 
 test('quota-exempt Luna remains selected at zero Freebucks', async () => {
-  useFreebuffSessionStore.getState().setSession({
+  useFuckbuffSessionStore.getState().setSession({
     status: 'none',
     accessTier: 'full',
     freebucks: {
       planRequiredModelIds: [],
-      ...freebucksFixture(0, { [FREEBUFF_GPT_6_LUNA_MODEL_ID]: 20 }),
+      ...freebucksFixture(0, { [FUCKBUFF_GPT_6_LUNA_MODEL_ID]: 20 }),
       quotaExempt: true,
     },
   })
-  useFreebuffModelStore
+  useFuckbuffModelStore
     .getState()
-    .setSelectedModel(FREEBUFF_GPT_6_LUNA_MODEL_ID)
+    .setSelectedModel(FUCKBUFF_GPT_6_LUNA_MODEL_ID)
   const setup = await renderSelector()
   await setup.renderOnce()
-  expect(getSelectedFreebuffModel()).toBe(FREEBUFF_GPT_6_LUNA_MODEL_ID)
+  expect(getSelectedFuckbuffModel()).toBe(FUCKBUFF_GPT_6_LUNA_MODEL_ID)
 })
 
 test('the collapsed picker recommends affordable GLM when the default costs too much', async () => {
-  useFreebuffSessionStore.getState().setSession({
+  useFuckbuffSessionStore.getState().setSession({
     status: 'none',
     accessTier: 'limited',
     freebucks: freebucksFixture(5, {
-      [DEFAULT_FREEBUFF_MODEL_ID]: 15,
-      [FREEBUFF_MIMO_V25_MODEL_ID]: 10,
-      [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: 5,
-      [FREEBUFF_SOLAR_MINI_4_MODEL_ID]: 5,
+      [DEFAULT_FUCKBUFF_MODEL_ID]: 15,
+      [FUCKBUFF_MIMO_V25_MODEL_ID]: 10,
+      [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: 5,
+      [FUCKBUFF_SOLAR_MINI_4_MODEL_ID]: 5,
     }),
   })
-  useFreebuffModelStore.getState().setSelectedModel(DEFAULT_FREEBUFF_MODEL_ID)
+  useFuckbuffModelStore.getState().setSelectedModel(DEFAULT_FUCKBUFF_MODEL_ID)
   const requested: string[] = []
   const setup = await renderSelector(40, async (model) => {
     requested.push(model)
   })
   await setup.renderOnce()
   expect(setup.captureCharFrame()).toContain('GLM 5.3 Flash')
-  expect(getSelectedFreebuffModel()).toBe(FREEBUFF_GLM_V53_FLASH_MODEL_ID)
+  expect(getSelectedFuckbuffModel()).toBe(FUCKBUFF_GLM_V53_FLASH_MODEL_ID)
   await setup.mockInput.pressEnter()
   await setup.renderOnce()
-  expect(requested).toEqual([FREEBUFF_GLM_V53_FLASH_MODEL_ID])
+  expect(requested).toEqual([FUCKBUFF_GLM_V53_FLASH_MODEL_ID])
 })
 
 test('a funded Luna row does not show its exhausted legacy quota in the section header', async () => {
-  const id = FREEBUFF_GPT_6_LUNA_MODEL_ID
-  useFreebuffSessionStore.getState().setSession({
+  const id = FUCKBUFF_GPT_6_LUNA_MODEL_ID
+  useFuckbuffSessionStore.getState().setSession({
     status: 'none',
     accessTier: 'full',
     // Empty = "no row is plan-locked for this viewer", the server's verdict
@@ -1561,12 +1561,12 @@ test('a funded Luna row does not show its exhausted legacy quota in the section 
       },
     },
   })
-  useFreebuffModelStore.getState().setSelectedModel(id)
+  useFuckbuffModelStore.getState().setSelectedModel(id)
   const setup = await renderSelector()
   await setup.renderOnce()
   expect(setup.captureCharFrame()).toContain('4x')
   expect(setup.captureCharFrame()).not.toContain('1 of 1 used')
-  expect(getSelectedFreebuffModel()).toBe(id)
+  expect(getSelectedFuckbuffModel()).toBe(id)
 })
 
 test.each([
@@ -1574,7 +1574,7 @@ test.each([
   { at: '2026-09-14T03:46:00Z', before: 5, price: 10, balance: 9 },
   { at: '2026-09-14T03:46:00Z', before: 5, price: 10, balance: 10 },
 ])('an open Solar CLI picker updates price and purchase affordability: %j', async ({ at, before, price, balance }) => {
-  const SOLAR = FREEBUFF_SOLAR_MINI_4_MODEL_ID
+  const SOLAR = FUCKBUFF_SOLAR_MINI_4_MODEL_ID
   const cutoff = Date.parse(at)
   const clock = spyOn(Date, 'now').mockReturnValue(cutoff - 137)
   const realTimeout = globalThis.setTimeout
@@ -1589,13 +1589,13 @@ test.each([
   }) as typeof setTimeout)
   const requested: string[] = []
   try {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier: 'full',
       freebucks: {
         ...freebucksFixture(balance, {
-          [DEFAULT_FREEBUFF_MODEL_ID]: 15,
-          [FREEBUFF_GLM_V53_FLASH_MODEL_ID]: 5,
+          [DEFAULT_FUCKBUFF_MODEL_ID]: 15,
+          [FUCKBUFF_GLM_V53_FLASH_MODEL_ID]: 5,
           [SOLAR]: before,
         }),
         // Solar Mini 4's recorded schedule, replayed on the row that replaced
@@ -1606,15 +1606,15 @@ test.each([
         ).map((change) => ({ ...change, modelId: SOLAR })),
       },
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
       .setSelectedModel(SOLAR)
     // 48 rows: the expanded catalog outgrew 40 when Solar Pro 4 returned.
-    // 50 rows once FREEBUFF_ENABLE_FAST_MODE_IN_UI lists DeepSeek V4.1 Flash
+    // 50 rows once FUCKBUFF_ENABLE_FAST_MODE_IN_UI lists DeepSeek V4.1 Flash
     // Fast: that row makes the expanded catalog two lines taller.
     // Five more for the three section headers and the gaps between them, and
     // one for Solar Pro 4's "Promotional" line (2026-10-05).
-    const setup = await renderSelector(FREEBUFF_ENABLE_FAST_MODE_IN_UI ? 56 : 54, async (model) => {
+    const setup = await renderSelector(FUCKBUFF_ENABLE_FAST_MODE_IN_UI ? 56 : 54, async (model) => {
       requested.push(model)
     })
     expect(wake).toBeDefined()
@@ -1661,14 +1661,14 @@ test.each([
   }
 })
 
-describe('FreebuffModelSelector limited upgrade CTA', () => {
+describe('FuckbuffModelSelector limited upgrade CTA', () => {
   // The prompt arrives ON THE WIRE (`freebucks.upgrade`), computed by the
   // server for the account; the picker only draws what it is sent. So these
   // tests drive the wire field directly — a literal here is the wire contract,
   // not a second copy of the marketing arithmetic.
   const LIMITED_OFFER = {
     kind: 'limited_offer' as const,
-    modelId: FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+    modelId: FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
     cta: 'Get 7x usage for $5',
     tooltip:
       'DeepSeek V4.1 Flash: 7 hours a day on Starter instead of 1 hour for free. $5 first month, $8/mo after.',
@@ -1677,18 +1677,18 @@ describe('FreebuffModelSelector limited upgrade CTA', () => {
     upgrade: typeof LIMITED_OFFER | undefined,
     accessTier: 'limited' | 'full' = 'limited',
   ) => {
-    useFreebuffSessionStore.getState().setSession({
+    useFuckbuffSessionStore.getState().setSession({
       status: 'none',
       accessTier,
       subscription: { tierId: null, tiers: [] },
       freebucks: {
-        ...freebucksFixture(25, { [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 25 }),
+        ...freebucksFixture(25, { [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID]: 25 }),
         ...(upgrade ? { upgrade } : {}),
       },
     })
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
     const setup = await renderSelector(40)
     // Expand so every row is on screen regardless of which one the landing
     // repair settled on.
@@ -1713,7 +1713,7 @@ describe('FreebuffModelSelector limited upgrade CTA', () => {
   })
 
   test('draws nothing on a row the offer does not name', async () => {
-    const frame = await renderWith({ ...LIMITED_OFFER, modelId: FREEBUFF_MIMO_V25_MODEL_ID })
+    const frame = await renderWith({ ...LIMITED_OFFER, modelId: FUCKBUFF_MIMO_V25_MODEL_ID })
     const deepseekRow = frame.split('\n').find((line) => line.includes('DeepSeek V4.1 Flash')) ?? ''
     expect(deepseekRow).not.toContain('usage for $')
   })
@@ -1729,7 +1729,7 @@ describe('unavailable balances in the mounted CLI picker', () => {
   test.each(['full', 'limited'] as const)(
     '%s: fresh admission requires confirmation and ignores exhausted legacy quotas',
     async (accessTier) => {
-      const id = FREEBUFF_GLM_V53_FLASH_MODEL_ID
+      const id = FUCKBUFF_GLM_V53_FLASH_MODEL_ID
       const pending = {
         status: 'none' as const,
         accessTier,
@@ -1746,21 +1746,21 @@ describe('unavailable balances in the mounted CLI picker', () => {
           },
         },
       }
-      useFreebuffSessionStore.getState().setSession(pending)
-      useFreebuffModelStore.getState().setSelectedModel(id)
+      useFuckbuffSessionStore.getState().setSession(pending)
+      useFuckbuffModelStore.getState().setSelectedModel(id)
       const requests: string[] = []
       // Tall enough for the expanded list: GLM is no longer the default
       // (2026-09-30), so the picker opens expanded on it and the balance line
       // sits below every row.
       const setup = await renderSelector(80, async (model) => {
         requests.push(
-          resolveFreebuffModelPickForSession(
+          resolveFuckbuffModelPickForSession(
             model,
-            useFreebuffSessionStore.getState().session,
+            useFuckbuffSessionStore.getState().session,
           ),
         )
       })
-      expect(getSelectedFreebuffModel()).toBe(id)
+      expect(getSelectedFuckbuffModel()).toBe(id)
       expect(setup.captureCharFrame()).toContain(
         'Balance temporarily unavailable',
       )
@@ -1773,7 +1773,7 @@ describe('unavailable balances in the mounted CLI picker', () => {
       await setup.renderOnce()
       expect(requests).toEqual([id])
       // A poll recovers the open control without remounting or changing its model.
-      useFreebuffSessionStore
+      useFuckbuffSessionStore
         .getState()
         .setSession({ ...pending, freebucks: freebucksFixture(5) })
       await setup.renderOnce()
@@ -1783,7 +1783,7 @@ describe('unavailable balances in the mounted CLI picker', () => {
       await setup.renderOnce()
       expect(requests).toEqual([id, id])
       const known = freebucksFixture(5)
-      useFreebuffSessionStore.getState().setSession({
+      useFuckbuffSessionStore.getState().setSession({
         ...pending,
         freebucks: {
           ...known,
@@ -1807,7 +1807,7 @@ describe('unavailable balances in the mounted CLI picker', () => {
   test.each(['full', 'limited'] as const)(
     '%s: paid reuse is accessible until expiry, then asks before admission',
     async (accessTier) => {
-      const id = FREEBUFF_GLM_V53_FLASH_MODEL_ID
+      const id = FUCKBUFF_GLM_V53_FLASH_MODEL_ID
       const live = {
         status: 'active' as const,
         accessTier,
@@ -1818,8 +1818,8 @@ describe('unavailable balances in the mounted CLI picker', () => {
         expiresAt: new Date(FIXED_NOW_MS + 30_000).toISOString(),
         freebucks: null,
       }
-      useFreebuffSessionStore.getState().setSession(live)
-      useFreebuffModelStore.getState().setSelectedModel(id)
+      useFuckbuffSessionStore.getState().setSession(live)
+      useFuckbuffModelStore.getState().setSelectedModel(id)
       const requests: string[] = []
       const setup = await renderSelector(40, async (model) => {
         requests.push(model)
@@ -1828,14 +1828,14 @@ describe('unavailable balances in the mounted CLI picker', () => {
       await setup.renderOnce()
       expect(requests).toEqual([id])
       // Even a known zero balance cannot hide a paid reuse.
-      useFreebuffSessionStore
+      useFuckbuffSessionStore
         .getState()
         .setSession({ ...live, freebucks: freebucksFixture(0) })
       await setup.renderOnce()
       flushSync(() => setup.mockInput.pressEnter())
       await setup.renderOnce()
       expect(requests).toEqual([id, id])
-      useFreebuffSessionStore.getState().setSession({
+      useFuckbuffSessionStore.getState().setSession({
         ...live,
         expiresAt: new Date(FIXED_NOW_MS).toISOString(),
       })
@@ -1862,15 +1862,15 @@ describe('unavailable balances in the mounted CLI picker', () => {
 test.each(['full', 'limited'] as const)(
   '%s earned grants offer confirmation without inflating the CLI balance',
   async (accessTier) => {
-    const id = FREEBUFF_GLM_V53_FLASH_MODEL_ID
-    useFreebuffSessionStore
+    const id = FUCKBUFF_GLM_V53_FLASH_MODEL_ID
+    useFuckbuffSessionStore
       .getState()
       .setSession({
         status: 'none',
         accessTier,
         freebucks: { ...freebucksFixture(0), claimableGrantFreebucks: 15 },
       })
-    useFreebuffModelStore.getState().setSelectedModel(id)
+    useFuckbuffModelStore.getState().setSelectedModel(id)
     const picked: string[] = []
     const setup = await renderSelector(40, async (model) => {
       picked.push(model)
@@ -1881,7 +1881,7 @@ test.each(['full', 'limited'] as const)(
     expect(setup.captureCharFrame()).toContain(
       'Claim earned hours on admission, then spend 1 hour on this session.',
     )
-    expect(getFreebucksInfo(useFreebuffSessionStore.getState().session!)?.balance).toBe(
+    expect(getFreebucksInfo(useFuckbuffSessionStore.getState().session!)?.balance).toBe(
       0,
     )
     flushSync(() => setup.mockInput.pressEnter())
@@ -1892,12 +1892,12 @@ test.each(['full', 'limited'] as const)(
 
 
 test('chat picker selects without admitting or asking to spend wallet funds', async () => {
-  const model = FREEBUFF_MIMO_V25_MODEL_ID
-  useFreebuffSessionStore.getState().setSession({
+  const model = FUCKBUFF_MIMO_V25_MODEL_ID
+  useFuckbuffSessionStore.getState().setSession({
     status: 'none', accessTier: 'full',
     freebucks: { ...freebucksFixture(0, { [model]: 5 }), balance: 10, wallet: { balance: 10, monthlyBonus: 0 } },
   })
-  useFreebuffModelStore.getState().setSelectedModel(model)
+  useFuckbuffModelStore.getState().setSelectedModel(model)
   const selected: string[] = []
   const admitted: string[] = []
   const setup = await renderSelector(40, async (id) => { admitted.push(id) }, 100, FIXED_NOW_MS, (id) => { selected.push(id) })
@@ -1908,14 +1908,14 @@ test('chat picker selects without admitting or asking to spend wallet funds', as
 })
 
 test.each(['model', 'reasoning'] as const)('%s entry edits reasoning and Escape returns without selecting', async (initialView) => {
-  const model = FREEBUFF_GLM_V53_FLASH_MODEL_ID
-  const previous = useFreebuffModelStore.getState().reasoningEffortByModel
-  useFreebuffSessionStore.getState().setSession({ status: 'none', accessTier: 'full' })
-  useFreebuffModelStore.setState({ selectedModel: model, reasoningEffortByModel: {} })
+  const model = FUCKBUFF_GLM_V53_FLASH_MODEL_ID
+  const previous = useFuckbuffModelStore.getState().reasoningEffortByModel
+  useFuckbuffSessionStore.getState().setSession({ status: 'none', accessTier: 'full' })
+  useFuckbuffModelStore.setState({ selectedModel: model, reasoningEffortByModel: {} })
   const selected: string[] = []
   const setup = await renderSelector(40, undefined, 120, FIXED_NOW_MS, (id) => selected.push(id), initialView)
-  const persist = spyOn(useFreebuffModelStore.getState(), 'setReasoningEffort').mockImplementation((id, effort) => {
-    useFreebuffModelStore.setState({ reasoningEffortByModel: effort ? { [id]: effort } : {} })
+  const persist = spyOn(useFuckbuffModelStore.getState(), 'setReasoningEffort').mockImplementation((id, effort) => {
+    useFuckbuffModelStore.setState({ reasoningEffortByModel: effort ? { [id]: effort } : {} })
   })
   try {
     if (initialView === 'model') flushSync(() => setup.mockInput.pressKey('TAB'))
@@ -1937,6 +1937,6 @@ test.each(['model', 'reasoning'] as const)('%s entry edits reasoning and Escape 
     expect(selected).toEqual([model])
   } finally {
     persist.mockRestore()
-    useFreebuffModelStore.setState({ reasoningEffortByModel: previous })
+    useFuckbuffModelStore.setState({ reasoningEffortByModel: previous })
   }
 })

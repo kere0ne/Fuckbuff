@@ -2,7 +2,7 @@
  * What a sponsored proposal is ABOUT, on a surface that has no Cloud project
  * (COD-376, Decision 1).
  *
- * A proposal is an offer to do work in one repository. On Freebuff Web that
+ * A proposal is an offer to do work in one repository. On Fuckbuff Web that
  * repository is reachable as a Cloud `project` row, and the project id has
  * always been the key. Desktop opens a local folder and the CLI runs against
  * `process.cwd()`; neither has a project, so off Cloud the key is

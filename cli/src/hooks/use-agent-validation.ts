@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { getAuthToken } from '../utils/auth'
 import { loadAgentDefinitions } from '../utils/local-agent-registry'
 import { hasSelectedByokConnection } from '../utils/byok'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { logger } from '../utils/logger'
 import { filterNetworkErrors } from '../utils/validation-error-helpers'
 
@@ -20,10 +20,10 @@ export type ValidationCheckResult = {
   errors: ValidationError[]
 }
 
-/** BYOK runs validate local agent definitions without sending them to Freebuff. */
+/** BYOK runs validate local agent definitions without sending them to Fuckbuff. */
 export const shouldValidateAgentsRemotely = (
-  isFreebuff = IS_FREEBUFF,
-): boolean => !isFreebuff || !hasSelectedByokConnection()
+  isFuckbuff = IS_FUCKBUFF,
+): boolean => !isFuckbuff || !hasSelectedByokConnection()
 
 /**
  * Invoke SDK validation using the inference source selected when a send starts.
@@ -33,10 +33,10 @@ export const shouldValidateAgentsRemotely = (
  */
 export const validateSelectedAgentDefinitions = (
   agentDefinitions: AgentDefinition[],
-  options?: { isFreebuff?: boolean },
+  options?: { isFuckbuff?: boolean },
 ) =>
   validateAgents(agentDefinitions, {
-    remote: shouldValidateAgentsRemotely(options?.isFreebuff),
+    remote: shouldValidateAgentsRemotely(options?.isFuckbuff),
     apiKey: getAuthToken(),
   })
 

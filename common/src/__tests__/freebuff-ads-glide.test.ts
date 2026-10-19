@@ -18,7 +18,7 @@ import {
   deliverySpacingSeconds,
   deliveryWindowLimit,
   type BudgetGlide,
-} from '../constants/freebuff-ads'
+} from '../constants/fuckbuff-ads'
 
 /** An example taper: $600/day down to $150/day over three weeks, ±10%. */
 const GLIDE: BudgetGlide = {

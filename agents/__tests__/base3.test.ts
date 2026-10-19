@@ -1,7 +1,7 @@
-import { isFreebuffLimitedOfferModelId } from '@codebuff/common/constants/freebuff-models'
+import { isFuckbuffLimitedOfferModelId } from '@codebuff/common/constants/fuckbuff-models'
 import {
-  FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL,
-  hasFreebuffRootSystemPromptOpening,
+  FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL,
+  hasFuckbuffRootSystemPromptOpening,
 } from '@codebuff/common/constants/free-agents'
 import {
   compactionPolicyForModel,
@@ -12,11 +12,11 @@ import {
   TURN_ENDING_RULE,
 } from '@codebuff/common/constants/turn-ending-rule'
 import {
-  FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
-  FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-  SUPPORTED_FREEBUFF_MODELS,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+  SUPPORTED_FUCKBUFF_MODELS,
+} from '@codebuff/common/constants/fuckbuff-models'
 import { describe, test, expect } from 'bun:test'
 
 import base3, { createBase3, createBase3CliRoot } from '../base3'
@@ -46,16 +46,16 @@ import base3Lite from '../base3-lite'
 /**
  * The CLI's base3 roots.
  *
- * `CLI_HARNESS` routes DEFAULT, LITE, and Freebuff turns here. These definitions
+ * `CLI_HARNESS` routes DEFAULT, LITE, and Fuckbuff turns here. These definitions
  * ship compiled into the CLI binary, so a regression requires a new release to
  * repair rather than a server-side kill switch (see
- * docs/freebuff-base3-harness.md).
+ * docs/fuckbuff-base3-harness.md).
  *
  * What makes base3 cheaper rides on the DEFINITION, not the call site — the
  * runtime reads `windowedFileReads` and `compactContext` straight off the agent
  * template. A root that loses one keeps working and quietly costs base2 money
  * again. The Web bundle has the same assertions for its own roots
- * (freebuff_bundled_agents.test.ts); these are the CLI's, which ship compiled
+ * (fuckbuff_bundled_agents.test.ts); these are the CLI's, which ship compiled
  * into the binary instead.
  */
 const CLI_ROOTS = [
@@ -117,9 +117,9 @@ describe('base3 CLI roots', () => {
       // refactor of base3's own list cannot move both sides at once.
       expect(agent.instructionsPrompt).toBe(
         [
-          FREEBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
-          FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-          FREEBUFF_SOLAR_MINI_4_MODEL_ID,
+          FUCKBUFF_MUSE_SPARK_13_CONTRIBUTOR_MODEL_ID,
+          FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+          FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
         ].includes(agent.model as string)
           ? TURN_ENDING_NOTE
           : undefined,
@@ -160,7 +160,7 @@ describe('base3 CLI roots', () => {
   test('declares no reasoning, leaving the catalog the single authority', () => {
     // An agent-declared reasoning reaches the wire as `body.reasoning`, which
     // makes the agent the authority on effort and leaves
-    // applyFreebuffReasoningDefaults unable to tell a model default apart from
+    // applyFuckbuffReasoningDefaults unable to tell a model default apart from
     // a user's pick — so the effort control silently does nothing on exactly
     // the models people most want to tune. The Web roots make this structural
     // by having no such parameter; the CLI roots spread object literals, so
@@ -174,17 +174,17 @@ describe('base3 CLI roots', () => {
     // The appendix is appended, never prepended: the canonical opening must
     // stay first.
     for (const agent of CLI_ROOTS) {
-      expect(hasFreebuffRootSystemPromptOpening(agent.systemPrompt!)).toBe(true)
+      expect(hasFuckbuffRootSystemPromptOpening(agent.systemPrompt!)).toBe(true)
       expect(
         agent.systemPrompt!.match(/\{CODEBUFF_GIT_CHANGES_PROMPT\}/g),
       ).toHaveLength(1)
     }
   })
 
-  test('every Freebuff root is pinned to the model its id is registered under', () => {
+  test('every Fuckbuff root is pinned to the model its id is registered under', () => {
     const byId = new Map(ALL_CLI_ROOTS.map((a) => [a.id, a]))
     for (const [model, agentId] of Object.entries(
-      FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL,
+      FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL,
     )) {
       // A root whose model disagrees with the allowlist cannot run.
       expect(byId.get(agentId)?.model).toBe(model)
@@ -192,16 +192,16 @@ describe('base3 CLI roots', () => {
   })
 
   test('ships a root for every model the picker offers', () => {
-    for (const model of SUPPORTED_FREEBUFF_MODELS) {
-      if (isFreebuffLimitedOfferModelId(model.id)) continue
-      const agentId = FREEBUFF_CLI_BASE3_AGENT_ID_BY_MODEL[model.id]
+    for (const model of SUPPORTED_FUCKBUFF_MODELS) {
+      if (isFuckbuffLimitedOfferModelId(model.id)) continue
+      const agentId = FUCKBUFF_CLI_BASE3_AGENT_ID_BY_MODEL[model.id]
       expect(agentId).toBeDefined()
       expect(ALL_CLI_ROOTS.some((a) => a.id === agentId)).toBe(true)
     }
   })
 
   test('leaves the bare harness alone, so Desktop does not inherit CLI tools', () => {
-    // freebuff-desktop builds THREAD_AGENT_TOOLS by unioning
+    // fuckbuff-desktop builds THREAD_AGENT_TOOLS by unioning
     // createBase3().toolNames with its own extras, so anything added to the
     // base factory lands on every Desktop thread silently.
     expect(createBase3().toolNames).toEqual([
@@ -257,7 +257,7 @@ describe('base3 CLI roots', () => {
     )
   })
 
-  // Freebuff users reported models refusing work because they were "running
+  // Fuckbuff users reported models refusing work because they were "running
   // out of time" after deadline wording reached every root's system prompt.
   // Only a host that supplies `deadlineAt` may talk about time.
   test('never tells the model it is short on time', () => {
@@ -274,7 +274,7 @@ describe('base3 CLI roots', () => {
     }
   })
 
-  // docs/freebuff-muse-spark.md: Muse Spark ended turns on "let me check…".
+  // docs/fuckbuff-muse-spark.md: Muse Spark ended turns on "let me check…".
   test('states that a message without a tool call ends the turn', () => {
     for (const prompt of [
       createBase3().systemPrompt!,
@@ -284,10 +284,10 @@ describe('base3 CLI roots', () => {
     }
   })
 
-  test('brands Freebuff roots as Freebuff, and Codebuff roots as Codebuff', () => {
-    expect(base3FreeDeepseek.systemPrompt).toContain('Freebuff')
+  test('brands Fuckbuff roots as Fuckbuff, and Codebuff roots as Codebuff', () => {
+    expect(base3FreeDeepseek.systemPrompt).toContain('Fuckbuff')
     expect(base3FreeDeepseek.systemPrompt).not.toContain('/usage')
-    // Codebuff's paid modes explain credits; Freebuff has none to explain.
+    // Codebuff's paid modes explain credits; Fuckbuff has none to explain.
     expect(base3.systemPrompt).toContain('/usage')
   })
 })

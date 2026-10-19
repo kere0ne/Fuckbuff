@@ -1,4 +1,4 @@
-import type { FreebuffFreebucksWindow } from '../types/freebuff-session'
+import type { FuckbuffFreebucksWindow } from '../types/fuckbuff-session'
 
 // This module is also shipped in the public CLI; keep it independent of the
 // private pricing catalog. It describes server snapshots, never grants funds.
@@ -17,7 +17,7 @@ export function freebucksRefillPending(
 /** Transition and travel days need not end at midnight on the current device.
  * A passed deadline is not evidence that the displayed balance has refilled. */
 export function freebucksResetCopy(
-  daily: Pick<FreebuffFreebucksWindow, 'resetAt' | 'resetTimeZone'>,
+  daily: Pick<FuckbuffFreebucksWindow, 'resetAt' | 'resetTimeZone'>,
   nowMs: number,
 ): string {
   if (freebucksRefillPending(daily.resetAt, nowMs)) {

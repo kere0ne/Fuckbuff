@@ -1,6 +1,6 @@
 import { isValidBrandHex } from './inline-ad-layout'
 
-/** Assigned by the server to an approved Freebuff partner, never inferred from copy. */
+/** Assigned by the server to an approved Fuckbuff partner, never inferred from copy. */
 export type PartnerBrand = 'greptile' | 'posthog'
 
 export function isPartnerBrand(value: unknown): value is PartnerBrand {

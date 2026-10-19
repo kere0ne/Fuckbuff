@@ -101,7 +101,7 @@ export function reportWindowsTerminalFailure(
   failure: WindowsTerminalFailure,
 ): void {
   const env = getCliEnv()
-  if (process.platform !== 'win32' || env.FREEBUFF_MODE !== 'true') return
+  if (process.platform !== 'win32' || env.FUCKBUFF_MODE !== 'true') return
 
   const properties: WindowsTerminalFailureProperties = {
     version: sanitizeWindowsCliVersion(env.CODEBUFF_CLI_VERSION ?? ''),
@@ -159,6 +159,6 @@ export function reportCliProcessHealth(
     version: sanitizeWindowsCliVersion(env.CODEBUFF_CLI_VERSION ?? ''),
     platform: process.platform,
     arch: process.arch,
-    freebuff: env.FREEBUFF_MODE === 'true',
+    fuckbuff: env.FUCKBUFF_MODE === 'true',
   })
 }

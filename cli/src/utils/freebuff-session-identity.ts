@@ -1,10 +1,10 @@
 import { randomUUID } from 'node:crypto'
 
 import {
-  FREEBUFF_CLIENT_ENV_METADATA_KEY,
-  FREEBUFF_INPUT_PROFILE_METADATA_KEY,
-} from '@codebuff/common/constants/freebuff-client-descriptor'
-import { FREEBUFF_CLI_CLAIM_PREFIX } from '@codebuff/common/constants/freebuff-desktop-sessions'
+  FUCKBUFF_CLIENT_ENV_METADATA_KEY,
+  FUCKBUFF_INPUT_PROFILE_METADATA_KEY,
+} from '@codebuff/common/constants/fuckbuff-client-descriptor'
+import { FUCKBUFF_CLI_CLAIM_PREFIX } from '@codebuff/common/constants/fuckbuff-desktop-sessions'
 
 import { getClientEnvironmentDescriptor } from './client-environment'
 import { takeInputProfile } from './input-profile'
@@ -13,25 +13,25 @@ import { takeInputProfile } from './input-profile'
 // The prefix also lets delayed DELETE/refund requests retain their protocol
 // after the picker has switched models (limited offers use the legacy path),
 // and tells the server this claim may resume a legacy CLI hour.
-const CLI_MULTI_SESSION_PREFIX = FREEBUFF_CLI_CLAIM_PREFIX
+const CLI_MULTI_SESSION_PREFIX = FUCKBUFF_CLI_CLAIM_PREFIX
 
-export function newFreebuffCliInstanceId(): string {
+export function newFuckbuffCliInstanceId(): string {
   return `${CLI_MULTI_SESSION_PREFIX}${randomUUID()}`
 }
 
-export function freebuffCliAttemptId(instanceId?: string): string | undefined {
+export function fuckbuffCliAttemptId(instanceId?: string): string | undefined {
   return instanceId?.startsWith(CLI_MULTI_SESSION_PREFIX)
     ? instanceId.slice(CLI_MULTI_SESSION_PREFIX.length)
     : undefined
 }
 
-export function freebuffSessionMetadata(instanceId: string) {
+export function fuckbuffSessionMetadata(instanceId: string) {
   return {
-    freebuff_instance_id: instanceId,
+    fuckbuff_instance_id: instanceId,
     // Use the existing wire protocol so released servers can serve this CLI.
     // The surface distinguishes native clients now that both use this store.
-    ...(freebuffCliAttemptId(instanceId)
-      ? { freebuff_multi_session: '1', surface: 'cli' }
+    ...(fuckbuffCliAttemptId(instanceId)
+      ? { fuckbuff_multi_session: '1', surface: 'cli' }
       : {}),
   }
 }
@@ -45,9 +45,9 @@ export function clientDescriptorMetadata(
 ): Record<string, string> {
   const inputProfile = takeInputProfile(promptText)
   return {
-    [FREEBUFF_CLIENT_ENV_METADATA_KEY]: getClientEnvironmentDescriptor(),
+    [FUCKBUFF_CLIENT_ENV_METADATA_KEY]: getClientEnvironmentDescriptor(),
     ...(inputProfile
-      ? { [FREEBUFF_INPUT_PROFILE_METADATA_KEY]: inputProfile }
+      ? { [FUCKBUFF_INPUT_PROFILE_METADATA_KEY]: inputProfile }
       : {}),
   }
 }

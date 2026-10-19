@@ -1,75 +1,75 @@
-import { nextFreebucksPriceChange } from '@codebuff/common/util/freebuff-price-changes'
+import { nextFreebucksPriceChange } from '@codebuff/common/util/fuckbuff-price-changes'
 import {
   getLimitedModelOffers,
   getRateLimitsByModel,
   getReferralInfo,
   getFreebucksInfo,
   getSubscriptionInfo,
-} from '@codebuff/common/types/freebuff-session'
+} from '@codebuff/common/types/fuckbuff-session'
 import { useEffect } from 'react'
 
 import { startNewChat } from '../project-files'
 import {
-  getFreebuffModelDirectory,
-  useFreebuffCatalogStore,
-} from '../state/freebuff-catalog-store'
+  getFuckbuffModelDirectory,
+  useFuckbuffCatalogStore,
+} from '../state/fuckbuff-catalog-store'
 import {
-  freebuffDefaultModelForSession,
-  getSelectedFreebuffModel,
-  persistFreebuffModelPick,
-  useFreebuffModelStore,
-} from '../state/freebuff-model-store'
+  fuckbuffDefaultModelForSession,
+  getSelectedFuckbuffModel,
+  persistFuckbuffModelPick,
+  useFuckbuffModelStore,
+} from '../state/fuckbuff-model-store'
 import { useChatStore } from '../state/chat-store'
-import { useFreebuffSessionStore } from '../state/freebuff-session-store'
+import { useFuckbuffSessionStore } from '../state/fuckbuff-session-store'
 import { getAuthTokenDetails } from '../utils/auth'
 import { stopActiveRun } from '../utils/active-run'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import {
-  deadLegacyFreebuffOwner,
-  forgetFreebuffInstanceOwner,
-  isFreebuffInstanceOwnedByDeadLocalProcess,
-  recordFreebuffInstanceOwner,
-} from '../utils/freebuff-instance-owner'
+  deadLegacyFuckbuffOwner,
+  forgetFuckbuffInstanceOwner,
+  isFuckbuffInstanceOwnedByDeadLocalProcess,
+  recordFuckbuffInstanceOwner,
+} from '../utils/fuckbuff-instance-owner'
 import { logger } from '../utils/logger'
 import {
-  consumeCrashedFreebuffSession,
-  consumeFreebuffSessionRelaunch,
+  consumeCrashedFuckbuffSession,
+  consumeFuckbuffSessionRelaunch,
   forgetCrashRecordsFor,
-  forgetLiveFreebuffSession,
-  recordLiveFreebuffSession,
-} from '../utils/freebuff-session-relaunch'
+  forgetLiveFuckbuffSession,
+  recordLiveFuckbuffSession,
+} from '../utils/fuckbuff-session-relaunch'
 import {
-  freebuffCliAttemptId,
-  newFreebuffCliInstanceId,
-} from '../utils/freebuff-session-identity'
+  fuckbuffCliAttemptId,
+  newFuckbuffCliInstanceId,
+} from '../utils/fuckbuff-session-identity'
 import { getSystemMessage } from '../utils/message-history'
 import {
   clearReferralCache,
   getCachedReferral,
   rememberReferral,
-} from '../utils/freebuff-referral-cache'
+} from '../utils/fuckbuff-referral-cache'
 import {
-  callFreebuffSession,
-  classifyFreebuffSessionRequestFailure,
-  FreebuffSessionRequestError,
-  holdsLiveFreebuffSlot,
-  isFreebuffSessionTimeoutError,
+  callFuckbuffSession,
+  classifyFuckbuffSessionRequestFailure,
+  FuckbuffSessionRequestError,
+  holdsLiveFuckbuffSlot,
+  isFuckbuffSessionTimeoutError,
   mergeCompactActiveSession,
-} from '../utils/freebuff-session-api'
+} from '../utils/fuckbuff-session-api'
 import {
-  freebuffModelCatalogInitialLoad,
-  noteFreebuffCatalogViewer,
-} from '../utils/freebuff-model-catalog'
+  fuckbuffModelCatalogInitialLoad,
+  noteFuckbuffCatalogViewer,
+} from '../utils/fuckbuff-model-catalog'
 import {
   failedPollDelayMs,
   jitterPollIntervalMs,
 } from '../utils/polling-backoff'
 
-import type { FreebuffSessionResponse } from '../types/freebuff-session'
+import type { FuckbuffSessionResponse } from '../types/fuckbuff-session'
 import type {
-  FreebuffCountryBlockReason,
-  FreebuffIpPrivacySignal,
-} from '@codebuff/common/types/freebuff-session'
+  FuckbuffCountryBlockReason,
+  FuckbuffIpPrivacySignal,
+} from '@codebuff/common/types/fuckbuff-session'
 
 const POLL_INTERVAL_ACTIVE_MS = 30_000
 
@@ -84,7 +84,7 @@ const playAdmissionSound = () => {
 
 /** Picks the poll delay after a successful tick. Returns null when the state
  *  is terminal (no further polling). */
-function nextDelayMs(next: FreebuffSessionResponse): number | null {
+function nextDelayMs(next: FuckbuffSessionResponse): number | null {
   const activeCadenceMs = jitterPollIntervalMs({
     intervalMs: POLL_INTERVAL_ACTIVE_MS,
   })
@@ -137,14 +137,14 @@ interface PollController {
   refreshMetadata: () => Promise<void>
   /** Cancel the in-flight tick + timer and start a fresh one in `mode`. */
   restart: (mode: RestartMode, rotateClaim?: boolean) => Promise<void>
-  apply: (next: FreebuffSessionResponse) => void
+  apply: (next: FuckbuffSessionResponse) => void
   abort: () => void
 }
 
 let controller: PollController | null = null
 
 /**
- * The model of the most recent EXPLICIT user pick (startFreebuffSession),
+ * The model of the most recent EXPLICIT user pick (startFuckbuffSession),
  * consumed by the first server response that follows it. Lets the
  * `model_locked` branch tell a deliberate pick apart from a background
  * rejoin/race: only the former deserves a visible explanation. Cleared on
@@ -153,25 +153,25 @@ let controller: PollController | null = null
 let pendingExplicitPickModel: string | null = null
 
 /** Read the current instance id for outgoing chat requests. Defined via
- *  `holdsLiveFreebuffSlot` so the two can't drift: an id exists exactly while
+ *  `holdsLiveFuckbuffSlot` so the two can't drift: an id exists exactly while
  *  we hold a live slot (active, or `ended` inside the server-side grace
  *  window where the row stays alive until `expires_at + grace`). */
-export function getFreebuffInstanceId(): string | undefined {
-  const current = useFreebuffSessionStore.getState().session
-  if (!current || !holdsLiveFreebuffSlot(current)) return undefined
+export function getFuckbuffInstanceId(): string | undefined {
+  const current = useFuckbuffSessionStore.getState().session
+  if (!current || !holdsLiveFuckbuffSlot(current)) return undefined
   return 'instanceId' in current ? current.instanceId : undefined
 }
 
 /** True when the session represents a server-side slot the caller is
  *  holding (active, or in the post-expiry grace window with a live
  *  instance id). Chat requests are only admissible in these states — once
- *  the slot is gone, `getFreebuffInstanceId` returns undefined and the
+ *  the slot is gone, `getFuckbuffInstanceId` returns undefined and the
  *  server rejects the request — so the message queue gates on this before
  *  firing queued work. Same predicate gates DELETE on exit: outside these
  *  states there is no server row to release. */
 export function toLandingSession(
-  current: FreebuffSessionResponse | null,
-): Extract<FreebuffSessionResponse, { status: 'none' }> {
+  current: FuckbuffSessionResponse | null,
+): Extract<FuckbuffSessionResponse, { status: 'none' }> {
   const accessTier =
     current && 'accessTier' in current ? current.accessTier : undefined
   const rateLimitsByModel = getRateLimitsByModel(current)
@@ -224,11 +224,11 @@ interface RestartOpts {
   releaseSlot?: boolean
 }
 
-async function restartFreebuffSession(
+async function restartFuckbuffSession(
   mode: RestartMode,
   opts: RestartOpts = {},
 ): Promise<void> {
-  if (!IS_FREEBUFF) return
+  if (!IS_FUCKBUFF) return
   // A reset changes chat ownership. Stop and checkpoint the old run before
   // resetting its store so late deltas cannot land in the next session.
   if (opts.resetChat || (opts.releaseSlot && !opts.preserveQueue)) {
@@ -241,16 +241,16 @@ async function restartFreebuffSession(
   // below; the extra abort here is cheap.
   const currentController = controller
   const currentToken = getAuthTokenDetails().token
-  const currentSession = useFreebuffSessionStore.getState().session
-  const currentAttempt = useFreebuffSessionStore.getState().pendingAdmission
+  const currentSession = useFuckbuffSessionStore.getState().session
+  const currentAttempt = useFuckbuffSessionStore.getState().pendingAdmission
   const stillCurrent = () =>
     controller === currentController &&
     getAuthTokenDetails().token === currentToken &&
-    useFreebuffSessionStore.getState().session === currentSession
+    useFuckbuffSessionStore.getState().session === currentSession
   currentController?.abort()
   if (opts.releaseSlot) {
     try {
-      await useFreebuffSessionStore.getState().releaseSlot()
+      await useFuckbuffSessionStore.getState().releaseSlot()
     } catch (error) {
       if (!stillCurrent()) throw error
       // Keep the chat and held instance: the server may already have credited
@@ -281,7 +281,7 @@ async function restartFreebuffSession(
     mode,
     Boolean(
       opts.releaseSlot &&
-      (holdsLiveFreebuffSlot(currentSession) || currentAttempt),
+      (holdsLiveFuckbuffSlot(currentSession) || currentAttempt),
     ),
   )
 }
@@ -291,12 +291,12 @@ async function restartFreebuffSession(
  * Pass `resetChat: true` to also wipe local chat history — used when
  * rejoining after a session ended so the next admitted session starts fresh.
  */
-export function refreshFreebuffSession(
+export function refreshFuckbuffSession(
   opts: { resetChat?: boolean } = {},
 ): Promise<void> {
-  return restartFreebuffSession('rejoin', {
+  return restartFuckbuffSession('rejoin', {
     resetChat: opts.resetChat,
-    releaseSlot: useFreebuffSessionStore.getState().session?.status === 'ended',
+    releaseSlot: useFuckbuffSessionStore.getState().session?.status === 'ended',
   })
 }
 
@@ -306,10 +306,10 @@ export function refreshFreebuffSession(
  * they consciously choose a model and hit Enter to join, rather than being
  * silently re-queued for whatever model they last used.
  */
-export function returnToFreebuffLanding(
+export function returnToFuckbuffLanding(
   opts: { resetChat?: boolean; preserveQueue?: boolean } = {},
 ): Promise<void> {
-  return restartFreebuffSession('landing', {
+  return restartFuckbuffSession('landing', {
     resetChat: opts.resetChat,
     preserveQueue: opts.preserveQueue,
     releaseSlot: true,
@@ -317,14 +317,14 @@ export function returnToFreebuffLanding(
 }
 
 /** Read-only refresh for the chat picker and first-send pricing check. */
-export function refreshFreebuffSessionMetadata(): Promise<void> {
+export function refreshFuckbuffSessionMetadata(): Promise<void> {
   return controller?.refreshMetadata() ?? Promise.resolve()
 }
 
 /** Resolve the model an explicit picker action will send to session admission. */
-export function resolveFreebuffModelPickForSession(
+export function resolveFuckbuffModelPickForSession(
   model: string,
-  session: FreebuffSessionResponse | null,
+  session: FuckbuffSessionResponse | null,
 ) {
   const accessTier =
     session && 'accessTier' in session ? session.accessTier : 'full'
@@ -335,7 +335,7 @@ export function resolveFreebuffModelPickForSession(
   const hasPaidSubscription = Boolean(getSubscriptionInfo(session)?.tierId)
   // In catalog mode the rows are already this viewer's, so this only maps a
   // stray id onto its row (or the recommendation).
-  return getFreebuffModelDirectory().resolveForAccessTier(
+  return getFuckbuffModelDirectory().resolveForAccessTier(
     model,
     accessTier,
     hasPaidSubscription,
@@ -343,17 +343,17 @@ export function resolveFreebuffModelPickForSession(
 }
 
 /** Reconcile the picker selection when fresh session state arrives. */
-export function resolveFreebuffModelSelectionForSession(
+export function resolveFuckbuffModelSelectionForSession(
   selectedModel: string,
-  session: FreebuffSessionResponse,
+  session: FuckbuffSessionResponse,
   hasExplicitPick: boolean,
 ) {
   if (session.status === 'active') return session.model
   if (session.status === 'none' && !hasExplicitPick) {
-    return freebuffDefaultModelForSession(session)
+    return fuckbuffDefaultModelForSession(session)
   }
   if (session.status === 'none' && session.accessTier === 'limited') {
-    return resolveFreebuffModelPickForSession(selectedModel, session)
+    return resolveFuckbuffModelPickForSession(selectedModel, session)
   }
   return selectedModel
 }
@@ -363,21 +363,21 @@ export function resolveFreebuffModelSelectionForSession(
  * confirmation; legacy picker callers may still admit directly. A deliberate
  * model_locked response is handled by the poll controller below.
  */
-export function startFreebuffSession(
+export function startFuckbuffSession(
   model: string,
   opts: { preserveQueue?: boolean; persistSelection?: boolean } = {},
 ): Promise<void> {
-  if (!IS_FREEBUFF) return Promise.resolve()
+  if (!IS_FUCKBUFF) return Promise.resolve()
   // Chat already persists explicit picker choices. Its send path opts out of
   // persistence so an automatic access-tier fallback cannot replace that choice.
-  const current = useFreebuffSessionStore.getState().session
-  const resolved = resolveFreebuffModelPickForSession(model, current)
+  const current = useFuckbuffSessionStore.getState().session
+  const resolved = resolveFuckbuffModelPickForSession(model, current)
   // Remember that the next POST is a deliberate pick, so a `model_locked`
   // rejection explains itself in chat instead of reverting silently.
   pendingExplicitPickModel = resolved
-  useFreebuffModelStore.getState().setSelectedModel(resolved)
-  if (opts.persistSelection !== false) persistFreebuffModelPick(resolved)
-  return restartFreebuffSession('rejoin', {
+  useFuckbuffModelStore.getState().setSelectedModel(resolved)
+  if (opts.persistSelection !== false) persistFuckbuffModelPick(resolved)
+  return restartFuckbuffSession('rejoin', {
     preserveQueue: opts.preserveQueue,
     releaseSlot: current?.status === 'active' && current.model !== resolved,
   })
@@ -385,24 +385,24 @@ export function startFreebuffSession(
 
 let takeoverInFlight: Promise<void> | null = null
 
-export function takeOverFreebuffSession(): Promise<void> {
-  if (!IS_FREEBUFF) return Promise.resolve()
+export function takeOverFuckbuffSession(): Promise<void> {
+  if (!IS_FUCKBUFF) return Promise.resolve()
   if (takeoverInFlight) return takeoverInFlight
 
-  const { session } = useFreebuffSessionStore.getState()
+  const { session } = useFuckbuffSessionStore.getState()
   if (session?.status !== 'takeover_prompt') {
     return Promise.resolve()
   }
 
-  useFreebuffModelStore.getState().setSelectedModel(session.model)
-  takeoverInFlight = restartFreebuffSession('rejoin').finally(() => {
+  useFuckbuffModelStore.getState().setSelectedModel(session.model)
+  takeoverInFlight = restartFuckbuffSession('rejoin').finally(() => {
     takeoverInFlight = null
   })
   return takeoverInFlight
 }
 
-export function markFreebuffSessionSuperseded(): void {
-  if (!IS_FREEBUFF) return
+export function markFuckbuffSessionSuperseded(): void {
+  if (!IS_FUCKBUFF) return
   controller?.abort()
   controller?.apply({ status: 'superseded' })
 }
@@ -413,17 +413,17 @@ export function markFreebuffSessionSuperseded(): void {
  *  Transitioning the session state here unmounts the Chat surface in favor of
  *  the landing screen's country_blocked message, so the user can't keep typing
  *  and sending doomed requests. */
-export function markFreebuffSessionCountryBlocked(params: {
+export function markFuckbuffSessionCountryBlocked(params: {
   countryCode: string
-  countryBlockReason?: FreebuffCountryBlockReason
-  ipPrivacySignals?: FreebuffIpPrivacySignal[]
+  countryBlockReason?: FuckbuffCountryBlockReason
+  ipPrivacySignals?: FuckbuffIpPrivacySignal[]
 }): void {
-  if (!IS_FREEBUFF) return
+  if (!IS_FUCKBUFF) return
   controller?.abort()
   controller?.apply({ status: 'country_blocked', ...params })
   // Best-effort DELETE so we don't hold a session row the server is already
   // refusing to serve at chat time.
-  useFreebuffSessionStore
+  useFuckbuffSessionStore
     .getState()
     .releaseSlot()
     .catch(() => {})
@@ -433,10 +433,10 @@ export function markFreebuffSessionCountryBlocked(params: {
  *  our row). The chat surface stays mounted with the rejoin banner.
  *  Preserves any `rateLimitsByModel` snapshot from the prior session so the
  *  banner can show today's session count without an extra fetch. */
-export function markFreebuffSessionEnded(): void {
-  if (!IS_FREEBUFF) return
+export function markFuckbuffSessionEnded(): void {
+  if (!IS_FUCKBUFF) return
   controller?.abort()
-  const current = useFreebuffSessionStore.getState().session
+  const current = useFuckbuffSessionStore.getState().session
   const rateLimitsByModel = getRateLimitsByModel(current)
   controller?.apply({
     status: 'ended',
@@ -449,16 +449,16 @@ export function markFreebuffSessionEnded(): void {
   })
 }
 
-interface UseFreebuffSessionResult {
-  session: FreebuffSessionResponse | null
-  failure: ReturnType<typeof useFreebuffSessionStore.getState>['failure']
+interface UseFuckbuffSessionResult {
+  session: FuckbuffSessionResponse | null
+  failure: ReturnType<typeof useFuckbuffSessionStore.getState>['failure']
   /** The last ended hour's refund: a settled amount, or null when unknown. */
   lastRefund: number | null
   refundPending: boolean
 }
 
 /**
- * Manages the freebuff session lifecycle:
+ * Manages the fuckbuff session lifecycle:
  *   - GET on mount to probe state; chat admits only when the user sends
  *   - ordinary sessions use a private multi-session claim, sharing Desktop's
  *     account capacity; limited-offer campaigns retain their single-session path
@@ -468,20 +468,20 @@ interface UseFreebuffSessionResult {
  *   - DELETE on unmount so the slot frees up for the next user
  *   - plays a bell on admission to an active session
  */
-export function useFreebuffSession({
+export function useFuckbuffSession({
   enabled = true,
-}: { enabled?: boolean } = {}): UseFreebuffSessionResult {
-  const session = useFreebuffSessionStore((s) => s.session)
-  const failure = useFreebuffSessionStore((s) => s.failure)
-  const lastRefund = useFreebuffSessionStore((s) => s.lastRefund)
-  const pendingRefund = useFreebuffSessionStore((s) => s.pendingRefund)
+}: { enabled?: boolean } = {}): UseFuckbuffSessionResult {
+  const session = useFuckbuffSessionStore((s) => s.session)
+  const failure = useFuckbuffSessionStore((s) => s.failure)
+  const lastRefund = useFuckbuffSessionStore((s) => s.lastRefund)
+  const pendingRefund = useFuckbuffSessionStore((s) => s.pendingRefund)
   useEffect(() => {
     if (!enabled || !pendingRefund) return
     let cancelled = false
     let timer: ReturnType<typeof setTimeout>
     const poll = async () => {
       try {
-        await useFreebuffSessionStore.getState().refreshRefund()
+        await useFuckbuffSessionStore.getState().refreshRefund()
       } catch {
         /* Keep the pending receipt for a later retry. */
       }
@@ -495,11 +495,11 @@ export function useFreebuffSession({
   }, [enabled, pendingRefund])
 
   useEffect(() => {
-    const { setSession, setFailure } = useFreebuffSessionStore.getState()
+    const { setSession, setFailure } = useFuckbuffSessionStore.getState()
 
-    if (!IS_FREEBUFF || !enabled) {
-      // Non-freebuff (Codebuff) builds never gate on a free session; leave the
-      // store empty (app.tsx's session routing is all behind IS_FREEBUFF).
+    if (!IS_FUCKBUFF || !enabled) {
+      // Non-fuckbuff (Codebuff) builds never gate on a free session; leave the
+      // store empty (app.tsx's session routing is all behind IS_FUCKBUFF).
       setSession(null)
       return
     }
@@ -508,7 +508,7 @@ export function useFreebuffSession({
     if (!token) {
       logger.warn(
         {},
-        '[freebuff-session] No auth token; skipping free-session admission',
+        '[fuckbuff-session] No auth token; skipping free-session admission',
       )
       setFailure({
         type: 'other',
@@ -522,7 +522,7 @@ export function useFreebuffSession({
     let cancelled = false
     let abortController = new AbortController()
     let timer: ReturnType<typeof setTimeout> | null = null
-    let previousStatus: FreebuffSessionResponse['status'] | null = null
+    let previousStatus: FuckbuffSessionResponse['status'] | null = null
     // A compact response for an unexpected session identity has no safe quota
     // snapshot to retain, so force exactly one rich poll to restore it.
     let needsFullActivePoll = false
@@ -531,20 +531,20 @@ export function useFreebuffSession({
     let protocolRefreshPending = false
     // An update restart hands its claim over explicitly; a crash leaves only
     // the dead process's record. Either way the hour already bought resumes.
-    const updateHandoff = consumeFreebuffSessionRelaunch(token)
+    const updateHandoff = consumeFuckbuffSessionRelaunch(token)
     if (updateHandoff) forgetCrashRecordsFor(updateHandoff.instanceId)
-    const relaunch = updateHandoff ?? consumeCrashedFreebuffSession(token)
+    const relaunch = updateHandoff ?? consumeCrashedFuckbuffSession(token)
     if (relaunch) {
       logger.info(
         { model: relaunch.model, via: updateHandoff ? 'update' : 'crash' },
-        '[freebuff-session] resuming the hour a previous CLI left behind',
+        '[fuckbuff-session] resuming the hour a previous CLI left behind',
       )
     }
     // The first request waits (bounded) for the first catalog, so it goes out
     // in the protocol this process will keep speaking and the relaunch record
     // (a key or an id, whichever mode wrote it) resolves in the right one.
     // Null when there is nothing to wait for, which keeps this synchronous.
-    const catalogLoad = freebuffModelCatalogInitialLoad()
+    const catalogLoad = fuckbuffModelCatalogInitialLoad()
     const afterCatalog = (run: () => void) => {
       if (!catalogLoad) {
         run()
@@ -554,16 +554,16 @@ export function useFreebuffSession({
         if (!cancelled) run()
       })
     }
-    let claimId = relaunch?.instanceId ?? newFreebuffCliInstanceId()
+    let claimId = relaunch?.instanceId ?? newFuckbuffCliInstanceId()
     let attemptedModel: string | undefined = relaunch?.model
     let claimRetired = false
     if (relaunch)
       afterCatalog(() => {
-        useFreebuffModelStore.getState().setSelectedModel(relaunch.model)
+        useFuckbuffModelStore.getState().setSelectedModel(relaunch.model)
         // A record written before the catalog names its model by id; the
         // claim's model is that id's row now, or a rejoin of the same model
         // would read as a switch and end the hour being resumed.
-        const directory = getFreebuffModelDirectory()
+        const directory = getFuckbuffModelDirectory()
         if (directory.catalog)
           attemptedModel = directory.row(relaunch.model)?.key ?? relaunch.model
       })
@@ -577,7 +577,7 @@ export function useFreebuffSession({
     // to the fresh-claim startup.
     let legacyProbe: string | undefined = relaunch
       ? undefined
-      : deadLegacyFreebuffOwner(token)
+      : deadLegacyFuckbuffOwner(token)
     let legacyHour = false
     // Method for the NEXT tick. GET is read-only; POST claims/rotates a seat.
     // Startup is GET (probe before committing). After any POST completes we
@@ -585,26 +585,26 @@ export function useFreebuffSession({
     // the startup takeover branch does the same when the probe finds a seat.
     let nextMethod: 'GET' | 'POST' = 'GET'
 
-    const apply = (next: FreebuffSessionResponse) => {
+    const apply = (next: FuckbuffSessionResponse) => {
       rememberReferral(next)
       // A new access tier or plan changes which rows the catalog lists.
-      noteFreebuffCatalogViewer(next)
-      const selectedModel = getSelectedFreebuffModel()
-      const resolvedModel = resolveFreebuffModelSelectionForSession(
+      noteFuckbuffCatalogViewer(next)
+      const selectedModel = getSelectedFuckbuffModel()
+      const resolvedModel = resolveFuckbuffModelSelectionForSession(
         selectedModel,
         next,
-        useFreebuffModelStore.getState().hasExplicitPick,
+        useFuckbuffModelStore.getState().hasExplicitPick,
       )
       if (resolvedModel !== selectedModel) {
-        useFreebuffModelStore.getState().setSelectedModel(resolvedModel)
+        useFuckbuffModelStore.getState().setSelectedModel(resolvedModel)
       }
-      if (next.status === 'active' && !freebuffCliAttemptId(next.instanceId)) {
-        recordFreebuffInstanceOwner(next.instanceId, token)
+      if (next.status === 'active' && !fuckbuffCliAttemptId(next.instanceId)) {
+        recordFuckbuffInstanceOwner(next.instanceId, token)
       }
-      if (next.status === 'active' && freebuffCliAttemptId(next.instanceId)) {
-        recordLiveFreebuffSession(next, token)
+      if (next.status === 'active' && fuckbuffCliAttemptId(next.instanceId)) {
+        recordLiveFuckbuffSession(next, token)
       } else {
-        forgetLiveFreebuffSession()
+        forgetLiveFuckbuffSession()
       }
       // A refusal carries no `freebucks` block of its own, and the landing
       // decides its wording by that block: without the carry, the monthly
@@ -616,7 +616,7 @@ export function useFreebuffSession({
         getFreebucksInfo(next) === undefined
       ) {
         const carried = getFreebucksInfo(
-          useFreebuffSessionStore.getState().session,
+          useFuckbuffSessionStore.getState().session,
         )
         setSession(
           carried !== undefined ? { ...next, freebucks: carried } : next,
@@ -650,16 +650,16 @@ export function useFreebuffSession({
     const tick = async () => {
       if (cancelled) return
       const method = nextMethod
-      const model = getSelectedFreebuffModel()
+      const model = getSelectedFuckbuffModel()
       const probingLegacy = legacyProbe
       const multiSession =
         probingLegacy === undefined &&
         !legacyHour &&
-        !getFreebuffModelDirectory().isLimitedOffer(model)
+        !getFuckbuffModelDirectory().isLimitedOffer(model)
       const instanceId = multiSession
         ? claimId
-        : (probingLegacy ?? getFreebuffInstanceId())
-      const currentSession = useFreebuffSessionStore.getState().session
+        : (probingLegacy ?? getFuckbuffInstanceId())
+      const currentSession = useFuckbuffSessionStore.getState().session
       const takeoverInstanceId =
         currentSession?.status === 'takeover_prompt'
           ? currentSession.currentInstanceId
@@ -671,11 +671,11 @@ export function useFreebuffSession({
       try {
         if (method === 'POST' && multiSession) {
           attemptedModel = model
-          useFreebuffSessionStore
+          useFuckbuffSessionStore
             .getState()
             .setPendingAdmission({ instanceId: claimId, token })
         }
-        const next = await callFreebuffSession(method, token, {
+        const next = await callFuckbuffSession(method, token, {
           signal: fetchController.signal,
           instanceId,
           multiSession,
@@ -696,21 +696,21 @@ export function useFreebuffSession({
           const adoptable =
             next.status === 'active' &&
             next.instanceId === probingLegacy &&
-            getFreebuffModelDirectory().isPickerModel(next.model) &&
-            !getFreebuffModelDirectory().isLimitedOffer(next.model)
+            getFuckbuffModelDirectory().isPickerModel(next.model) &&
+            !getFuckbuffModelDirectory().isLimitedOffer(next.model)
           if (!adoptable) {
             // Not this account's live hour (ended, expired, superseded, or a
             // trial the legacy path already owns): never show that verdict,
             // just start the way this binary always has.
             if (next.status !== 'active')
-              forgetFreebuffInstanceOwner(probingLegacy)
+              forgetFuckbuffInstanceOwner(probingLegacy)
             nextMethod = 'GET'
             schedule(0)
             return
           }
           logger.info(
             { model: next.model },
-            '[freebuff-session] resuming the legacy hour a pre-multi-session CLI left behind',
+            '[fuckbuff-session] resuming the legacy hour a pre-multi-session CLI left behind',
           )
           legacyHour = true
           // Falls through to the startup takeover branch below.
@@ -798,12 +798,12 @@ export function useFreebuffSession({
         //     constantly pick a model while a row is still active.
         if (next.status === 'model_locked') {
           if (explicitPickModel && explicitPickModel !== next.currentModel) {
-            const directory = getFreebuffModelDirectory()
+            const directory = getFuckbuffModelDirectory()
             const current = directory.get(next.currentModel).displayName
             const requested = directory.get(explicitPickModel).displayName
             let released = false
             try {
-              const held = await callFreebuffSession('GET', token, {
+              const held = await callFuckbuffSession('GET', token, {
                 signal: fetchController.signal,
                 instanceId,
                 multiSession,
@@ -815,7 +815,7 @@ export function useFreebuffSession({
                 held.status === 'active' &&
                 held.model === next.currentModel
               ) {
-                await useFreebuffSessionStore
+                await useFuckbuffSessionStore
                   .getState()
                   .releaseSlot(held, fetchController.signal)
                 released = true
@@ -833,7 +833,7 @@ export function useFreebuffSession({
             }
             if (released) {
               if (multiSession) {
-                claimId = newFreebuffCliInstanceId()
+                claimId = newFuckbuffCliInstanceId()
                 attemptedModel = undefined
               }
               useChatStore
@@ -857,7 +857,7 @@ export function useFreebuffSession({
                 ),
               ])
           }
-          useFreebuffModelStore.getState().setSelectedModel(next.currentModel)
+          useFuckbuffModelStore.getState().setSelectedModel(next.currentModel)
           schedule(0)
           return
         }
@@ -899,15 +899,15 @@ export function useFreebuffSession({
               .setMessages((prev) => [
                 ...prev,
                 getSystemMessage(
-                  getFreebuffModelDirectory().withdrawnMessage(
+                  getFuckbuffModelDirectory().withdrawnMessage(
                     next.requestedModel,
                   ),
                 ),
               ])
           } else if (
-            getFreebuffModelDirectory().isLimitedOffer(next.requestedModel)
+            getFuckbuffModelDirectory().isLimitedOffer(next.requestedModel)
           ) {
-            const requested = getFreebuffModelDirectory().get(
+            const requested = getFuckbuffModelDirectory().get(
               next.requestedModel,
             ).displayName
             useChatStore
@@ -921,9 +921,9 @@ export function useFreebuffSession({
                 ),
               ])
           }
-          useFreebuffModelStore
+          useFuckbuffModelStore
             .getState()
-            .setSelectedModel(getFreebuffModelDirectory().fallbackModelId)
+            .setSelectedModel(getFuckbuffModelDirectory().fallbackModelId)
           // The unavailable response came from a POST attempt. Re-POST with
           // the fallback model; a GET would only redisplay the old ended row
           // and leave the restart banner stuck in its pending state.
@@ -934,7 +934,7 @@ export function useFreebuffSession({
 
         // Startup takeover: the initial probe GET saw we already hold a seat
         // (from a prior CLI instance). Stop here and ask before POSTing to
-        // rotate our instance id; otherwise opening a second freebuff would
+        // rotate our instance id; otherwise opening a second fuckbuff would
         // immediately supersede the first one.
         // `previousStatus === null` fences this to the very first tick only.
         // Pin the selected model to whatever the server thinks we're on so
@@ -946,11 +946,11 @@ export function useFreebuffSession({
           previousStatus === null &&
           next.status === 'active'
         ) {
-          useFreebuffModelStore.getState().setSelectedModel(next.model)
+          useFuckbuffModelStore.getState().setSelectedModel(next.model)
           // A fast restart after Ctrl+C can observe the old server row before
           // best-effort DELETE lands. If the row belongs to a dead local
           // process, silently do the same POST as the Take over button.
-          if (isFreebuffInstanceOwnedByDeadLocalProcess(next.instanceId)) {
+          if (isFuckbuffInstanceOwnedByDeadLocalProcess(next.instanceId)) {
             nextMethod = 'POST'
             schedule(0)
             return
@@ -985,7 +985,7 @@ export function useFreebuffSession({
           (previousStatus === 'active' || previousStatus === 'ended') &&
           next.status === 'none'
         ) {
-          const current = useFreebuffSessionStore.getState().session
+          const current = useFuckbuffSessionStore.getState().session
           const rateLimitsByModel =
             next.rateLimitsByModel ?? getRateLimitsByModel(current)
           apply({
@@ -1010,7 +1010,7 @@ export function useFreebuffSession({
 
         if (compact && next.status === 'active') {
           const merged = mergeCompactActiveSession(
-            useFreebuffSessionStore.getState().session,
+            useFuckbuffSessionStore.getState().session,
             next,
           )
           needsFullActivePoll = merged === null
@@ -1051,10 +1051,10 @@ export function useFreebuffSession({
         }
         const msg = err instanceof Error ? err.message : String(err)
         consecutiveFailures++
-        const disposition = classifyFreebuffSessionRequestFailure(method, err)
+        const disposition = classifyFuckbuffSessionRequestFailure(method, err)
         const shouldRetry = disposition === 'retry'
         const retryAfterMs =
-          err instanceof FreebuffSessionRequestError
+          err instanceof FuckbuffSessionRequestError
             ? err.retryAfterMs
             : undefined
         const delayMs = shouldRetry
@@ -1066,8 +1066,8 @@ export function useFreebuffSession({
         logger.warn(
           { error: msg, method, consecutiveFailures, delayMs, shouldRetry },
           shouldRetry
-            ? '[freebuff-session] fetch failed; backing off'
-            : '[freebuff-session] fetch failed; automatic retry stopped',
+            ? '[fuckbuff-session] fetch failed; backing off'
+            : '[fuckbuff-session] fetch failed; automatic retry stopped',
         )
         const retry =
           delayMs === null
@@ -1081,13 +1081,13 @@ export function useFreebuffSession({
           retry,
           outcomeUnknown: disposition === 'unknown',
         }
-        if (err instanceof FreebuffSessionRequestError) {
+        if (err instanceof FuckbuffSessionRequestError) {
           setFailure({
             ...failure,
             type: 'http',
             statusCode: err.statusCode,
           })
-        } else if (isFreebuffSessionTimeoutError(err)) {
+        } else if (isFuckbuffSessionTimeoutError(err)) {
           setFailure({ ...failure, type: 'timeout' })
         } else {
           setFailure({ ...failure, type: 'other' })
@@ -1098,24 +1098,24 @@ export function useFreebuffSession({
 
     controller = {
       refreshMetadata: async () => {
-        const current = useFreebuffSessionStore.getState().session
+        const current = useFuckbuffSessionStore.getState().session
         const generation = restartGeneration
         const signal = abortController.signal
-        const response = await callFreebuffSession('GET', token, {
+        const response = await callFuckbuffSession('GET', token, {
           signal,
-          instanceId: getFreebuffInstanceId() ?? claimId,
+          instanceId: getFuckbuffInstanceId() ?? claimId,
           multiSession:
             !legacyHour &&
-            !getFreebuffModelDirectory().isLimitedOffer(
-              getSelectedFreebuffModel(),
+            !getFuckbuffModelDirectory().isLimitedOffer(
+              getSelectedFuckbuffModel(),
             ),
         })
         if (cancelled || signal.aborted || generation !== restartGeneration ||
-            useFreebuffSessionStore.getState().session !== current) return
+            useFuckbuffSessionStore.getState().session !== current) return
         // Refresh an idle catalog without adopting a different process's slot.
-        if (!holdsLiveFreebuffSlot(current) && response.status === 'active') {
+        if (!holdsLiveFuckbuffSlot(current) && response.status === 'active') {
           apply(toLandingSession(response))
-        } else if (holdsLiveFreebuffSlot(current) && response.status === 'none') {
+        } else if (holdsLiveFuckbuffSlot(current) && response.status === 'none') {
           apply({ ...toLandingSession(response), status: 'ended' })
         } else {
           apply(response)
@@ -1132,7 +1132,7 @@ export function useFreebuffSession({
           legacyHour &&
           mode === 'rejoin' &&
           !rotateClaim &&
-          holdsLiveFreebuffSlot(useFreebuffSessionStore.getState().session)
+          holdsLiveFuckbuffSlot(useFuckbuffSessionStore.getState().session)
         clearTimer()
         // Abort any in-flight fetch so it can't race us and overwrite state.
         abortController.abort()
@@ -1144,11 +1144,11 @@ export function useFreebuffSession({
           !rotateClaim &&
           attemptedModel &&
           (mode === 'landing' ||
-            useFreebuffSessionStore.getState().session?.status === 'ended' ||
-            attemptedModel !== getSelectedFreebuffModel())
+            useFuckbuffSessionStore.getState().session?.status === 'ended' ||
+            attemptedModel !== getSelectedFuckbuffModel())
         ) {
           try {
-            const ended = await callFreebuffSession('DELETE', token, {
+            const ended = await callFuckbuffSession('DELETE', token, {
               instanceId: claimId,
               signal: abortController.signal,
             })
@@ -1169,11 +1169,11 @@ export function useFreebuffSession({
         }
         if (rotateClaim || claimRetired) {
           if (
-            useFreebuffSessionStore.getState().pendingAdmission?.instanceId ===
+            useFuckbuffSessionStore.getState().pendingAdmission?.instanceId ===
             claimId
           )
-            useFreebuffSessionStore.getState().setPendingAdmission(null)
-          claimId = newFreebuffCliInstanceId()
+            useFuckbuffSessionStore.getState().setPendingAdmission(null)
+          claimId = newFuckbuffCliInstanceId()
           attemptedModel = undefined
           claimRetired = false
         }
@@ -1193,13 +1193,13 @@ export function useFreebuffSession({
           // prevent. But the picker still needs live quota snapshots, so kick
           // off a fire-and-forget GET and extract only picker metadata from
           // the response, ignoring whatever status it claims. Polling resumes
-          // when the user commits to a model via startFreebuffSession.
+          // when the user commits to a model via startFuckbuffSession.
           const landingSession = toLandingSession(
-            useFreebuffSessionStore.getState().session,
+            useFuckbuffSessionStore.getState().session,
           )
           apply(landingSession)
           const fetchController = abortController
-          callFreebuffSession('GET', token, {
+          callFuckbuffSession('GET', token, {
             signal: fetchController.signal,
             instanceId: claimId,
             multiSession: true,
@@ -1262,13 +1262,13 @@ export function useFreebuffSession({
     // one-shot prompts that the user's next action replaces.
     let unsubscribeCatalog: (() => void) | undefined
     const refreshForProtocol = () => {
-      const status = useFreebuffSessionStore.getState().session?.status
+      const status = useFuckbuffSessionStore.getState().session?.status
       if (status !== 'none' && status !== 'active' && status !== 'ended')
         return
       controller?.refreshMetadata().catch(() => {})
     }
     afterCatalog(() => {
-      unsubscribeCatalog = useFreebuffCatalogStore.subscribe(
+      unsubscribeCatalog = useFuckbuffCatalogStore.subscribe(
         (state, previous) => {
           if ((state.catalog === null) === (previous.catalog === null)) return
           if (previousStatus === null) {
@@ -1286,21 +1286,21 @@ export function useFreebuffSession({
       cancelled = true
       abortController.abort()
       clearTimer()
-      const current = useFreebuffSessionStore.getState().session
+      const current = useFuckbuffSessionStore.getState().session
       controller = null
       clearReferralCache()
 
       // Release a confirmed session or cancel an unacknowledged POST. A probe
       // alone owns nothing and must never end another process's session.
-      if (useFreebuffSessionStore.getState().slotKeptForRelaunch) return
-      if (holdsLiveFreebuffSlot(current)) {
-        useFreebuffSessionStore
+      if (useFuckbuffSessionStore.getState().slotKeptForRelaunch) return
+      if (holdsLiveFuckbuffSlot(current)) {
+        useFuckbuffSessionStore
           .getState()
           .releaseSlot()
           .catch(() => {})
       } else if (attemptedModel) {
         // Covers a POST that committed after unmount/Stop but lost its reply.
-        void callFreebuffSession('DELETE', token, {
+        void callFuckbuffSession('DELETE', token, {
           instanceId: claimId,
         }).catch(() => {})
       }

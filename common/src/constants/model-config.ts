@@ -218,7 +218,7 @@ export function supportsAssistantPrefill(model: Model): boolean {
  * number.
  *
  * The one exception is the 262,144-token Kimi K2.7 Code below, confirmed by a
- * provider rejection quoted in freebuff-models.ts. It gets 250k, the value it
+ * provider rejection quoted in fuckbuff-models.ts. It gets 250k, the value it
  * has been running on in prod. That margin is thin for exactly the estimator
  * reason above, so it is the number to revisit if this model starts hitting
  * context rejections. (The HY3 and Ling 3.0 Flash entries that used to sit

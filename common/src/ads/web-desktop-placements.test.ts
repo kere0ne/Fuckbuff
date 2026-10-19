@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 import { billboardShapesForPlacement } from './billboard'
-import { PLACEMENT_SLOTS } from '../constants/freebuff-placements'
+import { PLACEMENT_SLOTS } from '../constants/fuckbuff-placements'
 import {
   campaignTargetsPlacement,
   desktopPlacementSource,
@@ -17,7 +17,7 @@ describe('Desktop inventory mirrored into Web', () => {
       const source = PLACEMENT_SLOTS.find((slot) => slot.id === id)!
       expect(
         PLACEMENT_SLOTS.find((slot) => slot.id === webDesktopPlacement(id)),
-      ).toEqual({ ...source, id: `${id}:web`, surface: 'freebuff_web_chat' })
+      ).toEqual({ ...source, id: `${id}:web`, surface: 'fuckbuff_web_chat' })
       expect(desktopPlacementSource(`${id}:web`)).toBe(id)
       expect(campaignTargetsPlacement([id], `${id}:web`)).toBe(true)
       expect(campaignTargetsPlacement([`${id}:web`], id)).toBe(false)

@@ -1,15 +1,15 @@
 import { describe, expect, it } from 'bun:test'
 
 import {
-  buildFreebuffUsageGrid,
-  buildFreebuffUsageSummary,
-  calculateLongestFreebuffStreak,
-} from '../freebuff-usage-summary'
+  buildFuckbuffUsageGrid,
+  buildFuckbuffUsageSummary,
+  calculateLongestFuckbuffStreak,
+} from '../fuckbuff-usage-summary'
 
-describe('calculateLongestFreebuffStreak', () => {
+describe('calculateLongestFuckbuffStreak', () => {
   it('finds the longest run rather than the most recent one', () => {
     expect(
-      calculateLongestFreebuffStreak([
+      calculateLongestFuckbuffStreak([
         '2026-08-01',
         '2026-08-02',
         '2026-08-03',
@@ -24,12 +24,12 @@ describe('calculateLongestFreebuffStreak', () => {
   it('does not extend a run across a gap, unlike the current streak', () => {
     // The current streak deliberately survives "used yesterday, not yet today"
     // because the day is not over. A historical run has no such grace.
-    expect(calculateLongestFreebuffStreak(['2026-08-01', '2026-08-03'])).toBe(1)
+    expect(calculateLongestFuckbuffStreak(['2026-08-01', '2026-08-03'])).toBe(1)
   })
 
   it('counts each day once when the input repeats or arrives unsorted', () => {
     expect(
-      calculateLongestFreebuffStreak([
+      calculateLongestFuckbuffStreak([
         '2026-08-03',
         '2026-08-01',
         '2026-08-02',
@@ -39,12 +39,12 @@ describe('calculateLongestFreebuffStreak', () => {
   })
 
   it('is zero with no history', () => {
-    expect(calculateLongestFreebuffStreak([])).toBe(0)
+    expect(calculateLongestFuckbuffStreak([])).toBe(0)
   })
 
   it('handles a run across a month boundary', () => {
     expect(
-      calculateLongestFreebuffStreak([
+      calculateLongestFuckbuffStreak([
         '2026-07-30',
         '2026-07-31',
         '2026-08-01',
@@ -53,11 +53,11 @@ describe('calculateLongestFreebuffStreak', () => {
   })
 })
 
-describe('buildFreebuffUsageSummary', () => {
+describe('buildFuckbuffUsageSummary', () => {
   const activeDates = ['2026-08-10', '2026-08-11', '2026-08-12']
 
   it('reports the current and longest streak together', () => {
-    const summary = buildFreebuffUsageSummary({
+    const summary = buildFuckbuffUsageSummary({
       activeDates: [
         // A four-day run that has since lapsed...
         '2026-07-01',
@@ -78,7 +78,7 @@ describe('buildFreebuffUsageSummary', () => {
   })
 
   it('counts all-time active days regardless of the map window', () => {
-    const summary = buildFreebuffUsageSummary({
+    const summary = buildFuckbuffUsageSummary({
       activeDates,
       todayDateKey: '2026-08-12',
       windowDays: 2,
@@ -91,7 +91,7 @@ describe('buildFreebuffUsageSummary', () => {
   })
 
   it('drops days after today rather than letting a fast clock inflate totals', () => {
-    const summary = buildFreebuffUsageSummary({
+    const summary = buildFuckbuffUsageSummary({
       activeDates: [...activeDates, '2026-08-13'],
       todayDateKey: '2026-08-12',
     })
@@ -101,7 +101,7 @@ describe('buildFreebuffUsageSummary', () => {
   })
 
   it('sorts and dedupes unordered input before walking the streak', () => {
-    const summary = buildFreebuffUsageSummary({
+    const summary = buildFuckbuffUsageSummary({
       activeDates: ['2026-08-12', '2026-08-10', '2026-08-11', '2026-08-11'],
       todayDateKey: '2026-08-12',
     })
@@ -114,7 +114,7 @@ describe('buildFreebuffUsageSummary', () => {
   it('carries a null recent window through rather than inventing zeros', () => {
     // The token aggregate caps itself with a statement timeout; a timeout must
     // read as "unknown" downstream, never as "you sent nothing".
-    const summary = buildFreebuffUsageSummary({
+    const summary = buildFuckbuffUsageSummary({
       activeDates,
       todayDateKey: '2026-08-12',
       recent: null,
@@ -124,7 +124,7 @@ describe('buildFreebuffUsageSummary', () => {
   })
 
   it('passes the recent window through when it resolved', () => {
-    const summary = buildFreebuffUsageSummary({
+    const summary = buildFuckbuffUsageSummary({
       activeDates,
       todayDateKey: '2026-08-12',
       recent: {
@@ -142,13 +142,13 @@ describe('buildFreebuffUsageSummary', () => {
   })
 })
 
-describe('buildFreebuffUsageGrid', () => {
+describe('buildFuckbuffUsageGrid', () => {
   // 2026-08-12 is a Wednesday (weekday 3).
   const todayDateKey = '2026-08-12'
   const todayWeekday = 3
 
   it('pads to whole weeks so every row is one weekday', () => {
-    const grid = buildFreebuffUsageGrid({
+    const grid = buildFuckbuffUsageGrid({
       activeDates: [],
       todayDateKey,
       windowDays: 365,
@@ -159,7 +159,7 @@ describe('buildFreebuffUsageGrid', () => {
   })
 
   it('places today at its own weekday in the final column', () => {
-    const grid = buildFreebuffUsageGrid({
+    const grid = buildFuckbuffUsageGrid({
       activeDates: [],
       todayDateKey,
       windowDays: 365,
@@ -176,7 +176,7 @@ describe('buildFreebuffUsageGrid', () => {
   })
 
   it('marks active days and fills the rest as quiet', () => {
-    const grid = buildFreebuffUsageGrid({
+    const grid = buildFuckbuffUsageGrid({
       activeDates: ['2026-08-11'],
       todayDateKey,
       windowDays: 3,

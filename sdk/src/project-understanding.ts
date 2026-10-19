@@ -1,5 +1,5 @@
 /**
- * The client half of project understanding (docs/freebuff-project-understanding.md):
+ * The client half of project understanding (docs/fuckbuff-project-understanding.md):
  * ask the backend whether a run is due and for its template, count the
  * project's files, run the project-understanding agent, and report the result.
  *
@@ -8,7 +8,7 @@
  * whose files live elsewhere (a Cloud sandbox) would pass its own tools. Everything here fails soft — a
  * run is background work and never surfaces an error to anyone.
  */
-import { FREEBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_ACTING_USER_HEADER } from '@codebuff/common/constants/fuckbuff-models'
 import {
   PROJECT_UNDERSTANDING_MAX_AGENT_STEPS,
   buildProjectUnderstandingAgent,
@@ -76,7 +76,7 @@ export type ProjectUnderstandingApi = {
 
 export function createProjectUnderstandingClient(params: {
   apiKey: string
-  /** The acting user, when the caller is the Freebuff Web service account. */
+  /** The acting user, when the caller is the Fuckbuff Web service account. */
   userId?: string
   projectKey: string
   surface: string
@@ -86,7 +86,7 @@ export function createProjectUnderstandingClient(params: {
   const headers = {
     Authorization: `Bearer ${params.apiKey}`,
     'Content-Type': 'application/json',
-    ...(params.userId ? { [FREEBUFF_ACTING_USER_HEADER]: params.userId } : {}),
+    ...(params.userId ? { [FUCKBUFF_ACTING_USER_HEADER]: params.userId } : {}),
   }
   return {
     checkDue: async ({ signal, logger }) => {

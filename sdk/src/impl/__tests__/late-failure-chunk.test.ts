@@ -123,7 +123,7 @@ describe('late failure delivered in band', () => {
           classifyThrownStreamRecovery({ aborted: false, error }),
         ).toBeNull()
         // It is a provider failure, retried on the same capped path with a
-        // backoff (CodebuffAI/freebuff#1155).
+        // backoff (CodebuffAI/fuckbuff#1155).
         expect(
           classifyProviderErrorRecovery({ aborted: false, error }),
         ).toMatchObject({ source: 'provider-error', statusCode: 429 })

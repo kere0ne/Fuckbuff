@@ -1,4 +1,4 @@
-import { FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase3CliRoot } from './base3'
 
@@ -12,8 +12,8 @@ import { createBase3CliRoot } from './base3'
  */
 const definition = {
   ...createBase3CliRoot({
-    model: FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
-    isFreebuff: true,
+    model: FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+    isFuckbuff: true,
   }),
   id: 'base3-free-space-bunny-alpha',
   displayName: 'Buffy on Space Bunny Alpha',

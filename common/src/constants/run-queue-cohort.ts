@@ -1,8 +1,8 @@
 /**
  * Which runs the Postgres run queue carries while Convex still writes the
- * agent core (COD-742, docs/freebuff-run-queue.md, "Dual run").
+ * agent core (COD-742, docs/fuckbuff-run-queue.md, "Dual run").
  *
- * Read by Convex `createFreebuffAgentRun`, where every run is created
+ * Read by Convex `createFuckbuffAgentRun`, where every run is created
  * (sends, follow-ups, goals, automations, sponsored runs), so a run's queue is
  * decided ONCE, there, and written on the run as `runner_payload.runQueue`. A
  * run never moves between queues: turning the cohort down leaves every run

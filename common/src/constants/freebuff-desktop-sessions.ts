@@ -1,13 +1,13 @@
 import {
-  type FreebuffAccessTier,
-  type FreebuffDesktopConcurrency,
-} from './freebuff-model-entitlements'
+  type FuckbuffAccessTier,
+  type FuckbuffDesktopConcurrency,
+} from './fuckbuff-model-entitlements'
 import {
-  FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
-  FREEBUFF_GPT_61_SOL_MODEL_ID,
-  FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
-  freebuffModelIdMatches,
-} from './freebuff-models'
+  FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
+  FUCKBUFF_GPT_61_SOL_MODEL_ID,
+  FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
+  fuckbuffModelIdMatches,
+} from './fuckbuff-models'
 
 /**
  * Claude Haiku 5.5 with full context, a catalog-only model: the server's
@@ -15,82 +15,82 @@ import {
  * 100k-context row (`fbc/claude-haiku-5.5-100k`) is a different model and
  * stays multi-tab.
  */
-export const FREEBUFF_CLAUDE_HAIKU_55_MODEL_ID = 'fbc/claude-haiku-5.5'
-export const FREEBUFF_CLAUDE_HAIKU_55_CATALOG_KEY = 'm-79293c5b7d'
+export const FUCKBUFF_CLAUDE_HAIKU_55_MODEL_ID = 'fbc/claude-haiku-5.5'
+export const FUCKBUFF_CLAUDE_HAIKU_55_CATALOG_KEY = 'm-79293c5b7d'
 
 /** Models that always use constrained Desktop concurrency. */
-const FREEBUFF_DESKTOP_SLOT_BOUND_MODEL_IDS = [
+const FUCKBUFF_DESKTOP_SLOT_BOUND_MODEL_IDS = [
   // A product choice per model. Metered admits stopped pairing ambiguously on
   // 2026-08-07, so being quota-metered no longer requires a slot; every other
   // row runs multi-tab, each tab buying its own session. GPT-6 Luna, MiMo 2.6
   // Pro and DeepSeek Flash fast mode sat here until 2026-10-14.
-  FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
+  FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
   // GPT-6.1 Sol, the dearest row of all (2026-09-29), and Gemini 4 Argon on
   // the same card (2026-10-13).
-  FREEBUFF_GPT_61_SOL_MODEL_ID,
-  FREEBUFF_GEMINI_4_ARGON_MODEL_ID,
+  FUCKBUFF_GPT_61_SOL_MODEL_ID,
+  FUCKBUFF_GEMINI_4_ARGON_MODEL_ID,
   // Claude Haiku 5.5 with full context, since 2026-10-14. Both names, so
   // the server and Desktop's catalog picker agree.
-  FREEBUFF_CLAUDE_HAIKU_55_MODEL_ID,
-  FREEBUFF_CLAUDE_HAIKU_55_CATALOG_KEY,
+  FUCKBUFF_CLAUDE_HAIKU_55_MODEL_ID,
+  FUCKBUFF_CLAUDE_HAIKU_55_CATALOG_KEY,
   // Muse Spark sat here from 2026-09-04 to 2026-10-10, held to one tab because
   // Meta rate-limited the Contributor tier per team. That limit is gone, so it
   // runs multi-tab like DeepSeek V4 Flash, each tab buying its own session.
 ] as const
 
-const FREEBUFF_DESKTOP_CONCURRENCY_LIMITS = {
+const FUCKBUFF_DESKTOP_CONCURRENCY_LIMITS = {
   free: { 'slot-bound': 1, 'multi-tab': 3 },
   subscriber: { 'slot-bound': 3, 'multi-tab': 8 },
 } as const
 
 /**
  * Tabs in each bucket for an account the server exempts from the tab cap
- * (Freebuff admins, whose quota is already exempt), so a Projects coordinator
+ * (Fuckbuff admins, whose quota is already exempt), so a Projects coordinator
  * can fan out as many threads as it needs. Finite only because slot-bound
  * sessions are numbered slots; it is a runaway guard, not a product limit.
  */
-export const FREEBUFF_DESKTOP_UNCAPPED_TAB_LIMIT = 64
+export const FUCKBUFF_DESKTOP_UNCAPPED_TAB_LIMIT = 64
 
-export function freebuffDesktopConcurrencyLimits(
-  accessTier: FreebuffAccessTier | null | undefined,
+export function fuckbuffDesktopConcurrencyLimits(
+  accessTier: FuckbuffAccessTier | null | undefined,
   hasPaidPlan: boolean,
   uncapped = false,
-): Record<FreebuffDesktopConcurrency, number> {
+): Record<FuckbuffDesktopConcurrency, number> {
   if (uncapped) {
     return {
-      'slot-bound': FREEBUFF_DESKTOP_UNCAPPED_TAB_LIMIT,
-      'multi-tab': FREEBUFF_DESKTOP_UNCAPPED_TAB_LIMIT,
+      'slot-bound': FUCKBUFF_DESKTOP_UNCAPPED_TAB_LIMIT,
+      'multi-tab': FUCKBUFF_DESKTOP_UNCAPPED_TAB_LIMIT,
     }
   }
   if (accessTier === 'limited' && !hasPaidPlan) {
     return { 'slot-bound': 1, 'multi-tab': 0 }
   }
   return hasPaidPlan
-    ? FREEBUFF_DESKTOP_CONCURRENCY_LIMITS.subscriber
-    : FREEBUFF_DESKTOP_CONCURRENCY_LIMITS.free
+    ? FUCKBUFF_DESKTOP_CONCURRENCY_LIMITS.subscriber
+    : FUCKBUFF_DESKTOP_CONCURRENCY_LIMITS.free
 }
 
 /**
  * Tabs one account may run at once on one model, given its Freebucks price at
  * session start: a free model buys parallel agents at no cost, so one tab.
  * Takes the price because the CLI imports this module and cannot import
- * freebuff-freebucks (cut from the public export).
+ * fuckbuff-freebucks (cut from the public export).
  */
-export function freebuffDesktopModelTabLimit(
+export function fuckbuffDesktopModelTabLimit(
   sessionPrice: number | undefined,
   uncapped = false,
 ): number {
   return sessionPrice === 0 && !uncapped ? 1 : Infinity
 }
 
-export function getFreebuffDesktopConcurrency(
+export function getFuckbuffDesktopConcurrency(
   model: string,
-  accessTier: FreebuffAccessTier | null | undefined,
+  accessTier: FuckbuffAccessTier | null | undefined,
   hasPaidPlan = false,
-): FreebuffDesktopConcurrency {
+): FuckbuffDesktopConcurrency {
   if (
-    FREEBUFF_DESKTOP_SLOT_BOUND_MODEL_IDS.some((modelId) =>
-      freebuffModelIdMatches(model, modelId),
+    FUCKBUFF_DESKTOP_SLOT_BOUND_MODEL_IDS.some((modelId) =>
+      fuckbuffModelIdMatches(model, modelId),
     )
   ) {
     return 'slot-bound'
@@ -98,81 +98,81 @@ export function getFreebuffDesktopConcurrency(
   return accessTier === 'limited' && !hasPaidPlan ? 'slot-bound' : 'multi-tab'
 }
 
-export function occupiesFreebuffDesktopSlot(
+export function occupiesFuckbuffDesktopSlot(
   model: string,
-  accessTier: FreebuffAccessTier | null | undefined,
+  accessTier: FuckbuffAccessTier | null | undefined,
   hasPaidPlan = false,
 ): boolean {
   return (
-    getFreebuffDesktopConcurrency(model, accessTier, hasPaidPlan) ===
+    getFuckbuffDesktopConcurrency(model, accessTier, hasPaidPlan) ===
     'slot-bound'
   )
 }
 
 /** Idle time after which Desktop ends a hosted session and frees its slot. */
-export const FREEBUFF_DESKTOP_IDLE_RELEASE_MS = 15 * 60 * 1000
+export const FUCKBUFF_DESKTOP_IDLE_RELEASE_MS = 15 * 60 * 1000
 
 /** Pins an end/refund request to one window of a stable Desktop tab. */
-export const FREEBUFF_DESKTOP_ADMITTED_AT_HEADER =
-  'x-freebuff-desktop-admitted-at'
+export const FUCKBUFF_DESKTOP_ADMITTED_AT_HEADER =
+  'x-fuckbuff-desktop-admitted-at'
 
 /**
- * Names the app making a session call. Freebuff Desktop sends `desktop`:
+ * Names the app making a session call. Fuckbuff Desktop sends `desktop`:
  * current CLI builds share Desktop's multi-session header and table, so
  * nothing else on the wire tells the two apart.
  */
-export const FREEBUFF_CLIENT_HEADER = 'x-freebuff-client'
-export const FREEBUFF_CLIENT_DESKTOP = 'desktop'
+export const FUCKBUFF_CLIENT_HEADER = 'x-fuckbuff-client'
+export const FUCKBUFF_CLIENT_DESKTOP = 'desktop'
 
 /**
  * The calling app's own version (`0.0.212`, `1.4.0`), sent by the CLI and
  * Desktop on session calls. Observe-only: friction lines
- * (`freebuff_session_refused`) carry it so a refusal can be tied to the build
+ * (`fuckbuff_session_refused`) carry it so a refusal can be tied to the build
  * that saw it. Never gates anything; a client may omit it.
  */
-export const FREEBUFF_CLIENT_VERSION_HEADER = 'x-freebuff-client-version'
+export const FUCKBUFF_CLIENT_VERSION_HEADER = 'x-fuckbuff-client-version'
 
-/** A random id Freebuff Desktop mints once per install and keeps across
+/** A random id Fuckbuff Desktop mints once per install and keeps across
  *  sign-ins. Not a credential. */
-export const FREEBUFF_INSTALL_ID_HEADER = 'x-freebuff-install-id'
+export const FUCKBUFF_INSTALL_ID_HEADER = 'x-fuckbuff-install-id'
 
 /**
- * Whether Freebuff Desktop's window was in front of the user when a
+ * Whether Fuckbuff Desktop's window was in front of the user when a
  * completions request left: `watching` (focused, recent input), `visible`
  * (on screen, another app focused) or `away` (hidden, minimized, locked or
  * idle). Omitted when the app cannot tell.
  */
-export const FREEBUFF_ATTENTION_HEADER = 'x-freebuff-attention'
-export const FREEBUFF_ATTENTION_STATES = ['watching', 'visible', 'away'] as const
-export type FreebuffAttention = (typeof FREEBUFF_ATTENTION_STATES)[number]
+export const FUCKBUFF_ATTENTION_HEADER = 'x-fuckbuff-attention'
+export const FUCKBUFF_ATTENTION_STATES = ['watching', 'visible', 'away'] as const
+export type FuckbuffAttention = (typeof FUCKBUFF_ATTENTION_STATES)[number]
 
-export function parseFreebuffAttention(
+export function parseFuckbuffAttention(
   value: unknown,
-): FreebuffAttention | undefined {
-  return (FREEBUFF_ATTENTION_STATES as readonly unknown[]).includes(value)
-    ? (value as FreebuffAttention)
+): FuckbuffAttention | undefined {
+  return (FUCKBUFF_ATTENTION_STATES as readonly unknown[]).includes(value)
+    ? (value as FuckbuffAttention)
     : undefined
 }
 
 /** Client-persisted identity for a possibly unacknowledged Desktop POST. */
-export const FREEBUFF_DESKTOP_ATTEMPT_HEADER = 'x-freebuff-desktop-attempt-id'
+export const FUCKBUFF_DESKTOP_ATTEMPT_HEADER = 'x-fuckbuff-desktop-attempt-id'
 
 /** Renew this tab's live paid hour in place: charge its price again and
  *  restart its hour. The value is a client UUID that makes retries
  *  charge once. */
-export const FREEBUFF_SESSION_RENEWAL_HEADER = 'x-freebuff-session-renewal-id'
+export const FUCKBUFF_SESSION_RENEWAL_HEADER = 'x-fuckbuff-session-renewal-id'
 
 /** Versioned opt-in: instance ids become single-use execution claims. */
-export const FREEBUFF_PURCHASE_CONTINUITY_HEADER =
-  'x-freebuff-purchase-continuity'
+export const FUCKBUFF_PURCHASE_CONTINUITY_HEADER =
+  'x-fuckbuff-purchase-continuity'
 
 /** Every claim a 0.0.197+ CLI mints on the purchase protocol starts with this.
  *  The server reads it to tell the CLI's claims from Desktop tabs: only a CLI
  *  claim can be the successor of a legacy single-session CLI hour. */
-export const FREEBUFF_CLI_CLAIM_PREFIX = 'cli:'
+export const FUCKBUFF_CLI_CLAIM_PREFIX = 'cli:'
 
-export function isFreebuffCliClaim(
+export function isFuckbuffCliClaim(
   instanceId: string | null | undefined,
 ): boolean {
-  return !!instanceId?.startsWith(FREEBUFF_CLI_CLAIM_PREFIX)
+  return !!instanceId?.startsWith(FUCKBUFF_CLI_CLAIM_PREFIX)
 }

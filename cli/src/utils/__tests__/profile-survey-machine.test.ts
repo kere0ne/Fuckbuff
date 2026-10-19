@@ -3,7 +3,7 @@ import { describe, expect, test } from 'bun:test'
 import {
   profileSurveyQuestion,
   profileSurveyVersion,
-} from '@codebuff/common/constants/freebuff-profile-survey'
+} from '@codebuff/common/constants/fuckbuff-profile-survey'
 
 import {
   createProfileSurveyState,
@@ -21,7 +21,7 @@ import type {
   ProfileSurveyQuestion,
   ProfileSurveyQuestionId,
   ProfileSurveyStateResponse,
-} from '@codebuff/common/constants/freebuff-profile-survey'
+} from '@codebuff/common/constants/fuckbuff-profile-survey'
 import type {
   ProfileSurveyInput,
   ProfileSurveyState,

@@ -53,7 +53,7 @@ function spec(over: Record<string, unknown> = {}) {
     procedureSha256: SHA,
     skill: SKILL,
     declaredPackages: SKILL.packages,
-    promptTemplate: 'Do it.\n{{FREEBUFF_TASK_CONTEXT}}\n{{FREEBUFF_CREDENTIALS}}',
+    promptTemplate: 'Do it.\n{{FUCKBUFF_TASK_CONTEXT}}\n{{FUCKBUFF_CREDENTIALS}}',
     ...over,
   }
 }
@@ -88,7 +88,7 @@ describe('checkSponsoredRunSpec', () => {
     ['extra packages', spec({ declaredPackages: [...SKILL.packages, { ecosystem: 'npm', name: 'left-pad', version: '1.0.0' }] }), undefined],
     ['a range', spec({ declaredPackages: [{ ecosystem: 'npm', name: 'acme-deploy', version: '^1.2.3' }] }), undefined],
     ['no template', spec({ promptTemplate: '  ' }), undefined],
-    ['a repeated slot', spec({ promptTemplate: '{{FREEBUFF_CREDENTIALS}}{{FREEBUFF_CREDENTIALS}}' }), undefined],
+    ['a repeated slot', spec({ promptTemplate: '{{FUCKBUFF_CREDENTIALS}}{{FUCKBUFF_CREDENTIALS}}' }), undefined],
   ] as const) {
     test(`refuses ${name}`, () => {
       expect(

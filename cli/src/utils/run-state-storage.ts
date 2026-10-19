@@ -480,7 +480,7 @@ type PersistedChatFile = {
  * fix) could still have read was gone. A partial write, a half-flushed file or
  * a shape we simply do not recognise are all recoverable by hand — but only
  * while the bytes exist. So quarantine first, exactly as
- * freebuff-desktop's session journal and state file do, and only then let the
+ * fuckbuff-desktop's session journal and state file do, and only then let the
  * caller carry on with a fallback.
  *
  * Quarantining happens on the read, not the write: the writer would have to

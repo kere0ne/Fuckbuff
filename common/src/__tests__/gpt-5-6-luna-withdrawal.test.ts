@@ -19,69 +19,69 @@
 import { describe, expect, it } from 'bun:test'
 
 import {
-  DEFAULT_FREEBUFF_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_MODEL_ID,
-  FREEBUFF_GPT_5_6_LUNA_PRO_MODEL_ID,
-  FREEBUFF_GPT_6_LUNA_MODEL_ID,
-  FREEBUFF_MODELS,
-  FREEBUFF_PAUSED_FREE_MODEL_IDS,
-  FREEBUFF_PLAN_METERED_CATALOG_MODEL_IDS,
-  FREEBUFF_STANDARD_MODEL_IDS,
-  FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS,
-  FREEBUFF_WEB_ALL_MODELS,
-  FREEBUFF_WEB_LIMITED_MODEL_IDS,
-  FREEBUFF_WEB_MODELS,
-  LIMITED_FREEBUFF_MODEL_ID,
-  LIMITED_FREEBUFF_MODEL_IDS,
-  SUPPORTED_FREEBUFF_MODELS,
-  freebuffWithdrawnModelMessage,
-  getFreebuffModelSupersededBy,
-  getFreebuffModelsForAccessTier,
-  isFreebuffPausedFreeModelId,
-  isFreebuffSessionModelAllowedForAccessTier,
-  isFreebuffSessionModelId,
-  isFreebuffWebModelId,
-  isSupportedFreebuffModelId,
-  resolveFreebuffSessionModelForAccessTier,
-} from '../constants/freebuff-models'
+  DEFAULT_FUCKBUFF_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_MODEL_ID,
+  FUCKBUFF_GPT_5_6_LUNA_PRO_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+  FUCKBUFF_MODELS,
+  FUCKBUFF_PAUSED_FREE_MODEL_IDS,
+  FUCKBUFF_PLAN_METERED_CATALOG_MODEL_IDS,
+  FUCKBUFF_STANDARD_MODEL_IDS,
+  FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS,
+  FUCKBUFF_WEB_ALL_MODELS,
+  FUCKBUFF_WEB_LIMITED_MODEL_IDS,
+  FUCKBUFF_WEB_MODELS,
+  LIMITED_FUCKBUFF_MODEL_ID,
+  LIMITED_FUCKBUFF_MODEL_IDS,
+  SUPPORTED_FUCKBUFF_MODELS,
+  fuckbuffWithdrawnModelMessage,
+  getFuckbuffModelSupersededBy,
+  getFuckbuffModelsForAccessTier,
+  isFuckbuffPausedFreeModelId,
+  isFuckbuffSessionModelAllowedForAccessTier,
+  isFuckbuffSessionModelId,
+  isFuckbuffWebModelId,
+  isSupportedFuckbuffModelId,
+  resolveFuckbuffSessionModelForAccessTier,
+} from '../constants/fuckbuff-models'
 import {
   FREE_MODE_AGENT_MODELS,
-  FREEBUFF_ROOT_AGENT_ID_BY_MODEL,
+  FUCKBUFF_ROOT_AGENT_ID_BY_MODEL,
 } from '../constants/free-agents'
 
-const LUNA_56 = FREEBUFF_GPT_5_6_LUNA_MODEL_ID
+const LUNA_56 = FUCKBUFF_GPT_5_6_LUNA_MODEL_ID
 
 describe('GPT-5.6 Luna is withdrawn', () => {
   it('is offered by no picker on any surface, at any tier or plan', () => {
     for (const list of [
-      FREEBUFF_MODELS,
-      FREEBUFF_WEB_MODELS,
-      FREEBUFF_WEB_ALL_MODELS,
-      getFreebuffModelsForAccessTier('full'),
-      getFreebuffModelsForAccessTier('limited'),
-      getFreebuffModelsForAccessTier('limited', true),
+      FUCKBUFF_MODELS,
+      FUCKBUFF_WEB_MODELS,
+      FUCKBUFF_WEB_ALL_MODELS,
+      getFuckbuffModelsForAccessTier('full'),
+      getFuckbuffModelsForAccessTier('limited'),
+      getFuckbuffModelsForAccessTier('limited', true),
     ]) {
       expect(list.map((model) => model.id)).not.toContain(LUNA_56)
     }
-    expect(isFreebuffWebModelId(LUNA_56)).toBe(false)
-    expect(isFreebuffWebModelId(LUNA_56, { includeGodOnly: true })).toBe(false)
-    expect(LIMITED_FREEBUFF_MODEL_IDS).not.toContain(LUNA_56)
-    expect(FREEBUFF_WEB_LIMITED_MODEL_IDS).not.toContain(LUNA_56)
+    expect(isFuckbuffWebModelId(LUNA_56)).toBe(false)
+    expect(isFuckbuffWebModelId(LUNA_56, { includeGodOnly: true })).toBe(false)
+    expect(LIMITED_FUCKBUFF_MODEL_IDS).not.toContain(LUNA_56)
+    expect(FUCKBUFF_WEB_LIMITED_MODEL_IDS).not.toContain(LUNA_56)
     // No plan meters it, so no plan widens a limited account onto it either.
-    expect(FREEBUFF_PLAN_METERED_CATALOG_MODEL_IDS).not.toContain(LUNA_56)
-    expect(FREEBUFF_STANDARD_MODEL_IDS).not.toContain(LUNA_56)
+    expect(FUCKBUFF_PLAN_METERED_CATALOG_MODEL_IDS).not.toContain(LUNA_56)
+    expect(FUCKBUFF_STANDARD_MODEL_IDS).not.toContain(LUNA_56)
   })
 
   it('is paused, and admitted at no tier', () => {
-    expect(FREEBUFF_PAUSED_FREE_MODEL_IDS).toContain(LUNA_56)
-    expect(isFreebuffPausedFreeModelId(LUNA_56)).toBe(true)
+    expect(FUCKBUFF_PAUSED_FREE_MODEL_IDS).toContain(LUNA_56)
+    expect(isFuckbuffPausedFreeModelId(LUNA_56)).toBe(true)
     // A dated snapshot cannot slip past the pause.
-    expect(isFreebuffPausedFreeModelId(`${LUNA_56}-20260801`)).toBe(true)
+    expect(isFuckbuffPausedFreeModelId(`${LUNA_56}-20260801`)).toBe(true)
     for (const tier of ['full', 'limited'] as const) {
       for (const hasPaidSubscription of [false, true]) {
         expect(
-          isFreebuffSessionModelAllowedForAccessTier(
+          isFuckbuffSessionModelAllowedForAccessTier(
             LUNA_56,
             tier,
             hasPaidSubscription,
@@ -95,57 +95,57 @@ describe('GPT-5.6 Luna is withdrawn', () => {
     // The pause matches dated snapshots, not arbitrary suffixes, so the -es
     // route, the -pro tier and the successor are all untouched by it.
     for (const id of [
-      FREEBUFF_GPT_6_LUNA_MODEL_ID,
-      FREEBUFF_GPT_5_6_LUNA_ES_MODEL_ID,
-      FREEBUFF_GPT_5_6_LUNA_PRO_MODEL_ID,
+      FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+      FUCKBUFF_GPT_5_6_LUNA_ES_MODEL_ID,
+      FUCKBUFF_GPT_5_6_LUNA_PRO_MODEL_ID,
     ]) {
-      expect(isFreebuffPausedFreeModelId(id)).toBe(false)
+      expect(isFuckbuffPausedFreeModelId(id)).toBe(false)
     }
   })
 
   it('is still RECOGNISED, so released binaries holding it are answered rather than refused as unknown', () => {
-    expect(SUPPORTED_FREEBUFF_MODELS.map((model) => model.id)).toContain(
+    expect(SUPPORTED_FUCKBUFF_MODELS.map((model) => model.id)).toContain(
       LUNA_56,
     )
-    expect(isSupportedFreebuffModelId(LUNA_56)).toBe(true)
-    expect(isFreebuffSessionModelId(LUNA_56)).toBe(true)
+    expect(isSupportedFuckbuffModelId(LUNA_56)).toBe(true)
+    expect(isFuckbuffSessionModelId(LUNA_56)).toBe(true)
     // Its roots stay wired so the free-mode allowlist still knows the pair
     // until nothing live can be bound to it.
-    expect(FREEBUFF_ROOT_AGENT_ID_BY_MODEL[LUNA_56]).toBe('base2-free-luna')
+    expect(FUCKBUFF_ROOT_AGENT_ID_BY_MODEL[LUNA_56]).toBe('base2-free-luna')
     expect(FREE_MODE_AGENT_MODELS['base3-free-luna']?.has(LUNA_56)).toBe(true)
   })
 
   it('is coerced to the limited default at limited access, and answered as withdrawn at full access', () => {
     // Limited: coerced before admission ever sees the pause.
-    expect(resolveFreebuffSessionModelForAccessTier(LUNA_56, 'limited')).toBe(
-      LIMITED_FREEBUFF_MODEL_ID,
+    expect(resolveFuckbuffSessionModelForAccessTier(LUNA_56, 'limited')).toBe(
+      LIMITED_FUCKBUFF_MODEL_ID,
     )
     // Full: the pick survives resolution still paused, which is what makes
     // admission answer the withdrawn `model_unavailable` (not session-ending).
-    const resolved = resolveFreebuffSessionModelForAccessTier(LUNA_56, 'full')
+    const resolved = resolveFuckbuffSessionModelForAccessTier(LUNA_56, 'full')
     expect(resolved).toBe(LUNA_56)
-    expect(isFreebuffPausedFreeModelId(resolved)).toBe(true)
+    expect(isFuckbuffPausedFreeModelId(resolved)).toBe(true)
     // The message names the model the user picked and a replacement every
     // full-access account can open.
-    const message = freebuffWithdrawnModelMessage(LUNA_56)
+    const message = fuckbuffWithdrawnModelMessage(LUNA_56)
     expect(message).toContain('GPT-5.6 Luna')
-    const replacement = SUPPORTED_FREEBUFF_MODELS.find(
-      (model) => model.id === DEFAULT_FREEBUFF_MODEL_ID,
+    const replacement = SUPPORTED_FUCKBUFF_MODELS.find(
+      (model) => model.id === DEFAULT_FUCKBUFF_MODEL_ID,
     )!
     expect(message).toContain(replacement.displayName)
-    expect(FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS).not.toContain(
-      DEFAULT_FREEBUFF_MODEL_ID,
+    expect(FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS).not.toContain(
+      DEFAULT_FUCKBUFF_MODEL_ID,
     )
   })
 
   it('is not silently moved onto GPT-6 Luna, which is plan-only at limited access', () => {
-    expect(FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS).toContain(
-      FREEBUFF_GPT_6_LUNA_MODEL_ID,
+    expect(FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS).toContain(
+      FUCKBUFF_GPT_6_LUNA_MODEL_ID,
     )
-    const all = SUPPORTED_FREEBUFF_MODELS.map((model) => model.id)
-    expect(getFreebuffModelSupersededBy(LUNA_56, all)).toBeUndefined()
-    expect(resolveFreebuffSessionModelForAccessTier(LUNA_56, 'full')).not.toBe(
-      FREEBUFF_GPT_6_LUNA_MODEL_ID,
+    const all = SUPPORTED_FUCKBUFF_MODELS.map((model) => model.id)
+    expect(getFuckbuffModelSupersededBy(LUNA_56, all)).toBeUndefined()
+    expect(resolveFuckbuffSessionModelForAccessTier(LUNA_56, 'full')).not.toBe(
+      FUCKBUFF_GPT_6_LUNA_MODEL_ID,
     )
   })
 })

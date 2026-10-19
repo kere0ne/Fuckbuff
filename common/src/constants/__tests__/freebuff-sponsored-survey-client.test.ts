@@ -6,7 +6,7 @@ import {
   moveSponsoredRanking,
   sponsoredRewardLine,
   toggleSponsoredOption,
-} from '../freebuff-sponsored-survey-client'
+} from '../fuckbuff-sponsored-survey-client'
 
 const MULTI = {
   id: 'q',
@@ -57,7 +57,7 @@ describe('sponsored survey client helpers', () => {
       },
     })
     expect(await client.getState('cli')).toEqual({ show: false })
-    const url = new URL(paths[0]!, 'https://freebuff.test')
+    const url = new URL(paths[0]!, 'https://fuckbuff.test')
     expect(url.pathname).toBe('/api/sponsored-survey')
     expect(url.searchParams.get('surface')).toBe('cli')
     expect(url.searchParams.get('questionKinds')).toBe(

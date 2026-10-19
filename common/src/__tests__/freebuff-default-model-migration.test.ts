@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'bun:test'
 
-import { FREEBUFF_DEFAULT_MODEL_MIGRATION_ID } from '../constants/freebuff-models'
+import { FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID } from '../constants/fuckbuff-models'
 import {
   migrateSavedDefaultModel,
   type SavedModelStore,
-} from '../util/freebuff-default-model-migration'
+} from '../util/fuckbuff-default-model-migration'
 
 const MODELS = { previous: 'old-default', current: 'new-default' }
 
@@ -32,10 +32,10 @@ describe('migrateSavedDefaultModel', () => {
     expect(migrateSavedDefaultModel(store, MODELS)).toBe('new-default')
     expect(state).toEqual({
       pick: 'new-default',
-      stamp: FREEBUFF_DEFAULT_MODEL_MIGRATION_ID,
+      stamp: FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID,
     })
     expect(writes).toEqual([
-      `stamp=${FREEBUFF_DEFAULT_MODEL_MIGRATION_ID}`,
+      `stamp=${FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID}`,
       'pick=new-default',
     ])
   })
@@ -43,7 +43,7 @@ describe('migrateSavedDefaultModel', () => {
   test('leaves any other saved pick alone, and still stamps', () => {
     const { store, state } = memoryStore('deliberate')
     expect(migrateSavedDefaultModel(store, MODELS)).toBe('deliberate')
-    expect(state.stamp).toBe(FREEBUFF_DEFAULT_MODEL_MIGRATION_ID)
+    expect(state.stamp).toBe(FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID)
   })
 
   test('stamps an empty store, so a later pick of the old default is a choice', () => {
@@ -51,12 +51,12 @@ describe('migrateSavedDefaultModel', () => {
     // first post-flip pick of the old default was rewritten on the next read.
     const { store, state, writes } = memoryStore()
     expect(migrateSavedDefaultModel(store, MODELS)).toBeUndefined()
-    expect(state.stamp).toBe(FREEBUFF_DEFAULT_MODEL_MIGRATION_ID)
+    expect(state.stamp).toBe(FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID)
     store.writePick('old-default')
     expect(migrateSavedDefaultModel(store, MODELS)).toBe('old-default')
     // No writes after the stamp beyond the user's own.
     expect(writes).toEqual([
-      `stamp=${FREEBUFF_DEFAULT_MODEL_MIGRATION_ID}`,
+      `stamp=${FUCKBUFF_DEFAULT_MODEL_MIGRATION_ID}`,
       'pick=old-default',
     ])
   })

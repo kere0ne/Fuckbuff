@@ -13,7 +13,7 @@ export default tseslint.config(
       '**/.contentlayer/*',
       '**/node_modules/*',
       // Vendored Plunk: upstream code, linted upstream.
-      'freebuff/plunk/**',
+      'fuckbuff/plunk/**',
     ],
   },
 

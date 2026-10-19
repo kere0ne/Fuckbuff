@@ -2,7 +2,7 @@
  * Which store owns a project's runtime and build errors (Convex
  * `runtime_error` and `build_error`; Postgres tables of the same names) — the
  * checked-in switch for the first part of the sandboxes domain to leave
- * platform Convex (COD-742; runbook in docs/freebuff-sandbox-errors-postgres.md).
+ * platform Convex (COD-742; runbook in docs/fuckbuff-sandbox-errors-postgres.md).
  *
  * - `convex`   (default): Convex writes and serves, exactly as before. The
  *              registry entries answer `unknown_function`, nothing reads the

@@ -1,4 +1,4 @@
-import { FREEBUFF_GLM_V53_FLASH_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_GLM_V53_FLASH_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase3CliRoot } from './base3'
 
@@ -9,8 +9,8 @@ import { createBase3CliRoot } from './base3'
 // the catalog row declares no ladder and the picker shows no control.
 const definition = {
   ...createBase3CliRoot({
-    model: FREEBUFF_GLM_V53_FLASH_MODEL_ID,
-    isFreebuff: true,
+    model: FUCKBUFF_GLM_V53_FLASH_MODEL_ID,
+    isFuckbuff: true,
   }),
   id: 'base3-free-glm-5-3-flash',
   displayName: 'Buffy on GLM 5.3 Flash',

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test'
 
-import { profileSurveyQuestion } from '@codebuff/common/constants/freebuff-profile-survey'
+import { profileSurveyQuestion } from '@codebuff/common/constants/fuckbuff-profile-survey'
 
 import { shouldInterceptChatInputKey } from '../chat-input-key-intercept'
 import {

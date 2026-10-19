@@ -1,6 +1,6 @@
 import {
-  FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS,
-  FREEBUFF_PROJECTS_SUBAGENT_ID,
+  FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS,
+  FUCKBUFF_PROJECTS_SUBAGENT_ID,
 } from '@codebuff/common/constants/free-agents'
 import { MAX_LIVE_SUBAGENTS_PER_ROOT } from '@codebuff/common/tools/params/tool/spawn-agents'
 
@@ -9,7 +9,7 @@ import { publisher } from './constants'
 import type { SecretAgentDefinition } from './types/secret-agent-definition'
 
 /**
- * The subagent a Freebuff Projects account's threads may spawn (the
+ * The subagent a Fuckbuff Projects account's threads may spawn (the
  * Projects allowlist only; the completions route refuses the id for anyone
  * else). Unlike fast mode's worker it is a full agent: it has the root's
  * coding tools, terminal included, and may spawn more of itself, so a thread
@@ -21,7 +21,7 @@ import type { SecretAgentDefinition } from './types/secret-agent-definition'
  * a prefix-cached provider, and the session gate accepts it because the model
  * is the session's own.
  *
- * At most FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS run at once under one root,
+ * At most FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS run at once under one root,
  * nested ones included (the agent runtime's spawn_agents handler). The helpers
  * one of them spawns (code-searcher, researcher-web) count against that subagent's own MAX_LIVE_SUBAGENTS_PER_ROOT,
  * apart from the root's and its siblings', so they neither starve nor are
@@ -40,12 +40,12 @@ export function createProjectsSubagent(options: {
   extraSpawnableAgents?: readonly string[]
 }): SecretAgentDefinition {
   return {
-    id: FREEBUFF_PROJECTS_SUBAGENT_ID,
+    id: FUCKBUFF_PROJECTS_SUBAGENT_ID,
     publisher,
     model: options.model,
     displayName: 'Buffy Subagent',
     spawnerPrompt:
-      `A full coding agent that takes one piece of the current task and works it to the end in parallel with any siblings: it reads, edits, runs commands and tests, and can spawn subagents of its own. It sees this whole conversation and inherits your system prompt, so brief it rather than re-explaining. At most ${FREEBUFF_PROJECTS_MAX_LIVE_SUBAGENTS} may run at once in a session, counting the ones they spawn of themselves; the helpers each one spawns count against its own limit of ${MAX_LIVE_SUBAGENTS_PER_ROOT}, not yours. Its last message is its report.`,
+      `A full coding agent that takes one piece of the current task and works it to the end in parallel with any siblings: it reads, edits, runs commands and tests, and can spawn subagents of its own. It sees this whole conversation and inherits your system prompt, so brief it rather than re-explaining. At most ${FUCKBUFF_PROJECTS_MAX_LIVE_SUBAGENTS} may run at once in a session, counting the ones they spawn of themselves; the helpers each one spawns count against its own limit of ${MAX_LIVE_SUBAGENTS_PER_ROOT}, not yours. Its last message is its report.`,
     inputSchema: {
       prompt: {
         type: 'string',
@@ -62,7 +62,7 @@ export function createProjectsSubagent(options: {
     ) as SecretAgentDefinition['toolNames'],
     spawnableAgents: Array.from(
       new Set([
-        FREEBUFF_PROJECTS_SUBAGENT_ID,
+        FUCKBUFF_PROJECTS_SUBAGENT_ID,
         ...(options.extraSpawnableAgents ?? []),
       ]),
     ),

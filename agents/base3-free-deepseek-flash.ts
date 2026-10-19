@@ -1,11 +1,11 @@
-import { FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase3CliRoot } from './base3'
 
 const definition = {
   ...createBase3CliRoot({
-    model: FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-    isFreebuff: true,
+    model: FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+    isFuckbuff: true,
   }),
   id: 'base3-free-deepseek-flash',
   displayName: 'Buffy on DeepSeek Flash',

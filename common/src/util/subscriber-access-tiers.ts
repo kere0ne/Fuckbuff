@@ -1,7 +1,7 @@
-import type { FreebuffAccessTier } from '../constants/freebuff-models'
+import type { FuckbuffAccessTier } from '../constants/fuckbuff-models'
 
 export type SubscriberAccessTierCounts = Record<
-  FreebuffAccessTier | 'unknown',
+  FuckbuffAccessTier | 'unknown',
   number
 >
 

@@ -1,4 +1,4 @@
-import { FREEBUFF_FABLE_5_1_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_FABLE_5_1_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { FABLE_PROVIDER_OPTIONS } from './constants'
 import tmuxCli from './tmux-cli'
@@ -8,6 +8,6 @@ import tmuxCli from './tmux-cli'
 export default {
   ...tmuxCli,
   id: 'tmux-cli-fable',
-  model: FREEBUFF_FABLE_5_1_MODEL_ID,
+  model: FUCKBUFF_FABLE_5_1_MODEL_ID,
   providerOptions: FABLE_PROVIDER_OPTIONS,
 }

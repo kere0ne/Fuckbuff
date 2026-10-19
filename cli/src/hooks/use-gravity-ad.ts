@@ -2,7 +2,7 @@ import { WEBSITE_URL } from '@codebuff/sdk'
 import type { PartnerBrand } from '@codebuff/common/ads/partner-brand'
 import { AnalyticsEvent } from '@codebuff/common/constants/analytics-events'
 import { getAdUserAgent } from '@codebuff/common/util/ad-user-agent'
-import { FREEBUFF_EVENT_ID_HEADER } from '@codebuff/common/ads/ad-event-hygiene'
+import { FUCKBUFF_EVENT_ID_HEADER } from '@codebuff/common/ads/ad-event-hygiene'
 import {
   acknowledgeFirstPartyView,
   firstPartyViewAckSettled,
@@ -32,7 +32,7 @@ import { getAdsEnabled } from '../commands/ads'
 import { useChatStore } from '../state/chat-store'
 import { isUserActive, subscribeToActivity } from '../utils/activity-tracker'
 import { getAuthToken } from '../utils/auth'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { logger } from '../utils/logger'
 import { enqueueClientLog } from '../utils/log-shipper'
 import { AI_MESSAGE_ID_PREFIX } from '../utils/ai-message-id'
@@ -119,8 +119,8 @@ export function visibleResponseAds(
  * auction, so nothing is served that the screen cannot draw.
  *
  * That matters beyond cost: the ad-signal detector reads `viewed / served`
- * per account (docs/freebuff-ad-signal-detection.md), so an ad fetched for a
- * slot that is not on screen counts against the user. Freebuff ignores the
+ * per account (docs/fuckbuff-ad-signal-detection.md), so an ad fetched for a
+ * slot that is not on screen counts against the user. Fuckbuff ignores the
  * compact-height rule because its chat slot always draws; a caller whose
  * slot can be hidden passes `enabled: false` for exactly as long as it is.
  */
@@ -153,7 +153,7 @@ export function renderDelaySinceReceipt(
  */
 export type AdProvider = 'gravity' | 'first_party'
 // Product surfaces the ads API maps to Gravity placements. 'waiting_room' is the
-// legacy wire name for the freebuff landing screen; 'cli_chat' is the inline
+// legacy wire name for the fuckbuff landing screen; 'cli_chat' is the inline
 // transcript ad in the coding-agent chat. Values must match the server's
 // AD_SURFACES enum, so don't rename them.
 export type AdSurface = 'waiting_room' | 'cli_chat'
@@ -338,7 +338,7 @@ export function recordAdClick(
           Authorization: `Bearer ${authToken}`,
           'User-Agent': getCliAdRequestUserAgent(),
           ...clientEnvironmentHeaders(),
-          [FREEBUFF_EVENT_ID_HEADER]: clientEventId,
+          [FUCKBUFF_EVENT_ID_HEADER]: clientEventId,
         },
         body: JSON.stringify({
           impUrl: ad.impUrl,
@@ -384,7 +384,7 @@ function trackInlineAdEvent(
 
 type GravityAdOptionsBase = {
   enabled?: boolean
-  /** Skip the "wait for first user message" gate. Used by the freebuff
+  /** Skip the "wait for first user message" gate. Used by the fuckbuff
    *  landing screen, which has no conversation but still needs ads. */
   forceStart?: boolean
   /** Ad network to request first. The server owns fallback ordering. */
@@ -483,7 +483,7 @@ export const useGravityAd = (options?: GravityAdOptions): GravityAdState => {
   const shouldHideAds = shouldHideGravityAds({
     enabled,
     terminalHeight,
-    isFreeMode: IS_FREEBUFF,
+    isFreeMode: IS_FUCKBUFF,
   })
 
   // Use Zustand selector instead of manual subscription - only rerenders when value changes
@@ -528,7 +528,7 @@ export const useGravityAd = (options?: GravityAdOptions): GravityAdState => {
         return
       }
 
-      // Include mode in request - Freebuff should not grant credits (no balance concept).
+      // Include mode in request - Fuckbuff should not grant credits (no balance concept).
       const agentMode = useChatStore.getState().agentMode
       // Measured HERE, at the moment the card is shown, against the receipt
       // stamp `fetchAd` put on the ad (COD-365). The first-party transport
@@ -587,7 +587,7 @@ export const useGravityAd = (options?: GravityAdOptions): GravityAdState => {
             Authorization: `Bearer ${authToken}`,
             'User-Agent': getCliAdRequestUserAgent(),
             ...clientEnvironmentHeaders(),
-            [FREEBUFF_EVENT_ID_HEADER]: clientEventId,
+            [FUCKBUFF_EVENT_ID_HEADER]: clientEventId,
           },
           body: JSON.stringify({
             impUrl,
@@ -825,7 +825,7 @@ export const useGravityAd = (options?: GravityAdOptions): GravityAdState => {
         provider,
         surface,
         placement_id: inlinePlacementId,
-        is_freebuff: IS_FREEBUFF,
+        is_fuckbuff: IS_FUCKBUFF,
       }
       trackInlineAdEvent(
         AnalyticsEvent.CLI_INLINE_AD_SLOT_ELIGIBLE,

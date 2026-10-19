@@ -632,7 +632,7 @@
 │ sponsoring this  │
 │ agent run, so    │
 │ it’s free for    │
-│ you. Freebuff’s  │
+│ you. Fuckbuff’s  │
 │ agent edits the  │
 │ files in the     │
 │ folder below     │
@@ -653,7 +653,7 @@
 │ Acme Deploys                       SPONSORED │
 │ Add one-click deploys to this project        │
 │ Acme Deploys is sponsoring this agent run,   │
-│ so it’s free for you. Freebuff’s agent       │
+│ so it’s free for you. Fuckbuff’s agent       │
 │ edits the files in the folder below and      │
 │ commits nothing. You can stop it anytime     │
 │ and undo it after.                           │
@@ -679,7 +679,7 @@
 │ Acme Deploys                                   SPONSORED │
 │ Add one-click deploys to this project                    │
 │ Acme Deploys is sponsoring this agent run, so it’s free  │
-│ for you. Freebuff’s agent edits the files in the folder  │
+│ for you. Fuckbuff’s agent edits the files in the folder  │
 │ below and commits nothing. You can stop it anytime and   │
 │ undo it after.                                           │
 │ Folder: /home/dev/app                                    │
@@ -709,7 +709,7 @@
 │ Sponsored tasks  │
 │ can’t run on     │
 │ Windows yet:     │
-│ Freebuff has no  │
+│ Fuckbuff has no  │
 │ way to keep an   │
 │ advertiser’s     │
 │ commands inside  │
@@ -731,7 +731,7 @@
 │ Acme Deploys                       SPONSORED │
 │ Add one-click deploys to this project        │
 │ Sponsored tasks can’t run on Windows yet:    │
-│ Freebuff has no way to keep an advertiser’s  │
+│ Fuckbuff has no way to keep an advertiser’s  │
 │ commands inside the workspace on this        │
 │ operating system.                            │
 │ Not now                                      │
@@ -756,7 +756,7 @@
 ┌──────────────────────────────────────────────────────────┐
 │ Acme Deploys                                   SPONSORED │
 │ Add one-click deploys to this project                    │
-│ Sponsored tasks can’t run on Windows yet: Freebuff has   │
+│ Sponsored tasks can’t run on Windows yet: Fuckbuff has   │
 │ no way to keep an advertiser’s commands inside the       │
 │ workspace on this operating system.                      │
 │ Not now                                                  │

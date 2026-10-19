@@ -2,7 +2,7 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 
-import { freebucksFixture } from '@codebuff/common/testing/freebuff'
+import { freebucksFixture } from '@codebuff/common/testing/fuckbuff'
 import { createTestRenderer } from '@opentui/core/testing'
 import { createRoot, flushSync } from '@opentui/react'
 import {
@@ -17,22 +17,22 @@ import {
 import React from 'react'
 
 import { initializeThemeStore } from '../../hooks/use-theme'
-import { setFreebuffCatalog } from '../../state/freebuff-catalog-store'
+import { setFuckbuffCatalog } from '../../state/fuckbuff-catalog-store'
 import {
-  getSelectedFreebuffModel,
-  useFreebuffModelStore,
-} from '../../state/freebuff-model-store'
-import { useFreebuffSessionStore } from '../../state/freebuff-session-store'
+  getSelectedFuckbuffModel,
+  useFuckbuffModelStore,
+} from '../../state/fuckbuff-model-store'
+import { useFuckbuffSessionStore } from '../../state/fuckbuff-session-store'
 import * as auth from '../../utils/auth'
 import * as openUrl from '../../utils/open-url'
 import {
   catalogFixture,
   catalogRow,
-} from '../../utils/__tests__/freebuff-catalog-fixtures'
-import { FreebuffModelSelector } from '../freebuff-model-selector'
+} from '../../utils/__tests__/fuckbuff-catalog-fixtures'
+import { FuckbuffModelSelector } from '../fuckbuff-model-selector'
 
 /**
- * The picker in catalog mode (docs/freebuff-model-catalog.md): every row,
+ * The picker in catalog mode (docs/fuckbuff-model-catalog.md): every row,
  * pill, lock, ladder and step-down comes from the server catalog, and every
  * row id is a catalog key. Fallback mode is the rest of the picker's suite,
  * which runs with no catalog held.
@@ -94,18 +94,18 @@ beforeAll(() => {
 
 beforeEach(() => {
   // A reasoning pick persists; keep it out of the real settings file.
-  configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-picker-test-'))
+  configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-picker-test-'))
   configSpy = spyOn(auth, 'getConfigDir').mockReturnValue(configDir)
-  setFreebuffCatalog(CATALOG)
+  setFuckbuffCatalog(CATALOG)
 })
 
 afterEach(() => {
   cleanupRenderer?.()
   cleanupRenderer = undefined
-  useFreebuffSessionStore.getState().setSession(null)
-  setFreebuffCatalog(null)
-  useFreebuffModelStore.setState({ reasoningEffortByModel: {} })
-  useFreebuffModelStore.getState().setSelectedModel('mimo/mimo-v2.5')
+  useFuckbuffSessionStore.getState().setSession(null)
+  setFuckbuffCatalog(null)
+  useFuckbuffModelStore.setState({ reasoningEffortByModel: {} })
+  useFuckbuffModelStore.getState().setSelectedModel('mimo/mimo-v2.5')
   configSpy.mockRestore()
   fs.rmSync(configDir, { recursive: true, force: true })
 })
@@ -119,10 +119,10 @@ const render = async (
   } = {},
 ) => {
   cleanupRenderer?.()
-  useFreebuffSessionStore
+  useFuckbuffSessionStore
     .getState()
     .setSession((opts.session ?? { status: 'none', accessTier: 'full' }) as never)
-  useFreebuffModelStore.getState().setSelectedModel(opts.selected ?? 'm-hero')
+  useFuckbuffModelStore.getState().setSelectedModel(opts.selected ?? 'm-hero')
   const setup = await createTestRenderer({
     width: 110,
     height: 50,
@@ -135,7 +135,7 @@ const render = async (
   }
   flushSync(() =>
     root.render(
-      <FreebuffModelSelector
+      <FuckbuffModelSelector
         maxHeight={45}
         nowMs={FIXED_NOW_MS}
         onSelectModel={opts.onSelectModel}
@@ -250,7 +250,7 @@ describe('the collapsed landing', () => {
       },
     })
     await setup.renderOnce()
-    expect(getSelectedFreebuffModel()).toBe('m-cheap')
+    expect(getSelectedFuckbuffModel()).toBe('m-cheap')
   })
 })
 
@@ -313,15 +313,15 @@ describe('the reasoning submenu', () => {
     // Spied like the compiled picker's Tab test: the real setter also writes
     // the settings file, and CI's NODE_ENV=production run shares one process
     // (and one settings file) across every test file.
-    const previous = useFreebuffModelStore.getState().reasoningEffortByModel
-    useFreebuffModelStore.setState({ reasoningEffortByModel: {} })
+    const previous = useFuckbuffModelStore.getState().reasoningEffortByModel
+    useFuckbuffModelStore.setState({ reasoningEffortByModel: {} })
     const saves: Array<[string, string | undefined]> = []
     const persist = spyOn(
-      useFreebuffModelStore.getState(),
+      useFuckbuffModelStore.getState(),
       'setReasoningEffort',
     ).mockImplementation((id, effort) => {
       saves.push([id, effort])
-      useFreebuffModelStore.setState({
+      useFuckbuffModelStore.setState({
         reasoningEffortByModel: effort ? { [id]: effort } : {},
       })
     })
@@ -347,7 +347,7 @@ describe('the reasoning submenu', () => {
       expect(saves).toEqual([['m-cheap', 'max']])
     } finally {
       persist.mockRestore()
-      useFreebuffModelStore.setState({ reasoningEffortByModel: previous })
+      useFuckbuffModelStore.setState({ reasoningEffortByModel: previous })
     }
   })
 

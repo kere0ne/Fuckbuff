@@ -4,7 +4,7 @@
  *
  * Without it the funnel cannot tell whether a failure came from a build that
  * already carries a fix or from one that predates it. It is derived from the user agent each client
- * already sends -- `Freebuff-Desktop/<v>` and `Freebuff-CLI/<v>` -- rather
+ * already sends -- `Fuckbuff-Desktop/<v>` and `Fuckbuff-CLI/<v>` -- rather
  * than a new body field, so nothing a client types reaches the funnel
  * verbatim.
  */
@@ -15,12 +15,12 @@ export const SPONSORED_CLIENT_VERSION_PATTERN =
 
 const USER_AGENT_PREFIXES: ReadonlyArray<readonly [string, 'desktop' | 'cli']> =
   [
-    ['Freebuff-Desktop/', 'desktop'],
-    ['Freebuff-CLI/', 'cli'],
+    ['Fuckbuff-Desktop/', 'desktop'],
+    ['Fuckbuff-CLI/', 'cli'],
   ]
 
 /**
- * `Freebuff-Desktop/0.0.151 (…)` -> `desktop/0.0.151`. Anything else, or a
+ * `Fuckbuff-Desktop/0.0.151 (…)` -> `desktop/0.0.151`. Anything else, or a
  * version that fails the pattern, is `null`. Never throws.
  */
 export function sponsoredClientVersionFromUserAgent(

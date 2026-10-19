@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'bun:test'
 
-import { deepSeekExpensiveWindowEndsAt } from '../../constants/freebuff-peak-hours'
-import { freebucksPeakCopy, isFreebucksPeakModel } from '../freebuff-peak-price'
+import { deepSeekExpensiveWindowEndsAt } from '../../constants/fuckbuff-peak-hours'
+import { freebucksPeakCopy, isFreebucksPeakModel } from '../fuckbuff-peak-price'
 
-import type { FreebuffFreebucksPeak } from '../../types/freebuff-session'
+import type { FuckbuffFreebucksPeak } from '../../types/fuckbuff-session'
 
 // Mon 19:00 PDT, inside DeepSeek's expensive window.
 const PEAK = Date.UTC(2026, 8, 7, 2, 0, 0)
@@ -13,7 +13,7 @@ const FLASH = 'deepseek/deepseek-v4-flash'
 // file is PUBLIC and the price table's module is export-excluded, which is
 // the whole reason these helpers live in `util/`. The builder's own half is
 // tested beside the table, where the prices already are.
-const peak = (over: Partial<FreebuffFreebucksPeak> = {}): FreebuffFreebucksPeak => ({
+const peak = (over: Partial<FuckbuffFreebucksPeak> = {}): FuckbuffFreebucksPeak => ({
   modelIds: [FLASH],
   surcharge: 10,
   endsAt: deepSeekExpensiveWindowEndsAt(new Date(PEAK)).toISOString(),

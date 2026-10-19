@@ -18,7 +18,7 @@ import { sanitizeAdUrl } from '../util/ad-creative-safety'
  * ## Derived on the SERVER, never by a client
  *
  * Both inputs live on the proposal row and only a server projection
- * (`activeProposal` in `freebuff/web/convex/ads/proposals.ts`, which the
+ * (`activeProposal` in `fuckbuff/web/convex/ads/proposals.ts`, which the
  * `/api/v1/ads/proposal` REST front forwards) assembles them. The row's raw
  * `conversion_token` and `advertiser_landing_url` are never sent to a surface:
  * a client that composed the link itself would have to hold the token, and a

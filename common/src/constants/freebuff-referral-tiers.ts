@@ -1,11 +1,11 @@
 /**
- * Freebuff referral program constants.
+ * Fuckbuff referral program constants.
  *
  * The referral REWARD is consolidated (2026-07-30) to exactly two things,
  * both session-shaped and both defined next to the pools they feed:
  *
  *   - FULL access tier: +1 daily GLM 5.2 session per qualified referral,
- *     the whole earned pool capped at FREEBUFF_REWARD_MAX_DAILY_SESSIONS
+ *     the whole earned pool capped at FUCKBUFF_REWARD_MAX_DAILY_SESSIONS
  *     since 2026-08-25 (glmWeeklySessionsFromStats in packages/billing). On
  *     the Freebucks meter each one is also a once-ever, uncapped cash-out
  *     (FREEBUCKS_PER_EARNED_SESSION).
@@ -14,7 +14,7 @@
  *
  * The old web tier ladder (tiered daily message limits + deploy-watermark
  * removal) is GONE: the limits were never enforced anywhere — real limits are
- * the session pools in freebuff-models.ts — and the "Powered by Freebuff"
+ * the session pools in fuckbuff-models.ts — and the "Powered by Fuckbuff"
  * deploy watermark is globally disabled (prod_branding_injection_enabled =
  * false), so both perks were marketing for things users didn't get. What
  * remains in this file is the qualification machinery: GitHub account-age
@@ -45,7 +45,7 @@ export const MIN_GITHUB_ACCOUNT_AGE_MONTHS_GLM = 12
 export const MIN_GITHUB_ACCOUNT_AGE_MONTHS_REFERRAL = 4
 
 /**
- * Freebuff CLI limited-tier perk: each qualified referral whose referred user
+ * Fuckbuff CLI limited-tier perk: each qualified referral whose referred user
  * activated at the *limited* access tier grants +1 daily free-mode session,
  * capped here (e.g. 6 base + 3 = 9/day). Full-access referrals instead grant
  * GLM sessions, which are uncapped.

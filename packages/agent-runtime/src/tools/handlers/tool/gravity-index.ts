@@ -1,4 +1,4 @@
-import { FREEBUFF_DESKTOP_THREAD_AGENT_ID } from '@codebuff/common/constants/free-agents'
+import { FUCKBUFF_DESKTOP_THREAD_AGENT_ID } from '@codebuff/common/constants/free-agents'
 import { jsonToolResult } from '@codebuff/common/util/messages'
 
 import { callGravityIndexAPI } from '../../../llm-api/codebuff-web-api'
@@ -159,20 +159,20 @@ export const preflightReportIntegration = (params: {
 /** Surface label sent with the Gravity Index request, derived from the agent
  *  template. */
 const gravitySurface = (agentTemplate: { id: string }): string => {
-  if (agentTemplate.id === 'base-chat') return 'freebuff_chat'
-  // Freebuff Desktop's thread agents (`freebuff-desktop-thread-{local,worktree}[-v3]`). Desktop runs
+  if (agentTemplate.id === 'base-chat') return 'fuckbuff_chat'
+  // Fuckbuff Desktop's thread agents (`fuckbuff-desktop-thread-{local,worktree}[-v3]`). Desktop runs
   // on the signed-in user's own key, so it attributes like the CLI (no external_user_id) and only
   // needs its own label so its clicks and conversions are not counted as CLI traffic.
-  if (agentTemplate.id.startsWith(FREEBUFF_DESKTOP_THREAD_AGENT_ID)) {
-    return 'freebuff_desktop'
+  if (agentTemplate.id.startsWith(FUCKBUFF_DESKTOP_THREAD_AGENT_ID)) {
+    return 'fuckbuff_desktop'
   }
-  // Freebuff Web project agents are the `base2-free*` and `base3-free*`
+  // Fuckbuff Web project agents are the `base2-free*` and `base3-free*`
   // families (both prefixes: the harness swap changed the root ids).
   if (
     agentTemplate.id.startsWith('base2-free') ||
     agentTemplate.id.startsWith('base3-free')
   ) {
-    return 'freebuff_web'
+    return 'fuckbuff_web'
   }
   return 'codebuff_cli'
 }
@@ -180,7 +180,7 @@ const gravitySurface = (agentTemplate: { id: string }): string => {
 /** Surfaces that run under a shared service-account API key; these send a
  *  per-end-user identifier with the request. */
 const isServiceAccountSurface = (surface: string): boolean =>
-  surface === 'freebuff_chat' || surface === 'freebuff_web'
+  surface === 'fuckbuff_chat' || surface === 'fuckbuff_web'
 
 export const handleGravityIndex = (async (params: {
   previousToolCallFinished: Promise<void>
@@ -304,7 +304,7 @@ export const handleGravityIndex = (async (params: {
       ...existingInput,
       external_session_id: clientSessionId,
       // On service-account surfaces, `fingerprintId` (e.g.
-      // `freebuff-chat-<userId>` or the project id) is sent as the external
+      // `fuckbuff-chat-<userId>` or the project id) is sent as the external
       // user id. Other surfaces omit it.
       ...(isServiceAccountSurface(surface)
         ? { external_user_id: fingerprintId }

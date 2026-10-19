@@ -1,15 +1,15 @@
 import { describe, expect, test } from 'bun:test'
 
 import {
-  FREEBUFF_MODELS,
-  FREEBUFF_PAUSED_FREE_MODEL_IDS,
-  FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
-  freebuffRetiredModelMessage,
-  getFreebuffModelsForAccessTier,
-  isFreebuffModelId,
-  isFreebuffRetiredModelId,
-  SUPPORTED_FREEBUFF_MODELS,
-} from '../freebuff-models'
+  FUCKBUFF_MODELS,
+  FUCKBUFF_PAUSED_FREE_MODEL_IDS,
+  FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+  fuckbuffRetiredModelMessage,
+  getFuckbuffModelsForAccessTier,
+  isFuckbuffModelId,
+  isFuckbuffRetiredModelId,
+  SUPPORTED_FUCKBUFF_MODELS,
+} from '../fuckbuff-models'
 
 describe('retired free models', () => {
   test('recognised retired ids are retired; every listed model is not', () => {
@@ -21,36 +21,36 @@ describe('retired free models', () => {
       'stealth/ox-alpha-20260820',
       'deepseek/deepseek-v4-pro',
     ])
-      expect(isFreebuffRetiredModelId(id)).toBe(true)
-    for (const model of FREEBUFF_MODELS)
-      expect(isFreebuffRetiredModelId(model.id)).toBe(false)
-    expect(isFreebuffRetiredModelId('some/unknown-model')).toBe(false)
-    // Paused, but still a paid path on Freebuff's own Luna agents.
-    expect(isFreebuffRetiredModelId('openai/gpt-5.6-luna')).toBe(false)
-    expect(isFreebuffRetiredModelId(null)).toBe(false)
+      expect(isFuckbuffRetiredModelId(id)).toBe(true)
+    for (const model of FUCKBUFF_MODELS)
+      expect(isFuckbuffRetiredModelId(model.id)).toBe(false)
+    expect(isFuckbuffRetiredModelId('some/unknown-model')).toBe(false)
+    // Paused, but still a paid path on Fuckbuff's own Luna agents.
+    expect(isFuckbuffRetiredModelId('openai/gpt-5.6-luna')).toBe(false)
+    expect(isFuckbuffRetiredModelId(null)).toBe(false)
   })
 
   test('the message names the model and how to update', () => {
-    const message = freebuffRetiredModelMessage('minimax/minimax-m3')
+    const message = fuckbuffRetiredModelMessage('minimax/minimax-m3')
     expect(message).toContain('MiniMax M3 is no longer available')
-    expect(message).toContain('npm install -g freebuff@latest')
-    expect(message).toContain('Freebuff Desktop')
+    expect(message).toContain('npm install -g fuckbuff@latest')
+    expect(message).toContain('Fuckbuff Desktop')
   })
 })
 
 test('Space Bunny Alpha is withdrawn: in no picker at any tier, still recognised', () => {
   for (const tier of ['full', 'limited'] as const) {
     expect(
-      getFreebuffModelsForAccessTier(tier).map((m) => m.id),
-    ).not.toContain(FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID)
+      getFuckbuffModelsForAccessTier(tier).map((m) => m.id),
+    ).not.toContain(FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID)
   }
-  expect(FREEBUFF_PAUSED_FREE_MODEL_IDS).toContain(
-    FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+  expect(FUCKBUFF_PAUSED_FREE_MODEL_IDS).toContain(
+    FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
   )
-  expect(isFreebuffModelId(FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID)).toBe(false)
+  expect(isFuckbuffModelId(FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID)).toBe(false)
   expect(
-    SUPPORTED_FREEBUFF_MODELS.some(
-      (m) => m.id === FREEBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
+    SUPPORTED_FUCKBUFF_MODELS.some(
+      (m) => m.id === FUCKBUFF_SPACE_BUNNY_ALPHA_MODEL_ID,
     ),
   ).toBe(true)
 })

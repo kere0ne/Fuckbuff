@@ -1,13 +1,13 @@
 /**
  * Who answers the Cloud preview and workspace-service actions
- * (`cloud/preview:*`): the Convex actions, or freebuff-web's registry twins
+ * (`cloud/preview:*`): the Convex actions, or fuckbuff-web's registry twins
  * running the same bodies (`codebase-utils/cloud-preview-actions.ts`) with
  * access from the project spine (COD-742 sandboxes,
- * docs/freebuff-sandbox-workspace-actions.md).
+ * docs/fuckbuff-sandbox-workspace-actions.md).
  *
  * - `convex`   (default): the browser calls Convex; the twins answer
  *              `unknown_function`.
- * - `postgres` the browser calls freebuff-web. Refused (the map keeps the
+ * - `postgres` the browser calls fuckbuff-web. Refused (the map keeps the
  *              browser on Convex) until the spine reads are on Postgres.
  *
  * No `shadow`: these are actions with side effects on the sandbox, so running

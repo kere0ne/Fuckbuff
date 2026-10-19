@@ -209,7 +209,7 @@ describe('OpenAICompatibleChatLanguageModel doStream', () => {
   it('carries provider detail and status out of a mid-stream error chunk', async () => {
     // OpenRouter's mid-stream provider refusals say only "Provider returned
     // error" in `message`; the upstream's actual words live in `metadata.raw`.
-    // Surfacing just the message left users (most visibly on Freebuff Web)
+    // Surfacing just the message left users (most visibly on Fuckbuff Web)
     // with "Agent run error: Provider returned error" and nothing else, while
     // the same failure on the non-stream path shows the full
     // `message [provider: raw]` form built by the server. The stream path

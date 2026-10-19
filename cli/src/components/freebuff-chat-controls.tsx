@@ -2,49 +2,49 @@ import { useKeyboard } from '@opentui/react'
 import { useCallback, useEffect } from 'react'
 
 import { Button } from './button'
-import { FreebuffModelSelector } from './freebuff-model-selector'
+import { FuckbuffModelSelector } from './fuckbuff-model-selector'
 import { useTheme } from '../hooks/use-theme'
 import { useTerminalDimensions } from '../hooks/use-terminal-dimensions'
 import {
-  beginFreebuffChatAdmission,
-  FREEBUFF_ADMISSION_QUEUE_PAUSED_MESSAGE,
-} from '../hooks/use-freebuff-chat-admission'
+  beginFuckbuffChatAdmission,
+  FUCKBUFF_ADMISSION_QUEUE_PAUSED_MESSAGE,
+} from '../hooks/use-fuckbuff-chat-admission'
 import {
-  returnToFreebuffLanding,
-  refreshFreebuffSessionMetadata,
-  takeOverFreebuffSession,
-} from '../hooks/use-freebuff-session'
+  returnToFuckbuffLanding,
+  refreshFuckbuffSessionMetadata,
+  takeOverFuckbuffSession,
+} from '../hooks/use-fuckbuff-session'
 import { useChatRuntime } from '../contexts/chat-runtime-context'
 import { useChatStore } from '../state/chat-store'
-import { useFreebuffModelStore } from '../state/freebuff-model-store'
-import { useFreebuffSessionStore } from '../state/freebuff-session-store'
+import { useFuckbuffModelStore } from '../state/fuckbuff-model-store'
+import { useFuckbuffSessionStore } from '../state/fuckbuff-session-store'
 import {
-  useFreebuffChatStore,
-  selectFreebuffChatModel,
-  requestFreebuffChatAdmission,
-} from '../state/freebuff-chat-store'
+  useFuckbuffChatStore,
+  selectFuckbuffChatModel,
+  requestFuckbuffChatAdmission,
+} from '../state/fuckbuff-chat-store'
 import { isPlainEnterKey } from '../utils/terminal-enter-detection'
 
-export function FreebuffChatControls() {
+export function FuckbuffChatControls() {
   const theme = useTheme()
   const { terminalHeight } = useTerminalDimensions()
-  const pickerOpen = useFreebuffChatStore((s) => s.pickerOpen)
-  const pickerInitialView = useFreebuffChatStore((s) => s.pickerInitialView)
-  const admission = useFreebuffChatStore((s) => s.admission)
-  const nextModel = useFreebuffChatStore((s) => s.nextModel)
-  const model = useFreebuffModelStore((s) => s.selectedModel)
-  const session = useFreebuffSessionStore((s) => s.session)
+  const pickerOpen = useFuckbuffChatStore((s) => s.pickerOpen)
+  const pickerInitialView = useFuckbuffChatStore((s) => s.pickerInitialView)
+  const admission = useFuckbuffChatStore((s) => s.admission)
+  const nextModel = useFuckbuffChatStore((s) => s.nextModel)
+  const model = useFuckbuffModelStore((s) => s.selectedModel)
+  const session = useFuckbuffSessionStore((s) => s.session)
   const { clearQueue, queuePaused } = useChatRuntime()
   useEffect(() => {
-    if (pickerOpen) void refreshFreebuffSessionMetadata().catch(() => {})
+    if (pickerOpen) void refreshFuckbuffSessionMetadata().catch(() => {})
   }, [pickerOpen])
 
   const cancel = useCallback(async () => {
     if (pickerOpen) {
-      useFreebuffChatStore.setState({ pickerOpen: false })
+      useFuckbuffChatStore.setState({ pickerOpen: false })
       return
     }
-    const current = useFreebuffChatStore.getState().admission
+    const current = useFuckbuffChatStore.getState().admission
     if (!current) return
     // Abort/release an in-flight claim before returning to the composer. The
     // queue remains held until DELETE confirms, including a lost POST reply.
@@ -52,10 +52,10 @@ export function FreebuffChatControls() {
       current.phase === 'starting' ||
       (current.phase === 'failed' &&
         current.previousSession !== undefined &&
-        useFreebuffSessionStore.getState().pendingAdmission)
+        useFuckbuffSessionStore.getState().pendingAdmission)
     ) {
       try {
-        await returnToFreebuffLanding({ preserveQueue: true })
+        await returnToFuckbuffLanding({ preserveQueue: true })
       } catch {
         return
       }
@@ -76,17 +76,17 @@ export function FreebuffChatControls() {
       cursorPosition: text.length,
       lastEditDueToNav: false,
     })
-    useFreebuffChatStore.setState({ admission: null })
+    useFuckbuffChatStore.setState({ admission: null })
   }, [pickerOpen, clearQueue])
 
   const confirm = useCallback(() => {
     if (!admission) return
     if (session?.status === 'takeover_prompt') {
-      void takeOverFreebuffSession()
+      void takeOverFuckbuffSession()
     } else if (admission.phase === 'confirm') {
-      void beginFreebuffChatAdmission(admission)
+      void beginFuckbuffChatAdmission(admission)
     } else if (admission.phase === 'failed') {
-      requestFreebuffChatAdmission()
+      requestFuckbuffChatAdmission()
     }
   }, [admission, session])
 
@@ -113,12 +113,12 @@ export function FreebuffChatControls() {
         <text style={{ fg: theme.foreground }}>
           ↑↓ choose model · Tab reasoning · Enter select · Esc cancel
         </text>
-        <FreebuffModelSelector
+        <FuckbuffModelSelector
           maxHeight={Math.max(4, Math.floor(terminalHeight * 0.65) - 2)}
           selectedModelOverride={nextModel ?? model}
           initialView={pickerInitialView}
-          onSelectModel={selectFreebuffChatModel}
-          onCancel={() => useFreebuffChatStore.setState({ pickerOpen: false })}
+          onSelectModel={selectFuckbuffChatModel}
+          onCancel={() => useFuckbuffChatStore.setState({ pickerOpen: false })}
         />
       </box>
     )
@@ -139,10 +139,10 @@ export function FreebuffChatControls() {
       <text style={{ fg: theme.foreground, wrapMode: 'word' }}>
         {takeover
           ? (session.message ??
-            'Freebuff is already running elsewhere. Take over that session?')
+            'Fuckbuff is already running elsewhere. Take over that session?')
           : (admission.message ??
             (admission.phase === 'requested' && queuePaused
-              ? FREEBUFF_ADMISSION_QUEUE_PAUSED_MESSAGE
+              ? FUCKBUFF_ADMISSION_QUEUE_PAUSED_MESSAGE
               : 'Starting your model session… Your message is saved.'))}
       </text>
       <box style={{ flexDirection: 'row', gap: 2 }}>

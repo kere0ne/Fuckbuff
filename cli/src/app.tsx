@@ -9,15 +9,15 @@ import { LoginModal } from './components/login-modal'
 import { ProjectPickerScreen } from './components/project-picker-screen'
 import { useAuthQuery } from './hooks/use-auth-query'
 import { useAuthState } from './hooks/use-auth-state'
-import { useFreebuffModelCatalog } from './hooks/use-freebuff-model-catalog'
-import { useFreebuffSession } from './hooks/use-freebuff-session'
+import { useFuckbuffModelCatalog } from './hooks/use-fuckbuff-model-catalog'
+import { useFuckbuffSession } from './hooks/use-fuckbuff-session'
 import { useTerminalFocus } from './hooks/use-terminal-focus'
 import { getProjectRoot, startNewChat } from './project-files'
 import { useChatHistoryStore } from './state/chat-history-store'
 import { stopActiveRun } from './utils/active-run'
 import { useChatStore } from './state/chat-store'
 import type { TopBannerType } from './types/store'
-import { IS_FREEBUFF } from './utils/constants'
+import { IS_FUCKBUFF } from './utils/constants'
 import { useByokSelectionStore } from './utils/byok'
 import { findGitRoot } from './utils/git'
 
@@ -97,7 +97,7 @@ export const App = ({
 
   // Get auth query for network status tracking
   const authQuery = useAuthQuery({
-    enabled: !(IS_FREEBUFF && hasSelectedByokConnection),
+    enabled: !(IS_FUCKBUFF && hasSelectedByokConnection),
   })
 
   const {
@@ -108,7 +108,7 @@ export const App = ({
     logoutMutation,
   } = useAuthState({
     requireAuth,
-    skipAuth: IS_FREEBUFF && hasSelectedByokConnection,
+    skipAuth: IS_FUCKBUFF && hasSelectedByokConnection,
     inputRef,
     setInputFocused,
     resetChatStore,
@@ -221,7 +221,7 @@ export const App = ({
   // Render project picker FIRST when at home directory or outside a project.
   // This deliberately precedes the login/auth and free-session gates so the
   // user always gets to pick a working directory before anything else — auth
-  // failures or a banned freebuff session would otherwise replace the
+  // failures or a banned fuckbuff session would otherwise replace the
   // picker mid-flash and look like being kicked out of the app.
   if (showProjectPicker) {
     return (
@@ -237,7 +237,7 @@ export const App = ({
   if (
     requireAuth !== null &&
     isAuthenticated === false &&
-    !(IS_FREEBUFF && hasSelectedByokConnection) &&
+    !(IS_FUCKBUFF && hasSelectedByokConnection) &&
     authStatus === 'ok'
   ) {
     return (
@@ -298,8 +298,8 @@ interface AuthedSurfaceProps {
 }
 
 /**
- * Rendered only after auth is confirmed. Owns the freebuff session gate
- * so `useFreebuffSession` runs exactly once per authed session (not before
+ * Rendered only after auth is confirmed. Owns the fuckbuff session gate
+ * so `useFuckbuffSession` runs exactly once per authed session (not before
  * we have a token).
  */
 const AuthedSurface = (props: AuthedSurfaceProps) => {
@@ -307,8 +307,8 @@ const AuthedSurface = (props: AuthedSurfaceProps) => {
     (state) => state.selected !== undefined,
   )
   // Before the session: its first request waits for the first catalog.
-  useFreebuffModelCatalog({ enabled: !hasSelectedByokConnection })
-  const { session, lastRefund, refundPending } = useFreebuffSession({
+  useFuckbuffModelCatalog({ enabled: !hasSelectedByokConnection })
+  const { session, lastRefund, refundPending } = useFuckbuffSession({
     enabled: !hasSelectedByokConnection,
   })
 
@@ -349,8 +349,8 @@ export const AuthedSurfaceRoutes = ({
   lastRefund,
   refundPending,
 }: AuthedSurfaceProps & {
-  session: ReturnType<typeof useFreebuffSession>['session']
-  lastRefund: ReturnType<typeof useFreebuffSession>['lastRefund']
+  session: ReturnType<typeof useFuckbuffSession>['session']
+  lastRefund: ReturnType<typeof useFuckbuffSession>['lastRefund']
   refundPending: boolean
 }) => {
   // Local history is readable independently of model admission. Keep this
@@ -377,9 +377,9 @@ export const AuthedSurfaceRoutes = ({
       initialMode={initialMode}
       gitRoot={gitRoot}
       onSwitchToGitRoot={onSwitchToGitRoot}
-      freebuffSession={session}
-      freebuffLastRefund={lastRefund}
-      freebuffRefundPending={refundPending}
+      fuckbuffSession={session}
+      fuckbuffLastRefund={lastRefund}
+      fuckbuffRefundPending={refundPending}
     />
   )
 }

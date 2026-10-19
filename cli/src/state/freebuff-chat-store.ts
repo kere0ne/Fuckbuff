@@ -1,23 +1,23 @@
 import { create } from 'zustand'
 
 import {
-  getSelectedFreebuffModel,
-  persistFreebuffModelPick,
-} from './freebuff-model-store'
-import { useFreebuffSessionStore } from './freebuff-session-store'
+  getSelectedFuckbuffModel,
+  persistFuckbuffModelPick,
+} from './fuckbuff-model-store'
+import { useFuckbuffSessionStore } from './fuckbuff-session-store'
 
-import type { FreebuffSessionResponse } from '../types/freebuff-session'
+import type { FuckbuffSessionResponse } from '../types/fuckbuff-session'
 
 export type ChatAdmission = {
   phase: 'requested' | 'confirm' | 'starting' | 'failed'
   model: string
   message?: string
-  previousSession?: FreebuffSessionResponse | null
+  previousSession?: FuckbuffSessionResponse | null
   metadataChecked?: boolean
 }
 
 /** Choosing a model is a preference. Only submitting a message admits it. */
-export const useFreebuffChatStore = create<{
+export const useFuckbuffChatStore = create<{
   pickerOpen: boolean
   pickerInitialView: 'model' | 'reasoning'
   nextModel: string | null
@@ -29,44 +29,44 @@ export const useFreebuffChatStore = create<{
   admission: null,
 }))
 
-function openFreebuffPicker(initialView: 'model' | 'reasoning') {
-  if (useFreebuffChatStore.getState().admission) return
-  useFreebuffChatStore.setState({
+function openFuckbuffPicker(initialView: 'model' | 'reasoning') {
+  if (useFuckbuffChatStore.getState().admission) return
+  useFuckbuffChatStore.setState({
     pickerOpen: true,
     pickerInitialView: initialView,
   })
 }
 
-export function openFreebuffModelPicker() {
-  openFreebuffPicker('model')
+export function openFuckbuffModelPicker() {
+  openFuckbuffPicker('model')
 }
 
-export function openFreebuffReasoningPicker() {
-  openFreebuffPicker('reasoning')
+export function openFuckbuffReasoningPicker() {
+  openFuckbuffPicker('reasoning')
 }
 
-export function selectFreebuffChatModel(model: string) {
-  if (useFreebuffChatStore.getState().admission) return
-  persistFreebuffModelPick(model)
-  useFreebuffChatStore.setState({ nextModel: model, pickerOpen: false })
+export function selectFuckbuffChatModel(model: string) {
+  if (useFuckbuffChatStore.getState().admission) return
+  persistFuckbuffModelPick(model)
+  useFuckbuffChatStore.setState({ nextModel: model, pickerOpen: false })
 }
 
-export function freebuffChatModel() {
-  return useFreebuffChatStore.getState().nextModel ?? getSelectedFreebuffModel()
+export function fuckbuffChatModel() {
+  return useFuckbuffChatStore.getState().nextModel ?? getSelectedFuckbuffModel()
 }
 
-export function freebuffChatNeedsAdmission() {
-  const { session } = useFreebuffSessionStore.getState()
+export function fuckbuffChatNeedsAdmission() {
+  const { session } = useFuckbuffSessionStore.getState()
   return (
     session?.status !== 'active' ||
-    (session?.status === 'active' && session.model !== freebuffChatModel())
+    (session?.status === 'active' && session.model !== fuckbuffChatModel())
   )
 }
 
-export function requestFreebuffChatAdmission() {
-  const { admission } = useFreebuffChatStore.getState()
+export function requestFuckbuffChatAdmission() {
+  const { admission } = useFuckbuffChatStore.getState()
   if (admission && admission.phase !== 'failed') return
-  useFreebuffChatStore.setState({
-    admission: { phase: 'requested', model: freebuffChatModel() },
+  useFuckbuffChatStore.setState({
+    admission: { phase: 'requested', model: fuckbuffChatModel() },
   })
 }

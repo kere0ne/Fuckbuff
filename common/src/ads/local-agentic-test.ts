@@ -36,7 +36,7 @@ export function localAgenticTestCampaign(env: Environment): string | null {
     throw new Error('TEST_AGENTIC_ADS_CAMPAIGN must be a local campaign UUID')
   for (const name of [
     'NEXT_PUBLIC_CODEBUFF_APP_URL',
-    'NEXT_PUBLIC_FREEBUFF_APP_URL',
+    'NEXT_PUBLIC_FUCKBUFF_APP_URL',
   ]) {
     if (!isLoopbackUrl(env[name]))
       throw new Error(`TEST_AGENTIC_ADS requires loopback ${name}`)
@@ -58,9 +58,9 @@ export function localAgenticBackendCampaign(env: Environment): string | null {
       throw new Error(`TEST_AGENTIC_ADS requires loopback ${name}`)
   }
   for (const name of ['DATABASE_URL', 'DIRECT_DATABASE_URL']) {
-    if (new URL(env[name]!).pathname !== '/freebuff_agentic_test')
+    if (new URL(env[name]!).pathname !== '/fuckbuff_agentic_test')
       throw new Error(
-        'TEST_AGENTIC_ADS requires the dedicated freebuff_agentic_test database',
+        'TEST_AGENTIC_ADS requires the dedicated fuckbuff_agentic_test database',
       )
   }
   if (

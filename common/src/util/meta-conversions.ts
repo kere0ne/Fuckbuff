@@ -1,5 +1,5 @@
 /** Shared browser/server contract; this marker is eligibility, not a consent UI. */
-export const META_TRACKING_PERMISSION_COOKIE = 'freebuff_meta_allowed'
+export const META_TRACKING_PERMISSION_COOKIE = 'fuckbuff_meta_allowed'
 /** Meta's own first-party click cookie, which the pixel and our fallback both write. */
 export const META_CLICK_COOKIE = '_fbc'
 export const META_CONVERSION_EVENT_NAMES = [

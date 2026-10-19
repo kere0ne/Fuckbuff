@@ -1,4 +1,4 @@
-import { freebuffChatNeedsAdmission } from '../state/freebuff-chat-store'
+import { fuckbuffChatNeedsAdmission } from '../state/fuckbuff-chat-store'
 import { AnalyticsEvent } from '@codebuff/common/constants/analytics-events'
 import { runTerminalCommand } from '@codebuff/sdk'
 
@@ -19,7 +19,7 @@ import { noteUserTurnForAdClickReturn } from '../ads/click-return'
 import { noteAdUserSend } from '../ads/ad-signals'
 import { getProjectRoot } from '../project-files'
 import { useChatStore } from '../state/chat-store'
-import { useFreebuffSessionStore } from '../state/freebuff-session-store'
+import { useFuckbuffSessionStore } from '../state/fuckbuff-session-store'
 import { trackEvent } from '../utils/analytics'
 import { hasSelectedByokConnection, isByokSetupOpen } from '../utils/byok'
 import {
@@ -27,7 +27,7 @@ import {
   createRunTerminalToolResult,
 } from '../utils/bash-messages'
 import { showClipboardMessage } from '../utils/clipboard'
-import { IS_FREEBUFF } from '../utils/constants'
+import { IS_FUCKBUFF } from '../utils/constants'
 import { getSystemProcessEnv } from '../utils/env'
 import { terminalCommandBroker } from '../utils/terminal-command-broker'
 import { getSystemMessage, getUserMessage } from '../utils/message-history'
@@ -294,15 +294,15 @@ export async function routeUserPrompt(
   // DAU signal: one un-sampled event per user-submitted prompt. The CLI's
   // distinct id resolves to the canonical codebuff user id (anonymous id is
   // aliased to the real user id on login), matching the web and chat surfaces
-  // so combined DAU is a single unique-users query. Freebuff-only: codebuff
+  // so combined DAU is a single unique-users query. Fuckbuff-only: codebuff
   // CLI usage is intentionally excluded.
-  if (IS_FREEBUFF) {
-    const freebuffSession = useFreebuffSessionStore.getState().session
+  if (IS_FUCKBUFF) {
+    const fuckbuffSession = useFuckbuffSessionStore.getState().session
     trackEvent(AnalyticsEvent.MESSAGE_SENT, {
       surface: 'cli',
       accessTier:
-        freebuffSession && 'accessTier' in freebuffSession
-          ? freebuffSession.accessTier
+        fuckbuffSession && 'accessTier' in fuckbuffSession
+          ? fuckbuffSession.accessTier
           : 'unknown',
       mode: agentMode,
       inputMode,
@@ -459,11 +459,11 @@ export async function routeUserPrompt(
     }
   }
 
-  // BYOK setup opened from a Freebuff wall holds no session, so a prompt has
+  // BYOK setup opened from a Fuckbuff wall holds no session, so a prompt has
   // nowhere to run until a connection is selected. Keep the text in the input
   // rather than consuming it.
   if (
-    IS_FREEBUFF &&
+    IS_FUCKBUFF &&
     isByokSetupOpen() &&
     !hasSelectedByokConnection() &&
     !isSlashCommand(trimmed)
@@ -471,7 +471,7 @@ export async function routeUserPrompt(
     setMessages((prev) => [
       ...prev,
       getSystemMessage(
-        'Select a BYOK connection first: `/byok add …`, then `/byok select <name>`. `/byok off` returns to Freebuff.',
+        'Select a BYOK connection first: `/byok add …`, then `/byok select <name>`. `/byok off` returns to Fuckbuff.',
       ),
     ])
     return
@@ -506,9 +506,9 @@ export async function routeUserPrompt(
     // submissions), and the window where no run is accepting steering.
     const canSteer =
       !(
-        IS_FREEBUFF &&
+        IS_FUCKBUFF &&
         !hasSelectedByokConnection() &&
-        freebuffChatNeedsAdmission()
+        fuckbuffChatNeedsAdmission()
       ) &&
       !hasAttachments &&
       !isSlashCommand(trimmed) &&

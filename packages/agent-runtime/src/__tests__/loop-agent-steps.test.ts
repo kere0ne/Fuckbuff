@@ -1,5 +1,5 @@
 import * as analytics from '@codebuff/common/analytics'
-import { FREEBUFF_TURN_SPEND_LIMIT_MESSAGE } from '@codebuff/common/constants/freebuff-errors'
+import { FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE } from '@codebuff/common/constants/fuckbuff-errors'
 import { TEST_USER_ID } from '@codebuff/common/old-constants'
 import { createTestAgentRuntimeParams } from '@codebuff/common/testing/fixtures/agent-runtime'
 import { clearMockedModules } from '@codebuff/common/testing/mock-modules'
@@ -368,7 +368,7 @@ describe('loopAgentSteps - runAgentStep vs runProgrammaticStep behavior', () => 
                     failure === 'spend-limit'
                       ? JSON.stringify({
                           error: 'turn_spend_limit',
-                          message: FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
+                          message: FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
                         })
                       : undefined,
                 })
@@ -999,7 +999,7 @@ describe('loopAgentSteps - runAgentStep vs runProgrammaticStep behavior', () => 
 
   it("keeps each turn's instructions in history, so the next request extends this one", async () => {
     // A per-turn instructionsPrompt must not cost the prompt cache (base3's
-    // turn-ending note, docs/freebuff-base3-harness.md).
+    // turn-ending note, docs/fuckbuff-base3-harness.md).
     mockTemplate.stepPrompt = ''
     const requests: unknown[][] = []
     const promptAiSdkStream: Parameters<
@@ -1310,12 +1310,12 @@ describe('loopAgentSteps - runAgentStep vs runProgrammaticStep behavior', () => 
         if (++calls === 2) {
           throw new APICallError({
             statusCode: 429,
-            message: FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
+            message: FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
             url: 'http://localhost/api/v1/chat/completions',
             requestBodyValues: {},
             responseBody: JSON.stringify({
               error: 'turn_spend_limit',
-              message: FREEBUFF_TURN_SPEND_LIMIT_MESSAGE,
+              message: FUCKBUFF_TURN_SPEND_LIMIT_MESSAGE,
             }),
             isRetryable: false,
           })
@@ -2404,7 +2404,7 @@ describe('loopAgentSteps - runAgentStep vs runProgrammaticStep behavior', () => 
         responseBody: JSON.stringify({
           error: 'session_superseded',
           message:
-            'Another instance of freebuff has taken over this session. Only one instance per account is allowed.',
+            'Another instance of fuckbuff has taken over this session. Only one instance per account is allowed.',
         }),
         isRetryable: true,
       })
@@ -2426,7 +2426,7 @@ describe('loopAgentSteps - runAgentStep vs runProgrammaticStep behavior', () => 
       expect(result.output.type).toBe('error')
       if (result.output.type === 'error') {
         expect(result.output.message).toBe(
-          'Another instance of freebuff has taken over this session. Only one instance per account is allowed.',
+          'Another instance of fuckbuff has taken over this session. Only one instance per account is allowed.',
         )
         expect(result.output.message).not.toContain('Agent run error:')
         expect(result.output.error).toBe('session_superseded')

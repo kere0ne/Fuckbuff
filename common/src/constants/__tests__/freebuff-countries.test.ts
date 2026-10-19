@@ -6,7 +6,7 @@ import {
   FREE_MODE_TIER_THREE_COUNTRIES,
   FREE_MODE_TIER_TWO_COUNTRIES,
   formatCountryCodes,
-} from '../freebuff-countries'
+} from '../fuckbuff-countries'
 
 describe('free-mode country groups', () => {
   it('keeps the groups disjoint and their union the full-access allowlist', () => {

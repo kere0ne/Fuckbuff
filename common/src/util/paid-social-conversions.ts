@@ -23,9 +23,9 @@ export const PAID_SOCIAL_CLICK_WINDOW_MS: Record<PaidSocialPlatform, number> = {
   tiktok: PAID_SOCIAL_WINDOW_MS,
 }
 /** Eligibility for an auth handoff, not an explicit consent record. */
-export const PAID_SOCIAL_PERMISSION_COOKIE = 'freebuff_paid_social_allowed'
+export const PAID_SOCIAL_PERMISSION_COOKIE = 'fuckbuff_paid_social_allowed'
 export const paidSocialClickCookie = (platform: PaidSocialPlatform) =>
-  `freebuff_${platform}_click`
+  `fuckbuff_${platform}_click`
 /** TikTok's own first-party browser cookie, set by its pixel on public pages. */
 export const TIKTOK_BROWSER_COOKIE = '_ttp'
 // Public, static authentication endpoints only. No arbitrary URL, query, user ID, or

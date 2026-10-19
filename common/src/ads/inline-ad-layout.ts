@@ -4,7 +4,7 @@
  *
  * This lives in `common` rather than in the CLI because two surfaces have to
  * agree on it exactly: the CLI, which renders the ad, and the advertiser
- * campaign builder in `freebuff/web`, whose creative preview has to show an
+ * campaign builder in `fuckbuff/web`, whose creative preview has to show an
  * advertiser what their copy will actually look like at the widths the
  * console offers (`PLACEMENT_PREVIEW_WIDTHS`).
  *

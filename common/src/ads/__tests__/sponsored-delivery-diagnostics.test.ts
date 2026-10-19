@@ -5,7 +5,7 @@ describe('sponsored delivery client diagnostics', () => {
   test('legacy capability does not turn a Windows request into a Mac request', () => {
     expect(
       sponsoredDeliveryClientDiagnostics({
-        userAgent: 'Freebuff-Desktop/0.0.113',
+        userAgent: 'Fuckbuff-Desktop/0.0.113',
         reportedOs: 'windows',
         hasLegacyCapability: true,
         capabilityInspection: {
@@ -26,7 +26,7 @@ describe('sponsored delivery client diagnostics', () => {
     for (const version of ['0.0.112', '0.0.113']) {
       expect(
         sponsoredDeliveryClientDiagnostics({
-          userAgent: `Freebuff-Desktop/${version}`,
+          userAgent: `Fuckbuff-Desktop/${version}`,
           reportedOs: 'macos',
           hasLegacyCapability: true,
         }),
@@ -42,7 +42,7 @@ describe('sponsored delivery client diagnostics', () => {
   test('missing OS is unknown even with legacy project facts', () => {
     expect(
       sponsoredDeliveryClientDiagnostics({
-        userAgent: 'Freebuff-Desktop/0.0.113',
+        userAgent: 'Fuckbuff-Desktop/0.0.113',
         hasLegacyCapability: true,
       }).execution_surface,
     ).toBe('not_reported')
@@ -51,7 +51,7 @@ describe('sponsored delivery client diagnostics', () => {
   test('keeps user-agent comments and arbitrary OS text out of telemetry', () => {
     const result = sponsoredDeliveryClientDiagnostics({
       userAgent:
-        'Freebuff-Desktop/0.0.113 (private@example.com /private/project)',
+        'Fuckbuff-Desktop/0.0.113 (private@example.com /private/project)',
       reportedOs: '/private/project',
     })
     expect(result.client_ua_version).toBe('0.0.113')

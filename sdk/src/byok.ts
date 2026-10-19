@@ -23,7 +23,7 @@ import {
 import { getSystemProcessEnv } from './env'
 import { recoverByokLock } from './impl/byok-lock'
 
-export const BYOK_SECRET_SERVICE = 'com.freebuff.byok.v1'
+export const BYOK_SECRET_SERVICE = 'com.fuckbuff.byok.v1'
 const envReference = /^env:[A-Za-z_][A-Za-z0-9_]*$/
 const ownedReference = /^connection:[a-f0-9-]+:[1-9][0-9]*$/
 /** One ChatGPT sign-in, shared by every model saved from it (see saveChatGptSignIn). */
@@ -182,12 +182,12 @@ export function byokCredentialVariable(
 }
 
 /**
- * Unset (or empty) in THIS process. The usual cause is starting Freebuff
+ * Unset (or empty) in THIS process. The usual cause is starting Fuckbuff
  * before exporting the variable, or from another terminal: a running process
  * never sees a later `export`, so saying "restart" is the actual fix.
  */
 export function missingEnvironmentCredentialMessage(variable: string): string {
-  return `${variable} is not set in this Freebuff process. Set it and restart Freebuff from that terminal.`
+  return `${variable} is not set in this Fuckbuff process. Set it and restart Fuckbuff from that terminal.`
 }
 
 /**
@@ -201,7 +201,7 @@ export function rejectedByokCredentialMessage(
 ): string {
   const variable = byokCredentialVariable(connection)
   return variable
-    ? `The provider rejected the key in ${variable} (HTTP ${status}). ${variable} is set in this Freebuff process; check that it holds the key this endpoint expects, then restart Freebuff from that terminal.`
+    ? `The provider rejected the key in ${variable} (HTTP ${status}). ${variable} is set in this Fuckbuff process; check that it holds the key this endpoint expects, then restart Fuckbuff from that terminal.`
     : `The provider rejected the saved API key (HTTP ${status}). Check or replace the key.`
 }
 
@@ -724,7 +724,7 @@ export function createByokConnectionStore(params: {
     const connection = connections.find((item) => item.id === id)
     if (!connection)
       throw new ByokConnectionStateError(
-        'BYOK connection was removed; select another provider or a Freebuff model to continue',
+        'BYOK connection was removed; select another provider or a Fuckbuff model to continue',
       )
     if (connection.revision !== revision)
       throw new ByokConnectionStateError(
@@ -754,7 +754,7 @@ export function createByokConnectionStore(params: {
     if (/[\r\n]/.test(trimmed))
       throw new ByokCredentialError(
         variable
-          ? `${variable} contains a line break. Set it to the key alone and restart Freebuff from that terminal.`
+          ? `${variable} contains a line break. Set it to the key alone and restart Fuckbuff from that terminal.`
           : 'BYOK credential is unavailable or invalid',
       )
     return trimmed
@@ -1199,8 +1199,8 @@ export function createBunByokMetadataStore(
 ): ByokMetadataStore {
   const directory =
     options.directory ??
-    getSystemProcessEnv().FREEBUFF_BYOK_CONFIG_DIR ??
-    path.join(homedir(), '.config', 'freebuff', 'byok')
+    getSystemProcessEnv().FUCKBUFF_BYOK_CONFIG_DIR ??
+    path.join(homedir(), '.config', 'fuckbuff', 'byok')
   const file = path.join(directory, 'connections.json')
   const lock = path.join(directory, 'connections.lock')
   return {
@@ -1255,7 +1255,7 @@ export function createBunByokMetadataStore(
             await recoverByokLock(lock)
             if (Date.now() - started >= 5000)
               throw new ByokConnectionStateError(
-                'BYOK settings are locked. Close other Freebuff processes and retry. If the problem persists, close all Freebuff processes before removing connections.lock from the BYOK configuration directory.',
+                'BYOK settings are locked. Close other Fuckbuff processes and retry. If the problem persists, close all Fuckbuff processes before removing connections.lock from the BYOK configuration directory.',
               )
             await new Promise((resolve) => setTimeout(resolve, 25))
           }

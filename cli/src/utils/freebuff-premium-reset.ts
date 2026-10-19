@@ -1,7 +1,7 @@
-import { FREEBUFF_PREMIUM_SESSION_RESET_TIMEZONE } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_PREMIUM_SESSION_RESET_TIMEZONE } from '@codebuff/common/constants/fuckbuff-models'
 import { getZonedDayBounds } from '@codebuff/common/util/zoned-time'
 
-import type { FreebuffSessionRateLimit } from '@codebuff/common/types/freebuff-session'
+import type { FuckbuffSessionRateLimit } from '@codebuff/common/types/fuckbuff-session'
 
 /**
  * Takes the RESOLVED quota row rather than the whole `rateLimitsByModel` map.
@@ -10,8 +10,8 @@ import type { FreebuffSessionRateLimit } from '@codebuff/common/types/freebuff-s
  * the caller had already picked a pool properly and this quietly picked
  * another.
  */
-export function getFreebuffPremiumResetAt(params: {
-  quota?: FreebuffSessionRateLimit
+export function getFuckbuffPremiumResetAt(params: {
+  quota?: FuckbuffSessionRateLimit
   nowMs: number
 }): Date {
   const { quota, nowMs } = params
@@ -27,7 +27,7 @@ export function getFreebuffPremiumResetAt(params: {
 
   return getZonedDayBounds(
     new Date(nowMs),
-    FREEBUFF_PREMIUM_SESSION_RESET_TIMEZONE,
+    FUCKBUFF_PREMIUM_SESSION_RESET_TIMEZONE,
   ).resetsAt
 }
 
@@ -36,7 +36,7 @@ export function getFreebuffPremiumResetAt(params: {
  * a multi-day window (e.g. a lapsed reset) sets `withDays` so it reads as "2d 5h"
  * instead of a 100-hour figure.
  */
-export function formatFreebuffPremiumResetCountdown(
+export function formatFuckbuffPremiumResetCountdown(
   resetAt: Date,
   nowMs: number,
   { withDays = false }: { withDays?: boolean } = {},

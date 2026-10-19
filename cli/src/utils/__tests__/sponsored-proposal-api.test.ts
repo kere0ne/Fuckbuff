@@ -161,7 +161,7 @@ describe('funded CLI procedure binding', () => {
         proposalId: 'proposal-1',
         runId: '00000000-0000-4000-8000-000000000099',
         procedureSha256: binding().procedureSha256,
-        modelId: 'freebuff/deepseek-v4-flash',
+        modelId: 'fuckbuff/deepseek-v4-flash',
         expiresAtMs: Date.now() + 60_000,
         allowanceUsdMicros: 500_000,
       },
@@ -204,7 +204,7 @@ describe('acceptSponsoredProposal renders a refusal, never a code', () => {
       {
         error: 'funded_accept_required',
         message:
-          'Update Freebuff Desktop to accept sponsored tasks. Nothing was started.',
+          'Update Fuckbuff Desktop to accept sponsored tasks. Nothing was started.',
       },
       409,
     )
@@ -217,7 +217,7 @@ describe('acceptSponsoredProposal renders a refusal, never a code', () => {
     if (result.ok) return
     expect(result.status).toBe(409)
     expect(result.message).not.toContain('funded_accept_required')
-    expect(result.message).toContain('Update Freebuff')
+    expect(result.message).toContain('Update Fuckbuff')
     expect(result.message).not.toContain('Desktop')
     expect(result.message.endsWith('.')).toBe(true)
     expect(result.code).toBe('funded_accept_required')
@@ -269,7 +269,7 @@ describe('acceptSponsoredProposal renders a refusal, never a code', () => {
     )
     expect(result.ok).toBe(false)
     if (result.ok) return
-    expect(result.message).toBe('Freebuff refused this sponsored task.')
+    expect(result.message).toBe('Fuckbuff refused this sponsored task.')
   })
 
   test('genuine prose in `error` is still shown as-is', async () => {
@@ -317,7 +317,7 @@ describe('every proposal request names this CLI build (I3)', () => {
     )
     expect(seen).toHaveLength(5)
     const userAgent = getCliAdRequestUserAgent()
-    expect(userAgent).toMatch(/^(Freebuff|Codebuff)-CLI\//)
+    expect(userAgent).toMatch(/^(Fuckbuff|Codebuff)-CLI\//)
     for (const request of seen) expect(request.userAgent).toBe(userAgent)
   })
 })

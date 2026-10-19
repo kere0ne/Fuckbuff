@@ -4,7 +4,7 @@ import path from 'node:path'
 
 import { getConfigDir } from './auth'
 import { getCliEnv } from './env'
-import { freebuffCliAttemptId } from './freebuff-session-identity'
+import { fuckbuffCliAttemptId } from './fuckbuff-session-identity'
 
 type Handoff = { instanceId: string; model: string }
 const tokenKey = (token: string) =>
@@ -12,13 +12,13 @@ const tokenKey = (token: string) =>
 function handoffPath(): string | undefined {
   const pid = getCliEnv().CODEBUFF_LAUNCHER_PID
   return pid && /^[1-9]\d*$/.test(pid)
-    ? path.join(getConfigDir(), `freebuff-relaunch-${pid}.json`)
+    ? path.join(getConfigDir(), `fuckbuff-relaunch-${pid}.json`)
     : undefined
 }
 
 /** A launcher survives its update restart, unlike the child CLI. Scope the
  * handoff to that launcher so another terminal cannot inherit its purchase. */
-export function saveFreebuffSessionForRelaunch(
+export function saveFuckbuffSessionForRelaunch(
   handoff: Handoff,
   token: string,
 ): boolean {
@@ -41,7 +41,7 @@ export function saveFreebuffSessionForRelaunch(
   }
 }
 
-export function consumeFreebuffSessionRelaunch(
+export function consumeFuckbuffSessionRelaunch(
   token: string,
 ): Handoff | undefined {
   const file = handoffPath()
@@ -54,7 +54,7 @@ export function consumeFreebuffSessionRelaunch(
       Date.now() - value.savedAt >= 0 &&
       Date.now() - value.savedAt < 120_000 &&
       typeof value.instanceId === 'string' &&
-      freebuffCliAttemptId(value.instanceId) &&
+      fuckbuffCliAttemptId(value.instanceId) &&
       typeof value.model === 'string'
     )
       return { instanceId: value.instanceId, model: value.model }
@@ -85,7 +85,7 @@ type LiveRecord = Handoff & {
   expiresAt: number
 }
 
-const LIVE_PREFIX = 'freebuff-live-'
+const LIVE_PREFIX = 'fuckbuff-live-'
 
 function livePath(pid: number): string {
   return path.join(getConfigDir(), `${LIVE_PREFIX}${pid}.json`)
@@ -102,12 +102,12 @@ export function isProcessAlive(pid: number): boolean {
   }
 }
 
-export function recordLiveFreebuffSession(
+export function recordLiveFuckbuffSession(
   session: Handoff & { expiresAt: string },
   token: string,
 ): void {
   const expiresAt = Date.parse(session.expiresAt)
-  if (!freebuffCliAttemptId(session.instanceId) || !Number.isFinite(expiresAt))
+  if (!fuckbuffCliAttemptId(session.instanceId) || !Number.isFinite(expiresAt))
     return
   try {
     fs.mkdirSync(getConfigDir(), { recursive: true })
@@ -127,7 +127,7 @@ export function recordLiveFreebuffSession(
 }
 
 /** This process no longer holds a resumable hour (ended, released, switched). */
-export function forgetLiveFreebuffSession(): void {
+export function forgetLiveFuckbuffSession(): void {
   try {
     fs.unlinkSync(livePath(process.pid))
   } catch {}
@@ -148,7 +148,7 @@ function readLiveRecords(): Array<{ file: string; record: LiveRecord }> {
       const value = JSON.parse(fs.readFileSync(file, 'utf8'))
       if (
         typeof value.instanceId === 'string' &&
-        freebuffCliAttemptId(value.instanceId) &&
+        fuckbuffCliAttemptId(value.instanceId) &&
         typeof value.model === 'string' &&
         typeof value.tokenKey === 'string' &&
         Number.isInteger(value.ownerPid) &&
@@ -164,7 +164,7 @@ function readLiveRecords(): Array<{ file: string; record: LiveRecord }> {
  * Resume the unexpired hour a crashed CLI on this account left behind, if any.
  * Expired records whose owner is gone are deleted on the way.
  */
-export function consumeCrashedFreebuffSession(
+export function consumeCrashedFuckbuffSession(
   token: string,
   now = Date.now(),
 ): Handoff | undefined {

@@ -4,7 +4,7 @@
  *
  * THIS IS THE DATA HALF ONLY, and it lives here rather than beside the Cloud
  * policy because there is now more than one environment doing the granting
- * (COD-336). `freebuff/web/convex/ads/sponsoredCapabilityPolicy.ts` re-exports
+ * (COD-336). `fuckbuff/web/convex/ads/sponsoredCapabilityPolicy.ts` re-exports
  * every name below under its historical spelling and keeps the Cloud grant and
  * the Cloud-shaped path/branch checks; `./sponsored-local-execution.ts` holds
  * the LOCAL grant. Two grants over one classification is the point: a tool
@@ -414,7 +414,7 @@ export function evaluateSponsoredWritePath(
  * May this IN-PLACE sponsored run READ this path?
  *
  * Only for a run editing the user's working copy
- * (`docs/freebuff-sponsored-local-execution.md`, 2026-09-24). A worktree run
+ * (`docs/fuckbuff-sponsored-local-execution.md`, 2026-09-24). A worktree run
  * needs none of this: its checkout was cut from a commit, so it contains no
  * untracked file and `.env.local`, `id_rsa` and `.npmrc` are absent by
  * construction. The user's own folder has them, so the same names the WRITE

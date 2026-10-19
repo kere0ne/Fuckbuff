@@ -1,7 +1,7 @@
 /**
  * Small, dependency-free statistics for experiment readouts and eval gates.
  *
- * `wilsonInterval` moved here from `freebuff/web/src/server/ad-serving/intent/
+ * `wilsonInterval` moved here from `fuckbuff/web/src/server/ad-serving/intent/
  * stats.ts` (which re-exports it) so Postgres-side readouts
  * (`packages/internal/src/experiments/readout.ts`) can share it.
  */

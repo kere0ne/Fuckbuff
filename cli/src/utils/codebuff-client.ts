@@ -4,7 +4,7 @@ import { CodebuffClient } from '@codebuff/sdk'
 
 import { getAuthTokenDetails } from './auth'
 import { getCliEnv, getSystemProcessEnv } from './env'
-import { freebuffCatalogCompletionHeaders } from './freebuff-device-key'
+import { fuckbuffCatalogCompletionHeaders } from './fuckbuff-device-key'
 import { loadAgentDefinitions } from './local-agent-registry'
 import { logger } from './logger'
 import { createTraceWriter } from './trace-writer'
@@ -87,12 +87,12 @@ export async function getCodebuffClient(
         ...(apiKey ? { apiKey } : {}),
         ...(options.byok ? { byok: options.byok } : {}),
         // Catalog mode only: the fetch id and device signature on every
-        // completions request (docs/freebuff-model-catalog.md). Fallback mode
+        // completions request (docs/fuckbuff-model-catalog.md). Fallback mode
         // adds nothing, and BYOK requests never consult it.
         ...(apiKey
           ? {
               requestHeaders: (request) =>
-                freebuffCatalogCompletionHeaders(apiKey, request),
+                fuckbuffCatalogCompletionHeaders(apiKey, request),
             }
           : {}),
         cwd: projectRoot,

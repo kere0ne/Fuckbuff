@@ -61,10 +61,10 @@ describe('sponsoredAdvertiserCtaUrl', () => {
 
   test('keeps the landing URL’s own query and replaces an existing bfcid rather than doubling it', () => {
     const url = cta({
-      landingUrl: 'https://acme.example/signup?utm_source=freebuff&bfcid=stale',
+      landingUrl: 'https://acme.example/signup?utm_source=fuckbuff&bfcid=stale',
     })!
     const parsed = new URL(url)
-    expect(parsed.searchParams.get('utm_source')).toBe('freebuff')
+    expect(parsed.searchParams.get('utm_source')).toBe('fuckbuff')
     expect(parsed.searchParams.getAll('bfcid')).toEqual([SIGNED])
   })
 

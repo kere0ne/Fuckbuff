@@ -1,4 +1,4 @@
-import { FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from './freebuff-model-ids'
+import { FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from './fuckbuff-model-ids'
 
 export function compactionThreshold(maxContextLength: number): number {
   return Math.floor(maxContextLength * 0.8)
@@ -57,7 +57,7 @@ export const DEFAULT_COMPACTION_POLICY: CompactionPolicy = {
  * and drops exactly the files the model will re-read. On this lane a cold
  * input token costs ~40x a cached one, so halving a cold 60k prefill is a
  * material share of a turn's spend; the figures behind that are in
- * freebuff-costs.knowledge.md (private).
+ * fuckbuff-costs.knowledge.md (private).
  */
 export const DEEPSEEK_FLASH_COMPACTION_POLICY: CompactionPolicy = {
   cacheExpiryMs: 15 * 60 * 1000,
@@ -67,7 +67,7 @@ export const DEEPSEEK_FLASH_COMPACTION_POLICY: CompactionPolicy = {
 export function compactionPolicyForModel(
   model: string | null | undefined,
 ): CompactionPolicy {
-  return model === FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
+  return model === FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
     ? DEEPSEEK_FLASH_COMPACTION_POLICY
     : DEFAULT_COMPACTION_POLICY
 }

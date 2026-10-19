@@ -9,8 +9,8 @@ export type SiteToolSpec = {
  *  handler inject them, so a project may not claim one. */
 export const SITE_RESERVED_BINDINGS = [
   'ASSETS',
-  'FREEBUFF_CLIENT_ID',
-  'FREEBUFF_ISSUER',
+  'FUCKBUFF_CLIENT_ID',
+  'FUCKBUFF_ISSUER',
   'APP_ORIGIN',
 ] as const
 
@@ -103,7 +103,7 @@ export const SITE_TOOL_SPECS: SiteToolSpec[] = [
   ),
   spec(
     'sites_enable_auth',
-    'Enable Sign in with Freebuff for a site environment. Idempotently registers exact deployed callbacks; optionally pass the local Worker origin to get a separate development client. Returns public variables and requiresDeployment. Install @freebuff/auth, read its AGENTS.md, wrap the Worker handler before ASSETS, and use env.FREEBUFF_CLIENT_ID / env.FREEBUFF_ISSUER / env.APP_ORIGIN. Deploy injects these automatically. No client secret or platform token belongs in the project. Does not modify site code or deploy it.',
+    'Enable Sign in with Fuckbuff for a site environment. Idempotently registers exact deployed callbacks; optionally pass the local Worker origin to get a separate development client. Returns public variables and requiresDeployment. Install @fuckbuff/auth, read its AGENTS.md, wrap the Worker handler before ASSETS, and use env.FUCKBUFF_CLIENT_ID / env.FUCKBUFF_ISSUER / env.APP_ORIGIN. Deploy injects these automatically. No client secret or platform token belongs in the project. Does not modify site code or deploy it.',
     { ...target, localOrigin: SITE_ARGS.localOrigin.optional() },
   ),
   spec(

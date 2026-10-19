@@ -52,7 +52,7 @@ afterEach(() => {
   useChatStore.getState().setMessages([])
 })
 
-describe('BYOK setup from a Freebuff wall', () => {
+describe('BYOK setup from a Fuckbuff wall', () => {
   test('opens setup and explains the commands in the chat', () => {
     useByokSelectionStore.setState({ selected: undefined, setupOpen: false })
     enterByokSetup()
@@ -180,7 +180,7 @@ describe('/byok', () => {
 
 describe('/byok effort', () => {
   test('persists a BYOK rung, reports it, and default clears it', async () => {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-byok-effort-'))
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-byok-effort-'))
     const configDir = spyOn(auth, 'getConfigDir').mockReturnValue(dir)
     try {
       const high = createParams('/byok effort high')

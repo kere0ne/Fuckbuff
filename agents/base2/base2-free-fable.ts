@@ -1,4 +1,4 @@
-import { FREEBUFF_FABLE_5_1_MODEL_ID } from '@codebuff/common/constants/freebuff-models'
+import { FUCKBUFF_FABLE_5_1_MODEL_ID } from '@codebuff/common/constants/fuckbuff-models'
 
 import { createBase2 } from './base2'
 
@@ -6,7 +6,7 @@ import { createBase2 } from './base2'
  *  Fable 5.1. Capacity and the one-per-user limit are enforced at admission. */
 const definition = {
   ...createBase2('free', {
-    model: FREEBUFF_FABLE_5_1_MODEL_ID,
+    model: FUCKBUFF_FABLE_5_1_MODEL_ID,
     // Live runs ended on follow-up cards without a written answer. Keep
     // questions and delegation, but omit the optional cards and their prompt.
     noFollowups: true,

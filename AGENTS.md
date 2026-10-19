@@ -1,6 +1,6 @@
-# Freebuff
+# Fuckbuff
 
-Freebuff is the public, free coding agent built from the Codebuff agent framework.
+Fuckbuff is the public, free coding agent built from the Codebuff agent framework.
 
 ## Key Technologies
 
@@ -19,7 +19,7 @@ Freebuff is the public, free coding agent built from the Codebuff agent framewor
 - `packages/agent-runtime/` - agent runtime and tool handling
 - `packages/code-map/` - source parsing helpers
 - `packages/llm-providers/` - public LLM provider shims
-- `freebuff/` - Freebuff CLI, release files, and e2e tests
+- `fuckbuff/` - Fuckbuff CLI, release files, and e2e tests
 - `scripts/tmux/` - tmux helpers for CLI testing
 
 ## Conventions

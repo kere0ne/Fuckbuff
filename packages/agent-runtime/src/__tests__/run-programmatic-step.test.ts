@@ -154,7 +154,7 @@ describe('runProgrammaticStep', () => {
     it('passes the template model to handleSteps', async () => {
       // handleSteps is serialized with toString(), so a generator cannot close
       // over request-time state. Callers that override a template's model per
-      // request (freebuff chat picks one per message) rely on reading it here
+      // request (fuckbuff chat picks one per message) rely on reading it here
       // — e.g. agents/base-chat.ts sizes its context-pruning budget to the
       // selected model's window.
       let seenModel: string | undefined = 'not-called'

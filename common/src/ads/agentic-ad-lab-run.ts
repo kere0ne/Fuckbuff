@@ -4,12 +4,12 @@
  * are MIRRORED from Desktop, sentence for sentence wherever the sentence
  * holds in a Cloud VM:
  *
- *  - the turn prompt from `freebuff-desktop/src/server/services/sponsored-run.ts`
+ *  - the turn prompt from `fuckbuff-desktop/src/server/services/sponsored-run.ts`
  *    (`buildSponsoredPrompt`, `SPONSORED_TASK_FRAMING`, ...),
  *  - the system prompt sections from
- *    `freebuff-desktop/src/server/harness/sponsored-agent.ts`,
+ *    `fuckbuff-desktop/src/server/harness/sponsored-agent.ts`,
  *  - the account step's questions and notes from
- *    `freebuff-desktop/src/server/services/sponsored-signup.ts`.
+ *    `fuckbuff-desktop/src/server/services/sponsored-signup.ts`.
  *
  * `web/src/server/desktop-cloud/lab-sponsored-parity.test.ts` reads those
  * files as text and fails when a mirrored string stops matching, the way
@@ -18,7 +18,7 @@
  * The system prompt sections are APPENDED to base3's, never substituted for
  * it, as the CLI does: a lab run is an ordinary free-mode request on the
  * tester's session, and the completions route checks that its root prompt
- * opens with base3's text (`FREEBUFF_ROOT_SYSTEM_PROMPT_OPENINGS`,
+ * opens with base3's text (`FUCKBUFF_ROOT_SYSTEM_PROMPT_OPENINGS`,
  * `web/src/llm-api/root-prompt-shape.ts`). Desktop's sponsored agent opens
  * with its own sentence only because its requests go to the sponsored compute
  * route instead.
@@ -252,7 +252,7 @@ export function labInstantSetupQuestion(
   offerName: string,
   email: string,
 ): string {
-  return `${offerName} can create your account and an API key for this task, with no sign-up. Freebuff will send ${email} to them to do it.`
+  return `${offerName} can create your account and an API key for this task, with no sign-up. Fuckbuff will send ${email} to them to do it.`
 }
 
 /** MIRRORED: Desktop's `{email}` prefill question (COD-830). */

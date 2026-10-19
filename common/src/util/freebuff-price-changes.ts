@@ -1,14 +1,14 @@
 import type {
-  FreebuffFreebucksInfo,
-  FreebuffOffPeakPrice,
-} from '../types/freebuff-session'
-import { isBeijingWeekend } from '../constants/freebuff-peak-hours'
-import { freebuffMultiplierText } from './freebuff-hours'
+  FuckbuffFreebucksInfo,
+  FuckbuffOffPeakPrice,
+} from '../types/fuckbuff-session'
+import { isBeijingWeekend } from '../constants/fuckbuff-peak-hours'
+import { fuckbuffMultiplierText } from './fuckbuff-hours'
 
 /** Resolve a server-owned daily policy, including windows crossing midnight
  *  and, when the policy says so, weekends that are off-peak all day. `start`
  *  and `end` are the current or next DAILY window, for copy. */
-export function offPeakPriceAt(offer: FreebuffOffPeakPrice, now: number) {
+export function offPeakPriceAt(offer: FuckbuffOffPeakPrice, now: number) {
   const start = new Date(now)
   start.setUTCHours(offer.startHourUtc, 0, 0, 0)
   if (+start > now) start.setUTCDate(start.getUTCDate() - 1)
@@ -27,15 +27,15 @@ export function offPeakPriceAt(offer: FreebuffOffPeakPrice, now: number) {
     nextChangeAt: nextPriceChangeAt(offer, now, active),
     price: active ? offer.price : offer.regularPrice,
     tagline: active
-      ? `Off-peak pricing · ${freebuffMultiplierText(offer.regularPrice)} at peak`
-      : `Peak pricing · ${freebuffMultiplierText(offer.price)} off-peak`,
+      ? `Off-peak pricing · ${fuckbuffMultiplierText(offer.regularPrice)} at peak`
+      : `Peak pricing · ${fuckbuffMultiplierText(offer.price)} off-peak`,
   }
 }
 
 /** Whether `at` is priced off-peak under `offer`: inside the daily UTC
  *  window, which may cross midnight, or on a Beijing weekend when the policy
  *  extends to weekends. */
-function isOffPeakAt(offer: FreebuffOffPeakPrice, at: number): boolean {
+function isOffPeakAt(offer: FuckbuffOffPeakPrice, at: number): boolean {
   if (offer.weekendsOffPeak === true && isBeijingWeekend(new Date(at)))
     return true
   const hour = new Date(at).getUTCHours()
@@ -48,7 +48,7 @@ function isOffPeakAt(offer: FreebuffOffPeakPrice, at: number): boolean {
  *  price for two and a half days, so look more than a week ahead before
  *  giving up (a 24-hour window never changes, and then the far edge is fine). */
 function nextPriceChangeAt(
-  offer: FreebuffOffPeakPrice,
+  offer: FuckbuffOffPeakPrice,
   now: number,
   active: boolean,
 ): number {
@@ -65,7 +65,7 @@ function nextPriceChangeAt(
  *  Every run is whole: the scan starts a day back and drops the partial runs
  *  at either end, so the first is the current or next one. */
 export function offPeakRuns(
-  offer: FreebuffOffPeakPrice,
+  offer: FuckbuffOffPeakPrice,
   now: number,
 ): { start: number; end: number; offPeak: boolean }[] {
   const hour = 60 * 60 * 1000
@@ -86,7 +86,7 @@ export function offPeakRuns(
  * quotes only. Never change balances or an already-admitted session's charge. */
 export function applyFreebucksPriceChanges<
   T extends Pick<
-    FreebuffFreebucksInfo,
+    FuckbuffFreebucksInfo,
     'prices' | 'priceNotices' | 'priceChanges' | 'offPeak'
   >,
 >(info: T, now = Date.now()): T {
@@ -129,7 +129,7 @@ export function applyFreebucksPriceChanges<
 
 export function nextFreebucksPriceChange(
   info:
-    | Pick<FreebuffFreebucksInfo, 'priceChanges' | 'offPeak'>
+    | Pick<FuckbuffFreebucksInfo, 'priceChanges' | 'offPeak'>
     | null
     | undefined,
   now = Date.now(),
@@ -148,7 +148,7 @@ export function nextFreebucksPriceChange(
  * Re-arm even when a delayed wake leaves the price (and React deps) unchanged. */
 export function watchFreebucksPriceChanges(
   info:
-    | Pick<FreebuffFreebucksInfo, 'priceChanges' | 'offPeak'>
+    | Pick<FuckbuffFreebucksInfo, 'priceChanges' | 'offPeak'>
     | null
     | undefined,
   onChange: () => void,

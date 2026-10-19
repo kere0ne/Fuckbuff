@@ -7,9 +7,9 @@
  * (2026-09-24: every agentic campaign follows the same rules on every OS,
  * with no special paths and no per-campaign lists):
  *
- * - Windows (COD-642): `FREEBUFF_SPONSORED_WINDOWS`, surface `desktop_windows`,
+ * - Windows (COD-642): `FUCKBUFF_SPONSORED_WINDOWS`, surface `desktop_windows`,
  *   contained by the portable floor (`./sponsored-windows`).
- * - Linux (COD-655): `FREEBUFF_SPONSORED_LINUX`, surface `desktop_linux`,
+ * - Linux (COD-655): `FUCKBUFF_SPONSORED_LINUX`, surface `desktop_linux`,
  *   contained by bubblewrap — a missing `bwrap` makes the client report no
  *   execution capability, so it is never offered a paid task.
  *
@@ -26,16 +26,16 @@ import type { SponsoredExecutionSurface } from './sponsored-capability'
 /** Each switched Desktop OS: the env knob that opens it and the surface it runs on. */
 export const SPONSORED_OS_SWITCHES = {
   windows: {
-    env: 'FREEBUFF_SPONSORED_WINDOWS',
+    env: 'FUCKBUFF_SPONSORED_WINDOWS',
     surface: 'desktop_windows',
   },
   linux: {
-    env: 'FREEBUFF_SPONSORED_LINUX',
+    env: 'FUCKBUFF_SPONSORED_LINUX',
     surface: 'desktop_linux',
   },
 } as const satisfies Record<
   string,
-  { env: `FREEBUFF_SPONSORED_${string}`; surface: SponsoredExecutionSurface }
+  { env: `FUCKBUFF_SPONSORED_${string}`; surface: SponsoredExecutionSurface }
 >
 
 /** A Desktop OS whose paid agentic serving sits behind its own switch. */

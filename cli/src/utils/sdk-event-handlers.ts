@@ -522,7 +522,7 @@ const handleStreamError = (state: EventHandlerState, event: PrintModeError) => {
 // the SDK's stream callback chain (sdk run.ts -> agent-runtime tool executor ->
 // stream parser). A throw from a UI state update therefore escaped as an
 // unhandled rejection, and the process-level handler turned it into a fatal
-// exit: the agent run, the chat and the Freebuff session all died with it.
+// exit: the agent run, the chat and the Fuckbuff session all died with it.
 // Reported on Arch after 29 hours of uptime: React's "Maximum update depth
 // exceeded" (#185), raised by the store notification inside
 // `setStreamingAgents` (updateStreamingAgents <- handleToolCall).

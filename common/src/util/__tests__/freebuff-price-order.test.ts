@@ -3,7 +3,7 @@ import { describe, expect, test } from 'bun:test'
 import {
   compareByFreebucksPrice,
   freebucksListPriceFor,
-} from '../freebuff-price-order'
+} from '../fuckbuff-price-order'
 
 const rows = [
   { id: 'glm', displayName: 'GLM 5.3 Flash' },

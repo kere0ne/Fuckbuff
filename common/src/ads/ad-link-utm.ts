@@ -1,8 +1,8 @@
 /**
- * Freebuff's default UTM tags on links that send a developer to an advertiser.
+ * Fuckbuff's default UTM tags on links that send a developer to an advertiser.
  *
- * An advertiser can only credit Freebuff for a visit its analytics can see
- * came from Freebuff. The `bfcid` click token does that for an advertiser
+ * An advertiser can only credit Fuckbuff for a visit its analytics can see
+ * came from Fuckbuff. The `bfcid` click token does that for an advertiser
  * integrated for postbacks, but most campaigns carry `internal` conversion
  * authority, which mints no token at all, and a visitor from a sponsored run
  * reaches the advertiser through URLs the agent relays from the procedure
@@ -18,15 +18,15 @@
  *
  * An untagged link gains the ADVERTISER'S tags when it has any: the
  * `utm_source`, `utm_medium` and `utm_campaign` it put on its campaign landing
- * URL, which is how its own reports already group Freebuff traffic
+ * URL, which is how its own reports already group Fuckbuff traffic
  * (e.g. `utm_campaign=spring_launch`, `utm_medium=cpc`).
  * `utm_content`/`utm_term` are not copied: they name the display creative the
  * landing URL was written for, not the link being tagged. Only a campaign that
  * set no `utm_source` gets ours:
- * `utm_source=freebuff&utm_medium=paid&utm_campaign=<campaign name slug>`.
+ * `utm_source=fuckbuff&utm_medium=paid&utm_campaign=<campaign name slug>`.
  */
 
-export const AD_LINK_UTM_SOURCE = 'freebuff'
+export const AD_LINK_UTM_SOURCE = 'fuckbuff'
 export const AD_LINK_UTM_MEDIUM = 'paid'
 
 const UTM_CAMPAIGN_MAX_CHARS = 64

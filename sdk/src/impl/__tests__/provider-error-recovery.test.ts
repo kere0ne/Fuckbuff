@@ -1,5 +1,5 @@
 /**
- * Mid-stream provider errors (CodebuffAI/freebuff#1155).
+ * Mid-stream provider errors (CodebuffAI/fuckbuff#1155).
  *
  * A retryable failure the provider reports in band (an `error` chunk after the
  * SSE headers) takes the same capped continuation path as a severed body,

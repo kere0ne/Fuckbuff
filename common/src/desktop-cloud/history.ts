@@ -16,7 +16,7 @@ export type CloudHistoryRun = {
   chatId: string
   status: string
   model: string | null
-  /** Claude Code or Codex ran this turn (`./agents`); absent for the Freebuff agent and older servers. */
+  /** Claude Code or Codex ran this turn (`./agents`); absent for the Fuckbuff agent and older servers. */
   agent?: import('./agents').CloudCliAgent | null
   agentMode: 'plan' | 'build'
   effort: string | null
@@ -186,7 +186,7 @@ export function createCloudHistoryClient(
       get<CloudHistoryEvents>(`runs/${id(runId)}/events`, page),
     listTraces: (runId: string, page?: CloudHistoryOptions) =>
       get<CloudHistoryEvents>(`runs/${id(runId)}/traces`, page),
-    /** Whether this account may use Freebuff Projects (admins and an allowlist). */
+    /** Whether this account may use Fuckbuff Projects (admins and an allowlist). */
     getProjectsAccess: (signal?: AbortSignal) =>
       get<{ allowed: boolean }>('projects-access', { signal }),
   }

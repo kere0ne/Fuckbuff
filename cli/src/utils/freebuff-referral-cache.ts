@@ -1,8 +1,8 @@
-import { getReferralInfo } from '@codebuff/common/types/freebuff-session'
+import { getReferralInfo } from '@codebuff/common/types/fuckbuff-session'
 
-import type { FreebuffAccessTier } from '@codebuff/common/constants/freebuff-models'
-import type { FreebuffReferralInfo } from '@codebuff/common/types/freebuff-session'
-import type { FreebuffSessionResponse } from '../types/freebuff-session'
+import type { FuckbuffAccessTier } from '@codebuff/common/constants/fuckbuff-models'
+import type { FuckbuffReferralInfo } from '@codebuff/common/types/fuckbuff-session'
+import type { FuckbuffSessionResponse } from '../types/fuckbuff-session'
 
 /**
  * Process-wide cache of the most recent referral block the server sent for
@@ -17,14 +17,14 @@ import type { FreebuffSessionResponse } from '../types/freebuff-session'
  * picker re-render it immediately; a later clean `none` GET refreshes it.
  */
 let referralByAccessTier: Partial<
-  Record<FreebuffAccessTier, FreebuffReferralInfo>
+  Record<FuckbuffAccessTier, FuckbuffReferralInfo>
 > = {}
 
 /** Remember the referral block whenever a response includes one, so it can be
  *  carried across the join → end → return-to-landing round-trip. Active/ended
  *  responses intentionally omit it and keep the prior value; an authoritative
  *  `none` response without it clears stale metadata for that tier. */
-export function rememberReferral(session: FreebuffSessionResponse | null): void {
+export function rememberReferral(session: FuckbuffSessionResponse | null): void {
   const referral = getReferralInfo(session)
   const accessTier =
     session && 'accessTier' in session ? session.accessTier : undefined
@@ -40,8 +40,8 @@ export function rememberReferral(session: FreebuffSessionResponse | null): void 
 
 /** The last referral block seen for this tier, if any. */
 export function getCachedReferral(
-  accessTier: FreebuffAccessTier | undefined,
-): FreebuffReferralInfo | undefined {
+  accessTier: FuckbuffAccessTier | undefined,
+): FuckbuffReferralInfo | undefined {
   return accessTier ? referralByAccessTier[accessTier] : undefined
 }
 

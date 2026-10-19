@@ -3,17 +3,17 @@ import { describe, expect, test } from 'bun:test'
 import {
   surveyEventBatchSchema,
   SURVEY_EVENT_DWELL_MS_MAX,
-} from '../freebuff-sponsored-survey'
+} from '../fuckbuff-sponsored-survey'
 import {
   createSurveyCardTracker,
   createSurveyEventSink,
   type SurveyEventSendOptions,
-} from '../freebuff-survey-events-client'
+} from '../fuckbuff-survey-events-client'
 
 import type {
   SurveyEventBatch,
   SurveyEventInput,
-} from '../freebuff-sponsored-survey'
+} from '../fuckbuff-sponsored-survey'
 
 function fakeTimers() {
   const timers: Array<{ fn: () => void; ms: number; live: boolean }> = []

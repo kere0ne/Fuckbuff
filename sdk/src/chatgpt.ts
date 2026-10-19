@@ -1,7 +1,7 @@
 /**
  * Sign in with ChatGPT: the OAuth device-code flow the Codex CLI uses, and the
  * token refresh that keeps a saved sign-in usable. The tokens it returns run
- * the Freebuff harness on the user's own ChatGPT plan through the Codex
+ * the Fuckbuff harness on the user's own ChatGPT plan through the Codex
  * Responses endpoint (see impl/chatgpt-responses.ts); they are stored only as
  * a saved provider's credential, in the same stores as an API key.
  *
@@ -27,7 +27,7 @@ export const CHATGPT_DEVICE_VERIFICATION_URL = `${AUTH_ORIGIN}/codex/device`
 export const CHATGPT_CODEX_BASE_URL = 'https://chatgpt.com/backend-api/codex'
 export const CHATGPT_CODEX_RESPONSES_URL = `${CHATGPT_CODEX_BASE_URL}/responses`
 /** Sent as `originator`, so OpenAI can tell these requests from the Codex CLI's. */
-export const CHATGPT_ORIGINATOR = 'freebuff'
+export const CHATGPT_ORIGINATOR = 'fuckbuff'
 
 /** A model a ChatGPT sign-in saves as a provider. */
 export type ChatGptModelChoice = {
@@ -61,7 +61,7 @@ export const CHATGPT_MODELS_CLIENT_VERSION = '1.0.0'
 /** Refresh this long before the access token expires. */
 export const CHATGPT_REFRESH_MARGIN_MS = 5 * 60 * 1000
 const REQUEST_TIMEOUT_MS = 12_000
-const USER_AGENT = 'Freebuff/1.0'
+const USER_AGENT = 'Fuckbuff/1.0'
 
 export type ChatGptTokens = {
   accessToken: string

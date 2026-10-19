@@ -10,7 +10,7 @@ import {
 import { bold, cyan, yellow } from 'picocolors'
 
 import { getConfigDir } from './config-dir'
-import { IS_FREEBUFF } from './constants'
+import { IS_FUCKBUFF } from './constants'
 
 /**
  * Trust gate for repository-scoped `.agents` directories.
@@ -190,7 +190,7 @@ export const inspectAgentDir = (dir: string): AgentDirInventory => {
 // Prompt text
 // ============================================================================
 
-const cliName = (): string => (IS_FREEBUFF ? 'freebuff' : 'codebuff')
+const cliName = (): string => (IS_FUCKBUFF ? 'fuckbuff' : 'codebuff')
 
 export const formatTrustPrompt = (inventory: AgentDirInventory): string => {
   const lines: string[] = []

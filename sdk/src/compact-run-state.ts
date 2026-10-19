@@ -103,7 +103,7 @@ export function compactRunState(params: {
  * the same conversation: the transcript it shows, and the `RunState` the model
  * actually resumes from. Deleting from the transcript alone leaves the model
  * remembering turns the user can no longer see. Clearing the state instead —
- * which is what Freebuff Desktop did until 2026-09-19 — leaves the transcript
+ * which is what Fuckbuff Desktop did until 2026-09-19 — leaves the transcript
  * intact and the model with no memory of any of it, so editing the third
  * message of a long thread made the assistant behave as though the
  * conversation had just started. That is the bug this closes; the two

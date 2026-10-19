@@ -4,7 +4,7 @@ import { describe, expect, test } from 'bun:test'
 import {
   buildGravityFirstMessagePayload,
   gravityFirstMessageEventId,
-  isFreebuffGravitySurface,
+  isFuckbuffGravitySurface,
   sanitizeGravityCapiData,
   sendGravityFirstMessageConversion,
 } from '../gravity-capi'
@@ -34,8 +34,8 @@ describe('Gravity first-message CAPI', () => {
       event_source_url: 'https://freebuff.com/chat',
       client_context: { timezone: 'America/Los_Angeles' },
     })
-    expect(isFreebuffGravitySurface('desktop')).toBe(true)
-    expect(isFreebuffGravitySurface('preexisting')).toBe(false)
+    expect(isFuckbuffGravitySurface('desktop')).toBe(true)
+    expect(isFuckbuffGravitySurface('preexisting')).toBe(false)
   })
 
   test('drops oversized client context before forwarding it to Gravity', () => {
@@ -79,7 +79,7 @@ describe('Gravity first-message CAPI', () => {
         {
           event_name: 'FirstMessage',
           event_time: 123,
-          event_id: 'freebuff-first-message-user-123',
+          event_id: 'fuckbuff-first-message-user-123',
           action_source: 'website',
           event_source_url: 'https://freebuff.com/cloud/project/example',
           user_data: {
@@ -93,7 +93,7 @@ describe('Gravity first-message CAPI', () => {
           },
           client_context: { timezone: 'America/Los_Angeles' },
           custom_data: {
-            content_name: 'Freebuff first message',
+            content_name: 'Fuckbuff first message',
             content_category: 'cloud',
           },
         },
@@ -103,7 +103,7 @@ describe('Gravity first-message CAPI', () => {
 
   test('uses the same event id across surfaces for Gravity deduplication', () => {
     expect(gravityFirstMessageEventId('user-123')).toBe(
-      'freebuff-first-message-user-123',
+      'fuckbuff-first-message-user-123',
     )
   })
 
@@ -119,7 +119,7 @@ describe('Gravity first-message CAPI', () => {
           JSON.stringify({
             results: [
               {
-                event_id: 'freebuff-first-message-user-123',
+                event_id: 'fuckbuff-first-message-user-123',
                 status: 'duplicate',
               },
             ],
@@ -153,7 +153,7 @@ describe('Gravity first-message CAPI', () => {
           JSON.stringify({
             results: [
               {
-                event_id: 'freebuff-first-message-user-123',
+                event_id: 'fuckbuff-first-message-user-123',
                 status: 'accepted',
               },
             ],

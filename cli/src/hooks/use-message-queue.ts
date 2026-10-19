@@ -25,7 +25,7 @@ export const useMessageQueue = (
   isChainInProgressRef: React.MutableRefObject<boolean>,
   activeAgentStreamsRef: React.MutableRefObject<number>,
   opts: {
-    /** External hold on dequeuing (e.g. the freebuff session ended and new
+    /** External hold on dequeuing (e.g. the fuckbuff session ended and new
      *  requests would be rejected). Queued messages are kept, not dropped;
      *  processing resumes automatically when this flips back to false. */
     sendBlocked?: boolean
@@ -110,7 +110,7 @@ export const useMessageQueue = (
       return
     }
 
-    // External hold: sending is currently pointless (e.g. freebuff session
+    // External hold: sending is currently pointless (e.g. fuckbuff session
     // fully ended — requests without a live session are rejected). Leave the
     // messages queued; the effect below re-runs when sendBlocked flips false.
     // No log here: unlike the transient busy branches above, this state can
@@ -180,7 +180,7 @@ export const useMessageQueue = (
         // run's completion), and a run legitimately outlives the timeout --
         // an agent turn, or one waiting on an ask_user answer. That is not a
         // stuck lock: keep watching instead of resetting the queue under the
-        // live run. Since chat-first Freebuff sends every session's first
+        // live run. Since chat-first Fuckbuff sends every session's first
         // prompt through the queue, this misfired on most long first turns.
         if (
           isProcessingQueueRef.current &&
@@ -275,7 +275,7 @@ export const useMessageQueue = (
   )
 
   /** Put a message back at the HEAD of the queue. Used when a send was
-   *  aborted before it did anything (e.g. the freebuff session ended between
+   *  aborted before it did anything (e.g. the fuckbuff session ended between
    *  dequeue and run start) so the message keeps its place instead of being
    *  consumed. */
   const addToQueueFront = useCallback(

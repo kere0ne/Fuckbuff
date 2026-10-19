@@ -2,7 +2,7 @@
  * Live-count telemetry for the helper processes a client spawns.
  *
  * WHY THIS EXISTS. On 2026-09-23 a Windows user reported "conhost and
- * powershell flood from freebuff — it's been happening for so long": ~50
+ * powershell flood from fuckbuff — it's been happening for so long": ~50
  * `conhost.exe` and many `powershell.exe` at 800–960 MB each, the machine at
  * 98% RAM. Nothing server-side can see a client-side process flood, and nothing
  * client-side was counting, so "so long" was weeks of a problem no dashboard

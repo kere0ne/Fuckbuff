@@ -6,7 +6,7 @@
  * returned texts are appended to the conversation as user prompts and keep
  * the turn going. This module is the CLI-side mailbox between the composer
  * (router) and the active run (use-send-message), mirroring the claim/accept
- * shape freebuff-desktop uses for the same hook.
+ * shape fuckbuff-desktop uses for the same hook.
  *
  * The router echoes the transcript bubble at push time and records its id
  * here, so an entry the run never drains can have its bubble retracted when

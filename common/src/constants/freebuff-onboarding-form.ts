@@ -2,7 +2,7 @@ import {
   OTHER_OPTION_ID,
   type OnboardingAnswer,
   type OnboardingQuestion,
-} from './freebuff-onboarding'
+} from './fuckbuff-onboarding'
 
 /**
  * The questionnaire's pure half: what has been answered, what to ask next, and

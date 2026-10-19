@@ -7,7 +7,7 @@ import type { Message } from '@codebuff/common/types/messages/codebuff-message'
  *
  * A Gravity conversion is only created by `report_integration`. The Keys tab
  * reports deterministically once a recommended service's env vars are saved
- * (freebuff/web/convex/gravity_report.ts), but that path never covers a
+ * (fuckbuff/web/convex/gravity_report.ts), but that path never covers a
  * service with no required env vars, keys that were already saved before the
  * recommendation, or a recommendation whose keys arrive by another route. For
  * those the prompt's "call report_integration after it works" line was the

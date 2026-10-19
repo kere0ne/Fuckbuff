@@ -4,7 +4,7 @@ import {
   surveyResponseForecast,
   type SurveyForecastHistory,
   type SurveyForecastInput,
-} from '../freebuff-survey-forecast'
+} from '../fuckbuff-survey-forecast'
 
 const input: SurveyForecastInput = {
   questions: 3,

@@ -1,7 +1,7 @@
 /**
  * The values `users:setCliPreference` accepts for each CLI agent preference
  * on a users document. Shared by the Convex mutation
- * (freebuff/web/convex/users.ts) and its Postgres twin
+ * (fuckbuff/web/convex/users.ts) and its Postgres twin
  * (packages/internal/src/identity/writes.ts), so the two cannot accept
  * different values (COD-742 identity writes).
  */
@@ -14,7 +14,7 @@ export const GPT_MODEL_PREFERENCES = [
 ] as const
 
 // Mirrors ANTHROPIC_CLAUDE_MODELS / BEDROCK_CLAUDE_MODELS in
-// freebuff/web/src/server/agent-runner/executeClaudeCode.ts. Old ids stay
+// fuckbuff/web/src/server/agent-runner/executeClaudeCode.ts. Old ids stay
 // forever — this validates a stored preference, so removing one rejects the
 // saved choice of every user who picked it.
 export const CLAUDE_MODEL_PREFERENCES = [

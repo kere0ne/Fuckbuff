@@ -3,37 +3,37 @@
  * in (2026-10-04, product). One long price-sorted list made it hard to tell
  * what a row was FOR; the sections answer that before the price does.
  *
- * Ids are literals on purpose, as in freebuff-freebucks.ts: this module is
+ * Ids are literals on purpose, as in fuckbuff-freebucks.ts: this module is
  * imported by renderer code that must not pull in the full catalog.
- * `freebuff-picker-sections.test.ts` pins each one to the constant it names.
+ * `fuckbuff-picker-sections.test.ts` pins each one to the constant it names.
  * Catalog-only rows have no public id, so they are placed by their default
  * catalog key (`defaultCatalogKey`), which is opaque.
  *
  * SERVER-DRIVEN since 2026-10-07: the model catalog sends each row's place and
- * the sections themselves (`placement`, `sections` in freebuff-model-catalog.ts),
+ * the sections themselves (`placement`, `sections` in fuckbuff-model-catalog.ts),
  * and every client draws what it is sent. What is compiled here is only the
  * server's DEFAULT (default-config.ts builds the catalog's placements from it)
  * and the fallback for a client talking to a server that sends none. Reorder by
  * editing the catalog, not this file.
  */
 
-export type FreebuffPickerSectionId =
+export type FuckbuffPickerSectionId =
   | 'unlimited'
   | 'optimized'
   | 'powerful'
   // A section the server catalog defines.
   | (string & {})
 
-export interface FreebuffPickerSection {
-  id: FreebuffPickerSectionId
+export interface FuckbuffPickerSection {
+  id: FuckbuffPickerSectionId
   label: string
   /** What the section's models are for, shown on its info icon. */
   tooltip: string
 }
 
 /** In display order. Unlimited last (product, 2026-10-14), except at the
- *  limited tier (`freebuffPickerSectionsFor`). */
-export const FREEBUFF_PICKER_SECTIONS: readonly FreebuffPickerSection[] =
+ *  limited tier (`fuckbuffPickerSectionsFor`). */
+export const FUCKBUFF_PICKER_SECTIONS: readonly FuckbuffPickerSection[] =
   Object.freeze([
     {
       id: 'optimized',
@@ -54,10 +54,10 @@ export const FREEBUFF_PICKER_SECTIONS: readonly FreebuffPickerSection[] =
 
 /** The sections in one tier's display order: the limited tier keeps
  *  Unlimited first (product, 2026-10-14). */
-export function freebuffPickerSectionsFor(
+export function fuckbuffPickerSectionsFor(
   tier: 'full' | 'limited' | 'blocked' | undefined,
-  sections: readonly FreebuffPickerSection[] = FREEBUFF_PICKER_SECTIONS,
-): readonly FreebuffPickerSection[] {
+  sections: readonly FuckbuffPickerSection[] = FUCKBUFF_PICKER_SECTIONS,
+): readonly FuckbuffPickerSection[] {
   if (tier !== 'limited') return sections
   return [
     ...sections.filter((section) => section.id === 'unlimited'),
@@ -65,8 +65,8 @@ export function freebuffPickerSectionsFor(
   ]
 }
 
-export interface FreebuffPickerPlacement {
-  section: FreebuffPickerSectionId
+export interface FuckbuffPickerPlacement {
+  section: FuckbuffPickerSectionId
   /** Position within the section; lower first. */
   order: number
   /** Listed under the section's collapsed "More" until expanded, or until it
@@ -76,7 +76,7 @@ export interface FreebuffPickerPlacement {
   recommended?: boolean
 }
 
-const PLACEMENTS: Readonly<Record<string, FreebuffPickerPlacement>> =
+const PLACEMENTS: Readonly<Record<string, FuckbuffPickerPlacement>> =
   Object.freeze({
     // Unlimited
     // Nemotron 3.5 Lightning (2026-10-14): new, the picker's first row.
@@ -115,24 +115,24 @@ const PLACEMENTS: Readonly<Record<string, FreebuffPickerPlacement>> =
   })
 
 /** The compiled place of one id, if it has one: the server's default. */
-export function compiledFreebuffPickerPlacement(
+export function compiledFuckbuffPickerPlacement(
   id: string,
-): FreebuffPickerPlacement | undefined {
+): FuckbuffPickerPlacement | undefined {
   return PLACEMENTS[id]
 }
 
 /**
  * A row's place: the server's, when it sent one for a section the picker
- * draws, else the compiled place (`freebuffPickerPlacement`).
+ * draws, else the compiled place (`fuckbuffPickerPlacement`).
  */
-export function freebuffRowPlacement(
+export function fuckbuffRowPlacement(
   server:
     | { section: string; order: number; more?: boolean; recommended?: boolean }
     | undefined,
-  sections: readonly FreebuffPickerSection[],
+  sections: readonly FuckbuffPickerSection[],
   ids: readonly (string | undefined)[],
   fallback: { premium: boolean; locked: boolean; price: number | undefined },
-): FreebuffPickerPlacement {
+): FuckbuffPickerPlacement {
   if (server && sections.some((section) => section.id === server.section))
     return {
       section: server.section,
@@ -140,7 +140,7 @@ export function freebuffRowPlacement(
       ...(server.more ? { more: true } : {}),
       ...(server.recommended ? { recommended: true } : {}),
     }
-  return freebuffPickerPlacement(ids, fallback)
+  return fuckbuffPickerPlacement(ids, fallback)
 }
 
 /**
@@ -151,10 +151,10 @@ export function freebuffRowPlacement(
  * on its own: a premium or plan-locked row is Powerful, a free one Unlimited,
  * anything else Optimized.
  */
-export function freebuffPickerPlacement(
+export function fuckbuffPickerPlacement(
   ids: readonly (string | undefined)[],
   fallback: { premium: boolean; locked: boolean; price: number | undefined },
-): FreebuffPickerPlacement {
+): FuckbuffPickerPlacement {
   for (const id of ids) {
     const placed = id ? PLACEMENTS[id] : undefined
     if (placed) return placed
@@ -176,12 +176,12 @@ export function freebuffPickerPlacement(
  * (CLI, Web). Rows go by placement order, so a section's "More" rows come last,
  * then unplaced rows in the order they arrived. Empty sections are dropped.
  */
-export function freebuffPickerSections<T>(
+export function fuckbuffPickerSections<T>(
   rows: readonly T[],
-  placementOf: (row: T) => FreebuffPickerPlacement,
+  placementOf: (row: T) => FuckbuffPickerPlacement,
   /** The server catalog's sections, when it sent them. */
-  sections: readonly FreebuffPickerSection[] = FREEBUFF_PICKER_SECTIONS,
-): { section: FreebuffPickerSection; models: T[] }[] {
+  sections: readonly FuckbuffPickerSection[] = FUCKBUFF_PICKER_SECTIONS,
+): { section: FuckbuffPickerSection; models: T[] }[] {
   const placed = rows.map((row) => ({ row, placement: placementOf(row) }))
   return sections.map((section) => ({
     section,
@@ -193,6 +193,6 @@ export function freebuffPickerSections<T>(
 }
 
 /** Tests only: every placed id. */
-export const FREEBUFF_PICKER_PLACED_IDS: readonly string[] = Object.freeze(
+export const FUCKBUFF_PICKER_PLACED_IDS: readonly string[] = Object.freeze(
   Object.keys(PLACEMENTS),
 )

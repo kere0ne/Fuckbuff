@@ -1,28 +1,28 @@
-import { freebucksFixture } from '@codebuff/common/testing/freebuff'
+import { freebucksFixture } from '@codebuff/common/testing/fuckbuff'
 import { afterEach, expect, spyOn, test } from 'bun:test'
 import {
-  FREEBUFF_REWARD_MODEL_ID,
-  FREEBUFF_FABLE_5_1_MODEL_ID,
-  resolveFreebuffModelForAccessTier,
-} from '@codebuff/common/constants/freebuff-models'
+  FUCKBUFF_REWARD_MODEL_ID,
+  FUCKBUFF_FABLE_5_1_MODEL_ID,
+  resolveFuckbuffModelForAccessTier,
+} from '@codebuff/common/constants/fuckbuff-models'
 import {
   FREEBUCKS_TIMEZONE_HEADER,
   freebucksTimeZoneHeaders,
 } from '@codebuff/common/util/freebucks-timezone'
 
 import {
-  callFreebuffSession,
-  classifyFreebuffSessionRequestFailure,
-  FreebuffSessionRequestError,
-  freebuffSessionHost,
-  freebuffSessionUnreachableMessage,
-  isFreebuffSessionNetworkError,
+  callFuckbuffSession,
+  classifyFuckbuffSessionRequestFailure,
+  FuckbuffSessionRequestError,
+  fuckbuffSessionHost,
+  fuckbuffSessionUnreachableMessage,
+  isFuckbuffSessionNetworkError,
   mergeCompactActiveSession,
-} from '../freebuff-session-api'
+} from '../fuckbuff-session-api'
 import {
-  newFreebuffCliInstanceId,
-  freebuffSessionMetadata,
-} from '../freebuff-session-identity'
+  newFuckbuffCliInstanceId,
+  fuckbuffSessionMetadata,
+} from '../fuckbuff-session-identity'
 
 let fetchSpy: ReturnType<typeof spyOn> | undefined
 
@@ -37,12 +37,12 @@ test('the reward model reaches the session POST header unchanged', async () => {
       headers: { 'content-type': 'application/json' },
     }),
   )
-  const resolved = resolveFreebuffModelForAccessTier(
-    FREEBUFF_REWARD_MODEL_ID,
+  const resolved = resolveFuckbuffModelForAccessTier(
+    FUCKBUFF_REWARD_MODEL_ID,
     'full',
   )
 
-  await callFreebuffSession('POST', 'test-token', { model: resolved })
+  await callFuckbuffSession('POST', 'test-token', { model: resolved })
 
   expect(fetchSpy).toHaveBeenCalledTimes(1)
   const [, init] = fetchSpy.mock.calls[0]!
@@ -50,8 +50,8 @@ test('the reward model reaches the session POST header unchanged', async () => {
   expect(new Headers(init?.headers).get(FREEBUCKS_TIMEZONE_HEADER)).toBe(
     freebucksTimeZoneHeaders()[FREEBUCKS_TIMEZONE_HEADER] ?? null,
   )
-  expect(new Headers(init?.headers).get('x-freebuff-model')).toBe(
-    FREEBUFF_REWARD_MODEL_ID,
+  expect(new Headers(init?.headers).get('x-fuckbuff-model')).toBe(
+    FUCKBUFF_REWARD_MODEL_ID,
   )
 })
 
@@ -60,31 +60,31 @@ test('compact GET sends the compact-session header', async () => {
     Response.json({ status: 'active', model: 'model', instanceId: 'i1' }),
   )
 
-  await callFreebuffSession('GET', 'test-token', {
+  await callFuckbuffSession('GET', 'test-token', {
     instanceId: 'i1',
     compact: true,
   })
 
   const [, init] = fetchSpy.mock.calls[0]!
-  expect(new Headers(init?.headers).get('x-freebuff-compact-session')).toBe('1')
+  expect(new Headers(init?.headers).get('x-fuckbuff-compact-session')).toBe('1')
 })
 
 test('multi-session polling beats only its own claim and retains compact polling', async () => {
-  const instanceId = newFreebuffCliInstanceId()
+  const instanceId = newFuckbuffCliInstanceId()
   fetchSpy = spyOn(globalThis, 'fetch')
     .mockResolvedValueOnce(Response.json({ status: 'none' }))
     .mockResolvedValueOnce(Response.json({ status: 'none' }))
-  await callFreebuffSession('GET', 'test-token', { instanceId, compact: true })
+  await callFuckbuffSession('GET', 'test-token', { instanceId, compact: true })
   const headers = new Headers(fetchSpy.mock.calls[0]![1]?.headers)
-  expect(headers.get('x-freebuff-instance-id')).toBe(instanceId)
-  expect(headers.get('x-freebuff-multi-session')).toBe('1')
-  expect(headers.get('x-freebuff-heartbeat')).toBe('1')
-  expect(headers.get('x-freebuff-compact-session')).toBe('1')
-  expect(headers.get('x-freebuff-include-unused-rate-limits')).toBeNull()
-  await callFreebuffSession('GET', 'test-token', { instanceId })
+  expect(headers.get('x-fuckbuff-instance-id')).toBe(instanceId)
+  expect(headers.get('x-fuckbuff-multi-session')).toBe('1')
+  expect(headers.get('x-fuckbuff-heartbeat')).toBe('1')
+  expect(headers.get('x-fuckbuff-compact-session')).toBe('1')
+  expect(headers.get('x-fuckbuff-include-unused-rate-limits')).toBeNull()
+  await callFuckbuffSession('GET', 'test-token', { instanceId })
   expect(
     new Headers(fetchSpy.mock.calls[1]![1]?.headers).get(
-      'x-freebuff-include-unused-rate-limits',
+      'x-fuckbuff-include-unused-rate-limits',
     ),
   ).toBe('1')
 })
@@ -93,16 +93,16 @@ test('limited-offer admission retains the globally capped single-session protoco
   fetchSpy = spyOn(globalThis, 'fetch').mockResolvedValue(
     Response.json({ status: 'none' }),
   )
-  await callFreebuffSession('POST', 'test-token', {
-    model: FREEBUFF_FABLE_5_1_MODEL_ID,
+  await callFuckbuffSession('POST', 'test-token', {
+    model: FUCKBUFF_FABLE_5_1_MODEL_ID,
     multiSession: false,
   })
   const headers = new Headers(fetchSpy.mock.calls[0]![1]?.headers)
-  expect(headers.get('x-freebuff-multi-session')).toBeNull()
-  expect(headers.get('x-freebuff-purchase-continuity')).toBeNull()
-  expect(headers.get('x-freebuff-desktop-attempt-id')).toBeNull()
-  expect(freebuffSessionMetadata('legacy-trial-id')).toEqual({
-    freebuff_instance_id: 'legacy-trial-id',
+  expect(headers.get('x-fuckbuff-multi-session')).toBeNull()
+  expect(headers.get('x-fuckbuff-purchase-continuity')).toBeNull()
+  expect(headers.get('x-fuckbuff-desktop-attempt-id')).toBeNull()
+  expect(fuckbuffSessionMetadata('legacy-trial-id')).toEqual({
+    fuckbuff_instance_id: 'legacy-trial-id',
   })
 })
 
@@ -191,8 +191,8 @@ test('compact state requests a full refresh instead of carrying quota across mod
 test('does not repeat a takeover POST after an ambiguous timeout', () => {
   const timeout = new DOMException('The operation timed out', 'TimeoutError')
 
-  expect(classifyFreebuffSessionRequestFailure('POST', timeout)).toBe('unknown')
-  expect(classifyFreebuffSessionRequestFailure('GET', timeout)).toBe('retry')
+  expect(classifyFuckbuffSessionRequestFailure('POST', timeout)).toBe('unknown')
+  expect(classifyFuckbuffSessionRequestFailure('GET', timeout)).toBe('retry')
 })
 
 test('retries POST responses that cannot represent a committed takeover', async () => {
@@ -200,13 +200,13 @@ test('retries POST responses that cannot represent a committed takeover', async 
     Response.json(
       {
         error: 'service_overloaded',
-        message: 'Freebuff session service is busy. Please retry shortly.',
+        message: 'Fuckbuff session service is busy. Please retry shortly.',
       },
       { status: 503, headers: { 'retry-after': '10' } },
     ),
   )
 
-  await expect(callFreebuffSession('POST', 'test-token')).rejects.toMatchObject(
+  await expect(callFuckbuffSession('POST', 'test-token')).rejects.toMatchObject(
     {
       statusCode: 503,
       retryAfterMs: 10_000,
@@ -215,9 +215,9 @@ test('retries POST responses that cannot represent a committed takeover', async 
   )
 
   expect(
-    classifyFreebuffSessionRequestFailure(
+    classifyFuckbuffSessionRequestFailure(
       'POST',
-      new FreebuffSessionRequestError(
+      new FuckbuffSessionRequestError(
         'busy',
         503,
         10_000,
@@ -226,57 +226,57 @@ test('retries POST responses that cannot represent a committed takeover', async 
     ),
   ).toBe('retry')
   expect(
-    classifyFreebuffSessionRequestFailure(
+    classifyFuckbuffSessionRequestFailure(
       'POST',
-      new FreebuffSessionRequestError('generic proxy 503', 503, 10_000),
+      new FuckbuffSessionRequestError('generic proxy 503', 503, 10_000),
     ),
   ).toBe('retry')
   expect(
-    classifyFreebuffSessionRequestFailure(
+    classifyFuckbuffSessionRequestFailure(
       'POST',
-      new FreebuffSessionRequestError('request timeout', 408, 10_000),
+      new FuckbuffSessionRequestError('request timeout', 408, 10_000),
     ),
   ).toBe('retry')
   expect(
-    classifyFreebuffSessionRequestFailure(
+    classifyFuckbuffSessionRequestFailure(
       'POST',
-      new FreebuffSessionRequestError('edge rate limit', 429, 10_000),
+      new FuckbuffSessionRequestError('edge rate limit', 429, 10_000),
     ),
   ).toBe('retry')
 })
 
 test('stops on terminal 4xx responses', () => {
   expect(
-    classifyFreebuffSessionRequestFailure(
+    classifyFuckbuffSessionRequestFailure(
       'POST',
-      new FreebuffSessionRequestError('unauthorized', 401),
+      new FuckbuffSessionRequestError('unauthorized', 401),
     ),
   ).toBe('stop')
   expect(
-    classifyFreebuffSessionRequestFailure(
+    classifyFuckbuffSessionRequestFailure(
       'GET',
-      new FreebuffSessionRequestError('not found', 404),
+      new FuckbuffSessionRequestError('not found', 404),
     ),
   ).toBe('stop')
 })
 
 test('marks response loss and server errors after a POST as unknown outcomes', () => {
   expect(
-    classifyFreebuffSessionRequestFailure(
+    classifyFuckbuffSessionRequestFailure(
       'POST',
       new TypeError('fetch failed'),
     ),
   ).toBe('unknown')
   expect(
-    classifyFreebuffSessionRequestFailure(
+    classifyFuckbuffSessionRequestFailure(
       'POST',
-      new FreebuffSessionRequestError('internal error', 500),
+      new FuckbuffSessionRequestError('internal error', 500),
     ),
   ).toBe('unknown')
   expect(
-    classifyFreebuffSessionRequestFailure(
+    classifyFuckbuffSessionRequestFailure(
       'GET',
-      new FreebuffSessionRequestError('internal error', 500),
+      new FuckbuffSessionRequestError('internal error', 500),
     ),
   ).toBe('retry')
 })
@@ -285,12 +285,12 @@ test('DELETE sends the held instance and preserves the server refund receipt', a
   fetchSpy = spyOn(globalThis, 'fetch').mockResolvedValue(
     Response.json({ status: 'ended', freebucksRefund: 4 }),
   )
-  const result = await callFreebuffSession('DELETE', 'test-token', {
+  const result = await callFuckbuffSession('DELETE', 'test-token', {
     instanceId: 'held-cli',
   })
   expect(result).toEqual({ status: 'ended', freebucksRefund: 4 })
   const [, init] = fetchSpy.mock.calls[0]!
-  expect(new Headers(init?.headers).get('x-freebuff-instance-id')).toBe(
+  expect(new Headers(init?.headers).get('x-fuckbuff-instance-id')).toBe(
     'held-cli',
   )
 })
@@ -301,14 +301,14 @@ test.each([404, 405])(
     fetchSpy = spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response('Not found', { status }),
     )
-    await expect(callFreebuffSession('POST', 'test-token')).rejects.toThrow(
-      'Reload or update Freebuff',
+    await expect(callFuckbuffSession('POST', 'test-token')).rejects.toThrow(
+      'Reload or update Fuckbuff',
     )
     expect(fetchSpy).toHaveBeenCalledTimes(1)
     expect(String(fetchSpy.mock.calls[0]![0])).toEndWith('/session/admission')
     expect(
       new Headers(fetchSpy.mock.calls[0]![1]?.headers).get(
-        'x-freebuff-wallet-spend-limit',
+        'x-fuckbuff-wallet-spend-limit',
       ),
     ).toBe('session')
   },
@@ -321,32 +321,32 @@ test.each([404, 405])(
 test('a request that got no answer is a network error, a refused one is not', () => {
   const timeout = new Error('The operation timed out.')
   timeout.name = 'TimeoutError'
-  expect(isFreebuffSessionNetworkError(timeout)).toBe(true)
-  expect(isFreebuffSessionNetworkError(new Error('fetch failed'))).toBe(true)
+  expect(isFuckbuffSessionNetworkError(timeout)).toBe(true)
+  expect(isFuckbuffSessionNetworkError(new Error('fetch failed'))).toBe(true)
   const withCause = new Error('fetch failed')
   ;(withCause as Error & { cause: Error }).cause = new Error(
     'connect ECONNREFUSED 216.24.57.16:443',
   )
-  expect(isFreebuffSessionNetworkError(withCause)).toBe(true)
+  expect(isFuckbuffSessionNetworkError(withCause)).toBe(true)
   expect(
-    isFreebuffSessionNetworkError(
+    isFuckbuffSessionNetworkError(
       new Error('getaddrinfo ENOTFOUND codebuff.com'),
     ),
   ).toBe(true)
 
   expect(
-    isFreebuffSessionNetworkError(
-      new FreebuffSessionRequestError('slow down', 429),
+    isFuckbuffSessionNetworkError(
+      new FuckbuffSessionRequestError('slow down', 429),
     ),
   ).toBe(false)
   expect(
-    isFreebuffSessionNetworkError(new Error('Unexpected token < in JSON')),
+    isFuckbuffSessionNetworkError(new Error('Unexpected token < in JSON')),
   ).toBe(false)
-  expect(isFreebuffSessionNetworkError('fetch failed')).toBe(false)
+  expect(isFuckbuffSessionNetworkError('fetch failed')).toBe(false)
 })
 
 test('the unreachable copy names the host and never blames the machine', () => {
-  const msg = freebuffSessionUnreachableMessage('www.codebuff.com')
+  const msg = fuckbuffSessionUnreachableMessage('www.codebuff.com')
   expect(msg).toContain('www.codebuff.com')
   expect(msg).toContain('freebuff.com/web')
   expect(msg).toContain('another ISP')
@@ -354,6 +354,6 @@ test('the unreachable copy names the host and never blames the machine', () => {
 })
 
 test('the session host is the API origin without scheme or path', () => {
-  expect(freebuffSessionHost()).toMatch(/^[a-z0-9.:-]+$/i)
-  expect(freebuffSessionHost()).not.toContain('/')
+  expect(fuckbuffSessionHost()).toMatch(/^[a-z0-9.:-]+$/i)
+  expect(fuckbuffSessionHost()).not.toContain('/')
 })

@@ -9,12 +9,12 @@ import {
 
 import type { MCPConfig } from '@codebuff/common/types/mcp'
 
-import { getFreebuffModelDirectory } from '../state/freebuff-catalog-store'
-import { getSelectedFreebuffModel } from '../state/freebuff-model-store'
+import { getFuckbuffModelDirectory } from '../state/fuckbuff-catalog-store'
+import { getSelectedFuckbuffModel } from '../state/fuckbuff-model-store'
 import { getProjectRoot } from '../project-files'
-import { IS_FREEBUFF, type AgentMode } from './constants'
-import { getAgentIdForMode } from './freebuff-agent-selection'
-import { freebuffCatalogRootAgent } from './freebuff-catalog-agent'
+import { IS_FUCKBUFF, type AgentMode } from './constants'
+import { getAgentIdForMode } from './fuckbuff-agent-selection'
+import { fuckbuffCatalogRootAgent } from './fuckbuff-catalog-agent'
 import { logger } from './logger'
 import * as bundledAgentsModule from '../agents/bundled-agents.generated'
 
@@ -243,9 +243,9 @@ const cachedAgentsByMode: Map<string, LocalAgentInfo[]> = new Map()
 export const loadLocalAgents = (
   currentAgentMode?: AgentMode,
 ): LocalAgentInfo[] => {
-  const selectedFreebuffModel = IS_FREEBUFF ? getSelectedFreebuffModel() : null
-  const cacheKey = selectedFreebuffModel
-    ? `${currentAgentMode ?? 'all'}:${selectedFreebuffModel}`
+  const selectedFuckbuffModel = IS_FUCKBUFF ? getSelectedFuckbuffModel() : null
+  const cacheKey = selectedFuckbuffModel
+    ? `${currentAgentMode ?? 'all'}:${selectedFuckbuffModel}`
     : (currentAgentMode ?? 'all')
   const cached = cachedAgentsByMode.get(cacheKey)
   if (cached) {
@@ -326,12 +326,12 @@ export const loadAgentDefinitions = (): AgentDefinition[] => {
   )
   const bundledIds = new Set(Object.keys(bundledAgents))
 
-  // The catalog root (docs/freebuff-model-catalog.md) is not bundled: it is
+  // The catalog root (docs/fuckbuff-model-catalog.md) is not bundled: it is
   // built from the selected catalog row, whose handle rotates, so it is
   // rebuilt on every load and only exists while a catalog row is selected.
   // Added before the merges below so it gets the same MCP servers and user
   // agents as every bundled root.
-  const catalogRoot = IS_FREEBUFF ? selectedFreebuffCatalogRoot() : undefined
+  const catalogRoot = IS_FUCKBUFF ? selectedFuckbuffCatalogRoot() : undefined
   if (catalogRoot) definitions.push(catalogRoot)
 
   // Get user agents from the SDK-loaded cache
@@ -396,11 +396,11 @@ export const loadAgentDefinitions = (): AgentDefinition[] => {
 }
 
 /** The runtime root for the selected catalog row, when one is selected. */
-const selectedFreebuffCatalogRoot = (): AgentDefinition | undefined => {
-  const selection = getSelectedFreebuffModel()
-  const row = getFreebuffModelDirectory().row(selection)
+const selectedFuckbuffCatalogRoot = (): AgentDefinition | undefined => {
+  const selection = getSelectedFuckbuffModel()
+  const row = getFuckbuffModelDirectory().row(selection)
   if (!row || row.key !== selection) return undefined
-  return freebuffCatalogRootAgent(row) as unknown as AgentDefinition
+  return fuckbuffCatalogRootAgent(row) as unknown as AgentDefinition
 }
 
 // ============================================================================

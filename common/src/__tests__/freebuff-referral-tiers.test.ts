@@ -3,7 +3,7 @@ import { describe, expect, it } from 'bun:test'
 import {
   MIN_GITHUB_ACCOUNT_AGE_MONTHS,
   isGithubAccountOldEnoughForReferral,
-} from '../constants/freebuff-referral-tiers'
+} from '../constants/fuckbuff-referral-tiers'
 
 const NOW = Date.parse('2026-06-12T00:00:00Z')
 

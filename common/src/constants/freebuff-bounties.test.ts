@@ -1,9 +1,9 @@
 import { expect, test } from 'bun:test'
 
 import {
-  FREEBUFF_BOUNTIES_ENABLED,
+  FUCKBUFF_BOUNTIES_ENABLED,
   isBountyListable,
-} from './freebuff-bounties'
+} from './fuckbuff-bounties'
 
 test('Reddit bounties stay unlisted whatever the program switch says', () => {
   for (const id of [
@@ -16,5 +16,5 @@ test('Reddit bounties stay unlisted whatever the program switch says', () => {
 })
 
 test('other bounties follow the program switch', () => {
-  expect(isBountyListable('x-follow')).toBe(FREEBUFF_BOUNTIES_ENABLED)
+  expect(isBountyListable('x-follow')).toBe(FUCKBUFF_BOUNTIES_ENABLED)
 })

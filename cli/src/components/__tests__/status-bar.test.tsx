@@ -1,5 +1,5 @@
 import { afterEach, beforeAll, beforeEach, describe, expect, test } from 'bun:test'
-import { FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/freebuff-model-ids'
+import { FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID } from '@codebuff/common/constants/fuckbuff-model-ids'
 import { createTestRenderer } from '@opentui/core/testing'
 import { createRoot, flushSync } from '@opentui/react'
 import React from 'react'
@@ -7,11 +7,11 @@ import React from 'react'
 import { StatusBar } from '../status-bar'
 import { initializeThemeStore } from '../../hooks/use-theme'
 import { useChatStore } from '../../state/chat-store'
-import { IS_FREEBUFF } from '../../utils/constants'
+import { IS_FUCKBUFF } from '../../utils/constants'
 import { useByokSelectionStore } from '../../utils/byok'
 import { getStatusIndicatorState } from '../../utils/status-indicator-state'
 
-import type { FreebuffSessionResponse } from '../../types/freebuff-session'
+import type { FuckbuffSessionResponse } from '../../types/fuckbuff-session'
 import type { RunState } from '@codebuff/sdk'
 
 beforeAll(() => {
@@ -42,7 +42,7 @@ describe('StatusBar', () => {
           isAtBottom
           scrollToLatest={() => {}}
           statusIndicatorState={statusIndicatorState}
-          freebuffSession={null}
+          fuckbuffSession={null}
         />,
       )
     })
@@ -57,8 +57,8 @@ describe('StatusBar', () => {
   })
 
   // The idle session line (and therefore the context readout) only renders in
-  // freebuff builds — useFreebuffSessionProgress returns null otherwise.
-  test.skipIf(!IS_FREEBUFF)(
+  // fuckbuff builds — useFuckbuffSessionProgress returns null otherwise.
+  test.skipIf(!IS_FUCKBUFF)(
     'renders context usage next to the unlimited label',
     async () => {
       const now = Date.now()
@@ -66,11 +66,11 @@ describe('StatusBar', () => {
         status: 'active',
         accessTier: 'full',
         instanceId: 'test-instance',
-        model: FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+        model: FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
         admittedAt: new Date(now - 60_000).toISOString(),
         expiresAt: new Date(now + 3_600_000).toISOString(),
         remainingMs: 3_600_000,
-      } as FreebuffSessionResponse
+      } as FuckbuffSessionResponse
       useChatStore.getState().setRunState({
         sessionState: {
           mainAgentState: { contextTokenCount: 142_310 },
@@ -94,7 +94,7 @@ describe('StatusBar', () => {
             isAtBottom
             scrollToLatest={() => {}}
             statusIndicatorState={statusIndicatorState}
-            freebuffSession={null}
+            fuckbuffSession={null}
             onEndSession={() => {}}
           />,
         )
@@ -107,7 +107,7 @@ describe('StatusBar', () => {
             isAtBottom
             scrollToLatest={() => {}}
             statusIndicatorState={statusIndicatorState}
-            freebuffSession={session}
+            fuckbuffSession={session}
             onEndSession={() => {}}
           />,
         )

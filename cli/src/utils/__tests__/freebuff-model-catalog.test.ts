@@ -3,64 +3,64 @@ import os from 'os'
 import path from 'path'
 
 import {
-  DEFAULT_FREEBUFF_MODEL_ID,
-  FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
-  FREEBUFF_MIMO_V25_MODEL_ID,
-  FREEBUFF_MIMO_V26_PRO_MODEL_ID,
-} from '@codebuff/common/constants/freebuff-models'
+  DEFAULT_FUCKBUFF_MODEL_ID,
+  FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID,
+  FUCKBUFF_MIMO_V25_MODEL_ID,
+  FUCKBUFF_MIMO_V26_PRO_MODEL_ID,
+} from '@codebuff/common/constants/fuckbuff-models'
 import { afterEach, beforeEach, describe, expect, spyOn, test } from 'bun:test'
 
 import {
-  getFreebuffCatalog,
-  getFreebuffModelDirectory,
-  setFreebuffCatalog,
-  useFreebuffCatalogStore,
-} from '../../state/freebuff-catalog-store'
-import { useFreebuffChatStore } from '../../state/freebuff-chat-store'
+  getFuckbuffCatalog,
+  getFuckbuffModelDirectory,
+  setFuckbuffCatalog,
+  useFuckbuffCatalogStore,
+} from '../../state/fuckbuff-catalog-store'
+import { useFuckbuffChatStore } from '../../state/fuckbuff-chat-store'
 import {
-  freebuffDefaultModelForSession,
-  getEffectiveFreebuffReasoningEffort,
-  getSelectedFreebuffModel,
-  persistFreebuffModelPick,
-  useFreebuffModelStore,
-} from '../../state/freebuff-model-store'
+  fuckbuffDefaultModelForSession,
+  getEffectiveFuckbuffReasoningEffort,
+  getSelectedFuckbuffModel,
+  persistFuckbuffModelPick,
+  useFuckbuffModelStore,
+} from '../../state/fuckbuff-model-store'
 import * as auth from '../auth'
 import {
-  applyFreebuffCatalog,
-  createFreebuffCatalogController,
-  fetchFreebuffModelCatalog,
-  isFreebuffCatalogStaleError,
-  runWithFreebuffCatalogStaleRetry,
-  type FreebuffCatalogControllerDeps,
-  type FreebuffCatalogFetchResult,
-} from '../freebuff-model-catalog'
+  applyFuckbuffCatalog,
+  createFuckbuffCatalogController,
+  fetchFuckbuffModelCatalog,
+  isFuckbuffCatalogStaleError,
+  runWithFuckbuffCatalogStaleRetry,
+  type FuckbuffCatalogControllerDeps,
+  type FuckbuffCatalogFetchResult,
+} from '../fuckbuff-model-catalog'
 import {
-  resolveFreebuffModelPickForSession,
-  resolveFreebuffModelSelectionForSession,
-} from '../../hooks/use-freebuff-session'
+  resolveFuckbuffModelPickForSession,
+  resolveFuckbuffModelSelectionForSession,
+} from '../../hooks/use-fuckbuff-session'
 import {
   getSettingsPath,
   loadSettings,
-  saveFreebuffModelPreference,
+  saveFuckbuffModelPreference,
 } from '../settings'
-import { catalogFixture, catalogRow, rotateHandles } from './freebuff-catalog-fixtures'
+import { catalogFixture, catalogRow, rotateHandles } from './fuckbuff-catalog-fixtures'
 
-import type { FreebuffModelCatalog } from '@codebuff/common/types/freebuff-model-catalog'
+import type { FuckbuffModelCatalog } from '@codebuff/common/types/fuckbuff-model-catalog'
 
 let configDir: string
 let configSpy: ReturnType<typeof spyOn>
 
 beforeEach(() => {
-  configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-catalog-test-'))
+  configDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-catalog-test-'))
   configSpy = spyOn(auth, 'getConfigDir').mockReturnValue(configDir)
 })
 
 afterEach(() => {
-  setFreebuffCatalog(null)
-  useFreebuffCatalogStore.setState({ refreshAfterStale: null })
-  useFreebuffChatStore.setState({ nextModel: null })
-  useFreebuffModelStore.getState().setSelectedModel(DEFAULT_FREEBUFF_MODEL_ID)
-  useFreebuffModelStore.setState({ reasoningEffortByModel: {} })
+  setFuckbuffCatalog(null)
+  useFuckbuffCatalogStore.setState({ refreshAfterStale: null })
+  useFuckbuffChatStore.setState({ nextModel: null })
+  useFuckbuffModelStore.getState().setSelectedModel(DEFAULT_FUCKBUFF_MODEL_ID)
+  useFuckbuffModelStore.setState({ reasoningEffortByModel: {} })
   configSpy.mockRestore()
   fs.rmSync(configDir, { recursive: true, force: true })
 })
@@ -69,11 +69,11 @@ const CATALOG = catalogFixture(
   [
     catalogRow('m-mimo', {
       displayName: 'MiMo',
-      legacyIds: [FREEBUFF_MIMO_V25_MODEL_ID],
+      legacyIds: [FUCKBUFF_MIMO_V25_MODEL_ID],
     }),
     catalogRow('m-flash', {
       displayName: 'Flash',
-      legacyIds: [FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID],
+      legacyIds: [FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID],
       efforts: ['low', 'high', 'max'],
       defaultEffort: 'high',
     }),
@@ -82,7 +82,7 @@ const CATALOG = catalogFixture(
   { recommendedKey: 'm-only-here', fallbackKey: 'm-mimo' },
 )
 
-describe('fetchFreebuffModelCatalog', () => {
+describe('fetchFuckbuffModelCatalog', () => {
   const respond = (response: Response | Error) => {
     const calls: Array<{ url: string; init: RequestInit }> = []
     const fetchImpl = (async (url: string, init: RequestInit) => {
@@ -95,7 +95,7 @@ describe('fetchFreebuffModelCatalog', () => {
 
   test('asks with the bearer, the protocol header and the CLI client name', async () => {
     const { calls, fetchImpl } = respond(Response.json(CATALOG))
-    const result = await fetchFreebuffModelCatalog('tok', {
+    const result = await fetchFuckbuffModelCatalog('tok', {
       fetchImpl,
       baseUrl: 'https://api.test',
     })
@@ -103,13 +103,13 @@ describe('fetchFreebuffModelCatalog', () => {
     expect(calls[0]!.url).toBe('https://api.test/api/v1/freebuff/models')
     const headers = new Headers(calls[0]!.init.headers)
     expect(headers.get('authorization')).toBe('Bearer tok')
-    expect(headers.get('x-freebuff-catalog-protocol')).toBe('1')
-    expect(headers.get('x-freebuff-client')).toBe('cli')
+    expect(headers.get('x-fuckbuff-catalog-protocol')).toBe('1')
+    expect(headers.get('x-fuckbuff-client')).toBe('cli')
   })
 
   test('an older server (404) is a definitive "no catalog"', async () => {
     const { fetchImpl } = respond(new Response('not found', { status: 404 }))
-    expect((await fetchFreebuffModelCatalog('tok', { fetchImpl })).kind).toBe(
+    expect((await fetchFuckbuffModelCatalog('tok', { fetchImpl })).kind).toBe(
       'unsupported',
     )
   })
@@ -117,17 +117,17 @@ describe('fetchFreebuffModelCatalog', () => {
   test('a body this client does not speak is unsupported, not an error', async () => {
     const garbage = respond(Response.json({ protocol: 2, rows: 'nope' }))
     expect(
-      (await fetchFreebuffModelCatalog('tok', { fetchImpl: garbage.fetchImpl }))
+      (await fetchFuckbuffModelCatalog('tok', { fetchImpl: garbage.fetchImpl }))
         .kind,
     ).toBe('unsupported')
     const notJson = respond(new Response('<html>', { status: 200 }))
     expect(
-      (await fetchFreebuffModelCatalog('tok', { fetchImpl: notJson.fetchImpl }))
+      (await fetchFuckbuffModelCatalog('tok', { fetchImpl: notJson.fetchImpl }))
         .kind,
     ).toBe('unsupported')
     const empty = respond(Response.json(catalogFixture([])))
     expect(
-      (await fetchFreebuffModelCatalog('tok', { fetchImpl: empty.fetchImpl }))
+      (await fetchFuckbuffModelCatalog('tok', { fetchImpl: empty.fetchImpl }))
         .kind,
     ).toBe('unsupported')
   })
@@ -135,12 +135,12 @@ describe('fetchFreebuffModelCatalog', () => {
   test('network failures and 5xx are transient errors', async () => {
     const down = respond(new Error('fetch failed'))
     expect(
-      (await fetchFreebuffModelCatalog('tok', { fetchImpl: down.fetchImpl }))
+      (await fetchFuckbuffModelCatalog('tok', { fetchImpl: down.fetchImpl }))
         .kind,
     ).toBe('error')
     const busy = respond(new Response('', { status: 503 }))
     expect(
-      (await fetchFreebuffModelCatalog('tok', { fetchImpl: busy.fetchImpl }))
+      (await fetchFuckbuffModelCatalog('tok', { fetchImpl: busy.fetchImpl }))
         .kind,
     ).toBe('error')
   })
@@ -150,7 +150,7 @@ describe('fetchFreebuffModelCatalog', () => {
       catalogRow('m-x', { displayName: 'Evil\u001b[2J name' }),
     ])
     const { fetchImpl } = respond(Response.json(hostile))
-    const result = await fetchFreebuffModelCatalog('tok', { fetchImpl })
+    const result = await fetchFuckbuffModelCatalog('tok', { fetchImpl })
     expect(result.kind).toBe('ok')
     if (result.kind === 'ok') {
       expect(result.catalog.rows[0]!.displayName).not.toContain('\u001b')
@@ -158,14 +158,14 @@ describe('fetchFreebuffModelCatalog', () => {
   })
 })
 
-describe('createFreebuffCatalogController', () => {
-  const harness = (results: FreebuffCatalogFetchResult[]) => {
+describe('createFuckbuffCatalogController', () => {
+  const harness = (results: FuckbuffCatalogFetchResult[]) => {
     let now = CATALOG.issuedAt
-    let held: FreebuffModelCatalog | null = null
+    let held: FuckbuffModelCatalog | null = null
     const timers: Array<{ callback: () => void; ms: number; id: number }> = []
     let nextId = 0
     let fetches = 0
-    const deps: FreebuffCatalogControllerDeps = {
+    const deps: FuckbuffCatalogControllerDeps = {
       fetchCatalog: async () => {
         fetches++
         return results.shift() ?? { kind: 'error' }
@@ -186,7 +186,7 @@ describe('createFreebuffCatalogController', () => {
       },
     }
     return {
-      controller: createFreebuffCatalogController('tok', deps),
+      controller: createFuckbuffCatalogController('tok', deps),
       held: () => held,
       timers,
       fetches: () => fetches,
@@ -303,84 +303,84 @@ describe('createFreebuffCatalogController', () => {
   })
 })
 
-describe('applyFreebuffCatalog', () => {
+describe('applyFuckbuffCatalog', () => {
   test('migrates a pre-catalog pick onto its row by legacy digest', () => {
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
-    applyFreebuffCatalog(CATALOG)
-    expect(getSelectedFreebuffModel()).toBe('m-flash')
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    applyFuckbuffCatalog(CATALOG)
+    expect(getSelectedFuckbuffModel()).toBe('m-flash')
   })
 
   test('a saved catalog key wins over the compiled pick', () => {
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
-    setFreebuffCatalog(CATALOG)
-    persistFreebuffModelPick('m-mimo')
-    setFreebuffCatalog(null)
-    applyFreebuffCatalog(CATALOG)
-    expect(getSelectedFreebuffModel()).toBe('m-mimo')
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    setFuckbuffCatalog(CATALOG)
+    persistFuckbuffModelPick('m-mimo')
+    setFuckbuffCatalog(null)
+    applyFuckbuffCatalog(CATALOG)
+    expect(getSelectedFuckbuffModel()).toBe('m-mimo')
   })
 
   test('a compiled pick made after the key clears it, so the newer pick wins', () => {
-    setFreebuffCatalog(CATALOG)
-    persistFreebuffModelPick('m-mimo')
-    expect(loadSettings().freebuffModelKey).toBe('m-mimo')
-    setFreebuffCatalog(null)
-    saveFreebuffModelPreference(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
-    expect(loadSettings().freebuffModelKey).toBeUndefined()
-    expect(loadSettings().freebuffModel).toBe(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
-    useFreebuffModelStore
+    setFuckbuffCatalog(CATALOG)
+    persistFuckbuffModelPick('m-mimo')
+    expect(loadSettings().fuckbuffModelKey).toBe('m-mimo')
+    setFuckbuffCatalog(null)
+    saveFuckbuffModelPreference(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    expect(loadSettings().fuckbuffModelKey).toBeUndefined()
+    expect(loadSettings().fuckbuffModel).toBe(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    useFuckbuffModelStore
       .getState()
-      .setSelectedModel(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
-    applyFreebuffCatalog(CATALOG)
-    expect(getSelectedFreebuffModel()).toBe('m-flash')
+      .setSelectedModel(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID)
+    applyFuckbuffCatalog(CATALOG)
+    expect(getSelectedFuckbuffModel()).toBe('m-flash')
   })
 
   test('an id no row replaces lands on the recommendation', () => {
     // A real selection that CATALOG has no row for. (Not the compiled
     // default: that is MiMo 2.6 Flash, which a CATALOG row replaces.)
-    useFreebuffModelStore.getState().setSelectedModel(FREEBUFF_MIMO_V26_PRO_MODEL_ID)
-    applyFreebuffCatalog(CATALOG)
-    expect(getSelectedFreebuffModel()).toBe('m-only-here')
+    useFuckbuffModelStore.getState().setSelectedModel(FUCKBUFF_MIMO_V26_PRO_MODEL_ID)
+    applyFuckbuffCatalog(CATALOG)
+    expect(getSelectedFuckbuffModel()).toBe('m-only-here')
   })
 
   test('a row that leaves the catalog falls to the recommendation', () => {
-    applyFreebuffCatalog(CATALOG)
-    useFreebuffModelStore.getState().setSelectedModel('m-flash')
-    applyFreebuffCatalog(
+    applyFuckbuffCatalog(CATALOG)
+    useFuckbuffModelStore.getState().setSelectedModel('m-flash')
+    applyFuckbuffCatalog(
       catalogFixture([CATALOG.rows[0]!, CATALOG.rows[2]!], {
         recommendedKey: 'm-mimo',
       }),
     )
-    expect(getSelectedFreebuffModel()).toBe('m-mimo')
+    expect(getSelectedFuckbuffModel()).toBe('m-mimo')
   })
 
   test('leaving catalog mode restores the saved compiled pick', () => {
-    saveFreebuffModelPreference(FREEBUFF_MIMO_V26_PRO_MODEL_ID)
-    applyFreebuffCatalog(CATALOG)
-    useFreebuffModelStore.getState().setSelectedModel('m-only-here')
-    useFreebuffChatStore.setState({ nextModel: 'm-mimo' })
-    applyFreebuffCatalog(null)
-    expect(getFreebuffCatalog()).toBeNull()
-    expect(getSelectedFreebuffModel()).toBe(FREEBUFF_MIMO_V26_PRO_MODEL_ID)
-    expect(useFreebuffChatStore.getState().nextModel).toBeNull()
+    saveFuckbuffModelPreference(FUCKBUFF_MIMO_V26_PRO_MODEL_ID)
+    applyFuckbuffCatalog(CATALOG)
+    useFuckbuffModelStore.getState().setSelectedModel('m-only-here')
+    useFuckbuffChatStore.setState({ nextModel: 'm-mimo' })
+    applyFuckbuffCatalog(null)
+    expect(getFuckbuffCatalog()).toBeNull()
+    expect(getSelectedFuckbuffModel()).toBe(FUCKBUFF_MIMO_V26_PRO_MODEL_ID)
+    expect(useFuckbuffChatStore.getState().nextModel).toBeNull()
   })
 
   test('re-keys an unsent chat pick', () => {
-    useFreebuffChatStore.setState({ nextModel: FREEBUFF_MIMO_V25_MODEL_ID })
-    applyFreebuffCatalog(CATALOG)
-    expect(useFreebuffChatStore.getState().nextModel).toBe('m-mimo')
+    useFuckbuffChatStore.setState({ nextModel: FUCKBUFF_MIMO_V25_MODEL_ID })
+    applyFuckbuffCatalog(CATALOG)
+    expect(useFuckbuffChatStore.getState().nextModel).toBe('m-mimo')
   })
 
   test('never writes a handle to disk', () => {
-    applyFreebuffCatalog(CATALOG)
-    persistFreebuffModelPick('m-flash')
-    useFreebuffModelStore.getState().setReasoningEffort('m-flash', 'max')
+    applyFuckbuffCatalog(CATALOG)
+    persistFuckbuffModelPick('m-flash')
+    useFuckbuffModelStore.getState().setReasoningEffort('m-flash', 'max')
     const file = fs.readFileSync(path.join(configDir, 'settings.json'), 'utf8')
     expect(file).not.toContain('fbm1.')
-    expect(loadSettings().freebuffCatalogReasoningEfforts).toEqual({
+    expect(loadSettings().fuckbuffCatalogReasoningEfforts).toEqual({
       'm-flash': 'max',
     })
   })
@@ -391,45 +391,45 @@ describe('settings', () => {
     fs.writeFileSync(
       getSettingsPath(),
       JSON.stringify({
-        freebuffModelKey: 'm-flash',
-        freebuffCatalogReasoningEfforts: {
+        fuckbuffModelKey: 'm-flash',
+        fuckbuffCatalogReasoningEfforts: {
           'm-flash': 'max',
           'm-bad': 'loud',
           'Not A Key/1': 'low',
         },
       }),
     )
-    expect(loadSettings().freebuffModelKey).toBe('m-flash')
-    expect(loadSettings().freebuffCatalogReasoningEfforts).toEqual({
+    expect(loadSettings().fuckbuffModelKey).toBe('m-flash')
+    expect(loadSettings().fuckbuffCatalogReasoningEfforts).toEqual({
       'm-flash': 'max',
     })
     fs.writeFileSync(
       getSettingsPath(),
-      JSON.stringify({ freebuffModelKey: 'fbm1.Handle/Not+A+Key' }),
+      JSON.stringify({ fuckbuffModelKey: 'fbm1.Handle/Not+A+Key' }),
     )
-    expect(loadSettings().freebuffModelKey).toBeUndefined()
+    expect(loadSettings().fuckbuffModelKey).toBeUndefined()
   })
 })
 
 describe('session picks in catalog mode', () => {
   test('an explicit pick keeps a key and maps a stray id onto its row', () => {
-    setFreebuffCatalog(CATALOG)
+    setFuckbuffCatalog(CATALOG)
     const none = { status: 'none', accessTier: 'limited' } as const
-    expect(resolveFreebuffModelPickForSession('m-only-here', none)).toBe(
+    expect(resolveFuckbuffModelPickForSession('m-only-here', none)).toBe(
       'm-only-here',
     )
     expect(
-      resolveFreebuffModelPickForSession(FREEBUFF_MIMO_V25_MODEL_ID, none),
+      resolveFuckbuffModelPickForSession(FUCKBUFF_MIMO_V25_MODEL_ID, none),
     ).toBe('m-mimo')
-    expect(resolveFreebuffModelPickForSession('m-gone', none)).toBe(
+    expect(resolveFuckbuffModelPickForSession('m-gone', none)).toBe(
       'm-only-here',
     )
   })
 
   test('an active session re-keyed by the server wins the selection', () => {
-    setFreebuffCatalog(CATALOG)
+    setFuckbuffCatalog(CATALOG)
     expect(
-      resolveFreebuffModelSelectionForSession(
+      resolveFuckbuffModelSelectionForSession(
         'm-mimo',
         { status: 'active', model: 'm-flash' } as never,
         true,
@@ -439,8 +439,8 @@ describe('session picks in catalog mode', () => {
 })
 
 describe('the default for an account with no explicit pick', () => {
-  const FLASH = FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
-  const MIMO = FREEBUFF_MIMO_V25_MODEL_ID
+  const FLASH = FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID
+  const MIMO = FUCKBUFF_MIMO_V25_MODEL_ID
   const none = (accessTier: 'full' | 'limited', balance = 50) =>
     ({
       status: 'none',
@@ -450,115 +450,115 @@ describe('the default for an account with no explicit pick', () => {
 
   test('is the Balanced stop: DeepSeek V4.1 Flash at full access, MiMo at limited', () => {
     expect(
-      resolveFreebuffModelSelectionForSession(MIMO, none('full'), false),
+      resolveFuckbuffModelSelectionForSession(MIMO, none('full'), false),
     ).toBe(FLASH)
     expect(
-      resolveFreebuffModelSelectionForSession(FLASH, none('limited'), false),
+      resolveFuckbuffModelSelectionForSession(FLASH, none('limited'), false),
     ).toBe(MIMO)
   })
 
   test('an explicit pick keeps its model', () => {
     expect(
-      resolveFreebuffModelSelectionForSession(MIMO, none('full'), true),
+      resolveFuckbuffModelSelectionForSession(MIMO, none('full'), true),
     ).toBe(MIMO)
   })
 
   test('steps down to the recommendation when the balance cannot start Balanced', () => {
-    expect(freebuffDefaultModelForSession(none('full', 12))).toBe(MIMO)
+    expect(fuckbuffDefaultModelForSession(none('full', 12))).toBe(MIMO)
   })
 
   test('names the catalog row in catalog mode', () => {
-    setFreebuffCatalog(CATALOG)
-    expect(freebuffDefaultModelForSession(none('full'))).toBe('m-flash')
+    setFuckbuffCatalog(CATALOG)
+    expect(fuckbuffDefaultModelForSession(none('full'))).toBe('m-flash')
   })
 
   test('a pick stops the selection following the default', () => {
-    useFreebuffModelStore.setState({ hasExplicitPick: false })
-    persistFreebuffModelPick(MIMO)
-    expect(useFreebuffModelStore.getState().hasExplicitPick).toBe(true)
+    useFuckbuffModelStore.setState({ hasExplicitPick: false })
+    persistFuckbuffModelPick(MIMO)
+    expect(useFuckbuffModelStore.getState().hasExplicitPick).toBe(true)
   })
 })
 
 describe('reasoning effort per catalog row', () => {
   test('uses the row ladder and default', () => {
-    applyFreebuffCatalog(CATALOG)
-    expect(getEffectiveFreebuffReasoningEffort('m-flash')).toBe('high')
-    useFreebuffModelStore.getState().setReasoningEffort('m-flash', 'low')
-    expect(getEffectiveFreebuffReasoningEffort('m-flash')).toBe('low')
-    expect(getEffectiveFreebuffReasoningEffort('m-mimo')).toBeNull()
+    applyFuckbuffCatalog(CATALOG)
+    expect(getEffectiveFuckbuffReasoningEffort('m-flash')).toBe('high')
+    useFuckbuffModelStore.getState().setReasoningEffort('m-flash', 'low')
+    expect(getEffectiveFuckbuffReasoningEffort('m-flash')).toBe('low')
+    expect(getEffectiveFuckbuffReasoningEffort('m-mimo')).toBeNull()
   })
 
   test('inherits the effort saved for the compiled model the row replaces', () => {
-    useFreebuffModelStore
+    useFuckbuffModelStore
       .getState()
-      .setReasoningEffort(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID, 'max')
-    applyFreebuffCatalog(CATALOG)
-    expect(getEffectiveFreebuffReasoningEffort('m-flash')).toBe('max')
-    useFreebuffModelStore
+      .setReasoningEffort(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID, 'max')
+    applyFuckbuffCatalog(CATALOG)
+    expect(getEffectiveFuckbuffReasoningEffort('m-flash')).toBe('max')
+    useFuckbuffModelStore
       .getState()
-      .setReasoningEffort(FREEBUFF_DEEPSEEK_V4_FLASH_MODEL_ID, undefined)
+      .setReasoningEffort(FUCKBUFF_DEEPSEEK_V4_FLASH_MODEL_ID, undefined)
   })
 
   test('ignores a saved rung the row no longer offers', () => {
-    applyFreebuffCatalog(CATALOG)
-    useFreebuffModelStore.getState().setReasoningEffort('m-flash', 'max')
-    applyFreebuffCatalog(
+    applyFuckbuffCatalog(CATALOG)
+    useFuckbuffModelStore.getState().setReasoningEffort('m-flash', 'max')
+    applyFuckbuffCatalog(
       catalogFixture([
         catalogRow('m-flash', { efforts: ['low', 'high'], defaultEffort: 'low' }),
       ]),
     )
-    expect(getEffectiveFreebuffReasoningEffort('m-flash')).toBe('low')
+    expect(getEffectiveFuckbuffReasoningEffort('m-flash')).toBe('low')
   })
 })
 
 describe('the directory in catalog mode', () => {
   test('maps the step-down, recommendation and locks from the catalog', () => {
-    setFreebuffCatalog(
+    setFuckbuffCatalog(
       catalogFixture([
         ...CATALOG.rows,
         catalogRow('m-locked', { access: 'locked', lockedLabel: 'Pro' }),
       ], { recommendedKey: 'm-only-here', fallbackKey: 'm-mimo' }),
     )
-    const directory = getFreebuffModelDirectory()
+    const directory = getFuckbuffModelDirectory()
     expect(directory.recommendedModelId('full')).toBe('m-only-here')
     expect(directory.fallbackModelId).toBe('m-mimo')
     expect(directory.planRequired('m-locked', false, undefined)).toBe(true)
     expect(directory.planRequired('m-mimo', false, undefined)).toBe(false)
-    expect(directory.resolveSelection(FREEBUFF_MIMO_V25_MODEL_ID)).toBe('m-mimo')
+    expect(directory.resolveSelection(FUCKBUFF_MIMO_V25_MODEL_ID)).toBe('m-mimo')
     expect(directory.resolveSelection('m-gone')).toBe('m-only-here')
     expect(directory.get('m-flash').displayName).toBe('Flash')
     expect(directory.efforts('m-flash')).toEqual(['low', 'high', 'max'])
   })
 })
 
-describe('isFreebuffCatalogStaleError', () => {
+describe('isFuckbuffCatalogStaleError', () => {
   test('finds the code wherever a layer put it', () => {
-    expect(isFreebuffCatalogStaleError({ error: 'freebuff_catalog_stale' })).toBe(
+    expect(isFuckbuffCatalogStaleError({ error: 'fuckbuff_catalog_stale' })).toBe(
       true,
     )
     expect(
-      isFreebuffCatalogStaleError(
-        new Error('409 Conflict: {"error":"freebuff_catalog_stale"}'),
+      isFuckbuffCatalogStaleError(
+        new Error('409 Conflict: {"error":"fuckbuff_catalog_stale"}'),
       ),
     ).toBe(true)
     expect(
-      isFreebuffCatalogStaleError({
+      isFuckbuffCatalogStaleError({
         type: 'error',
         message: 'Request failed',
-        responseBody: '{"error":"freebuff_catalog_stale"}',
+        responseBody: '{"error":"fuckbuff_catalog_stale"}',
       }),
     ).toBe(true)
-    expect(isFreebuffCatalogStaleError(new Error('session_expired'))).toBe(false)
-    expect(isFreebuffCatalogStaleError(undefined)).toBe(false)
+    expect(isFuckbuffCatalogStaleError(new Error('session_expired'))).toBe(false)
+    expect(isFuckbuffCatalogStaleError(undefined)).toBe(false)
   })
 })
 
-describe('runWithFreebuffCatalogStaleRetry', () => {
-  const stale = { type: 'error', message: '{"error":"freebuff_catalog_stale"}' }
+describe('runWithFuckbuffCatalogStaleRetry', () => {
+  const stale = { type: 'error', message: '{"error":"fuckbuff_catalog_stale"}' }
 
   test('outside catalog mode it runs exactly once, whatever the answer', async () => {
     const attempts: number[] = []
-    const result = await runWithFreebuffCatalogStaleRetry({
+    const result = await runWithFuckbuffCatalogStaleRetry({
       run: async (attempt) => {
         attempts.push(attempt)
         return { output: stale }
@@ -571,10 +571,10 @@ describe('runWithFreebuffCatalogStaleRetry', () => {
   })
 
   test('refetches and retries once with a rebuilt agent on a stale output', async () => {
-    setFreebuffCatalog(CATALOG)
+    setFuckbuffCatalog(CATALOG)
     const attempts: number[] = []
     let refreshes = 0
-    const result = await runWithFreebuffCatalogStaleRetry({
+    const result = await runWithFuckbuffCatalogStaleRetry({
       run: async (attempt) => {
         attempts.push(attempt)
         return attempt === 0 ? { output: stale } : { output: { type: 'lastMessage' } }
@@ -591,14 +591,14 @@ describe('runWithFreebuffCatalogStaleRetry', () => {
   })
 
   test('retries a thrown stale error, and surfaces a second one', async () => {
-    setFreebuffCatalog(CATALOG)
+    setFuckbuffCatalog(CATALOG)
     const attempts: number[] = []
     await expect(
-      runWithFreebuffCatalogStaleRetry({
+      runWithFuckbuffCatalogStaleRetry({
         run: async (attempt) => {
           attempts.push(attempt)
           throw Object.assign(new Error('Conflict'), {
-            error: 'freebuff_catalog_stale',
+            error: 'fuckbuff_catalog_stale',
           })
         },
         canRetry: () => true,
@@ -609,9 +609,9 @@ describe('runWithFreebuffCatalogStaleRetry', () => {
   })
 
   test('never retries a turn that already streamed, or when the refetch failed', async () => {
-    setFreebuffCatalog(CATALOG)
+    setFuckbuffCatalog(CATALOG)
     const attempts: number[] = []
-    await runWithFreebuffCatalogStaleRetry({
+    await runWithFuckbuffCatalogStaleRetry({
       run: async (attempt) => {
         attempts.push(attempt)
         return { output: stale }
@@ -619,7 +619,7 @@ describe('runWithFreebuffCatalogStaleRetry', () => {
       canRetry: () => false,
       refreshAfterStale: async () => true,
     })
-    await runWithFreebuffCatalogStaleRetry({
+    await runWithFuckbuffCatalogStaleRetry({
       run: async (attempt) => {
         attempts.push(attempt)
         return { output: stale }
@@ -631,9 +631,9 @@ describe('runWithFreebuffCatalogStaleRetry', () => {
   })
 
   test('other errors pass straight through', async () => {
-    setFreebuffCatalog(CATALOG)
+    setFuckbuffCatalog(CATALOG)
     let refreshes = 0
-    const result = await runWithFreebuffCatalogStaleRetry({
+    const result = await runWithFuckbuffCatalogStaleRetry({
       run: async () => ({ output: { type: 'error', message: 'session_expired' } }),
       canRetry: () => true,
       refreshAfterStale: async () => {

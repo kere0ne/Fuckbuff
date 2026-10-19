@@ -28,7 +28,7 @@ describe('login-flow analytics instrumentation', () => {
     const cliFlowId = 'a0000000-0000-4000-8000-000000000001'
     for (const via of ['modal', 'plain_command'] as const) {
       const data = {
-        loginUrl: 'https://freebuff.test/login?auth_code=opaque-auth-code',
+        loginUrl: 'https://fuckbuff.test/login?auth_code=opaque-auth-code',
         fingerprintHash: 'private-hash',
         expiresAt: '2030-01-01T00:00:00Z',
       }
@@ -43,7 +43,7 @@ describe('login-flow analytics instrumentation', () => {
           apiClient: createMockApiClient({ loginCode }),
         },
         {
-          baseUrl: 'https://freebuff.test',
+          baseUrl: 'https://fuckbuff.test',
           fingerprintId: 'private-fingerprint',
           via,
           cliFlowId,
@@ -65,7 +65,7 @@ describe('login-flow analytics instrumentation', () => {
   test('auth codes and invalid correlation values never imply CLI origin', async () => {
     const data = {
       loginUrl:
-        'https://freebuff.test/login?auth_code=opaque-auth-code&native_apple=1',
+        'https://fuckbuff.test/login?auth_code=opaque-auth-code&native_apple=1',
       fingerprintHash: 'private-hash',
       expiresAt: '2030-01-01T00:00:00Z',
     }
@@ -83,7 +83,7 @@ describe('login-flow analytics instrumentation', () => {
       const result = await generateLoginUrl(
         { logger: createMockLogger(), apiClient },
         {
-          baseUrl: 'https://freebuff.test',
+          baseUrl: 'https://fuckbuff.test',
           fingerprintId: 'private-fingerprint',
           cliFlowId,
         },
@@ -93,7 +93,7 @@ describe('login-flow analytics instrumentation', () => {
   })
 
   test('optional correlation never rejects an unusable or non-web URL', async () => {
-    for (const loginUrl of ['not a URL', 'freebuff://login?auth_code=opaque']) {
+    for (const loginUrl of ['not a URL', 'fuckbuff://login?auth_code=opaque']) {
       const data = {
         loginUrl,
         fingerprintHash: 'hash',
@@ -111,7 +111,7 @@ describe('login-flow analytics instrumentation', () => {
             apiClient: createMockApiClient({ loginCode }),
           },
           {
-            baseUrl: 'https://freebuff.test',
+            baseUrl: 'https://fuckbuff.test',
             fingerprintId: 'fingerprint',
             cliFlowId: 'a0000000-0000-4000-8000-000000000001',
           },

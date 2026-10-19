@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, spyOn, test } from 'bun:test'
 
 import * as auth from '../utils/auth'
-import { useFreebuffSessionStore } from './freebuff-session-store'
+import { useFuckbuffSessionStore } from './fuckbuff-session-store'
 
 const activeSession = {
   status: 'active' as const,
@@ -25,65 +25,65 @@ beforeEach(() => {
       status: 'ended',
       freebucksRefund: 4,
     })) as unknown as typeof fetch)
-  useFreebuffSessionStore.getState().setSession(activeSession)
+  useFuckbuffSessionStore.getState().setSession(activeSession)
 })
 afterEach(() => {
   fetchSpy.mockRestore()
   authSpy.mockRestore()
-  useFreebuffSessionStore.getState().setSession(null)
+  useFuckbuffSessionStore.getState().setSession(null)
 })
 
 test('release owns the refund receipt and sends the held instance', async () => {
-  await useFreebuffSessionStore.getState().releaseSlot()
-  expect(useFreebuffSessionStore.getState().lastRefund).toBe(4)
+  await useFuckbuffSessionStore.getState().releaseSlot()
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBe(4)
   const [, init] = fetchSpy.mock.calls[0]!
   expect(init.method).toBe('DELETE')
-  expect(new Headers(init.headers).get('x-freebuff-instance-id')).toBe(
+  expect(new Headers(init.headers).get('x-fuckbuff-instance-id')).toBe(
     'held-cli',
   )
-  useFreebuffSessionStore.getState().setSession({ status: 'none' })
-  expect(useFreebuffSessionStore.getState().lastRefund).toBe(4)
-  useFreebuffSessionStore.getState().setSession(activeSession)
-  expect(useFreebuffSessionStore.getState().lastRefund).toBeNull()
-  await useFreebuffSessionStore.getState().releaseSlot()
-  useFreebuffSessionStore.getState().setSession(null)
-  expect(useFreebuffSessionStore.getState().lastRefund).toBeNull()
+  useFuckbuffSessionStore.getState().setSession({ status: 'none' })
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBe(4)
+  useFuckbuffSessionStore.getState().setSession(activeSession)
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBeNull()
+  await useFuckbuffSessionStore.getState().releaseSlot()
+  useFuckbuffSessionStore.getState().setSession(null)
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBeNull()
 })
 
 test('failed release is retryable and never invents a receipt', async () => {
   fetchSpy.mockRejectedValue(new Error('offline'))
   await expect(
-    useFreebuffSessionStore.getState().releaseSlot(),
+    useFuckbuffSessionStore.getState().releaseSlot(),
   ).rejects.toThrow('offline')
-  expect(useFreebuffSessionStore.getState().failure?.outcomeUnknown).toBe(true)
-  expect(useFreebuffSessionStore.getState().session).toEqual(activeSession)
-  expect(useFreebuffSessionStore.getState().lastRefund).toBeNull()
+  expect(useFuckbuffSessionStore.getState().failure?.outcomeUnknown).toBe(true)
+  expect(useFuckbuffSessionStore.getState().session).toEqual(activeSession)
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBeNull()
 })
 
 test('an update restart keeps the held slot on every exit path', async () => {
-  useFreebuffSessionStore.getState().setFailure(null)
+  useFuckbuffSessionStore.getState().setFailure(null)
   try {
-    useFreebuffSessionStore.getState().keepSlotForRelaunch()
+    useFuckbuffSessionStore.getState().keepSlotForRelaunch()
     // exitCliCleanly and the hook's unmount cleanup both land here; neither
     // may end the hour the relaunched binary is about to take over.
-    await useFreebuffSessionStore.getState().releaseSlot()
-    await useFreebuffSessionStore.getState().releaseSlot(activeSession)
+    await useFuckbuffSessionStore.getState().releaseSlot()
+    await useFuckbuffSessionStore.getState().releaseSlot(activeSession)
     expect(fetchSpy).not.toHaveBeenCalled()
-    expect(useFreebuffSessionStore.getState().session).toEqual(activeSession)
-    expect(useFreebuffSessionStore.getState().failure).toBeNull()
+    expect(useFuckbuffSessionStore.getState().session).toEqual(activeSession)
+    expect(useFuckbuffSessionStore.getState().failure).toBeNull()
   } finally {
-    useFreebuffSessionStore.setState({ slotKeptForRelaunch: false })
+    useFuckbuffSessionStore.setState({ slotKeptForRelaunch: false })
   }
 })
 
 test('release does nothing without a held slot or authentication', async () => {
   authSpy.mockReturnValue({ source: null })
   await expect(
-    useFreebuffSessionStore.getState().releaseSlot(),
+    useFuckbuffSessionStore.getState().releaseSlot(),
   ).rejects.toThrow('authentication')
   authSpy.mockReturnValue({ token: 'test-token', source: 'environment' })
-  useFreebuffSessionStore.getState().setSession({ status: 'none' })
-  await useFreebuffSessionStore.getState().releaseSlot()
+  useFuckbuffSessionStore.getState().setSession({ status: 'none' })
+  await useFuckbuffSessionStore.getState().releaseSlot()
   expect(fetchSpy).not.toHaveBeenCalled()
 })
 
@@ -96,13 +96,13 @@ for (const transition of ['replacement', 'logout', 'auth-change'] as const) {
           respond = resolve
         }),
     )
-    const release = useFreebuffSessionStore.getState().releaseSlot()
+    const release = useFuckbuffSessionStore.getState().releaseSlot()
     if (transition === 'replacement')
-      useFreebuffSessionStore
+      useFuckbuffSessionStore
         .getState()
         .setSession({ ...activeSession, instanceId: 'new-cli' })
     if (transition === 'logout')
-      useFreebuffSessionStore.getState().setSession(null)
+      useFuckbuffSessionStore.getState().setSession(null)
     if (transition === 'auth-change')
       authSpy.mockReturnValue({
         token: 'different-user',
@@ -110,7 +110,7 @@ for (const transition of ['replacement', 'logout', 'auth-change'] as const) {
       })
     respond(Response.json({ status: 'ended', freebucksRefund: 4 }))
     await release
-    expect(useFreebuffSessionStore.getState().lastRefund).toBeNull()
+    expect(useFuckbuffSessionStore.getState().lastRefund).toBeNull()
   })
 }
 
@@ -122,8 +122,8 @@ test('exit and explicit end share one pending request; failure permits retry', a
         reject = fail
       }),
   )
-  const first = useFreebuffSessionStore.getState().releaseSlot()
-  const second = useFreebuffSessionStore.getState().releaseSlot()
+  const first = useFuckbuffSessionStore.getState().releaseSlot()
+  const second = useFuckbuffSessionStore.getState().releaseSlot()
   expect(first).toBe(second)
   expect(fetchSpy).toHaveBeenCalledTimes(1)
   reject(new Error('response lost'))
@@ -131,9 +131,9 @@ test('exit and explicit end share one pending request; failure permits retry', a
   fetchSpy.mockResolvedValue(
     Response.json({ status: 'ended', freebucksRefund: 4 }),
   )
-  await useFreebuffSessionStore.getState().releaseSlot()
+  await useFuckbuffSessionStore.getState().releaseSlot()
   expect(fetchSpy).toHaveBeenCalledTimes(2)
-  expect(useFreebuffSessionStore.getState().lastRefund).toBe(4)
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBe(4)
 })
 
 test.each(['none', 'banned', 'country_blocked'])(
@@ -141,10 +141,10 @@ test.each(['none', 'banned', 'country_blocked'])(
   async (status) => {
     fetchSpy.mockResolvedValue(Response.json({ status }))
     await expect(
-      useFreebuffSessionStore.getState().releaseSlot(),
+      useFuckbuffSessionStore.getState().releaseSlot(),
     ).rejects.toThrow('did not confirm')
-    expect(useFreebuffSessionStore.getState().session).toEqual(activeSession)
-    expect(useFreebuffSessionStore.getState().lastRefund).toBeNull()
+    expect(useFuckbuffSessionStore.getState().session).toEqual(activeSession)
+    expect(useFuckbuffSessionStore.getState().lastRefund).toBeNull()
   },
 )
 
@@ -156,34 +156,34 @@ test('a poll refreshing the same instance does not discard its refund receipt', 
         respond = resolve
       }),
   )
-  const release = useFreebuffSessionStore.getState().releaseSlot()
-  useFreebuffSessionStore
+  const release = useFuckbuffSessionStore.getState().releaseSlot()
+  useFuckbuffSessionStore
     .getState()
     .setSession({ ...activeSession, remainingMs: 299000 })
   respond(Response.json({ status: 'ended', freebucksRefund: 4 }))
   await release
-  expect(useFreebuffSessionStore.getState().lastRefund).toBe(4)
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBe(4)
 })
 
 test('a pending end releases the chat and later recovers its final receipt', async () => {
   fetchSpy.mockResolvedValue(
     Response.json({ status: 'ended', freebucksRefundPending: true }),
   )
-  await useFreebuffSessionStore.getState().releaseSlot()
-  expect(useFreebuffSessionStore.getState().lastRefund).toBeNull()
-  expect(useFreebuffSessionStore.getState().pendingRefund?.instanceId).toBe(
+  await useFuckbuffSessionStore.getState().releaseSlot()
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBeNull()
+  expect(useFuckbuffSessionStore.getState().pendingRefund?.instanceId).toBe(
     'held-cli',
   )
-  useFreebuffSessionStore.getState().setSession({ status: 'none' })
+  useFuckbuffSessionStore.getState().setSession({ status: 'none' })
   fetchSpy.mockResolvedValue(
     Response.json({ status: 'ended', freebucksRefund: 1 }),
   )
-  await useFreebuffSessionStore.getState().refreshRefund()
-  expect(useFreebuffSessionStore.getState().lastRefund).toBe(1)
-  expect(useFreebuffSessionStore.getState().pendingRefund).toBeNull()
+  await useFuckbuffSessionStore.getState().refreshRefund()
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBe(1)
+  expect(useFuckbuffSessionStore.getState().pendingRefund).toBeNull()
   expect(
     new Headers(fetchSpy.mock.calls[1]![1].headers).get(
-      'x-freebuff-instance-id',
+      'x-fuckbuff-instance-id',
     ),
   ).toBe('held-cli')
 })
@@ -192,7 +192,7 @@ test('a receipt poll cannot publish into a replacement session', async () => {
   fetchSpy.mockResolvedValue(
     Response.json({ status: 'ended', freebucksRefundPending: true }),
   )
-  await useFreebuffSessionStore.getState().releaseSlot()
+  await useFuckbuffSessionStore.getState().releaseSlot()
   let respond!: (response: Response) => void
   fetchSpy.mockImplementation(
     () =>
@@ -200,13 +200,13 @@ test('a receipt poll cannot publish into a replacement session', async () => {
         respond = resolve
       }),
   )
-  const poll = useFreebuffSessionStore.getState().refreshRefund()
-  useFreebuffSessionStore
+  const poll = useFuckbuffSessionStore.getState().refreshRefund()
+  useFuckbuffSessionStore
     .getState()
     .setSession({ ...activeSession, instanceId: 'replacement' })
   respond(Response.json({ status: 'ended', freebucksRefund: 1 }))
   await poll
-  expect(useFreebuffSessionStore.getState().lastRefund).toBeNull()
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBeNull()
 })
 
 test('a settled receipt with no amount is not a zero refund', async () => {
@@ -216,23 +216,23 @@ test('a settled receipt with no amount is not a zero refund', async () => {
   fetchSpy.mockResolvedValue(
     Response.json({ status: 'ended', freebucksRefundPending: true }),
   )
-  await useFreebuffSessionStore.getState().releaseSlot()
-  expect(useFreebuffSessionStore.getState().pendingRefund).not.toBeNull()
+  await useFuckbuffSessionStore.getState().releaseSlot()
+  expect(useFuckbuffSessionStore.getState().pendingRefund).not.toBeNull()
   fetchSpy.mockResolvedValue(Response.json({ status: 'ended' }))
-  await useFreebuffSessionStore.getState().refreshRefund()
-  expect(useFreebuffSessionStore.getState().lastRefund).toBeNull()
+  await useFuckbuffSessionStore.getState().refreshRefund()
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBeNull()
   // Settled is settled: the poll stops either way.
-  expect(useFreebuffSessionStore.getState().pendingRefund).toBeNull()
+  expect(useFuckbuffSessionStore.getState().pendingRefund).toBeNull()
 })
 
 test('a settled zero is kept as a zero', async () => {
   fetchSpy.mockResolvedValue(
     Response.json({ status: 'ended', freebucksRefundPending: true }),
   )
-  await useFreebuffSessionStore.getState().releaseSlot()
+  await useFuckbuffSessionStore.getState().releaseSlot()
   fetchSpy.mockResolvedValue(
     Response.json({ status: 'ended', freebucksRefund: 0 }),
   )
-  await useFreebuffSessionStore.getState().refreshRefund()
-  expect(useFreebuffSessionStore.getState().lastRefund).toBe(0)
+  await useFuckbuffSessionStore.getState().refreshRefund()
+  expect(useFuckbuffSessionStore.getState().lastRefund).toBe(0)
 })

@@ -30,7 +30,7 @@
  *     leaves it as a truncated thought. After visible text, `<think>` is far
  *     more often prose, such as a doc or template quoting the tag. So that
  *     block is held and becomes reasoning only if its close arrives, and is
- *     otherwise released verbatim as text. Before CodebuffAI/freebuff#1155 an
+ *     otherwise released verbatim as text. Before CodebuffAI/fuckbuff#1155 an
  *     open tag anywhere sent the rest of the step to the thinking box, and the
  *     user saw an empty or cut-short reply.
  *  3. An orphan `</think>` with no open tag — the DeepSeek shape above, where

@@ -66,7 +66,7 @@ export const SPONSORED_FRICTION_DETAIL_MAX = 500
 export const SPONSORED_FRICTION_MAX_PER_RUN = 10
 
 export const SPONSORED_FRICTION_TOOL_DESCRIPTION =
-  'Record friction or a blocker you hit while carrying out the approved procedure, so Freebuff can fix it. Call it each time something got in the way: set blocking true for a step you could not do (call it before you stop with steps undone), and false for one you got past only with a retry, a workaround, a different command or a guess about an unclear instruction. Do not call it for things that went fine. Pick the category that best names the problem and say in one or two plain sentences which step it was, what happened and what you did about it (no file paths, URLs, keys or the user’s code). It only records the report; it does not end the run or change what you should do next.'
+  'Record friction or a blocker you hit while carrying out the approved procedure, so Fuckbuff can fix it. Call it each time something got in the way: set blocking true for a step you could not do (call it before you stop with steps undone), and false for one you got past only with a retry, a workaround, a different command or a guess about an unclear instruction. Do not call it for things that went fine. Pick the category that best names the problem and say in one or two plain sentences which step it was, what happened and what you did about it (no file paths, URLs, keys or the user’s code). It only records the report; it does not end the run or change what you should do next.'
 
 /** The tool's input, as both clients register it. */
 export const sponsoredFrictionInputShape = {

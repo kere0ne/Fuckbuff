@@ -19,7 +19,7 @@
  *
  * `agents/context-pruner.ts` cannot import this module: its `handleSteps` is
  * serialized with `toString()` and re-evaluated standalone, and `agents/` is
- * bundled at build time into the CLI binary, the desktop app and the freebuff
+ * bundled at build time into the CLI binary, the desktop app and the fuckbuff
  * web server separately — so a shared import (or a runtime-injected helper)
  * would break on any artifact that has not been rebuilt. The pruner therefore
  * keeps its own inlined copy. Treat this file as the source of truth and port

@@ -216,7 +216,7 @@ describe('dropUnansweredToolCalls', () => {
         type: 'tool-call',
         toolCallId: 'provider-call',
         toolName: 'web_search',
-        input: { query: 'Freebuff' },
+        input: { query: 'Fuckbuff' },
         providerExecuted: true,
       }),
     ]

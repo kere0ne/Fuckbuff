@@ -1,6 +1,6 @@
 /**
  * A compact summary of the terminal environment this CLI is running in, sent
- * as `x-freebuff-env` on session and ad requests and in `codebuff_metadata`.
+ * as `x-fuckbuff-env` on session and ad requests and in `codebuff_metadata`.
  *
  * Only presence flags, a size, and fixed bucket names: never a raw environment
  * value, path, or process name. Built once per process; the two parts that
@@ -16,15 +16,15 @@ import { execFile } from 'child_process'
 import { readFile, readlink } from 'fs/promises'
 
 import {
-  FREEBUFF_CLIENT_DESCRIPTOR_VERSION,
-  FREEBUFF_CLIENT_ENV_HEADER,
+  FUCKBUFF_CLIENT_DESCRIPTOR_VERSION,
+  FUCKBUFF_CLIENT_ENV_HEADER,
   type CloudIdeBucket,
   type ProcessKindBucket,
   type TerminalProgramBucket,
-} from '@codebuff/common/constants/freebuff-client-descriptor'
+} from '@codebuff/common/constants/fuckbuff-client-descriptor'
 import { getCiEnv } from '@codebuff/common/env-ci'
 
-import { IS_FREEBUFF } from './constants'
+import { IS_FUCKBUFF } from './constants'
 import { getCliEnv } from './env'
 
 import type { CliEnv } from '../types/env'
@@ -391,7 +391,7 @@ export function formatClientEnvironment(
   const zone = tzOverride ? zoneFromZoneinfo(systemZone ?? undefined) : null
   if (zone) fields.push(['stz', zone])
   return [
-    FREEBUFF_CLIENT_DESCRIPTOR_VERSION,
+    FUCKBUFF_CLIENT_DESCRIPTOR_VERSION,
     ...fields.map(([k, v]) => `${k}=${v}`),
   ].join(';')
 }
@@ -459,14 +459,14 @@ export function getClientEnvironmentDescriptor(): string {
     inputs ??= readInputs()
     cached = formatClientEnvironment(inputs, ancestry, colorReply, systemZone)
   } catch {
-    cached = `${FREEBUFF_CLIENT_DESCRIPTOR_VERSION};err=1`
+    cached = `${FUCKBUFF_CLIENT_DESCRIPTOR_VERSION};err=1`
   }
   return cached
 }
 
-/** The descriptor as a request header, for Freebuff builds only. */
+/** The descriptor as a request header, for Fuckbuff builds only. */
 export function clientEnvironmentHeaders(): Record<string, string> {
-  return IS_FREEBUFF
-    ? { [FREEBUFF_CLIENT_ENV_HEADER]: getClientEnvironmentDescriptor() }
+  return IS_FUCKBUFF
+    ? { [FUCKBUFF_CLIENT_ENV_HEADER]: getClientEnvironmentDescriptor() }
     : {}
 }

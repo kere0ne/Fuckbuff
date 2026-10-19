@@ -1,21 +1,21 @@
 import { describe, expect, it } from 'bun:test'
 
 import {
-  FREEBUFF_GEMINI_38_FLASH_MODEL_ID,
-  FREEBUFF_GPT_6_LUNA_MODEL_ID,
-  FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS,
-  FREEBUFF_MIMO_V26_PRO_MODEL_ID,
-  getFreebuffModelsForAccessTier,
-  LIMITED_FREEBUFF_MODEL_IDS,
-} from '../../constants/freebuff-models'
-import type { FreebuffFreebucksInfo } from '../../types/freebuff-session'
+  FUCKBUFF_GEMINI_38_FLASH_MODEL_ID,
+  FUCKBUFF_GPT_6_LUNA_MODEL_ID,
+  FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS,
+  FUCKBUFF_MIMO_V26_PRO_MODEL_ID,
+  getFuckbuffModelsForAccessTier,
+  LIMITED_FUCKBUFF_MODEL_IDS,
+} from '../../constants/fuckbuff-models'
+import type { FuckbuffFreebucksInfo } from '../../types/fuckbuff-session'
 import {
-  freebuffPlanRequired,
+  fuckbuffPlanRequired,
   freebucksRowIntent,
-} from '../freebuff-model-selection'
+} from '../fuckbuff-model-selection'
 
 /**
- * The tier fallback of `freebuffPlanRequired`: what a picker draws locked when
+ * The tier fallback of `fuckbuffPlanRequired`: what a picker draws locked when
  * the server sent no `planRequiredModelIds` (no Freebucks block, a balance
  * that is unavailable, an older server). Since 2026-09-30 the limited catalog
  * LISTS the rows a plan unlocks there to every limited account, so without
@@ -24,41 +24,41 @@ import {
  */
 describe('the plan lock without a server verdict', () => {
   it('locks every limited plan-only row at limited access', () => {
-    for (const id of FREEBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS) {
-      expect(freebuffPlanRequired(id, false, undefined, 'limited')).toBe(true)
-      expect(freebuffPlanRequired(id, false, null, 'limited')).toBe(true)
+    for (const id of FUCKBUFF_LIMITED_TIER_PLAN_ONLY_MODEL_IDS) {
+      expect(fuckbuffPlanRequired(id, false, undefined, 'limited')).toBe(true)
+      expect(fuckbuffPlanRequired(id, false, null, 'limited')).toBe(true)
     }
   })
 
   it('agrees with the rows the limited catalog appends to the free ones', () => {
-    const listed = getFreebuffModelsForAccessTier('limited').map((m) => m.id)
+    const listed = getFuckbuffModelsForAccessTier('limited').map((m) => m.id)
     const locked = listed.filter((id) =>
-      freebuffPlanRequired(id, false, undefined, 'limited'),
+      fuckbuffPlanRequired(id, false, undefined, 'limited'),
     )
     expect(locked).toEqual(
       listed.filter(
-        (id) => !(LIMITED_FREEBUFF_MODEL_IDS as readonly string[]).includes(id),
+        (id) => !(LIMITED_FUCKBUFF_MODEL_IDS as readonly string[]).includes(id),
       ),
     )
   })
 
   it('leaves Luna and MiMo 2.6 Pro open at full access, Gemini locked', () => {
-    for (const id of [FREEBUFF_GPT_6_LUNA_MODEL_ID, FREEBUFF_MIMO_V26_PRO_MODEL_ID]) {
-      expect(freebuffPlanRequired(id, false, undefined, 'full')).toBe(false)
-      expect(freebuffPlanRequired(id, false, undefined)).toBe(false)
+    for (const id of [FUCKBUFF_GPT_6_LUNA_MODEL_ID, FUCKBUFF_MIMO_V26_PRO_MODEL_ID]) {
+      expect(fuckbuffPlanRequired(id, false, undefined, 'full')).toBe(false)
+      expect(fuckbuffPlanRequired(id, false, undefined)).toBe(false)
     }
     expect(
-      freebuffPlanRequired(FREEBUFF_GEMINI_38_FLASH_MODEL_ID, false, undefined, 'full'),
+      fuckbuffPlanRequired(FUCKBUFF_GEMINI_38_FLASH_MODEL_ID, false, undefined, 'full'),
     ).toBe(true)
   })
 
   it('opens every row on a plan, and the server verdict still wins', () => {
     expect(
-      freebuffPlanRequired(FREEBUFF_GPT_6_LUNA_MODEL_ID, true, undefined, 'limited'),
+      fuckbuffPlanRequired(FUCKBUFF_GPT_6_LUNA_MODEL_ID, true, undefined, 'limited'),
     ).toBe(false)
     expect(
-      freebuffPlanRequired(
-        FREEBUFF_GPT_6_LUNA_MODEL_ID,
+      fuckbuffPlanRequired(
+        FUCKBUFF_GPT_6_LUNA_MODEL_ID,
         false,
         { planRequiredModelIds: [] },
         'limited',
@@ -70,7 +70,7 @@ describe('the plan lock without a server verdict', () => {
 /** Full access (2026-10-16): never asked before an hour, and a row locks on
  *  its price less `soloDiscount`, which the server sends while nothing is live. */
 describe('the full-access session policy', () => {
-  const freebucks = (over: Partial<FreebuffFreebucksInfo> = {}) =>
+  const freebucks = (over: Partial<FuckbuffFreebucksInfo> = {}) =>
     ({
       balance: 10,
       daily: { limit: 150, spent: 150, remaining: 0, resetAt: '' },
@@ -78,8 +78,8 @@ describe('the full-access session policy', () => {
       planId: null,
       prices: { flash: 15, pro: 30 },
       ...over,
-    }) as FreebuffFreebucksInfo
-  const intent = (info: FreebuffFreebucksInfo, model: string, active?: string) =>
+    }) as FuckbuffFreebucksInfo
+  const intent = (info: FuckbuffFreebucksInfo, model: string, active?: string) =>
     freebucksRowIntent(info, model, active).kind
 
   it('asks nothing, not even before ending the live session', () => {

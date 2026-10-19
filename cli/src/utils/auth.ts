@@ -11,7 +11,7 @@ import {
 } from './auth-token-store'
 import { getApiClient, setApiClientAuthToken } from './codebuff-api'
 import { getConfigDir as getConfigDirBase } from './config-dir'
-import { IS_FREEBUFF } from './constants'
+import { IS_FUCKBUFF } from './constants'
 import { logger } from './logger'
 
 import type { CiEnv } from '@codebuff/common/types/contracts/env'
@@ -330,7 +330,7 @@ export const clearUserCredentials = (): void => {
     const { default: _, ...rest } = readCredentialsFile()
     setCachedKeychainToken(null)
     const store = resolveSecretStore({
-      isFreebuff: IS_FREEBUFF,
+      isFuckbuff: IS_FUCKBUFF,
       credentialsPath,
     })
     if (store) {
@@ -365,7 +365,7 @@ export const clearUserCredentials = (): void => {
  */
 export async function moveTokenToKeychain(): Promise<boolean> {
   const credentialsPath = getCredentialsPath()
-  const store = resolveSecretStore({ isFreebuff: IS_FREEBUFF, credentialsPath })
+  const store = resolveSecretStore({ isFuckbuff: IS_FUCKBUFF, credentialsPath })
   if (!store) return false
   try {
     const before = readCredentialsFile()
@@ -404,7 +404,7 @@ export async function moveTokenToKeychain(): Promise<boolean> {
  */
 export async function loadStoredAuthToken(): Promise<void> {
   const credentialsPath = getCredentialsPath()
-  const store = resolveSecretStore({ isFreebuff: IS_FREEBUFF, credentialsPath })
+  const store = resolveSecretStore({ isFuckbuff: IS_FUCKBUFF, credentialsPath })
   if (!store) return
   const profile = storedUserSchema.safeParse(readCredentialsFile().default)
   if (!profile.success) return

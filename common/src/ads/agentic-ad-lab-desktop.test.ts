@@ -24,7 +24,7 @@ test('Desktop handoff pins exactly one saved version, without credentials or a f
   for (const url of [
     labDesktopTestUrl(ref) + '&host=https://evil.test',
     labDesktopTestUrl(ref) + '&skillId=other',
-    labDesktopTestUrl(ref).replace('freebuff:', 'https:'),
+    labDesktopTestUrl(ref).replace('fuckbuff:', 'https:'),
     labDesktopTestUrl(ref) + '#fragment',
   ])
     expect(parseLabDesktopTestUrl(url)).toBeNull()

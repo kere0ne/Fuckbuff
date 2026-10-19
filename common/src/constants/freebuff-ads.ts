@@ -43,12 +43,12 @@
  *
  * Not UTC, and this is worth one line of explanation: every other daily budget
  * in the product already resets Pacific (session pools, spend ceilings,
- * `freebuff_daily_usage`), and an advertiser whose "day" ended at a different
+ * `fuckbuff_daily_usage`), and an advertiser whose "day" ended at a different
  * hour than the user quota that feeds it would see delivery that appears to
  * arrive before it was funded.
  *
  * It lives in `common` rather than beside the console because the Stripe
- * webhook — in `web/`, which cannot import `freebuff/web` — has to compute the
+ * webhook — in `web/`, which cannot import `fuckbuff/web` — has to compute the
  * same day the console does.
  */
 export const AD_RESET_TIMEZONE = 'America/Los_Angeles'
@@ -587,7 +587,7 @@ export const AD_MAX_COMMENT_URL_CHARS = 2_000
  * to be a legal instrument — it is there so that when a sweep finds a forged
  * link, the enforcement points at something the person affirmatively did
  * rather than at a policy nobody read. Same role
- * `freebuff_bounty_submission.agreed_to_terms_at` plays.
+ * `fuckbuff_bounty_submission.agreed_to_terms_at` plays.
  */
 export const AD_EVIDENCE_ATTESTATION =
   'I confirm I liked, reposted and commented on this post myself, and that this is genuine proof of it. I understand it will be verified, and that falsified evidence will result in my account being banned.'

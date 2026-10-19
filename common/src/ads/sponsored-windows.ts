@@ -35,7 +35,7 @@ import {
 export { throttledUnrecognisedSwitchReporter } from './sponsored-os-policy'
 
 export type SponsoredWindowsEnv = {
-  FREEBUFF_SPONSORED_WINDOWS?: string
+  FUCKBUFF_SPONSORED_WINDOWS?: string
 }
 
 /**

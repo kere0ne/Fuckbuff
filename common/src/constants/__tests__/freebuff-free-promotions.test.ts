@@ -1,14 +1,14 @@
 import { describe, expect, it } from 'bun:test'
 
 import {
-  FREEBUFF_FREE_PROMOTION_SPEND_WINDOWS,
+  FUCKBUFF_FREE_PROMOTION_SPEND_WINDOWS,
   isFreePromotionSpendAt,
-} from '../freebuff-free-promotions'
-import { SOLAR_PRICE_CHANGES } from '../freebuff-solar-promo'
+} from '../fuckbuff-free-promotions'
+import { SOLAR_PRICE_CHANGES } from '../fuckbuff-solar-promo'
 import {
-  FREEBUFF_SOLAR_MINI_4_MODEL_ID,
-  FREEBUFF_SOLAR_PRO_4_MODEL_ID,
-} from '../freebuff-model-entitlements'
+  FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
+  FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
+} from '../fuckbuff-model-entitlements'
 
 describe('free-promotion spend windows', () => {
   it('matches the offer it is derived from, to the boundary', () => {
@@ -20,30 +20,30 @@ describe('free-promotion spend windows', () => {
     const back = SOLAR_PRICE_CHANGES.find(
       (c) => c.price !== 0 && Date.parse(c.at) > Date.parse(free.at),
     )!
-    expect(FREEBUFF_FREE_PROMOTION_SPEND_WINDOWS).toEqual([
+    expect(FUCKBUFF_FREE_PROMOTION_SPEND_WINDOWS).toEqual([
       {
-        modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+        modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
         from: new Date(Date.parse(free.at)).toISOString(),
         to: new Date(Date.parse(back.at)).toISOString(),
       },
       {
-        modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+        modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
         from: '2026-09-09T15:49:00.000Z',
         to: '2026-09-13T05:00:00.000Z',
       },
       {
         // Open-ended: exempt for as long as the price stays 0.
-        modelId: FREEBUFF_SOLAR_PRO_4_MODEL_ID,
+        modelId: FUCKBUFF_SOLAR_PRO_4_MODEL_ID,
         from: '2026-10-05T07:15:00.000Z',
         to: '2099-01-01T00:00:00.000Z',
       },
       {
-        modelId: FREEBUFF_SOLAR_MINI_4_MODEL_ID,
+        modelId: FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
         from: '2026-10-02T18:00:00.000Z',
         to: '2026-10-05T07:00:00.000Z',
       },
       {
-        modelId: FREEBUFF_SOLAR_MINI_4_MODEL_ID,
+        modelId: FUCKBUFF_SOLAR_MINI_4_MODEL_ID,
         from: '2026-10-08T21:30:00.000Z',
         to: '2099-01-01T00:00:00.000Z',
       },
@@ -51,7 +51,7 @@ describe('free-promotion spend windows', () => {
   })
 
   it('is half-open, so the day the price returns is charged again', () => {
-    const solar = FREEBUFF_SOLAR_PRO_4_MODEL_ID
+    const solar = FUCKBUFF_SOLAR_PRO_4_MODEL_ID
     expect(isFreePromotionSpendAt(solar, new Date('2026-09-04T23:59:59-07:00'))).toBe(false)
     expect(isFreePromotionSpendAt(solar, new Date('2026-09-05T00:00:00-07:00'))).toBe(true)
     expect(isFreePromotionSpendAt(solar, new Date('2026-09-07T23:59:59-07:00'))).toBe(true)
@@ -78,7 +78,7 @@ describe('free-promotion spend windows', () => {
     // A window that never closes makes a weekend promotion permanent. Every
     // span here must end at a real transition unless the schedule genuinely
     // leaves the price at zero.
-    for (const window of FREEBUFF_FREE_PROMOTION_SPEND_WINDOWS) {
+    for (const window of FUCKBUFF_FREE_PROMOTION_SPEND_WINDOWS) {
       const returns = SOLAR_PRICE_CHANGES.some(
         (c) => c.modelId === window.modelId && c.price !== 0 &&
           Date.parse(c.at) > Date.parse(window.from),

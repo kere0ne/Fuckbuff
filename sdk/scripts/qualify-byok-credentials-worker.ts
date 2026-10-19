@@ -46,7 +46,7 @@ function syntheticCredential(version: 1 | 2): string {
   // This is intentionally synthetic. The hash makes each run unique while
   // keeping material deterministic across independent runtimes.
   const digest = createHash('sha256')
-    .update(`freebuff-byok-native-qualification:${runId}:${version}`)
+    .update(`fuckbuff-byok-native-qualification:${runId}:${version}`)
     .digest('hex')
   return `qualification-${version}-${digest}`
 }

@@ -47,14 +47,14 @@ function memoryStore(opts: { failSet?: boolean; failGet?: boolean } = {}) {
   return { store, peek: () => value }
 }
 
-describe('Freebuff auth token in the OS keychain', () => {
+describe('Fuckbuff auth token in the OS keychain', () => {
   let tempRoot: string
   let credentialsPath: string
 
   const fileJson = () => JSON.parse(fs.readFileSync(credentialsPath, 'utf8'))
 
   beforeEach(() => {
-    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'freebuff-keychain-'))
+    tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'fuckbuff-keychain-'))
     const configDir = path.join(tempRoot, 'config')
     credentialsPath = path.join(configDir, 'credentials.json')
     setProjectRoot(tempRoot)

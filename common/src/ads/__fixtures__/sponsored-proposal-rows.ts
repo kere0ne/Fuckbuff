@@ -15,7 +15,7 @@ import type {
  * Deliberately in `common` rather than beside any one surface's tests: the
  * view model already lives here for the same reason
  * ({@link ../sponsored-proposal-view.ts} — "a terminal needs the same state
- * machine and cannot reach into `freebuff/web/src`"), and fixtures that live
+ * machine and cannot reach into `fuckbuff/web/src`"), and fixtures that live
  * inside a surface are reachable by exactly one of the three.
  *
  * Values are the ones the existing Web and view-model suites already assert
