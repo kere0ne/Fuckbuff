@@ -12,7 +12,7 @@ export enum AnalyticsEvent {
   // id on every surface, so unique-users of this event gives accurate
   // per-surface DAU (filter on the `surface` property) and a combined DAU (no
   // filter). The `surface` property is one of: cli, web, chat, desktop, cloud
-  // (web = the freebuff.com builder, cloud = connected-repo builder projects).
+  // (web = the fuckbuff.com builder, cloud = connected-repo builder projects).
   // Native sends additionally carry `client_platform: 'ios' | 'android'`;
   // surface still describes the mode, and missing platform means unknown.
   // Emission points: cli client analytics; chat's stream route (server-side);
@@ -471,6 +471,7 @@ export enum AnalyticsEvent {
   DESKTOP_PROJECT_REMOVED = 'desktop.project_removed',
   DESKTOP_TURN_COMPLETED = 'desktop.turn_completed',
   DESKTOP_FUNNEL_STEP = 'desktop.funnel_step',
+  DESKTOP_ACQUISITION_STEP = 'desktop.acquisition_step',
   DESKTOP_FAILED_TURN_RECOVERY = 'desktop.failed_turn_recovery',
   DESKTOP_HARNESS_CHANGED = 'desktop.harness_changed',
   DESKTOP_MODEL_CHANGED = 'desktop.model_changed',
