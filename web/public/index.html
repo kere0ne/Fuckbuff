@@ -99,6 +99,18 @@
   .bubble code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 12.5px; }
   .bubble :not(pre) > code { background: rgba(255,122,26,0.1); border-radius: 5px; padding: 1px 5px; color: var(--orange2); }
   .str { color: #ffb066; } .kw { color: #c792ff; font-weight: 600; } .com { color: #6b5f76; font-style: italic; } .num { color: #8ad2ff; }
+  .badge { display: inline-block; font-size: 11.5px; color: var(--orange2); border: 1px solid var(--line2);
+    background: rgba(255,122,26,0.08); border-radius: 999px; padding: 4px 13px; margin-bottom: 16px; }
+  .featgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 860px; margin: 30px auto 0; }
+  @media (max-width: 760px) { .featgrid { grid-template-columns: 1fr 1fr; } }
+  .feat { text-align: left; border: 1px solid var(--line); border-radius: 14px; padding: 14px 15px; background: var(--panel); }
+  .feat .fi { font-size: 17px; margin-bottom: 7px; }
+  .feat h4 { font-size: 13px; margin-bottom: 4px; color: var(--orange2); }
+  .feat p { font-size: 11.5px; color: var(--dim); margin: 0; line-height: 1.55; }
+  .everywhere { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; max-width: 860px; margin: 12px auto 0; }
+  .ewhere { flex: 1 1 200px; text-align: left; border: 1px solid var(--line); border-radius: 14px; padding: 13px 15px; background: var(--panel); }
+  .ewhere h4 { font-size: 13px; color: var(--orange2); margin-bottom: 4px; }
+  .ewhere p { font-size: 11.5px; color: var(--dim); line-height: 1.55; margin: 0; }
   .copy { display: inline-block; margin-top: 5px; font-size: 10.5px; color: var(--dim); border: 1px solid var(--line); border-radius: 6px;
     padding: 2.5px 9px; cursor: pointer; background: transparent; font-family: inherit; }
   .copy:hover { color: var(--orange2); border-color: var(--line2); }
@@ -215,8 +227,9 @@
   <main>
     <div id="thread">
       <div class="hero" id="hero">
+        <span class="badge">the 100% free agent &#183; $0 forever</span>
         <div class="big">Fuck<span>buff</span> &#127875;</div>
-        <p>an ai agent that actually runs its code. give it a job and it writes the files, runs them on real python and javascript, reads the errors, and fixes itself. upload anything, build discord bots, ship scripts. everything stays in this browser.</p>
+        <p>serious models, no card, no credits to watch. give it a job and it writes the files, runs them on real python and javascript, reads the errors, and fixes itself. any files in, discord bots out, everything stays in this browser.</p>
         <div class="cards">
           <div class="card" data-q="Build a complete discord.py moderation bot with kick/ban/purge commands, owner-only via DISCORD_OWNER_ID, token from env DISCORD_TOKEN. Include a runnable self-test with mocked commands.">
             <h4>&#129701; discord.py mod bot</h4><p>full bot file with owner lock, plus a mocked self-test it runs to prove the logic works.</p>
@@ -227,6 +240,19 @@
           <div class="card" data-q="Write a python script named scan.py that walks the workspace files and prints a summary table of names and sizes, then run it to verify.">
             <h4>&#128269; scan my files</h4><p>the agent scripts a workspace scan and runs it on the spot to show you the output.</p>
           </div>
+        </div>
+        <div class="featgrid">
+          <div class="feat"><div class="fi">&#129504;</div><h4>serious models, free</h4><p>the best brains the free tier offers, chained with automatic fallback. no subscription, no meter.</p></div>
+          <div class="feat"><div class="fi">&#9889;</div><h4>it runs its own code</h4><p>writes files, executes them on real python and javascript, reads the errors, fixes itself. up to five self-checking passes per task.</p></div>
+          <div class="feat"><div class="fi">&#128193;</div><h4>any files in</h4><p>drag in anything. text files get decoded, edited and run; binaries ride along as reference for the agent.</p></div>
+          <div class="feat"><div class="fi">&#129701;</div><h4>discord bots</h4><p>full bot files with owner locks and env tokens, plus mocked self-tests it actually runs to prove the logic.</p></div>
+          <div class="feat"><div class="fi">&#9227;&#65039;</div><h4>a real cli</h4><p>ls, cat, run, py, js, ask, with arrow-key history. the console drawer doubles as your terminal.</p></div>
+          <div class="feat"><div class="fi">&#128274;</div><h4>stays in your browser</h4><p>workspace lives in localstorage. no accounts, no tracking, nothing transfers to other sites.</p></div>
+        </div>
+        <div class="everywhere">
+          <div class="ewhere"><h4>web</h4><p>the full agent, running right here in your browser.</p></div>
+          <div class="ewhere"><h4>terminal</h4><p>the complete CLI monorepo lives in the repo: <code>bun --cwd cli dev</code></p></div>
+          <div class="ewhere"><h4>desktop &amp; chat</h4><p>same codebase, your build: <code>bun fuckbuff/cli/build.ts</code></p></div>
         </div>
       </div>
     </div>
